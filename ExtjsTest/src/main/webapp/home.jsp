@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <html>
 <head>
-    <title>Account Manager</title>
+    <title>信息中心</title>
 
     <link rel="stylesheet" type="text/css" href="js/extjs4/resources/css/ext-all.css"/>
 

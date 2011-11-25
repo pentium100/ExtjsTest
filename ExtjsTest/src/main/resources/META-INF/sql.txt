@@ -1,0 +1,8 @@
+
+INSERT INTO MENU ( CONTROLLER, icon_cls, leaf, text, views, parent, controller_param)
+values ( 'MaterialDocs', null, 1, '煤炭中心内部系统2', 'materialDocList', 2, '{moveType1:''101'', docType:1}')
+
+insert into material_doc_type (doc_type_txt) values ( '进仓')
+insert into material_doc_type (doc_type_txt) values ( '出仓')
+
+

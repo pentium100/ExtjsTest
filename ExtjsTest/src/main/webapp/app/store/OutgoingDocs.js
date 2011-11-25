@@ -1,7 +1,7 @@
 
 
 Ext.define('AM.store.OutgoingDocs', {
-			extend : 'Ext.data.Store',
+			extend : 'Ext.data.ux.Store',
 			model : 'AM.model.MaterialDoc',
 
 			autoLoad : true,

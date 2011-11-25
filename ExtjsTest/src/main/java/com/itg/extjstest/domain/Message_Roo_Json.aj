@@ -16,9 +16,6 @@ privileged aspect Message_Roo_Json {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }
     
-    public static Message Message.fromJsonToMessage(String json) {
-        return new JSONDeserializer<Message>().use(null, Message.class).deserialize(json);
-    }
     
     public static String Message.toJsonArray(Collection<Message> collection) {
         return new JSONSerializer().exclude("*.class").serialize(collection);

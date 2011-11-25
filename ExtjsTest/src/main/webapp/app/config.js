@@ -250,9 +250,115 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							}
 						}()
 					});
+					
+			Ext.define( 'Ext.data.ux.Store',{
+			
+			    extend: 'Ext.data.Store', 
+				
+				constructor: function(config){
+					Ext.data.ux.Store.superclass.constructor.call(this, config)
+					this.addListener('write', function(store, operation){
+						
+									var record = operation.getRecords()[0];
+									var name = Ext.String.capitalize(operation.action);
+									var verb;
+                    
+                    
+									if (name == 'Destroy') {
+										record = operation.records[0];
+										verb = 'Destroyed';
+									} else {
+										verb = name + 'd';
+									}
+									Ext.example.msg(name, Ext.String.format("{0} successful: {1}", verb, record.getId()));
+
+
+						
+						}, this
+					
+					
+					);
+					
+					var proxy = this.getProxy();
+					proxy.addListener('exception', function(proxy, res){
+						
+						var response;
+						if(res.responseText){
+						  response = Ext.decode(res.responseText);
+						}
+						
+						
+						var errmsg;
+						if(response&&response.message){
+							
+							errmsg = response.message;
+
+						}else{
+							errmsg = '系统错误，请与管理员联系。';
+						}
+						Ext.MessageBox.show({
+								title: '错误信息',
+								msg: errmsg,
+								buttons: Ext.MessageBox.OK,
+								icon: Ext.MessageBox.ERROR,
+								closable: false,
+								modal:true
+						});
+
+						
+					}, this);
+
+
+
+
+
+					// Copy configured listeners into *this* object so that the base class's
+
+// constructor will add them.
+					//this.listeners = config.listeners;
+
+					// Call our superclass constructor to complete construction process.
+					
+				}
+				
+
+				
+			});				
+			//Ext.data.Store.override({
+					
+			//		listeners:{
+			//			write: function(store, operation){
+			
+			//						var record = operation.getRecords()[0];
+			//						var name = Ext.String.capitalize(operation.action);
+			//						var verb;
+                    
+                    
+			//						if (name == 'Destroy') {
+			//							record = operation.records[0];
+			//							verb = 'Destroyed';
+			//						} else {
+			//							verb = name + 'd';
+			//						}
+			//						Ext.example.msg(name, Ext.String.format("{0} Message: {1}", verb, record.getId()));
+
+			
+			
+			//			}		
+						
+		
+			//		}
+	
+	
+			//	});
+
+
+		
 
 		});
 
 Ext.JSON.encodeDate = function(d) {
 	return Ext.Date.format(d, '"Y-m-d H:i:s"');
 };
+
+

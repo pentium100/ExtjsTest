@@ -1,7 +1,7 @@
 
 
 Ext.define('AM.store.MessagesStore', {
-			extend : 'Ext.data.Store',
+			extend : 'Ext.data.ux.Store',
 			model : 'AM.model.Message',
 
 			autoLoad : true,
@@ -19,32 +19,26 @@ Ext.define('AM.store.MessagesStore', {
 					writeAllFields : true,
 					root : ''
 				},
-				listeners:{
-					exception: function(proxy, res){
-						Ext.example.msg('fail...', res.responseText);
-					
-					
-					}			
 
-				}
-			},
-			listeners: {
-				write: function(store, operation){
-					var record = operation.getRecords()[0],
-						name = Ext.String.capitalize(operation.action),
-						verb;
+				
+			}
+			//,listeners: {
+			//	write2: function(store, operation){
+			//		var record = operation.getRecords()[0],
+			//			name = Ext.String.capitalize(operation.action),
+			//			verb;
                     
                     
-					if (name == 'Destroy') {
-						record = operation.records[0];
-						verb = 'Destroyed';
-					} else {
-						verb = name + 'd';
-					}
-					Ext.example.msg(name, Ext.String.format("{0} user: {1}", verb, record.getId()));
+			//		if (name == 'Destroy') {
+			//			record = operation.records[0];
+			//			verb = 'Destroyed';
+			//		} else {
+			//			verb = name + 'd';
+			//		}
+			//		Ext.example.msg(name, Ext.String.format("{0} Message: {1}", verb, record.getId()));
                 
-				}
-			}	
+			//	}
+			//}	
 			
 			
 		});

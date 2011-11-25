@@ -27,10 +27,6 @@ Ext.define('AM.model.MaterialDoc', {
 
 			},
 
-			{
-				name : 'docType_id',
-				mapping : 'docType.id'
-			},
 
 			{
 				name : 'docType_txt',

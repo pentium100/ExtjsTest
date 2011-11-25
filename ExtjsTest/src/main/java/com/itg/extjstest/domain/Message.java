@@ -1,5 +1,6 @@
 package com.itg.extjstest.domain;
 
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
@@ -107,5 +108,9 @@ public class Message {
 		}
 		return buf.toString();
 	}
+	
+    public static Message fromJsonToMessage(String json) {
+        return new JSONDeserializer<Message>().use(null, Message.class).deserialize(json);
+    }
 
 }

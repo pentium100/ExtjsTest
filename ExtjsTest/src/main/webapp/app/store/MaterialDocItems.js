@@ -1,7 +1,7 @@
 
 
 Ext.define('AM.store.MaterialDocItems', {
-			extend : 'Ext.data.Store',
+			extend : 'Ext.data.ux.Store',
 			model : 'AM.model.MaterialDocItemSearch',
 
 			autoLoad : true,
