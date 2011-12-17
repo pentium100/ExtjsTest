@@ -3,3 +3,33 @@ project --topLevelPackage com.itg.ExtjsTest --projectName ExtjsTest --java 6
 // Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-16 23:23:27
 // Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-16 23:23:30
 // Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-16 23:25:40
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-17 22:34:31
+hint
+persistence setup --provider HIBERNATE --database MSSQL 
+hint
+entity --class ~.domain.Contract 
+enum type --class ~.domain.ContractType
+hint
+hint
+enum constant --name PURCHASE
+enum constant --name SALE
+hint
+// [failed] entity --class ~.domain.Contract
+field enum --type ~.domain.ContractType --fieldName contractType
+entity --class ~.domain.Supplier
+field string --fieldName name
+// [failed] entity --class ~.domain.Contract
+field reference --fieldName supplier --type ~.domain.Supplier
+field date --fieldName eta --type java.util.Date
+entity --class ~.domain.ContractItem
+field string --fieldName model
+field number --fieldName quantity --type java.lang.Double
+// [failed] entity --class ~.domain.Contract
+field set --fieldName items --type ~.domain.ContractItem
+// [failed] entity --class ~.domain.ContractItem
+field reference --fieldName contract --type ~.domain.Contract
+hint
+hint controllers
+controller all --package ~.web
+hint
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-17 23:05:00

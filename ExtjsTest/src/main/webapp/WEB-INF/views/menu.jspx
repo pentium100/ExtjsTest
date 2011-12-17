@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:menu="urn:jsptagdir:/WEB-INF/tags/menu" id="menu" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <menu:menu id="_menu" z="nZaf43BjUg1iM0v70HJVEsXDopc=">
+        <menu:category id="c_supplier" z="8IYgP9HBdyozOk+Ymf37zKa+fNc=">
+            <menu:item id="i_supplier_new" messageCode="global_menu_new" url="/suppliers?form" z="48D4zeaX6ENxXujfvnWrtY5odlQ="/>
+            <menu:item id="i_supplier_list" messageCode="global_menu_list" url="/suppliers?page=1&amp;size=${empty param.size ? 10 : param.size}" z="m3iWO9PZ5+HPrY21osNhms/WqIE="/>
+        </menu:category>
+        <menu:category id="c_contractitem" z="g5T/o0Wyob12bOUDbqO7x9ARymY=">
+            <menu:item id="i_contractitem_new" messageCode="global_menu_new" url="/contractitems?form" z="RCaA7NChSwiIvo3gLEuF8s9IIBI="/>
+            <menu:item id="i_contractitem_list" messageCode="global_menu_list" url="/contractitems?page=1&amp;size=${empty param.size ? 10 : param.size}" z="KDHXkcQY5zhT3ZbtphP4sMXxhg8="/>
+        </menu:category>
+        <menu:category id="c_contract" z="4+ZfkynELtH01Q9VUMSOoTGwqPA=">
+            <menu:item id="i_contract_new" messageCode="global_menu_new" url="/contracts?form" z="Ywk8JpUEsv3Yi6GdSROwzM7phdc="/>
+            <menu:item id="i_contract_list" messageCode="global_menu_list" url="/contracts?page=1&amp;size=${empty param.size ? 10 : param.size}" z="T8YOGqikEgnHJfLf0mVomxbN/GI="/>
+        </menu:category>
+    </menu:menu>
+</div>
