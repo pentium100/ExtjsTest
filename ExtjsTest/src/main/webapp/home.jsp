@@ -5,6 +5,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Extjs4 Test</title>
+
+ <link rel="stylesheet" type="text/css" href="js/extjs4/resources/css/ext-all.css" />
+ <script type="text/javascript" src="js/extjs4/bootstrap.js"></script>
+ <script type="text/javascript" src="js/home.js"></script>
 </head>
 <body>
 
