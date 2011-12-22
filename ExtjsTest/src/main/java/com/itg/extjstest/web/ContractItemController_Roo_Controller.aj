@@ -93,7 +93,7 @@ privileged aspect ContractItemController_Roo_Controller {
     }
     
     @ModelAttribute("contractitems")
-    public Collection<ContractItem> ContractItemController.populateContractItems() {
+    public java.util.Collection<ContractItem> ContractItemController.populateContractItems() {
         return ContractItem.findAllContractItems();
     }
     

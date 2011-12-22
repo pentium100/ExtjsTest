@@ -10,10 +10,8 @@ privileged aspect ContractItem_Roo_ToString {
     public String ContractItem.toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Contract: ").append(getContract()).append(", ");
-        sb.append("Id: ").append(getId()).append(", ");
         sb.append("Model: ").append(getModel()).append(", ");
-        sb.append("Quantity: ").append(getQuantity()).append(", ");
-        sb.append("Version: ").append(getVersion());
+        sb.append("Quantity: ").append(getQuantity());
         return sb.toString();
     }
     

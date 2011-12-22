@@ -23,23 +23,23 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
         installLabelConverters(getObject());
     }
     
-    static class com.itg.extjstest.web.ApplicationConversionServiceFactoryBean.ContractConverter implements Converter<Contract, String> {
+    static class com.itg.extjstest.web.ApplicationConversionServiceFactoryBean.ContractConverter implements Converter<Contract, String>  {
         public String convert(Contract contract) {
-            return new StringBuilder().append(contract.getEta()).toString();
+        return new StringBuilder().append(contract.getEta()).toString();
         }
         
     }
     
-    static class com.itg.extjstest.web.ApplicationConversionServiceFactoryBean.ContractItemConverter implements Converter<ContractItem, String> {
+    static class com.itg.extjstest.web.ApplicationConversionServiceFactoryBean.ContractItemConverter implements org.springframework.core.convert.converter.Converter<com.itg.extjstest.domain.ContractItem, java.lang.String>  {
         public String convert(ContractItem contractItem) {
-            return new StringBuilder().append(contractItem.getModel()).append(" ").append(contractItem.getQuantity()).toString();
+        return new StringBuilder().append(contractItem.getModel()).append(" ").append(contractItem.getQuantity()).toString();
         }
         
     }
     
-    static class com.itg.extjstest.web.ApplicationConversionServiceFactoryBean.SupplierConverter implements Converter<Supplier, String> {
+    static class com.itg.extjstest.web.ApplicationConversionServiceFactoryBean.SupplierConverter implements org.springframework.core.convert.converter.Converter<com.itg.extjstest.domain.Supplier, java.lang.String>  {
         public String convert(Supplier supplier) {
-            return new StringBuilder().append(supplier.getName()).toString();
+        return new StringBuilder().append(supplier.getName()).toString();
         }
         
     }

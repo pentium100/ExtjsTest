@@ -11,10 +11,8 @@ privileged aspect Contract_Roo_ToString {
         StringBuilder sb = new StringBuilder();
         sb.append("ContractType: ").append(getContractType()).append(", ");
         sb.append("Eta: ").append(getEta()).append(", ");
-        sb.append("Id: ").append(getId()).append(", ");
         sb.append("Items: ").append(getItems() == null ? "null" : getItems().size()).append(", ");
-        sb.append("Supplier: ").append(getSupplier()).append(", ");
-        sb.append("Version: ").append(getVersion());
+        sb.append("Supplier: ").append(getSupplier());
         return sb.toString();
     }
     
