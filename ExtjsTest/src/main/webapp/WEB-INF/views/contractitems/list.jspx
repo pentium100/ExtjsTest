@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:jsp="http://java.sun.com/JSP/Page" xmlns:page="urn:jsptagdir:/WEB-INF/tags/form" xmlns:table="urn:jsptagdir:/WEB-INF/tags/form/fields" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <page:list id="pl_com_itg_extjstest_domain_ContractItem" items="${contractitems}" z="3uHra//YMWW1YLIO18qFYABZPwo=">
+        <table:table data="${contractitems}" id="l_com_itg_extjstest_domain_ContractItem" path="/contractitems" z="dWi7MgnQpaeFKxJLkMxbfJmAjNQ=">
+            <table:column id="c_com_itg_extjstest_domain_ContractItem_model" property="model" z="dMsWe8nxS9GAIAUvQlm1ClSrIzQ="/>
+            <table:column id="c_com_itg_extjstest_domain_ContractItem_quantity" property="quantity" z="ItCdBnLdxsjHEncHW3xfH8dn66M="/>
+            <table:column id="c_com_itg_extjstest_domain_ContractItem_contract" property="contract" z="Vo8bQhPic13DKGNJQVstP4QZkJI="/>
+        </table:table>
+    </page:list>
+</div>

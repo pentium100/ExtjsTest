@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<div xmlns:field="urn:jsptagdir:/WEB-INF/tags/form/fields" xmlns:form="urn:jsptagdir:/WEB-INF/tags/form" xmlns:jsp="http://java.sun.com/JSP/Page" version="2.0">
+    <jsp:directive.page contentType="text/html;charset=UTF-8"/>
+    <jsp:output omit-xml-declaration="yes"/>
+    <form:update id="fu_com_itg_extjstest_domain_Contract" modelAttribute="contract" path="/contracts" versionField="Version" z="hnGYgMSkcl8DcpAuK+tVrEATVzA=">
+        <field:select field="contractType" id="c_com_itg_extjstest_domain_Contract_contractType" items="${contracttypes}" path="contracttypes" z="+lnfrKz2gONeGgCc06yw6uIlono="/>
+        <field:select field="supplier" id="c_com_itg_extjstest_domain_Contract_supplier" itemValue="id" items="${suppliers}" path="/suppliers" z="ruj5VDTfDMPfYrC1s/9uhF7jRhM="/>
+        <field:datetime dateTimePattern="${contract_eta_date_format}" field="eta" id="c_com_itg_extjstest_domain_Contract_eta" z="BEXnrpQ2bQizSGZmRXuLhNdrAz4="/>
+        <field:select field="items" id="c_com_itg_extjstest_domain_Contract_items" itemValue="id" items="${contractitems}" multiple="true" path="/contractitems" z="FRDanadXmfShA57IjZdN5QqjRNw="/>
+    </form:update>
+</div>
