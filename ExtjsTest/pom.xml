@@ -511,8 +511,10 @@
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>7.4.2.v20110526</version>
                 <configuration>
+                    <useFileMappedBuffer>false</useFileMappedBuffer>
                     <webAppConfig>
                         <contextPath>/${project.name}</contextPath>
+                        
                     </webAppConfig>
                 </configuration>
             </plugin>
