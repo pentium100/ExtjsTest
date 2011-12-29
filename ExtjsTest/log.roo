@@ -48,3 +48,14 @@ hint
 // Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-27 18:01:00
 hint
 // Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-27 18:03:31
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-29 22:21:10
+hint
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-29 22:24:11
+hint
+hint
+// [failed] entity --class ~.domain.Contract
+// [failed] entity --class ~.domain.Contract
+field string contractNo 
+// [failed] field string --fieldName contractNo --sizeMax 30
+// [failed] field string --fieldName contractNo --sizemax 30
+field string --fieldName contractNo --sizemax 30

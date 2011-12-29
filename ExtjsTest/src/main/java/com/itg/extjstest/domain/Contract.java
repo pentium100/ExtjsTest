@@ -34,4 +34,6 @@ public class Contract {
 
     @ManyToMany(cascade = CascadeType.ALL)
     private Set<ContractItem> items = new HashSet<ContractItem>();
+
+    private String contractNo;
 }

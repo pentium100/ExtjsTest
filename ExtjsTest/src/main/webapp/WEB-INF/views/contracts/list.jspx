@@ -8,6 +8,7 @@
             <table:column id="c_com_itg_extjstest_domain_Contract_supplier" property="supplier" z="aIikffuCpXE2gfO3Unq2lmoGE1I="/>
             <table:column date="true" dateTimePattern="${contract_eta_date_format}" id="c_com_itg_extjstest_domain_Contract_eta" property="eta" z="OfogHhHlzV8yiYVazAtaP/7loMw="/>
             <table:column id="c_com_itg_extjstest_domain_Contract_items" property="items" z="eA2Ha4uySHCoKJY6nWz9Y9YMUY8="/>
+            <table:column id="c_com_itg_extjstest_domain_Contract_contractNo" property="contractNo" z="YSVRWjqeSpn2mfd33/bKANEbJaw="/>
         </table:table>
     </page:list>
 </div>

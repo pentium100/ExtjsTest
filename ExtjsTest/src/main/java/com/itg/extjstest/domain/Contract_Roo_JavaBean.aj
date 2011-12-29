@@ -6,6 +6,7 @@ package com.itg.extjstest.domain;
 import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.ContractType;
 import com.itg.extjstest.domain.Supplier;
+import java.lang.String;
 import java.util.Date;
 import java.util.Set;
 
@@ -41,6 +42,14 @@ privileged aspect Contract_Roo_JavaBean {
     
     public void Contract.setItems(Set<ContractItem> items) {
         this.items = items;
+    }
+    
+    public String Contract.getContractNo() {
+        return this.contractNo;
+    }
+    
+    public void Contract.setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
     
 }

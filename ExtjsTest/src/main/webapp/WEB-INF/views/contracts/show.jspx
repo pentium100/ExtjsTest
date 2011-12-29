@@ -7,5 +7,6 @@
         <field:display field="supplier" id="s_com_itg_extjstest_domain_Contract_supplier" object="${contract}" z="Dim2Er5JS1WQ743eZgg+9kFzluY="/>
         <field:display date="true" dateTimePattern="${contract_eta_date_format}" field="eta" id="s_com_itg_extjstest_domain_Contract_eta" object="${contract}" z="IdySZcyOvqCRzo1ryshlEsxBRB0="/>
         <field:display field="items" id="s_com_itg_extjstest_domain_Contract_items" object="${contract}" z="vRc/0mf5iXtk8G5ojoab/mRywkQ="/>
+        <field:display field="contractNo" id="s_com_itg_extjstest_domain_Contract_contractNo" object="${contract}" z="IxRzpMhDHx/cY1zZjN/bnK2y1hM="/>
     </page:show>
 </div>

@@ -25,7 +25,7 @@ privileged aspect ApplicationConversionServiceFactoryBean_Roo_ConversionService 
     
     static class com.itg.extjstest.web.ApplicationConversionServiceFactoryBean.ContractConverter implements Converter<Contract, String> {
         public String convert(Contract contract) {
-            return new StringBuilder().append(contract.getEta()).toString();
+            return new StringBuilder().append(contract.getEta()).append(" ").append(contract.getContractNo()).toString();
         }
         
     }

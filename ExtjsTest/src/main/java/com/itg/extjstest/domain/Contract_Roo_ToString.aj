@@ -9,6 +9,7 @@ privileged aspect Contract_Roo_ToString {
     
     public String Contract.toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("ContractNo: ").append(getContractNo()).append(", ");
         sb.append("ContractType: ").append(getContractType()).append(", ");
         sb.append("Eta: ").append(getEta()).append(", ");
         sb.append("Id: ").append(getId()).append(", ");

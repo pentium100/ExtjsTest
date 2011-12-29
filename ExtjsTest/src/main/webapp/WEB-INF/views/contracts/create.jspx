@@ -7,6 +7,7 @@
         <field:select field="supplier" id="c_com_itg_extjstest_domain_Contract_supplier" itemValue="id" items="${suppliers}" path="/suppliers" z="ruj5VDTfDMPfYrC1s/9uhF7jRhM="/>
         <field:datetime dateTimePattern="${contract_eta_date_format}" field="eta" id="c_com_itg_extjstest_domain_Contract_eta" z="BEXnrpQ2bQizSGZmRXuLhNdrAz4="/>
         <field:select field="items" id="c_com_itg_extjstest_domain_Contract_items" itemValue="id" items="${contractitems}" multiple="true" path="/contractitems" z="FRDanadXmfShA57IjZdN5QqjRNw="/>
+        <field:input field="contractNo" id="c_com_itg_extjstest_domain_Contract_contractNo" z="lezgUdKgnB2n+p7XwEm+esQpyzw="/>
     </form:create>
     <form:dependency dependencies="${dependencies}" id="d_com_itg_extjstest_domain_Contract" render="${not empty dependencies}" z="xQNGrRr3lB0TA0W/r2vnWBFHaNk="/>
 </div>
