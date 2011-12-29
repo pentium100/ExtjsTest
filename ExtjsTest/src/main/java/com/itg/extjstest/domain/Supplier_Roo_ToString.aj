@@ -9,7 +9,9 @@ privileged aspect Supplier_Roo_ToString {
     
     public String Supplier.toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Name: ").append(getName());
+        sb.append("Id: ").append(getId()).append(", ");
+        sb.append("Name: ").append(getName()).append(", ");
+        sb.append("Version: ").append(getVersion());
         return sb.toString();
     }
     

@@ -104,17 +104,17 @@ privileged aspect ContractController_Roo_Controller {
     }
     
     @ModelAttribute("contractitems")
-    public java.util.Collection<ContractItem> ContractController.populateContractItems() {
+    public Collection<ContractItem> ContractController.populateContractItems() {
         return ContractItem.findAllContractItems();
     }
     
     @ModelAttribute("contracttypes")
-    public java.util.Collection<ContractType> ContractController.populateContractTypes() {
+    public Collection<ContractType> ContractController.populateContractTypes() {
         return Arrays.asList(ContractType.class.getEnumConstants());
     }
     
     @ModelAttribute("suppliers")
-    public java.util.Collection<Supplier> ContractController.populateSuppliers() {
+    public Collection<Supplier> ContractController.populateSuppliers() {
         return Supplier.findAllSuppliers();
     }
     
