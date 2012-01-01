@@ -273,6 +273,8 @@ public class ReportController {
 			ReportHeader header;
 			
 			header = new ReportHeader();
+			
+			
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			header.setPosition(0);

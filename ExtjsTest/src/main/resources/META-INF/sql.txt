@@ -36,3 +36,7 @@ values (9, 'icon-report', '敞口业务报表',0, 7, 'AM.controller.contract.rep
   insert into menu(id, icon_cls, text, parent, controller,leaf, views)
   values (11, 'icon-report', '库存查询', 7, 'AM.controller.materialDoc.report.StockQuery', 1, 'StockQuery')
   
+  
+insert into menu (id,icon_cls, text, version, parent, controller, leaf, views)
+values (12, 'icon-afloatGoods', '在途信息',0, 2, 'AM.controller.afloatGoods.AfloatGoods', 1, 'afloatGoodsList')
+  

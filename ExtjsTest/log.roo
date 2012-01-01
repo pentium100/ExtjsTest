@@ -418,3 +418,33 @@ exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-25 19:57:08
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-25 19:57:46
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-01 19:33:56
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-01 19:39:33
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-01 19:40:24
+entity jpa --class ~.domain.AfloatGoods
+field ref --fieldName contract --type Contract
+field string --fieldName plateNum --sizeMax 50
+field string --fieldName dispatch --sizeMax 50
+field string --fieldName destination --sizeMax 50
+field date --fieldName transportDate --type java.util.java.util.Date
+field date --fieldName dispatchDate --type java.util.java.util.Date
+field date --fieldName eta --type java.util.java.util.Date
+// [failed] field date --fieldName eta --type java.util.Date
+field date --fieldName arrivalDate --type java.util.Date
+entity jpa --class ~.domain.AfloatGoodsItem
+field reference --fieldName afloatGoods --type AfloatGoods
+field string --fieldName model --sizeMax 50
+field number --fieldName quantity --type java.lang.Double
+// [failed] focus --class ~.domain.Afloat
+focus --class ~.domain.AfloatGoods
+field set --fieldName items --type AfloatGoodsItem
+web mvc json add --jsonObject ~.domain.AfloatGoods --class ~.web.AfloatGoodsController
+focus --class ~.domain.AfloatGoods
+json add
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-01 20:04:18
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-01 20:28:59
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-01 20:29:56
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-01 21:00:00
