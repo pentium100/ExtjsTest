@@ -4,7 +4,7 @@ Ext.application({
     appFolder: 'app',
 	
 	controllers: [
-        'Users'
+        'Users', 'Contracts'
     ], 
 	
 	
@@ -14,8 +14,8 @@ Ext.application({
             layout: 'fit',
             items: [
                 {
-                    xtype: 'userlist',
-                    title: 'Users',
+                    xtype: 'contractList',
+                    title: 'Contracts',
                     html : 'List of users will go here'
                 }
             ]

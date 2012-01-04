@@ -59,3 +59,4 @@ field string contractNo
 // [failed] field string --fieldName contractNo --sizeMax 30
 // [failed] field string --fieldName contractNo --sizemax 30
 field string --fieldName contractNo --sizemax 30
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-29 22:55:45

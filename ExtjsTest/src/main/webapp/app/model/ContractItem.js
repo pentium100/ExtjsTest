@@ -6,10 +6,6 @@ Ext.define('AM.model.Contract', {
 					}, {
 						name : 'quantity',
 						type : 'float'
-					}],
+					}]
 					
-		associations : [{
-						type : 'hasMany',
-						model : 'ContractItem'
-					}]					
 		});

@@ -9,5 +9,12 @@ Ext.define('AM.model.Contract', {
 					}, {
 						name : 'contractNo',
 						type : 'string'
-					}]
+					}],
+		associations : [{
+						type  : 'hasMany',
+						model : 'ContractItem',
+						name  : 'contractItems'
+					}]					
+					
+					
 		});
