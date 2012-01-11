@@ -3,18 +3,14 @@
 
 package com.itg.extjstest.domain;
 
-import java.lang.String;
+import com.itg.extjstest.domain.ContractItem;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 privileged aspect ContractItem_Roo_ToString {
     
     public String ContractItem.toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Contract: ").append(getContract()).append(", ");
-        sb.append("Id: ").append(getId()).append(", ");
-        sb.append("Model: ").append(getModel()).append(", ");
-        sb.append("Quantity: ").append(getQuantity()).append(", ");
-        sb.append("Version: ").append(getVersion());
-        return sb.toString();
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
     
 }

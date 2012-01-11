@@ -3,37 +3,20 @@
 
 package com.itg.extjstest.domain;
 
+import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.ContractType;
-import com.itg.extjstest.domain.Supplier;
-import java.lang.String;
 import java.util.Date;
 import java.util.Set;
 
 privileged aspect Contract_Roo_JavaBean {
     
-    public ContractType Contract.getContractType() {
-        return this.contractType;
+    public String Contract.getContractNo() {
+        return this.contractNo;
     }
     
-    public void Contract.setContractType(ContractType contractType) {
-        this.contractType = contractType;
-    }
-    
-    public Supplier Contract.getSupplier() {
-        return this.supplier;
-    }
-    
-    public void Contract.setSupplier(Supplier supplier) {
-        this.supplier = supplier;
-    }
-    
-    public Date Contract.getEta() {
-        return this.eta;
-    }
-    
-    public void Contract.setEta(Date eta) {
-        this.eta = eta;
+    public void Contract.setContractNo(String contractNo) {
+        this.contractNo = contractNo;
     }
     
     public Set<ContractItem> Contract.getItems() {
@@ -44,12 +27,20 @@ privileged aspect Contract_Roo_JavaBean {
         this.items = items;
     }
     
-    public String Contract.getContractNo() {
-        return this.contractNo;
+    public ContractType Contract.getContractType() {
+        return this.contractType;
     }
     
-    public void Contract.setContractNo(String contractNo) {
-        this.contractNo = contractNo;
+    public void Contract.setContractType(ContractType contractType) {
+        this.contractType = contractType;
+    }
+    
+    public Date Contract.getLastShippingDate() {
+        return this.lastShippingDate;
+    }
+    
+    public void Contract.setLastShippingDate(Date lastShippingDate) {
+        this.lastShippingDate = lastShippingDate;
     }
     
 }

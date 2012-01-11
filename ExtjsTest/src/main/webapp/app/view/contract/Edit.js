@@ -1,47 +1,67 @@
 Ext.define('AM.view.contract.Edit', {
-    extend: 'Ext.window.Window',
-    alias : 'widget.contractEdit',
+			extend : 'Ext.window.Window',
+			alias : 'widget.contractEdit',
 
-    title : 'Edit Contract',
-    layout: 'fit',
-    autoShow: true,
+			title : 'Edit Contract',
+			layout : 'border',
+			autoShow : true,
+			height : 400,
+			width : 450,
 
-    initComponent: function() {
-        this.items = [
-            {
-                xtype: 'form',
-                items: [
-                    {
-                        xtype: 'textfield',
-                        name : 'contractType',
-                        fieldLabel: 'Contract Type'
-                    },
-                    {
-                        xtype: 'datefield',
-                        name : 'eta',
-                        fieldLabel: 'ETA'
-                    },
-                    {
-                        xtype: 'textfield',
-                        name : 'contractNo',
-                        fieldLabel: 'Contract No'
-                    }
-                ]
-            }
-        ];
+			initComponent : function() {
+				this.items = [
 
-        this.buttons = [
-            {
-                text: 'Save',
-                action: 'save'
-            },
-            {
-                text: 'Cancel',
-                scope: this,
-                handler: this.close
-            }
-        ];
+				{
+							region : 'north',
+							xtype : 'form',
+							items : [{
+										xtype : 'textfield',
+										name : 'contractType',
+										fieldLabel : 'Contract Type'
+									}, {
+										xtype : 'datefield',
+										name : 'lastShippingDate',
+										fieldLabel : 'Last Shipping Date',
+										format: 'Y-m-d'
+										
+									}, {
+										xtype : 'textfield',
+										name : 'contractNo',
+										fieldLabel : 'Contract No'
+									}]
+						}, {
+							region : 'center',
+							xtype : 'gridpanel',
+							selType : 'cellmodel',
+							plugins : [Ext.create(
+									'Ext.grid.plugin.CellEditing', {
+										clicksToEdit : 1
+									})],
+							columns : [{
+										xtype : 'gridcolumn',
+										id : 'model',
+										dataIndex : 'model',
+										text : '规格',
+										
+										field: 'textfield'
+									}, {
+										xtype : 'numbercolumn',
+										itemId : 'quantity',
+										dataIndex : 'quantity',
+										text : '数量',
+										field:'numberfield'
+									}]
+						}];
 
-        this.callParent(arguments);
-    }
-});
+				this.buttons = [{
+							text : 'Save',
+							action : 'save'
+						}, {
+							text : 'Cancel',
+							scope : this,
+							handler : this.close
+						}];
+
+				this.callParent(arguments);
+			}
+		});

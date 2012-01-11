@@ -3,6 +3,7 @@
 
 package com.itg.extjstest.domain;
 
+import com.itg.extjstest.domain.ContractItem;
 import org.springframework.beans.factory.annotation.Configurable;
 
 privileged aspect ContractItem_Roo_Configurable {

@@ -1,25 +1,23 @@
 Ext.application({
-    name: 'AM',
+			name : 'AM',
 
-    appFolder: 'app',
-	
-	controllers: [
-        'Users', 'Contracts'
-    ], 
-	
-	
+			appFolder : 'app',
 
-    launch: function() {
-        Ext.create('Ext.container.Viewport', {
-            layout: 'fit',
-            items: [
-                {
-                    xtype: 'contractList',
-                    title: 'Contracts',
-                    html : 'List of users will go here'
-                }
-            ]
-            
-        });
-    }
-});
+			controllers : ['Contracts'],
+
+			launch : function() {
+
+				Ext.JSON.encodeDate = function(d) {
+					return Ext.Date.format(d, '"Y-m-d H:i:s"');
+				};
+				Ext.create('Ext.container.Viewport', {
+							layout : 'fit',
+							items : [{
+										xtype : 'contractList',
+										title : 'Contracts',
+										html : 'List of users will go here'
+									}]
+
+						});
+			}
+		});

@@ -2,8 +2,8 @@ Ext.define('AM.controller.Contracts', {
     extend: 'Ext.app.Controller',
 	
 	views:['contract.List', 'contract.Edit'],
-	stores:['Users', 'Contracts'],
-	models:['User', 'Contract'],
+	stores:['Contracts'],
+	models:['Contract', 'ContractItem'],
 
     init: function() {
 		this.control({
@@ -25,35 +25,30 @@ Ext.define('AM.controller.Contracts', {
 		var view = Ext.widget('contractEdit');
 
         view.down('form').loadRecord(record);
+        
+        
+        view.down('grid').reconfigure(record.items());
+        
 		
 	},
 	
     updateContract: function(button) {
-        var win    = button.up('window'),
-        form   = win.down('form'),
-        record = form.getRecord(),
+        var win    = button.up('window');
+        form   = win.down('form');
+        record = form.getRecord();
         values = form.getValues();
+        values.lastShippingDate = Ext.Date.parse(values.lastShippingDate, 'Y-m-d');
+        
+        
 
         record.set(values);
+        
+        
+        // record.data.items = win.down('grid').getStore();
+        this.getStore('Contracts').save();
         win.close();
 	},
 	
-    editUser: function(grid, record) {
-        console.log('Double clicked on ' + record.get('name'));
-		var view = Ext.widget('useredit');
-
-        view.down('form').loadRecord(record);
-    },		
-    
-    updateUser: function(button) {
-        var win    = button.up('window'),
-        form   = win.down('form'),
-        record = form.getRecord(),
-        values = form.getValues();
-
-        record.set(values);
-        win.close();
-	},
     onPanelRendered: function() {
         console.log('The panel was rendered');
     }

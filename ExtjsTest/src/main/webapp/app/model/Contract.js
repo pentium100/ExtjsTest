@@ -4,17 +4,20 @@ Ext.define('AM.model.Contract', {
 						name : 'contractType',
 						type : 'string'
 					}, {
-						name : 'eta',
-						type : 'date'
+						name : 'lastShippingDate',
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
 					}, {
 						name : 'contractNo',
 						type : 'string'
+					}, {
+						name : 'id',
+						type : 'int'
 					}],
-		associations : [{
-						type  : 'hasMany',
-						model : 'ContractItem',
-						name  : 'contractItems'
-					}]					
-					
-					
+
+			hasMany : [{
+						model : 'AM.model.ContractItem',
+						name : 'items'
+					}]
+
 		});

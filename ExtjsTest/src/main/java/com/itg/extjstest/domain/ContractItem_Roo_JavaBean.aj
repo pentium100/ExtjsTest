@@ -4,10 +4,17 @@
 package com.itg.extjstest.domain;
 
 import com.itg.extjstest.domain.Contract;
-import java.lang.Double;
-import java.lang.String;
+import com.itg.extjstest.domain.ContractItem;
 
 privileged aspect ContractItem_Roo_JavaBean {
+    
+    public Contract ContractItem.getContract() {
+        return this.contract;
+    }
+    
+    public void ContractItem.setContract(Contract contract) {
+        this.contract = contract;
+    }
     
     public String ContractItem.getModel() {
         return this.model;
@@ -17,20 +24,12 @@ privileged aspect ContractItem_Roo_JavaBean {
         this.model = model;
     }
     
-    public Double ContractItem.getQuantity() {
+    public float ContractItem.getQuantity() {
         return this.quantity;
     }
     
-    public void ContractItem.setQuantity(Double quantity) {
+    public void ContractItem.setQuantity(float quantity) {
         this.quantity = quantity;
-    }
-    
-    public Contract ContractItem.getContract() {
-        return this.contract;
-    }
-    
-    public void ContractItem.setContract(Contract contract) {
-        this.contract = contract;
     }
     
 }

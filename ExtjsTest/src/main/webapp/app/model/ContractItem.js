@@ -1,4 +1,4 @@
-Ext.define('AM.model.Contract', {
+Ext.define('AM.model.ContractItem', {
 			extend : 'Ext.data.Model',
 			fields : [{
 						name : 'model',
@@ -6,6 +6,9 @@ Ext.define('AM.model.Contract', {
 					}, {
 						name : 'quantity',
 						type : 'float'
+					}, {
+						name : 'id',
+						type : 'int'
 					}]
 					
 		});
