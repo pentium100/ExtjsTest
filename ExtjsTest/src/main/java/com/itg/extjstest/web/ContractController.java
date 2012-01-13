@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.itg.extjstest.domain.Contract;
 
-import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 

@@ -23,6 +23,7 @@
     
     <mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/app/**" location="/app/" />
+	<mvc:resources mapping="/images/**" location="/images/" />
     
     <context:property-placeholder location="classpath*:META-INF/spring/*.properties"/>
     <!-- Turn on AspectJ @Configurable support. As a result, any time you instantiate 

@@ -9,6 +9,9 @@ Ext.define('AM.model.ContractItem', {
 					}, {
 						name : 'id',
 						type : 'int'
+					}, {
+						name : 'version',
+						type : 'int'
 					}]
 					
 		});

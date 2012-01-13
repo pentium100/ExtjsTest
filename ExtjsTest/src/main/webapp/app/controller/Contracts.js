@@ -12,7 +12,11 @@ Ext.define('AM.controller.Contracts', {
             },
             'contractEdit button[action=save]': {
                 click: this.updateContract
+            },
+            'contractList button[text=Add]':{
+            	click: this.addContract
             }
+            
         });
 		
 		
@@ -31,6 +35,16 @@ Ext.define('AM.controller.Contracts', {
         
 		
 	},
+	addContract:function(button){
+		record = new AM.model.Contract();
+		this.getStore('Contracts').insert(0,record);
+		var view = Ext.widget('contractEdit');
+        view.down('form').loadRecord(record);
+        view.down('grid').reconfigure(record.items());
+		
+		
+	},
+	
 	
     updateContract: function(button) {
         var win    = button.up('window');

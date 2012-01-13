@@ -31,7 +31,7 @@ privileged aspect ContractController_Roo_Controller_Json {
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> ContractController.createFromJson(@RequestBody String json) {
         Contract contract = Contract.fromJsonToContract(json);
-        contract.persist();
+        contract.merge();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);

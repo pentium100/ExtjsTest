@@ -13,6 +13,9 @@ Ext.define('AM.model.Contract', {
 					}, {
 						name : 'id',
 						type : 'int'
+					}, {
+						name : 'version',
+						type : 'int'
 					}],
 
 			hasMany : [{
