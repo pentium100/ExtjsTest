@@ -15,6 +15,9 @@ Ext.define('AM.controller.Contracts', {
             },
             'contractList button[text=Add]':{
             	click: this.addContract
+            },
+            'contractEdit button[text=Add]':{
+            	click: this.addContractItem
             }
             
         });
@@ -45,6 +48,22 @@ Ext.define('AM.controller.Contracts', {
 		
 	},
 	
+	addContractItem:function(button){
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
+		record = new AM.model.ContractItem();
+		
+		//var edit = grid.editing;
+
+        //edit.cancelEdit();
+        store.insert(0, record);
+        //edit.startEditByPosition({
+        //    row: 0,
+        //    column: 1
+        //});
+		
+	},
 	
     updateContract: function(button) {
         var win    = button.up('window');
@@ -59,7 +78,7 @@ Ext.define('AM.controller.Contracts', {
         
         
         // record.data.items = win.down('grid').getStore();
-        this.getStore('Contracts').save();
+        this.getStore('Contracts').sync();
         win.close();
 	},
 	

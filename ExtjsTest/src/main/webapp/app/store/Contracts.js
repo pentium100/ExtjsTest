@@ -32,8 +32,7 @@ Ext.define('AM.store.Contracts', {
 				}
 			}
 		});
-		
-		
+
 Ext.data.writer.Json.override({
 	/*
 	 * This function overrides the default implementation of json writer. Any
@@ -74,6 +73,7 @@ Ext.data.writer.Json.override({
 
 						// Recursively get the record data for children (depth
 						// first)
+				       childRecord.setDirty(true);
 						var childData = this.getRecordData.call(this,
 								childRecord);
 
@@ -158,6 +158,37 @@ Ext.data.Store.override({
 		}
 	}
 });
+
+Ext.data.Store.override({
+	filterUpdated : function(item) {
+		// only want dirty records, not phantoms that are valid
+		var itemUpdated = false;
+		var masterUpdated = item.dirty === true && item.phantom !== true
+				&& item.isValid();
+		if (!masterUpdated) {
+
+			for (i = 0; i < item.associations.length; i++) {
+				var association = item.associations.get(i);
+				// data[association.name] = [];
+				var childStore = item[association.storeName];
+
+				// Iterate over all the children in the current
+				// association
+				var toCreate = childStore.getNewRecords(), 
+				    toUpdate = childStore.getUpdatedRecords(), 
+				    toDestroy = childStore.getRemovedRecords();
+				if (toCreate.length>0 || toUpdate.length>0 || toDestroy.length>0){
+					itemUpdated = true;
+				}
+
+			}
+		}
+
+		return masterUpdated || itemUpdated;
+	}
+
+});
+
 Ext.data.TreeStore.override({
 			onNodeRemove : function(parent, node) {
 				var removed = this.removed;
@@ -168,5 +199,3 @@ Ext.data.TreeStore.override({
 				}
 			}
 		});
-
-		

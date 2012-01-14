@@ -22,8 +22,8 @@ Ext.define('AM.view.contract.Edit', {
 										xtype : 'datefield',
 										name : 'lastShippingDate',
 										fieldLabel : 'Last Shipping Date',
-										format: 'Y-m-d'
-										
+										format : 'Y-m-d'
+
 									}, {
 										xtype : 'textfield',
 										name : 'contractNo',
@@ -33,6 +33,22 @@ Ext.define('AM.view.contract.Edit', {
 							region : 'center',
 							xtype : 'gridpanel',
 							selType : 'cellmodel',
+							dockedItems : [{
+										xtype : 'toolbar',
+										items : [{
+													iconCls : 'icon-add',
+													text : 'Add',
+													scope : this,
+													itemId : 'add'
+												}, {
+													iconCls : 'icon-delete',
+													text : 'Delete',
+													disabled : true,
+													itemId : 'delete',
+													scope : this,
+													
+												}]
+									}],
 							plugins : [Ext.create(
 									'Ext.grid.plugin.CellEditing', {
 										clicksToEdit : 1
@@ -42,14 +58,14 @@ Ext.define('AM.view.contract.Edit', {
 										id : 'model',
 										dataIndex : 'model',
 										text : '规格',
-										
-										field: 'textfield'
+
+										field : 'textfield'
 									}, {
 										xtype : 'numbercolumn',
 										itemId : 'quantity',
 										dataIndex : 'quantity',
 										text : '数量',
-										field:'numberfield'
+										field : 'numberfield'
 									}]
 						}];
 
