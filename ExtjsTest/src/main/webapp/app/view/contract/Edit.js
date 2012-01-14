@@ -32,7 +32,7 @@ Ext.define('AM.view.contract.Edit', {
 						}, {
 							region : 'center',
 							xtype : 'gridpanel',
-							selType : 'cellmodel',
+							//selType : 'cellmodel',
 							dockedItems : [{
 										xtype : 'toolbar',
 										items : [{
@@ -43,15 +43,15 @@ Ext.define('AM.view.contract.Edit', {
 												}, {
 													iconCls : 'icon-delete',
 													text : 'Delete',
-													disabled : true,
+													disabled : false,
 													itemId : 'delete',
-													scope : this,
+													scope : this
 													
 												}]
 									}],
 							plugins : [Ext.create(
 									'Ext.grid.plugin.CellEditing', {
-										clicksToEdit : 1
+										
 									})],
 							columns : [{
 										xtype : 'gridcolumn',

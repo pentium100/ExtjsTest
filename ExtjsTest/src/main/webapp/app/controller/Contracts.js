@@ -1,88 +1,125 @@
 Ext.define('AM.controller.Contracts', {
-    extend: 'Ext.app.Controller',
-	
-	views:['contract.List', 'contract.Edit'],
-	stores:['Contracts'],
-	models:['Contract', 'ContractItem'],
+			extend : 'Ext.app.Controller',
 
-    init: function() {
-		this.control({
-            'viewport > contractList': {
-                itemdblclick: this.editContract
-            },
-            'contractEdit button[action=save]': {
-                click: this.updateContract
-            },
-            'contractList button[text=Add]':{
-            	click: this.addContract
-            },
-            'contractEdit button[text=Add]':{
-            	click: this.addContractItem
-            }
-            
-        });
-		
-		
-		
+			views : ['contract.List', 'contract.Edit'],
+			stores : ['Contracts'],
+			models : ['Contract', 'ContractItem'],
 
-    
-    },
-	editContract:function(grid, record){
-        console.log('Double clicked on ' + record.get('contractNo'));
-		var view = Ext.widget('contractEdit');
+			init : function() {
+				this.control({
+							'viewport > contractList' : {
+								itemdblclick : this.editContract
+							},
+							'contractEdit button[action=save]' : {
+								click : this.updateContract
+							},
+							'contractList button[text=Add]' : {
+								click : this.addContract
+							},
+							'contractList button[text=Delete]' : {
+								click : this.deleteContract
+							},
 
-        view.down('form').loadRecord(record);
-        
-        
-        view.down('grid').reconfigure(record.items());
-        
-		
-	},
-	addContract:function(button){
-		record = new AM.model.Contract();
-		this.getStore('Contracts').insert(0,record);
-		var view = Ext.widget('contractEdit');
-        view.down('form').loadRecord(record);
-        view.down('grid').reconfigure(record.items());
-		
-		
-	},
-	
-	addContractItem:function(button){
-		var win = button.up('window');
-		var grid = win.down('gridpanel');
-		var store = grid.getStore();
-		record = new AM.model.ContractItem();
-		
-		//var edit = grid.editing;
+							'contractEdit button[text=Add]' : {
+								click : this.addContractItem
+							},
+							'contractEdit button[text=Delete]' : {
+								click : this.deleteContractItem
+							},
 
-        //edit.cancelEdit();
-        store.insert(0, record);
-        //edit.startEditByPosition({
-        //    row: 0,
-        //    column: 1
-        //});
-		
-	},
-	
-    updateContract: function(button) {
-        var win    = button.up('window');
-        form   = win.down('form');
-        record = form.getRecord();
-        values = form.getValues();
-        values.lastShippingDate = Ext.Date.parse(values.lastShippingDate, 'Y-m-d');
-        
-        
+							'contractEdit button[text=Cancel]' : {
+								click : this.cancelUpdate
+							}
 
-        record.set(values);
-        
-        
-        // record.data.items = win.down('grid').getStore();
-        this.getStore('Contracts').sync();
-        win.close();
-	},
-	
-    onPanelRendered: function() {
-        console.log('The panel was rendered');
-    }
-});
+						});
+
+			},
+
+			deleteContract : function(button) {
+				var viewport = button.up('viewport');
+				var grid = viewport.down('contractList');
+				var selection = grid.getView().getSelectionModel()
+						.getSelection()[0];
+				if (selection) {
+					this.getStore('Contracts').remove(selection);
+					this.getStore('Contracts').sync();
+				}
+			},
+
+			editContract : function(grid, record) {
+				console.log('Double clicked on ' + record.get('contractNo'));
+				var view = Ext.widget('contractEdit');
+
+				view.down('form').loadRecord(record);
+
+				view.down('grid').reconfigure(record.items());
+
+			},
+			addContract : function(button) {
+				var record = new AM.model.Contract();
+				this.getStore('Contracts').insert(0, record);
+				var view = Ext.widget('contractEdit');
+				view.down('form').loadRecord(record);
+				view.down('grid').reconfigure(record.items());
+
+			},
+
+			addContractItem : function(button) {
+				var win = button.up('window');
+				var grid = win.down('gridpanel');
+				var store = grid.getStore();
+				var record = new AM.model.ContractItem();
+
+				// var edit = grid.editing;
+
+				// edit.cancelEdit();
+				store.insert(0, record);
+				// edit.startEditByPosition({
+				// row: 0,
+				// column: 1
+				// });
+
+			},
+
+			deleteContractItem : function(button) {
+				var win = button.up('window');
+				var grid = win.down('gridpanel');
+				var store = grid.getStore();
+
+				var selection = grid.getView().getSelectionModel()
+						.getSelection()[0];
+				if (selection) {
+					store.remove(selection);
+				}
+			},
+
+			updateContract : function(button) {
+				var win = button.up('window');
+				form = win.down('form');
+				var record = form.getRecord();
+				values = form.getValues();
+				values.lastShippingDate = Ext.Date.parse(
+						values.lastShippingDate, 'Y-m-d');
+
+				record.set(values);
+
+				// record.data.items = win.down('grid').getStore();
+				this.getStore('Contracts').sync();
+				win.close();
+			},
+			cancelUpdate : function(button) {
+				var win = button.up('window');
+				var grid = win.down('gridpanel');
+				
+				grid.getStore().rejectChanges();
+
+				//grid.getStore().each(function(record) {
+				//			record.reject();
+				//		})
+				win.close();
+			},
+
+			onPanelRendered : function() {
+				console.log('The panel was rendered');
+			}
+		});

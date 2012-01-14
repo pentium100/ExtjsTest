@@ -21,7 +21,7 @@ Ext.define('AM.view.contract.List', {
 								}, {
 									iconCls : 'icon-delete',
 									text : 'Delete',
-									disabled : true,
+									disabled : false,
 									itemId : 'delete',
 									scope : this,
 									handler : this.onDeleteClick

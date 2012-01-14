@@ -1,5 +1,6 @@
 Ext.define('AM.model.Contract', {
 			extend : 'Ext.data.Model',
+			idProperty: 'id',
 			fields : [{
 						name : 'contractType',
 						type : 'string'

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect ContractController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{id}", headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> ContractController.showJson(@PathVariable("id") Long id) {
         Contract contract = Contract.findContract(id);
@@ -28,14 +28,6 @@ privileged aspect ContractController_Roo_Controller_Json {
         return new ResponseEntity<String>(contract.toJson(), headers, HttpStatus.OK);
     }
     
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractController.createFromJson(@RequestBody String json) {
-        Contract contract = Contract.fromJsonToContract(json);
-        contract.merge();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> ContractController.createFromJsonArray(@RequestBody String json) {
@@ -47,16 +39,7 @@ privileged aspect ContractController_Roo_Controller_Json {
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
     
-    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractController.updateFromJson(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        Contract contract = Contract.fromJsonToContract(json);
-        if (contract.merge() == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> ContractController.updateFromJsonArray(@RequestBody String json) {
