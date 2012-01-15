@@ -4,6 +4,7 @@ Ext.Loader.setConfig({
 Ext.application({
 			name : 'AM',
 			appFolder : 'app',
+			controllers : ['Menus'],
 			launch : function() {
 				Ext.create('Ext.container.Viewport', {
 

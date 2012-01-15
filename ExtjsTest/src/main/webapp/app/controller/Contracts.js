@@ -7,7 +7,7 @@ Ext.define('AM.controller.Contracts', {
 
 			init : function() {
 				this.control({
-							'viewport > contractList' : {
+							'contractList' : {
 								itemdblclick : this.editContract
 							},
 							'contractEdit button[action=save]' : {

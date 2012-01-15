@@ -2,7 +2,7 @@ Ext.define('AM.view.contract.List', {
 			extend : 'Ext.grid.Panel',
 			alias : 'widget.contractList',
 
-			title : 'All Contract',
+			//title : 'All Contract',
 			store : 'Contracts',
 
 			requires : ['Ext.grid.plugin.CellEditing', 'Ext.form.field.Text',

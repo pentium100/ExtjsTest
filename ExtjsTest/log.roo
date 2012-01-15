@@ -164,3 +164,38 @@ web mvc json all
 web mvc json all --package ~.web
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-10 23:51:36
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-15 19:07:23
+field string --fieldName controller --sizeMax 50 --class ~.domain.Menu
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-15 19:20:20
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-15 20:00:35
+entity jpa --class ~.domain.Menu 
+field string --fieldName text
+field boolean --fieldName leaf
+field string --fieldName controller
+field reference --fieldName parent --type Menu
+field string --fieldName iconCls
+web mvc json add --jsonObject ~.domain.Menu --class ~.web.MenuController
+hint
+focus --class ~.domain.Menu
+finder list
+finder add --finderName findMenusByParent
+web mvc json add --jsonObject ~.domain.Menu --class ~.web.MenuController
+hint
+hint
+hint web mvc json
+hint web mvc 
+// [failed] web mvc setup
+focus --class ~.domain.Menu
+finder list
+finder add --finderName findMenuByParent 
+finder add --finderName findMenusByParent 
+finder add --finderName findMenusByParent 
+finder add --finderName findMenusByParents 
+finder list
+finder add --finderName findMenusByParent --class ~.domain.Menu 
+json add
+// [failed] field string --fieldName view
+field string --fieldName views
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-15 22:47:09

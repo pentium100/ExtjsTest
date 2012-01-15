@@ -14,7 +14,6 @@ privileged aspect Contract_Roo_Json {
     public static Contract Contract.fromJsonToContract(String json) {
         return new JSONDeserializer<Contract>().use(null, Contract.class).deserialize(json);
     }
-
     
     public static Collection<Contract> Contract.fromJsonArrayToContracts(String json) {
         return new JSONDeserializer<List<Contract>>().use(null, ArrayList.class).use("values", Contract.class).deserialize(json);
