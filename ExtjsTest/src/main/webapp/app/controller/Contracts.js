@@ -2,7 +2,7 @@ Ext.define('AM.controller.Contracts', {
 			extend : 'Ext.app.Controller',
 
 			views : ['contract.List', 'contract.Edit'],
-			stores : ['Contracts'],
+			stores : ['Contracts', 'ContractType'],
 			models : ['Contract', 'ContractItem'],
 
 			init : function() {

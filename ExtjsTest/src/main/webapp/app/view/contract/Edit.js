@@ -15,9 +15,14 @@ Ext.define('AM.view.contract.Edit', {
 							region : 'north',
 							xtype : 'form',
 							items : [{
-										xtype : 'textfield',
+										xtype : 'combo',
 										name : 'contractType',
-										fieldLabel : 'Contract Type'
+										fieldLabel : 'Contract Type',
+										store : Ext.create('AM.store.ContractType'),
+										queryMode : 'local',
+										displayField : 'text',
+										valueField : 'text'
+										
 									}, {
 										xtype : 'datefield',
 										name : 'lastShippingDate',
@@ -32,7 +37,7 @@ Ext.define('AM.view.contract.Edit', {
 						}, {
 							region : 'center',
 							xtype : 'gridpanel',
-							//selType : 'cellmodel',
+							// selType : 'cellmodel',
 							dockedItems : [{
 										xtype : 'toolbar',
 										items : [{
@@ -46,12 +51,12 @@ Ext.define('AM.view.contract.Edit', {
 													disabled : false,
 													itemId : 'delete',
 													scope : this
-													
+
 												}]
 									}],
 							plugins : [Ext.create(
 									'Ext.grid.plugin.CellEditing', {
-										
+
 									})],
 							columns : [{
 										xtype : 'gridcolumn',

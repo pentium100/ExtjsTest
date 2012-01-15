@@ -3,5 +3,5 @@ package com.itg.extjstest.domain;
 
 public enum ContractType {
 
-    PURCHASE, SALE;
+    采购合同, 销售合同;
 }

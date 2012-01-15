@@ -43,7 +43,8 @@ public class ContractController {
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}" , headers = "Accept=application/json")
     public ResponseEntity<String> updateFromJson(@RequestBody String json) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
+        headers.add("Content-Type", "application/json;charset=utf-8");
+        
         Contract contract = Contract.fromJsonToContract(json);
         contract = contract.merge();
         if ( contract == null) {
