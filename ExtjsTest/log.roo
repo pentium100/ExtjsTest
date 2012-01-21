@@ -199,3 +199,19 @@ json add
 field string --fieldName views
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-15 22:47:09
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-21 23:07:19
+hint
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-21 23:14:45
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-21 23:15:13
+focus --class ~.domain.Contract
+field string --fieldName supplier --sizeMax 50
+field string --fieldName payTerm --sizeMax 50
+field string --fieldName remark --sizeMax 50
+focus --class ~.domain.ContractItem
+field string --fieldName remark --sizeMax 500
+focus --class ~.domain.Contract
+// [failed] field string --fieldName remark --sizeMax 500
+focus --class ~.domain.ContractItem
+field number --fieldName unitPrice --type java.lang.Double
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2011-11-29 23:36:25

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.itg.extjstest.domain.Contract;
+import com.itg.extjstest.domain.ContractType;
+import com.itg.extjstest.util.ContractTypeObjectFactory;
 
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
@@ -83,6 +85,7 @@ public class ContractController {
 				.include("contracts")
 				.include("contracts.items")
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),Date.class)
+				.transform(new ContractTypeObjectFactory(),ContractType.class)
 				.serialize(map);
 		
 		return resultJson;

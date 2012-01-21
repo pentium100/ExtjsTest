@@ -17,22 +17,30 @@ Ext.define('AM.view.contract.Edit', {
 							items : [{
 										xtype : 'combo',
 										name : 'contractType',
-										fieldLabel : 'Contract Type',
+										fieldLabel : '合同类型',
 										store : Ext.create('AM.store.ContractType'),
 										queryMode : 'local',
 										displayField : 'text',
 										valueField : 'text'
 										
 									}, {
-										xtype : 'datefield',
-										name : 'lastShippingDate',
-										fieldLabel : 'Last Shipping Date',
-										format : 'Y-m-d'
+										xtype : 'textfield',
+										name : 'contractNo',
+										fieldLabel : '合同号'
+										
 
 									}, {
 										xtype : 'textfield',
-										name : 'contractNo',
-										fieldLabel : 'Contract No'
+										name : 'supplier',
+										fieldLabel : '供应商'
+									}, {
+										xtype : 'textfield',
+										name : 'payTerm',
+										fieldLabel : '付款方式'
+									}, {
+										xtype : 'textfield',
+										name : 'remark',
+										fieldLabel : '备注'
 									}]
 						}, {
 							region : 'center',
@@ -71,7 +79,20 @@ Ext.define('AM.view.contract.Edit', {
 										dataIndex : 'quantity',
 										text : '数量',
 										field : 'numberfield'
-									}]
+									}, {
+										xtype : 'numbercolumn',
+										itemId : 'unitPrice',
+										dataIndex : 'unitPrice',
+										text : '单价',
+										field : 'numberfield'
+									},{
+										xtype : 'gridcolumn',
+										id : 'remark',
+										dataIndex : 'remark',
+										text : '备注',
+
+										field : 'textfield'
+									}, ]
 						}];
 
 				this.buttons = [{

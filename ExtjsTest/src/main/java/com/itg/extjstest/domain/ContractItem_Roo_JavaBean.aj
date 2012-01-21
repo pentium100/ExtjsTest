@@ -32,4 +32,20 @@ privileged aspect ContractItem_Roo_JavaBean {
         this.quantity = quantity;
     }
     
+    public String ContractItem.getRemark() {
+        return this.remark;
+    }
+    
+    public void ContractItem.setRemark(String remark) {
+        this.remark = remark;
+    }
+    
+    public Double ContractItem.getUnitPrice() {
+        return this.unitPrice;
+    }
+    
+    public void ContractItem.setUnitPrice(Double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+    
 }

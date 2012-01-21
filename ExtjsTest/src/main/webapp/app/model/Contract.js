@@ -9,9 +9,21 @@ Ext.define('AM.model.Contract', {
 						type : 'date',
 						dateFormat : 'Y-m-d H:i:s'
 					}, {
+						name : 'supplier',
+						type : 'string'
+						
+					}, {
+						name : 'payTerm',
+						type : 'string'
+						
+					},{
 						name : 'contractNo',
 						type : 'string'
 					}, {
+						name : 'remark',
+						type : 'string'
+						
+					},{
 						name : 'id',
 						type : 'int'
 					}, {

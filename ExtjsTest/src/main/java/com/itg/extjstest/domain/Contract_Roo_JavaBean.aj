@@ -43,4 +43,28 @@ privileged aspect Contract_Roo_JavaBean {
         this.lastShippingDate = lastShippingDate;
     }
     
+    public String Contract.getSupplier() {
+        return this.supplier;
+    }
+    
+    public void Contract.setSupplier(String supplier) {
+        this.supplier = supplier;
+    }
+    
+    public String Contract.getPayTerm() {
+        return this.payTerm;
+    }
+    
+    public void Contract.setPayTerm(String payTerm) {
+        this.payTerm = payTerm;
+    }
+    
+    public String Contract.getRemark() {
+        return this.remark;
+    }
+    
+    public void Contract.setRemark(String remark) {
+        this.remark = remark;
+    }
+    
 }
