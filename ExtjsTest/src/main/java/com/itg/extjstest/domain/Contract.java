@@ -1,9 +1,13 @@
 package com.itg.extjstest.domain;
 
 import com.itg.extjstest.util.ContractTypeObjectFactory;
+import com.itg.extjstest.util.FilterItem;
+
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +22,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,39 +45,70 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RooJson
 public class Contract {
 
-    @NotNull
-    @Column(unique = true)
-    @Size(max = 30)
-    private String contractNo;
+	@NotNull
+	@Column(unique = true)
+	@Size(max = 30)
+	private String contractNo;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<ContractItem> items = new HashSet<ContractItem>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<ContractItem> items = new HashSet<ContractItem>();
 
-    @Enumerated
-    private ContractType contractType;
+	@Enumerated
+	private ContractType contractType;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date lastShippingDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date lastShippingDate;
 
-    @Size(max = 50)
-    private String supplier;
+	@Size(max = 50)
+	private String supplier;
 
-    @Size(max = 50)
-    private String payTerm;
+	@Size(max = 50)
+	private String payTerm;
 
-    @Size(max = 500)
-    private String remark;
+	@Size(max = 500)
+	private String remark;
 
-    public String toJson() {
-        return new JSONSerializer().exclude("*.class").transform(new DateTransformer("yyyy-MM-dd'T'HH:mm:ss+0800"), Date.class).serialize(this);
-    }
+	public String toJson() {
+		return new JSONSerializer()
+				.exclude("*.class")
+				.transform(new DateTransformer("yyyy-MM-dd'T'HH:mm:ss+0800"),
+						Date.class).serialize(this);
+	}
 
-    public static String toJsonArray(Collection<com.itg.extjstest.domain.Contract> collection) {
-        return new JSONSerializer().exclude("*.class").transform(new DateTransformer("yyyy-MM-dd'T'HH:mm:ss+0800"), Date.class).include("items").serialize(collection);
-    }
+	public static String toJsonArray(
+			Collection<com.itg.extjstest.domain.Contract> collection) {
+		return new JSONSerializer()
+				.exclude("*.class")
+				.transform(new DateTransformer("yyyy-MM-dd'T'HH:mm:ss+0800"),
+						Date.class).include("items").serialize(collection);
+	}
 
-    public static com.itg.extjstest.domain.Contract fromJsonToContract(String json) {
-        return new JSONDeserializer<Contract>().use(null, Contract.class).use(ContractType.class, new ContractTypeObjectFactory()).deserialize(json);
-    }
+	public static com.itg.extjstest.domain.Contract fromJsonToContract(
+			String json) {
+		return new JSONDeserializer<Contract>().use(null, Contract.class)
+				.use(ContractType.class, new ContractTypeObjectFactory())
+				.deserialize(json);
+	}
+
+	public static List<Contract> findContractsByFilter(
+			List<FilterItem> filters, Integer start, Integer page, Integer limit) {
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<Contract> c = cb.createQuery(Contract.class);
+		Root<Contract> rootContract = c.from(Contract.class);
+		List<Predicate> criteria = new ArrayList<Predicate>();
+
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				criteria.add(f.getPredicate(cb, rootContract));
+			}
+
+			c.where(cb.and(criteria.toArray(new Predicate[0])));
+		}
+
+		return entityManager().createQuery(c).setFirstResult(start)
+				.setMaxResults(limit).getResultList();
+
+	}
+
 }

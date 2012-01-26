@@ -10,6 +10,7 @@ Ext.define('AM.view.TabPanel',{
                bodyPadding: 10
             },
             layout : 'fit',
+            autoDestroy:true,
             activeTab: 0,
             border: false,
            //plain: true,

@@ -74,7 +74,13 @@
 			<param-value>/WEB-INF/spring/webmvc-config.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
-    </servlet>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>WEB-INF/spring/webmvc-config.xml</param-value>
+		</init-param>
+	</servlet>
+	
+
     
 	<servlet-mapping>
 		<servlet-name>ExtjsTest</servlet-name>
@@ -84,14 +90,21 @@
 	<session-config>
 		<session-timeout>10</session-timeout>
 	</session-config>
-    
-	<error-page>
-		<exception-type>java.lang.Exception</exception-type>
-		<location>/uncaughtException</location>
-	</error-page>
-    
-	<error-page>
-		<error-code>406</error-code>
-		<location>/resourceNotFound</location>
-	</error-page>
+	<!--    
+		<error-page>
+			<exception-type>java.lang.Exception</exception-type>
+			<location>/uncaughtException</location>
+		</error-page>
+
+		<error-page>
+			<error-code>406</error-code>
+			<location>/resourceNotFound</location>
+		</error-page>
+
+
+		<error-page>
+			<error-code>404</error-code>
+			<location>/resourceNotFound</location>
+		</error-page>
+		-->
 </web-app>

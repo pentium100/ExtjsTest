@@ -92,7 +92,7 @@ Ext.define('AM.view.contract.Edit', {
 										text : '备注',
 
 										field : 'textfield'
-									}, ]
+									} ]
 						}];
 
 				this.buttons = [{

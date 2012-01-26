@@ -215,3 +215,83 @@ focus --class ~.domain.ContractItem
 field number --fieldName unitPrice --type java.lang.Double
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2011-11-29 23:36:25
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 10:11:50
+hint
+entity jpa --class ~.domain.MaterialDoc 
+entity jpa --class ~.domain.MaterialDoc --identifierColumn docNo 
+field reference --fieldName contract --type Contract
+// [failed] field reference --fieldName contract --type Contract --notNull false
+field string --fieldName deliveryNote --sizeMax 50 
+field string --fieldName plateNum --sizeMax 50 
+field string --fieldName batchNo --sizeMax 50 
+field string --fieldName workingNo --sizeMax 50 
+field date --fieldName docDate --type java.util.Date --notNull yes
+entity jpa --class ~.domain.MaterialDocItem --identifierColumn lineId
+field reference --fieldName materialDoc --type MaterialDoc
+field string --fieldName moveType --sizeMax 3 
+field string --fieldName model_contract --sizeMax 20
+field string --fieldName model_tested --sizeMax 20
+field number --fieldName grossWeight --type java.lang.Double
+field number --fieldName netWeight --type java.lang.Double
+field string --fieldName warehouse --sizeMax 50
+field reference --fieldName lineId_in --type MaterialDocItem
+field string --fieldName reamrk --sizeMax 3000
+focus --class ~.domain.MaterialDoc
+field set --fieldName items --type MaterialDocItem
+// [failed] field set --fieldName items --type MaterialDocItem --cardinality ONE_TO_MANY
+field set --fieldName items --type MaterialDocItem --cardinality ONE_TO_MANY
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 10:44:32
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+web mvc setup
+web mvc json add --jsonObject ~.domain.MaterialDoc --class ~.web.MaterialDocController
+web mvc json add --jsonObject ~.domain.MaterialDoc --class ~.web.MaterialDocController
+focus --class ~.domain.MaterialDoc
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 11:25:59
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 11:26:05
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+focus --class ~.domain.MaterialDoc
+hint
+entity jpa --class MaterialDoc --identifierColumn docNo --identifierField docNo
+field reference --fieldName contract --type Contract
+field string --fieldName deliveryNote --sizeMax 50 
+field string --fieldName batchNo --sizeMax 50 
+field string --fieldName workingNo --sizeMax 50 
+field date --fieldName docDate --type java.util.Date --notNull yes
+field set --fieldName items --type MaterialDocItem --cardinality ONE_TO_MANY
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 11:52:36
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 14:27:09
+focus --class ~.domain.MaterialDoc
+hint enum
+enum type --class ~.domain.MaterialDocType
+enum constant --name PROCESS
+// [failed] enum constant --name IN
+enum constant --name MOVEIN
+enum constant --name MOVEOUT
+enum constant --name MOVE
+entity jpa --class ~.domain.MaterialDocType
+field string --fieldName materialType --sizeMax 4
+focus --class ~.domain.MaterialDoc
+field reference --fieldName docType --type MaterialDocType
+web mvc json add --jsonObject ~.domain.MaterialDocType --class ~.web.MaterialDocTypeController
+web mvc json add --jsonObject ~.domain.MaterialDoc --class ~.web.MaterialDocController
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 20:18:57
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 20:19:17
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 21:00:04
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 21:41:38
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 21:47:06
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 21:56:16
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 22:01:09
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-26 20:58:25
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-26 21:02:02
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-26 21:02:05
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-26 21:42:08

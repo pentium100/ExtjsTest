@@ -36,7 +36,8 @@ Ext.define('AM.controller.Menus', {
 								// items/tabs
 								title : record.get("text"),
 								layout : 'fit',
-								
+								closable: true,
+								autoDestroy:true,
 								
 
 								autoScroll : true,

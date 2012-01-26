@@ -1,3 +1,6 @@
+
+Ext.Loader.setConfig({enabled: true});
+Ext.Loader.setPath('Ext.ux', 'js/extjs4/examples/ux');
 Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore'],
 		function() {
 			//
