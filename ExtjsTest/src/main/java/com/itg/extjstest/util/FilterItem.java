@@ -1,0 +1,72 @@
+package com.itg.extjstest.util;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+
+
+
+
+public class FilterItem {
+	
+	private String type;
+	private String value;
+	public String getValue() {
+		return value;
+	}
+	public void setValue(String value) {
+		this.value = value;
+	}
+	private String field;
+	private String comparison;
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public String getField() {
+		return field;
+	}
+	public void setField(String field) {
+		this.field = field;
+	}
+	public String getComparison() {
+		return comparison;
+	}
+	public void setComparison(String comparison) {
+		this.comparison = comparison;
+	}
+	public Predicate getPredicate(CriteriaBuilder cb, Root<?> root) {
+		// TODO Auto-generated method stub
+		if(type.equals("list")){
+			return root.get(getField()).in(getIntegerListValue());
+		}
+		
+		if(type.equals("string")){
+			return cb.like(root.get(getField()).as(String.class), "%"+getValue()+"%");
+		}
+		
+		
+		
+		return null;
+	}
+	private List<Integer> getIntegerListValue(){
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		
+		String[] values = value.split(",");
+		for(String s : values){
+			result.add(Integer.valueOf(s));
+		}
+		
+		return result;
+	}
+	
+
+}
