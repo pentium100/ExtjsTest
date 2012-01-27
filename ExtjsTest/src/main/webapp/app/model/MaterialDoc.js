@@ -48,23 +48,23 @@ Ext.define('AM.model.MaterialDoc', {
 			hasMany : [{
 						model : 'AM.model.MaterialDocItem',
 						name : 'items'
-					}],
-
-			associations : [{
-						type : 'belongsTo',
-						model : 'AM.model.Contract',
-						primaryKey : 'id',
-						autoLoad:true,
-						getterName: 'getContract',
-						foreignKey : 'contract'
-
-					},{
-						type : 'belongsTo',
-						model : 'AM.model.MaterialDocType',
-						primaryKey : 'id',
-						autoLoad:true,
-						foreignKey : 'docType'
-
 					}]
+
+			//associations : [{
+			//			type : 'belongsTo',
+			//			model : 'AM.model.Contract',
+			//			primaryKey : 'id',
+			//			autoLoad:true,
+			//			getterName: 'getContract',
+			//			foreignKey : 'contract'
+
+			//		},{
+			//			type : 'belongsTo',
+			//			model : 'AM.model.MaterialDocType',
+			//			primaryKey : 'id',
+			//			autoLoad:true,
+			//			foreignKey : 'docType'
+
+			//		}]
 
 		});

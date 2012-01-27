@@ -1,114 +1,126 @@
 Ext.define('AM.view.contract.Search', {
-    extend: 'Ext.window.Window',
+	extend : 'Ext.window.Window',
 
-    height: 518,
-    width: 678,
-    layout: {
-        type: 'border'
-    },
-    title: '合同搜索',
+	height : 518,
+	width : 678,
+	layout : {
+		type : 'border'
+	},
+	modal : true,
+	title : '合同搜索',
+	alias : 'widget.contractSearch',
+	store : Ext.create('AM.store.Contracts'),
+	renderModel : function(value, metadata, record) {
+		var items = record.raw.items;
+		var value = "";
+		Ext.Array.each(items, function(rec, index) {
+					if (value == "") {
+						value = rec.model;
+					} else {
+						value = value + "," + rec.model;
+					}
+				});
 
-    initComponent: function() {
-        var me = this;
+		return value;
 
-        Ext.applyIf(me, {
-            dockedItems: [
-                {
-                    xtype: 'form',
-                    tpl: Ext.create('Ext.XTemplate', 
-                        ''
-                    ),
-                    layout: {
-                        type: 'column'
-                    },
-                    bodyPadding: 10,
-                    preventHeader: true,
-                    region: 'center',
-                    dock: 'top',
-                    items: [
-                        {
-                            xtype: 'combobox',
-                            fieldLabel: '合同类型'
-                        },
-                        {
-                            xtype: 'textfield',
-                            fieldLabel: '合同号'
-                        },
-                        {
-                            xtype: 'textfield',
-                            fieldLabel: '供应商'
-                        },
-                        {
-                            xtype: 'textfield',
-                            fieldLabel: '规格'
-                        }
-                    ],
-                    buttons:[
-                    	{
-                    	   text:'Search',
-                    	   action:'search'
-                    	
-                    	}
-                    ]
-                }
-            ],
-            items: [
-                {
-                    xtype: 'gridpanel',
-                    title: '搜索结果',
-                    region: 'center',
-                    columns: [
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'string',
-                            text: '合同号'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'string',
-                            text: '供应商'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'string',
-                            text: '付款方式'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'number',
-                            text: '规格'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'number',
-                            text: '数量'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'date',
-                            text: '单价'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            dataIndex: 'bool',
-                            text: '备注'
-                        }
-                    ],
-                    viewConfig: {
+	},
+	contractTypeReadonly : true,
+	contractTypeDefaultValue : 0,
 
-                    },
-                    dockedItems: [
-                        {
-                            xtype: 'pagingtoolbar',
-                            width: 360,
-                            displayInfo: true,
-                            dock: 'bottom'
-                        }
-                    ]
-                }
-            ]
-        });
+	initComponent : function() {
+		var me = this;
 
-        me.callParent(arguments);
-    }
+		Ext.applyIf(me, {
+					dockedItems : [{
+								xtype : 'form',
+								tpl : Ext.create('Ext.XTemplate', ''),
+								layout : {
+									type : 'column'
+								},
+								bodyPadding : 10,
+								preventHeader : true,
+								region : 'center',
+								dock : 'top',
+								items : [{
+											xtype : 'combobox',
+											fieldLabel : '合同类型',
+											store : 'ContractType',
+											value : me.contractTypeDefaultValue,
+											readOnly : me.contractTypeReadonly,
+											editable: false,
+											valueField: 'id',
+											displayField: 'text',
+											name:'contractType'
+										}, {
+											xtype : 'textfield',
+											fieldLabel : '合同号',
+											name:'contractNo'
+										}, {
+											xtype : 'textfield',
+											fieldLabel : '供应商',
+											name:'supplier'
+										}, {
+											xtype : 'textfield',
+											fieldLabel : '规格',
+											name:'model'
+										}],
+								buttons : [{
+											text : 'Search',
+											action : 'search'
+										}, {
+											text : 'Cancel',
+											action : 'cancel',
+											scope : this,
+											handler : this.close
+
+										}]
+							}],
+					items : [{
+								xtype : 'gridpanel',
+								title : '搜索结果',
+								region : 'center',
+								store : me.store,
+								columns : [{
+											xtype : 'gridcolumn',
+											dataIndex : 'contractType',
+											text : '合同类型'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'contractNo',
+											text : '合同号'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'supplier',
+											text : '供应商'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'payTerm',
+											text : '付款方式'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'model',
+											scope : this,
+											renderer : this.renderModel,
+											text : '规格'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'remark',
+											text : '备注'
+										}],
+								viewConfig : {
+
+					}			,
+								dockedItems : [{
+											xtype : 'pagingtoolbar',
+											width : 360,
+											displayInfo : true,
+											dock : 'bottom',
+											store : me.store
+										}]
+
+							}]
+				});
+
+		me.callParent(arguments);
+	}
 });

@@ -1,8 +1,10 @@
-
-Ext.Loader.setConfig({enabled: true});
+Ext.Loader.setConfig({
+			enabled : true
+		});
 Ext.Loader.setPath('Ext.ux', 'js/extjs4/examples/ux');
-Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore'],
-		function() {
+Ext.require(['Ext.form.field.Trigger']);
+Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
+				'Ext.ux.grid.menu.ListMenu'], function() {
 			//
 			Ext.data.writer.Json.override({
 				/*
@@ -212,8 +214,26 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore'],
 							me.fireEvent('datachanged', me);
 						}
 					});
+					
+			Ext.ux.grid.menu.ListMenu.override({
+						show : function() {
+							var lastArgs = null;
+							return function() {
+								lastArgs = arguments;
+								if (this.loadOnShow && !this.loaded) {
+									this.store.load();
+								}
+								this.callParent(arguments);
+
+							}
+						}()
+					});
+					
+
 		});
 
 Ext.JSON.encodeDate = function(d) {
 	return Ext.Date.format(d, '"Y-m-d H:i:s"');
 };
+
+

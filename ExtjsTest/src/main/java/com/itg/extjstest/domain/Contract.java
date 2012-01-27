@@ -24,6 +24,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
@@ -72,7 +75,7 @@ public class Contract {
 	public String toJson() {
 		return new JSONSerializer()
 				.exclude("*.class")
-				.transform(new DateTransformer("yyyy-MM-dd'T'HH:mm:ss+0800"),
+				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
 						Date.class).serialize(this);
 	}
 
@@ -80,7 +83,7 @@ public class Contract {
 			Collection<com.itg.extjstest.domain.Contract> collection) {
 		return new JSONSerializer()
 				.exclude("*.class")
-				.transform(new DateTransformer("yyyy-MM-dd'T'HH:mm:ss+0800"),
+				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
 						Date.class).include("items").serialize(collection);
 	}
 
@@ -93,14 +96,23 @@ public class Contract {
 
 	public static List<Contract> findContractsByFilter(
 			List<FilterItem> filters, Integer start, Integer page, Integer limit) {
+               
+               
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<Contract> c = cb.createQuery(Contract.class);
 		Root<Contract> rootContract = c.from(Contract.class);
+		
+		Join<Contract,ContractItem> j = rootContract.join("items");
+		
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", rootContract);
+		paths.put("items", j);
+		
 		List<Predicate> criteria = new ArrayList<Predicate>();
 
 		if (filters != null) {
 			for (FilterItem f : filters) {
-				criteria.add(f.getPredicate(cb, rootContract));
+				criteria.add(f.getPredicate(cb, paths));
 			}
 
 			c.where(cb.and(criteria.toArray(new Predicate[0])));

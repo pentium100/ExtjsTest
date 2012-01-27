@@ -15,10 +15,10 @@ public class ContractTypeObjectFactory extends AbstractTransformer implements Ob
 			Type targetType, Class targetClass) {
 		// TODO Auto-generated method stub
 		if(value instanceof String){
-			if(value.equals("采购合同")){
+			if(value.equals("采购合同")||value.equals("PURCHASE")){
 				return ContractType.PURCHASE;
 			}
-			if(value.equals("销售合同")){
+			if(value.equals("销售合同")||value.equals("SALE")){
 				return ContractType.SALE;
 			}
 

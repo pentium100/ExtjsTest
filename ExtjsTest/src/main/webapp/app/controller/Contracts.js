@@ -8,8 +8,10 @@ Ext.define('AM.controller.Contracts', {
 			init : function() {
 				this.control({
 							'contractList' : {
-								itemdblclick : this.editContract
+								itemdblclick : this.editContract,
+								activate:this.loadContractData
 							},
+							
 							'contractEdit button[action=save]' : {
 								click : this.updateContract
 							},
@@ -98,8 +100,6 @@ Ext.define('AM.controller.Contracts', {
 				form = win.down('form');
 				var record = form.getRecord();
 				values = form.getValues();
-				values.lastShippingDate = Ext.Date.parse(
-						values.lastShippingDate, 'Y-m-d');
 
 				record.set(values);
 
@@ -118,7 +118,10 @@ Ext.define('AM.controller.Contracts', {
 				//		})
 				win.close();
 			},
-
+            loadContractData: function(grid, eOpts ){
+            	
+            	grid.getStore().load();
+            },
 			onPanelRendered : function() {
 				console.log('The panel was rendered');
 			}

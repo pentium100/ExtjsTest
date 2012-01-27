@@ -7,6 +7,7 @@ Ext.define('AM.view.contract.Edit', {
 			autoShow : true,
 			height : 400,
 			width : 450,
+			modal: true,
 
 			initComponent : function() {
 				this.items = [
