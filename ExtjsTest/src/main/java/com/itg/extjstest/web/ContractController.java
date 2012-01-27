@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class ContractController {
 
 	@RequestMapping(headers = "Accept=application/json")
-	@ResponseBody
+	@ResponseBody   
 	public ResponseEntity<String> listJson(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "start", required = false) Integer start,
