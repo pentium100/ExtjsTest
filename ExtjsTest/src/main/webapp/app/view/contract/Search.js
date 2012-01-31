@@ -9,7 +9,7 @@ Ext.define('AM.view.contract.Search', {
 	modal : true,
 	title : '合同搜索',
 	alias : 'widget.contractSearch',
-	store : Ext.create('AM.store.Contracts'),
+	
 	renderModel : function(value, metadata, record) {
 		var items = record.raw.items;
 		var value = "";
@@ -29,8 +29,9 @@ Ext.define('AM.view.contract.Search', {
 
 	initComponent : function() {
 		var me = this;
-
+        var store = Ext.create('AM.store.Contracts');
 		Ext.applyIf(me, {
+			        
 					dockedItems : [{
 								xtype : 'form',
 								tpl : Ext.create('Ext.XTemplate', ''),
@@ -39,6 +40,7 @@ Ext.define('AM.view.contract.Search', {
 								},
 								bodyPadding : 10,
 								preventHeader : true,
+								
 								region : 'center',
 								dock : 'top',
 								items : [{
@@ -79,7 +81,7 @@ Ext.define('AM.view.contract.Search', {
 								xtype : 'gridpanel',
 								title : '搜索结果',
 								region : 'center',
-								store : me.store,
+								store : store,
 								columns : [{
 											xtype : 'gridcolumn',
 											dataIndex : 'contractType',
@@ -115,7 +117,7 @@ Ext.define('AM.view.contract.Search', {
 											width : 360,
 											displayInfo : true,
 											dock : 'bottom',
-											store : me.store
+											store : store
 										}]
 
 							}]

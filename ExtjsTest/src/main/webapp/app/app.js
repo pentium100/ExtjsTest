@@ -19,8 +19,18 @@ Ext.application({
 								layout : 'border',
 								items : [Ext.create('AM.view.Header'),
 										Ext.create('AM.view.Menu'),
-										Ext.create('AM.view.TabPanel'),
-										Ext.create('AM.view.South')]
+										Ext.create('AM.view.TabPanel', {
+
+													items : [{
+																id : 'HomePage',
+																title : '首页',
+																xtype : 'panel',
+																iconCls : 'home',
+																layout : 'fit',
+																bodyPadding : '0 5 5 5'
+															}]
+
+												}), Ext.create('AM.view.South')]
 							}]
 
 						});

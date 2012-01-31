@@ -71,9 +71,9 @@ Ext.define('AM.portal.Portal', {
 						items : [
 
 								// Ext.create('AM.view.Menu', {
-								// 	id : 'app-options'
-								//})
-	{
+								// id : 'app-options'
+								// })
+								{
 							id : 'app-options',
 							title : 'Options',
 							region : 'west',
@@ -87,8 +87,7 @@ Ext.define('AM.portal.Portal', {
 							layoutConfig : {
 								animate : true
 							},
-							items : [Ext.create('AM.view.Menu'), 
-								{
+							items : [Ext.create('AM.view.Menu'), {
 										html : content,
 										title : 'Navigation',
 										autoScroll : true,
@@ -101,11 +100,75 @@ Ext.define('AM.portal.Portal', {
 										autoScroll : true,
 										iconCls : 'settings'
 									}]
-						}
-							,
-							Ext.create('AM.view.TabPanel')
-							
+						}, Ext.create('AM.view.TabPanel', {
+
+							items : [{
+								id : 'app-portal',
+								xtype : 'portalpanel',
+
+								id : 'HomePage',
+								title : '首页',
+								iconCls : 'home',
+								layout : 'fit',
+								bodyPadding : '0 5 5 5',
+
+								items : [{
+									id : 'col-1',
+									items : [{
+										id : 'portlet-1',
+										title : 'Grid Portlet',
+										tools : this.getTools(),
+										items : Ext
+												.create('AM.portal.classes.GridPortlet'),
+										listeners : {
+											'close' : Ext.bind(
+													this.onPortletClose, this)
+										}
+									}, {
+										id : 'portlet-2',
+										title : 'Portlet 2',
+										tools : this.getTools(),
+										html : content,
+										listeners : {
+											'close' : Ext.bind(
+													this.onPortletClose, this)
+										}
+									}]
+								}, {
+									id : 'col-2',
+									items : [{
+										id : 'portlet-3',
+										title : 'Portlet 3',
+										tools : this.getTools(),
+										html : '<div class="portlet-content">'
+												+ '</div>',
+										listeners : {
+											'close' : Ext.bind(
+													this.onPortletClose, this)
+										}
+									}]
+								}, {
+									id : 'col-3',
+									items : [{
+										id : 'portlet-4',
+										title : 'Stock Portlet',
+										tools : this.getTools(),
+										items : Ext
+												.create('AM.portal.classes.ChartPortlet'),
+										listeners : {
+											'close' : Ext.bind(
+													this.onPortletClose, this)
+										}
+									}]
+								}]
+
+							}
+
 							]
+
+						})
+
+						]
 					}]
 		});
 		this.callParent(arguments);
