@@ -41,7 +41,7 @@ Ext.define('AM.view.materialDoc.Edit', {
 													contractTypeDefaultValue : "0"
 
 												});
-												
+
 										view.show();
 
 									}
@@ -72,22 +72,48 @@ Ext.define('AM.view.materialDoc.Edit', {
 						xtype : 'gridpanel',
 						title : '进出仓明细',
 						region : 'center',
+						dockedItems : [{
+									xtype : 'toolbar',
+									items : [{
+												iconCls : 'icon-add',
+												text : 'Add',
+												scope : this,
+												itemId : 'add',
+												action : 'add'
+											}, {
+												iconCls : 'icon-delete',
+												text : 'Delete',
+												disabled : false,
+												itemId : 'delete',
+												scope : this,
+												action : 'delete'
+
+											}]
+								}],
+						plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
+
+						})],
+
 						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'model_contract',
 									text : '型号(合同)'
+									,field: 'textfield'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'model_tested',
 									text : '型号(检验后)'
+									,field: 'textfield'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'grossWeight',
 									text : '毛重'
+									,field: 'numberfield'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'netWeight',
 									text : '净重'
+									,field: 'numberfield'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'moveType',
@@ -96,10 +122,12 @@ Ext.define('AM.view.materialDoc.Edit', {
 									xtype : 'gridcolumn',
 									dataIndex : 'warehouse',
 									text : '仓库'
+									,field: 'textfield'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'remark',
 									text : '备注'
+									,field: 'textfield'
 								}],
 						viewConfig : {
 

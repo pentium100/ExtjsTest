@@ -38,55 +38,69 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 					// Iterate over all the hasMany associations
 					for (i = 0; i < record.associations.length; i++) {
+
 						association = record.associations.get(i);
-						data[association.name] = [];
-						childStore = record[association.storeName];
 
-						// Iterate over all the children in the current
-						// association
-						childStore.each(function(childRecord) {
+						if (association.type == "hasMany") {
+							data[association.name] = [];
+							childStore = record[association.storeName];
 
-									// Recursively get the record data for
-									// children (depth
-									// first)
-									childRecord.setDirty(true);
-									var childData = this.getRecordData.call(
-											this, childRecord);
+							// Iterate over all the children in the current
+							// association
+							childStore.each(function(childRecord) {
 
-									/*
-									 * If the child was marked dirty or phantom
-									 * it must be added. If there was data
-									 * returned that was neither dirty or
-									 * phantom, this means that the depth first
-									 * recursion has detected that it has a
-									 * child which is either dirty or phantom.
-									 * For this child to be put into the
-									 * prepared data, it's parents must be in
-									 * place whether they were modified or not.
-									 */
-									if (childRecord.dirty | childRecord.phantom
-											| (childData != null)) {
-										data[association.name].push(childData);
+										// Recursively get the record data for
+										// children (depth
+										// first)
+										childRecord.setDirty(true);
+										var childData = this.getRecordData
+												.call(this, childRecord);
+
+										/*
+										 * If the child was marked dirty or
+										 * phantom it must be added. If there
+										 * was data returned that was neither
+										 * dirty or phantom, this means that the
+										 * depth first recursion has detected
+										 * that it has a child which is either
+										 * dirty or phantom. For this child to
+										 * be put into the prepared data, it's
+										 * parents must be in place whether they
+										 * were modified or not.
+										 */
+										if (childRecord.dirty
+												| childRecord.phantom
+												| (childData != null)) {
+											data[association.name]
+													.push(childData);
+											record.setDirty();
+										}
+									}, me);
+
+							/*
+							 * Iterate over all the removed records and add them
+							 * to the preparedData. Set a flag on them to show
+							 * that they are to be deleted
+							 */
+							Ext.each(childStore.removed, function(
+											removedChildRecord) {
+										// Set a flag here to identify removed
+										// records
+										removedChildRecord.set('forDeletion',
+												true);
+										var removedChildData = this.getRecordData
+												.call(this, removedChildRecord);
+										data[association.name]
+												.push(removedChildData);
 										record.setDirty();
-									}
-								}, me);
+									}, me);
 
-						/*
-						 * Iterate over all the removed records and add them to
-						 * the preparedData. Set a flag on them to show that
-						 * they are to be deleted
-						 */
-						Ext.each(childStore.removed, function(
-										removedChildRecord) {
-									// Set a flag here to identify removed
-									// records
-									removedChildRecord.set('forDeletion', true);
-									var removedChildData = this.getRecordData
-											.call(this, removedChildRecord);
-									data[association.name]
-											.push(removedChildData);
-									record.setDirty();
-								}, me);
+						}
+
+						// if(association.type=='belongsTo'){
+						// data[association.name] = [];
+						// data[association.name].push();
+						// }
 					}
 
 					// Only return data if it was dirty, new or marked for
@@ -145,24 +159,26 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 			Ext.data.Store.override({
 				filterUpdated : function(item) {
 					// only want dirty records, not phantoms that are valid
-					var itemUpdated = false;
+					var itemUpdated = false, i;
 					var masterUpdated = item.dirty === true
 							&& item.phantom !== true && item.isValid();
 					if (!masterUpdated) {
 
-						for (i = 0; i < item.associations.length; i++) {
+						for ( i = 0; i < item.associations.length; i++) {
 							var association = item.associations.get(i);
 							// data[association.name] = [];
-							var childStore = item[association.storeName];
+							if (association.type == "hasMany") {
+								var childStore = item[association.storeName];
 
-							// Iterate over all the children in the current
-							// association
-							var toCreate = childStore.getNewRecords(), toUpdate = childStore
-									.getUpdatedRecords(), toDestroy = childStore
-									.getRemovedRecords();
-							if (toCreate.length > 0 || toUpdate.length > 0
-									|| toDestroy.length > 0) {
-								itemUpdated = true;
+								// Iterate over all the children in the current
+								// association
+								var toCreate = childStore.getNewRecords(), toUpdate = childStore
+										.getUpdatedRecords(), toDestroy = childStore
+										.getRemovedRecords();
+								if (toCreate.length > 0 || toUpdate.length > 0
+										|| toDestroy.length > 0) {
+									itemUpdated = true;
+								}
 							}
 
 						}
@@ -214,7 +230,7 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							me.fireEvent('datachanged', me);
 						}
 					});
-					
+
 			Ext.ux.grid.menu.ListMenu.override({
 						show : function() {
 							var lastArgs = null;
@@ -228,12 +244,9 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							}
 						}()
 					});
-					
 
 		});
 
 Ext.JSON.encodeDate = function(d) {
 	return Ext.Date.format(d, '"Y-m-d H:i:s"');
 };
-
-

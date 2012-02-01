@@ -31,20 +31,20 @@ Ext.define('AM.model.MaterialDocItem', {
 					}, {
 						name : 'version',
 						type : 'int'
-					}],
-
-			associations : [{
-						type : 'belongsTo',
-						model : 'MaterialDoc',
-						primaryKey: 'docNo',
-						foreignKey: 'materialDoc'
-						
-					},{
-						type : 'belongsTo',
-						model : 'MaterialDocItem',
-						primaryKey: 'lineId',
-						foreignKey: 'lineId_in'
 					}]
+
+			//associations : [{
+			//			type : 'belongsTo',
+			//			model : 'AM.model.MaterialDoc',
+			//			primaryKey: 'docNo',
+			//			foreignKey: 'materialDoc'
+						
+			//		},{
+			//			type : 'belongsTo',
+			//			model : 'AM.model.MaterialDocItem',
+			//			primaryKey: 'lineId',
+			//			foreignKey: 'lineId_in'
+			//		}]
 
 			
 		});

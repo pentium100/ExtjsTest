@@ -81,6 +81,8 @@ public class MaterialDoc {
 				.exclude("*.class")
 				.include("materialdocs")
 				.include("materialdocs.items")
+				.include("contract")
+				.include("docType")
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),Date.class)
 				.serialize(map);
 		

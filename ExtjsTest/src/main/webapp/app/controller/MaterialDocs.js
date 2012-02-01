@@ -2,19 +2,26 @@ Ext.define('AM.controller.MaterialDocs', {
 			extend : 'Ext.app.Controller',
 
 			views : ['materialDoc.List', 'materialDoc.Edit', 'contract.Search'],
-			stores : ['MaterialDocs', 'ContractType', 'Contracts'],
-			models : ['MaterialDoc', 'MaterialDocItem'],
+			stores : ['MaterialDocs', 'ContractType', 'Contracts', 'MaterialDocTypes'],
+			models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType'],
 
-			init : function() {
+			init : function(options) {
 				
+				Ext.apply(this, options);
+
 				this.control({
 
 							'materialDocList' : {
 								itemdblclick : this.editMaterialDoc
 							},
-							// 'materialDocEdit trigger[name=contractNo]':{
-							// onTriggerClick : this.searchContract
-							// },
+							'materialDocList button[action=add]' : {
+								click : this.addMaterialDoc
+							},
+
+							'materialDocList button[action=delete]' : {
+								click : this.deleteMaterialDoc
+							},
+
 							'contractSearch button[action=search]' : {
 								click : this.searchContract
 							},
@@ -24,6 +31,14 @@ Ext.define('AM.controller.MaterialDocs', {
 
 							'materialDocEdit button[action=save]' : {
 								click : this.saveMaterialDoc
+							},
+
+							'materialDocEdit button[action=add]' : {
+								click : this.addMaterialDocItem
+							},
+
+							'materialDocEdit button[action=delete]' : {
+								click : this.deleteMaterialDocItem
 							}
 
 						});
@@ -36,6 +51,57 @@ Ext.define('AM.controller.MaterialDocs', {
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
 
 				view.down('grid').reconfigure(record.items());
+
+			},
+
+			addMaterialDoc : function(button) {
+
+				var record = new AM.model.MaterialDoc();
+				record.setDocType({id:this.docType});
+				this.getStore('MaterialDocs').insert(0, record);
+				var view = Ext.widget('materialDocEdit');
+				view.down('form').loadRecord(record);
+				view.down('form').setTitle('凭证号:' + record.get('docNo'));
+				view.down('grid').reconfigure(record.items());
+
+			},
+			addMaterialDocItem : function(button) {
+				var win = button.up('window');
+				var grid = win.down('gridpanel');
+				var store = grid.getStore();
+				var record = new AM.model.MaterialDocItem();
+				record.set('moveType', this.moveType1);
+
+				// var edit = grid.editing;
+
+				// edit.cancelEdit();
+				store.insert(0, record);
+				// edit.startEditByPosition({
+
+			},
+			deleteMaterialDocItem : function(button) {
+				var win = button.up('window');
+				var grid = win.down('gridpanel');
+				var store = grid.getStore();
+
+				var selection = grid.getView().getSelectionModel()
+						.getSelection()[0];
+				if (selection) {
+					store.remove(selection);
+				}
+				
+
+			},
+
+			deleteMaterialDoc : function(button) {
+				var viewport = button.up('viewport');
+				var grid = viewport.down('materialDocList');
+				var selection = grid.getView().getSelectionModel()
+						.getSelection()[0];
+				if (selection) {
+					grid.getStore().remove(selection);
+					grid.getStore().sync();
+				}
 
 			},
 
@@ -86,7 +152,8 @@ Ext.define('AM.controller.MaterialDocs', {
 				var view = win.parentWindow;
 				var form = view.down('form');
 				var oldRecord = form.getRecord();
-				oldRecord.set('contract', record.data);
+				//oldRecord.set('contract_id', record.get('id'));
+				oldRecord.setContract(record.data);
 				oldRecord.set('contractNo', record.get('contractNo'));
 				form.loadRecord(oldRecord);
 				// oldRecord.get('contract').setDirty();

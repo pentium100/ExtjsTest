@@ -10,8 +10,8 @@ Ext.define('AM.view.materialDoc.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
-  
-			initComponent : function() {  
+
+			initComponent : function() {
 				this.columns = [{
 							header : '单据类型',
 							dataIndex : 'docType_txt',
@@ -39,7 +39,7 @@ Ext.define('AM.view.materialDoc.List', {
 						}, {
 							header : '日期',
 							dataIndex : 'docDate',
-							xtype: 'datecolumn',
+							xtype : 'datecolumn',
 							format : 'Y-m-d',
 							flex : 1
 						}, {
@@ -57,15 +57,16 @@ Ext.define('AM.view.materialDoc.List', {
 							items : [{
 										iconCls : 'icon-add',
 										text : 'Add',
-										scope : this,
-										handler : this.onAddClick
+										action: 'add'
+										
+										
+										
 									}, {
 										iconCls : 'icon-delete',
 										text : 'Delete',
-										disabled : false,
-										itemId : 'delete',
-										scope : this,
-										handler : this.onDeleteClick
+										action : 'delete'
+										
+										
 									}]
 						}, {
 							xtype : 'pagingtoolbar',

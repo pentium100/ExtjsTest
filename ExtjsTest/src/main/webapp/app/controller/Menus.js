@@ -28,7 +28,7 @@ Ext.define('AM.controller.Menus', {
 				if (tab == undefined) {
 
 					var c = this.getController(record.raw.controller);
-					c.init();
+					c.init({moveType1:'101', docType:1});
 
 					tab = tabs.add({
 								// we use the tabs.items property to get the

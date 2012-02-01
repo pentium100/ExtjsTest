@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
+import com.itg.extjstest.domain.MaterialDocType;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -68,6 +69,31 @@ public class MaterialDocController {
     }
 
 
+    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+    public ResponseEntity<String> createFromJson(@RequestBody String json) {
+        MaterialDoc materialDoc = MaterialDoc.fromJsonToMaterialDoc(json);
+        
+        MaterialDocType type = MaterialDocType.findMaterialDocType(materialDoc.getDocType().getId());
+        materialDoc.setDocType(type);
+        materialDoc = materialDoc.merge();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        
+        if (materialDoc == null) {
+            return new ResponseEntity<String>(headers, HttpStatus.METHOD_FAILURE);
+        }
+        
+        
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		List<MaterialDoc> materialDocs = new ArrayList<MaterialDoc>();
+		materialDocs.add(materialDoc);
+		map.put("success", true);
+		String resultJson = MaterialDoc.mapToJson(map, materialDocs);
+        
+		return new ResponseEntity<String>(resultJson, headers,
+				HttpStatus.OK);
+        
+    }
 	
     
 }
