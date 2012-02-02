@@ -28,7 +28,6 @@ privileged aspect MaterialDocController_Roo_Controller_Json {
         return new ResponseEntity<String>(materialdoc.toJson(), headers, HttpStatus.OK);
     }
     
-    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> MaterialDocController.createFromJsonArray(@RequestBody String json) {
         for (MaterialDoc materialDoc: MaterialDoc.fromJsonArrayToMaterialDocs(json)) {
@@ -38,7 +37,6 @@ privileged aspect MaterialDocController_Roo_Controller_Json {
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
-    
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> MaterialDocController.updateFromJsonArray(@RequestBody String json) {

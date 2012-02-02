@@ -55,4 +55,12 @@ privileged aspect Menu_Roo_JavaBean {
         this.views = views;
     }
     
+    public String Menu.getControllerParam() {
+        return this.controllerParam;
+    }
+    
+    public void Menu.setControllerParam(String controllerParam) {
+        this.controllerParam = controllerParam;
+    }
+    
 }

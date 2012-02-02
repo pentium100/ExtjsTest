@@ -295,3 +295,32 @@ exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-26 21:02:05
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-26 21:42:08
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-02 11:52:24
+entity jpa --class ~.domain.Message 
+json add --class ~.domain.Message
+field string --fieldName department --sizeMax 20
+// [failed] field string --fieldName group --sizeMax 20
+field string --fieldName type --sizeMax 4 --regexp  aa|bb|cc|dd
+field string --fieldName article --sizeMax 50
+field number --fieldName quantity --type java.lang.Double
+field string --fieldName departure --sizeMax 40
+field date --fieldName eta --type java.util.Date 
+field string --fieldName supplier --sizeMax 50
+field string --fieldName owner --sizeMax 50
+field number --fieldName costPrice --type java.lang.Double
+field number --fieldName suggestedPrice --type java.lang.Double
+field string --fieldName remark 
+field date --fieldName validDate --type java.util.Date
+field boolean --fieldName isUrgent 
+entity jpa --class ~.domain.Specification
+json add --class ~.domain.Specification
+field string --fieldName specification --sizeMax 50 --notnull
+field number --fieldName typical --type java.lang.Double
+field number --fieldName reject --type java.lang.Double
+focus --class ~.domain.Message
+field set --fieldName specifications --type ~.domain.Specification --cardinality ONE_TO_MANY --fetch EAGER
+web mvc json add --jsonObject ~.domain.Message --class ~.web.MessageController 
+focus --class ~.domain.Menu
+field string --fieldName controllerParam --sizeMax 200
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-02 14:01:11

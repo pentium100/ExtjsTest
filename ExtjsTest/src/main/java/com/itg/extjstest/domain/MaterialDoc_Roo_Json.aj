@@ -4,8 +4,6 @@
 package com.itg.extjstest.domain;
 
 import com.itg.extjstest.domain.MaterialDoc;
-import com.itg.extjstest.util.ContractTypeObjectFactory;
-
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ privileged aspect MaterialDoc_Roo_Json {
     public String MaterialDoc.toJson() {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }
-    
     
     public static Collection<MaterialDoc> MaterialDoc.fromJsonArrayToMaterialDocs(String json) {
         return new JSONDeserializer<List<MaterialDoc>>().use(null, ArrayList.class).use("values", MaterialDoc.class).deserialize(json);
