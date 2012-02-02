@@ -26,7 +26,7 @@ public class Message {
     private String department;
 
     @Size(max = 4)
-    @Pattern(regexp = "供应|需求|敞口|库存")
+    @Pattern(regexp = "供应|�?��|敞口|库存")
     private String type;
 
     @Size(max = 50)
@@ -53,12 +53,12 @@ public class Message {
 
     private String remark;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date validDate;
-
     private Boolean isUrgent;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Specification> specifications = new HashSet<Specification>();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "M-")
+    private Date validBefore;
 }

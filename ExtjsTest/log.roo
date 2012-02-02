@@ -324,3 +324,8 @@ focus --class ~.domain.Menu
 field string --fieldName controllerParam --sizeMax 200
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-02 14:01:11
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-02 14:49:31
+focus --class ~.domain.Message
+field date --fieldName validBefore --type java.util.Date
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-02 14:50:24

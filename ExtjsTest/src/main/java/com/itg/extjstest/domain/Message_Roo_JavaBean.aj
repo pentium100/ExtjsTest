@@ -122,4 +122,12 @@ privileged aspect Message_Roo_JavaBean {
         this.specifications = specifications;
     }
     
+    public Date Message.getValidBefore() {
+        return this.validBefore;
+    }
+    
+    public void Message.setValidBefore(Date validBefore) {
+        this.validBefore = validBefore;
+    }
+    
 }
