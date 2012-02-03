@@ -38,15 +38,6 @@ privileged aspect MessageController_Roo_Controller_Json {
         return new ResponseEntity<String>(Message.toJsonArray(result), headers, HttpStatus.OK);
     }
     
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> MessageController.createFromJson(@RequestBody String json) {
-        Message message = Message.fromJsonToMessage(json);
-        message.persist();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> MessageController.createFromJsonArray(@RequestBody String json) {
         for (Message message: Message.fromJsonArrayToMessages(json)) {
@@ -57,16 +48,6 @@ privileged aspect MessageController_Roo_Controller_Json {
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
     
-    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> MessageController.updateFromJson(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        Message message = Message.fromJsonToMessage(json);
-        if (message.merge() == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> MessageController.updateFromJsonArray(@RequestBody String json) {

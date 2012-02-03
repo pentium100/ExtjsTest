@@ -91,7 +91,7 @@ public class MaterialDocController {
 		String resultJson = MaterialDoc.mapToJson(map, materialDocs);
         
 		return new ResponseEntity<String>(resultJson, headers,
-				HttpStatus.OK);
+				HttpStatus.CREATED);
         
     }
 	

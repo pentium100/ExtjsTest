@@ -1,111 +1,132 @@
 Ext.define('AM.view.message.MessageEdit', {
-			extend : 'Ext.window.Window',
-			alias : 'widget.messageEdit',
+    extend: 'Ext.window.Window',
+    alias: 'widget.messageEdit',
+	//xtype: 'messageEdit',
+    height: 496,
+    width: 833,
+    title: '订单详情',
+	modal: true,
+	autoShow: true,
+	layout : {
+		type : 'border'
+	},
+	
 
-			title : '信息编辑',
-			layout : 'border',
-			autoShow : true,
-			height : 400,
-			width : 450,
-			modal: true,
+    initComponent: function() {
+        var me = this;
 
-			initComponent : function() {
-				this.items = [
+        Ext.applyIf(me, {
+            items: [ 
+                {
+                    xtype: 'form',
+                    height: 182,
+                    width: 821,
+					region: 'north',
+                    layout: {
+                        type: 'column'
+                    },
+                    title: '信息内容',
+                    items: [
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: '类别',
+                            store: 'MessageTypesStore',
+							name: 'messageType'
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: '品名',
+							name: 'article'
+                        },
+                        {
+                            xtype: 'numberfield',
+                            fieldLabel: '数量(MT)',
+							name: 'quantity'
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: '装港Laycan',
+							name: 'departure'
+                        },
+                        {
+                            xtype: 'datefield',
+                            fieldLabel: 'ETA',
+							name: 'eta'
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: '供应商',
+							name:'supplier'
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: '负责业务员',
+							name:'owner'
+                        },
+                        {
+                            xtype: 'numberfield',
+                            fieldLabel: '建议零售价',
+							name:'suggestedPrice'
+                        },
+                        {
+                            xtype: 'numberfield',
+                            fieldLabel: '成本价',
+							name:'costPrice'
+                        },
+                        {
+                            xtype: 'textareafield',
+                            height: 72,
+                            width: 764,
+                            fieldLabel: '备注状态',
+							name: 'remark'
+                        }
+                    ]
+                },
+                {
+                    xtype: 'gridpanel',
+                    height: 214,
+                    width: 831,
+                    title: '规格',
+					region: 'center',
+					plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
 
-				{
-							region : 'north',
-							xtype : 'form',
-							items : [{
-										xtype : 'combo',
-										name : 'messageType',
-										fieldLabel : '类型',
-										//store : Ext.create('AM.store.MessageTypesStore'),
-										store : 'messageTypesStore',
-										queryMode : 'local',
-										displayField : 'text',
-										valueField : 'text'
-										
-									}, {
-										xtype : 'textfield',
-										name : 'article',
-										fieldLabel : '品名'
-										
+					})],
 
-									}, {
-										xtype : 'textfield',
-										name : 'supplier',
-										fieldLabel : '供应商'
-									}, {
-										xtype : 'textfield',
-										name : 'payTerm',
-										fieldLabel : '付款方式'
-									}, {
-										xtype : 'textfield',
-										name : 'remark',
-										fieldLabel : '备注'
-									}]
-						}, {
-							region : 'center',
-							xtype : 'gridpanel',
-							// selType : 'cellmodel',
-							dockedItems : [{
-										xtype : 'toolbar',
-										items : [{
-													iconCls : 'icon-add',
-													text : 'Add',
-													scope : this,
-													itemId : 'add'
-												}, {
-													iconCls : 'icon-delete',
-													text : 'Delete',
-													disabled : false,
-													itemId : 'delete',
-													scope : this
+                    columns: [
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'specification',
+                            text: '规格'
+                        },
+                        {
+                            xtype: 'numbercolumn',
+                            dataIndex: 'typical',
+                            text: '典型',
+							field:'numberfield'
+                        },
+                        {
+                            xtype: 'numbercolumn',
+                            dataIndex: 'reject',
+                            text: '拒收',
+							field:'numberfield'
+                        }
+                    ],
+                    viewConfig: {
 
-												}]
-									}],
-							plugins : [Ext.create(
-									'Ext.grid.plugin.CellEditing', {
+                    }
+                }
+            ],
+			buttons : [{
+						text : 'Save',
+						action : 'save'
+					}, {
+						text : 'Cancel',
+						scope : this,
+						handler : this.close
+					}]
+				
+        });
 
-									})],
-							columns : [{
-										xtype : 'gridcolumn',
-										id : 'model',
-										dataIndex : 'model',
-										text : '规格',
-
-										field : 'textfield'
-									}, {
-										xtype : 'numbercolumn',
-										itemId : 'quantity',
-										dataIndex : 'quantity',
-										text : '数量',
-										field : 'numberfield'
-									}, {
-										xtype : 'numbercolumn',
-										itemId : 'unitPrice',
-										dataIndex : 'unitPrice',
-										text : '单价',
-										field : 'numberfield'
-									},{
-										xtype : 'gridcolumn',
-										id : 'remark',
-										dataIndex : 'remark',
-										text : '备注',
-
-										field : 'textfield'
-									} ]
-						}];
-
-				this.buttons = [{
-							text : 'Save',
-							action : 'save'
-						}, {
-							text : 'Cancel',
-							scope : this,
-							handler : this.close
-						}];
-
-				this.callParent(arguments);
-			}
-		});
+        me.callParent(arguments);
+    }
+});

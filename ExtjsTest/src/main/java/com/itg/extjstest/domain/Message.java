@@ -1,7 +1,9 @@
 package com.itg.extjstest.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
@@ -15,6 +17,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+
+import flexjson.JSONSerializer;
+import flexjson.transformer.DateTransformer;
 
 @RooJavaBean
 @RooToString
@@ -61,4 +66,17 @@ public class Message {
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "M-")
     private Date validBefore;
+
+	public static String mapToJson(HashMap<String, Object> map,
+			List<Message> messages) {
+		map.put("messages", messages);
+		String resultJson = new JSONSerializer()
+				.exclude("*.class")
+				.include("messages")
+				.include("messages.specfications")
+				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),Date.class)
+				.serialize(map);
+
+		return resultJson;
+	}
 }

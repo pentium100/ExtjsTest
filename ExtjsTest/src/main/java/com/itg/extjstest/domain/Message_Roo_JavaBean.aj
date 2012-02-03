@@ -98,13 +98,6 @@ privileged aspect Message_Roo_JavaBean {
         this.remark = remark;
     }
     
-    public Date Message.getValidDate() {
-        return this.validDate;
-    }
-    
-    public void Message.setValidDate(Date validDate) {
-        this.validDate = validDate;
-    }
     
     public Boolean Message.getIsUrgent() {
         return this.isUrgent;

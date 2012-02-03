@@ -220,7 +220,8 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 											rec.reject();
 										}
 										if (rec.phantom) {
-											record.unjoin(me); // probably not
+											//record.unjoin(me); // probably not
+											rec.unjoin(me);
 											// really
 											// necessary
 											me.data.remove(rec);

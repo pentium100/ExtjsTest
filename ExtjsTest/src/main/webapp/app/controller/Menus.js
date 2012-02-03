@@ -28,7 +28,11 @@ Ext.define('AM.controller.Menus', {
 				if (tab == undefined) {
 
 					var c = this.getController(record.raw.controller);
-					controllerParam = Ext.decode(record.raw.controllerParam)
+					var controllerParam;
+					if(record.raw.controllerParam!=""){
+						controllerParam = Ext.decode(record.raw.controllerParam)
+					}
+					
 					c.init(controllerParam);
 
 					tab = tabs.add({
