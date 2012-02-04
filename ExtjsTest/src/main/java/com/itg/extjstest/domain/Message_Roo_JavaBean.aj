@@ -98,7 +98,6 @@ privileged aspect Message_Roo_JavaBean {
         this.remark = remark;
     }
     
-    
     public Boolean Message.getIsUrgent() {
         return this.isUrgent;
     }

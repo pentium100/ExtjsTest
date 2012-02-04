@@ -55,6 +55,7 @@ public class MaterialDoc {
     private Set<MaterialDocItem> items = new HashSet<MaterialDocItem>();
 
     @ManyToOne
+    @NotNull
     private MaterialDocType docType;
     
     

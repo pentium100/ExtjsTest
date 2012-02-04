@@ -19,14 +19,18 @@ Ext.define('AM.model.MaterialDoc', {
 			}, {
 				name : 'workingNo',
 				type : 'string'
+			}, {
+				name : 'contract'
+
+			}, {
+				name : 'docType'
+
 			},
-			 //{
-			 //name : 'contract_id'
 
-			 //}, {
-			 //name : 'docType_id'
-
-			 //},
+			{
+				name : 'docType_id',
+				mapping : 'docType.id'
+			},
 
 			{
 				name : 'docType_txt',
@@ -46,23 +50,23 @@ Ext.define('AM.model.MaterialDoc', {
 	hasMany : [{
 				model : 'AM.model.MaterialDocItem',
 				name : 'items',
-				primaryKey: 'lineId'
+				primaryKey : 'lineId'
 			}],
 	belongsTo : [{
-				model : 'AM.model.MaterialDocType'
-				,name : 'docType'
-				,foreignKey : 'docType'
-				,getterName:'getDocType'
-				,setterName:'setDocType'
+				model : 'AM.model.MaterialDocType',
+				name : 'docType',
+				foreignKey : 'docType',
+				getterName : 'getDocType',
+				setterName : 'setDocType'
 
-			}
-			, {
-				model : 'AM.model.Contract'
-				,name : 'contract' 
-				,foreignKey : 'contract'
-				
-				,getterName: 'getContract'
-				,setterName: 'setContract'				
+			}, {
+				model : 'AM.model.Contract',
+				name : 'contract',
+				foreignKey : 'contract'
+
+				,
+				getterName : 'getContract',
+				setterName : 'setContract'
 			}
 
 	]

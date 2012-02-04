@@ -329,3 +329,9 @@ focus --class ~.domain.Message
 field date --fieldName validBefore --type java.util.Date
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-02 14:50:24
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-03 21:50:49
+hint
+hint security
+// [failed] security setup
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-03 23:33:37

@@ -97,8 +97,12 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 						}
 
+						//record.getDocType(function(docType, operation) {
+						//			// do something with the category object
+						//			alert(docType.get('id')); // alerts 20
+						//		}, this);
 						// if(association.type=='belongsTo'){
-						// data[association.name] = [];
+						// var childData = data[association.name];
 						// data[association.name].push();
 						// }
 					}
@@ -164,7 +168,7 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							&& item.phantom !== true && item.isValid();
 					if (!masterUpdated) {
 
-						for ( i = 0; i < item.associations.length; i++) {
+						for (i = 0; i < item.associations.length; i++) {
 							var association = item.associations.get(i);
 							// data[association.name] = [];
 							if (association.type == "hasMany") {
@@ -220,7 +224,8 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 											rec.reject();
 										}
 										if (rec.phantom) {
-											//record.unjoin(me); // probably not
+											// record.unjoin(me); // probably
+											// not
 											rec.unjoin(me);
 											// really
 											// necessary

@@ -31,7 +31,7 @@ public class Message {
     private String department;
 
     @Size(max = 4)
-    @Pattern(regexp = "供应|�?��|敞口|库存")
+    @Pattern(regexp = "供应|需求|敞口|库存")
     private String type;
 
     @Size(max = 50)
@@ -73,7 +73,7 @@ public class Message {
 		String resultJson = new JSONSerializer()
 				.exclude("*.class")
 				.include("messages")
-				.include("messages.specfications")
+				.include("specfications")
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),Date.class)
 				.serialize(map);
 

@@ -11,5 +11,4 @@ Ext.define('AM.model.MaterialDocType', {
 						name : 'version',
 						type : 'int'
 					}]
-
 		});

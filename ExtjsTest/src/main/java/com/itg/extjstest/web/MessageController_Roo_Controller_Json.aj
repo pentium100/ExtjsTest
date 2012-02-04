@@ -48,7 +48,6 @@ privileged aspect MessageController_Roo_Controller_Json {
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
     
-    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> MessageController.updateFromJsonArray(@RequestBody String json) {
         HttpHeaders headers = new HttpHeaders();
