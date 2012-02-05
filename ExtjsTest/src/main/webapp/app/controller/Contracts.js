@@ -112,6 +112,7 @@ Ext.define('AM.controller.Contracts', {
 				var grid = win.down('gridpanel');
 				
 				grid.getStore().rejectChanges();
+				this.getStore('Contracts').rejectChanges();
 
 				//grid.getStore().each(function(record) {
 				//			record.reject();

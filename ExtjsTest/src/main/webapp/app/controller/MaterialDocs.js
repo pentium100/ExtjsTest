@@ -33,6 +33,10 @@ Ext.define('AM.controller.MaterialDocs', {
 								click : this.saveMaterialDoc
 							},
 
+							'materialDocEdit button[action=cancel]' : {
+								click : this.cancelMaterialDoc
+							},
+
 							'materialDocEdit button[action=add]' : {
 								click : this.addMaterialDocItem
 							},
@@ -172,6 +176,17 @@ Ext.define('AM.controller.MaterialDocs', {
 				record.store.sync();
 				win.close();
 
+			},
+			
+			cancelMaterialDoc : function(button){
+				var win = button.up('window');
+				var form = win.down('form');
+				var grid = win.down('gridpanel')
+				
+				this.getStore('MaterialDocs').rejectChanges();
+				
+				grid.getStore().rejectChanges();
+				
 			}
 
 		});

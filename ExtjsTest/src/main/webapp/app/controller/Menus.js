@@ -24,10 +24,12 @@ Ext.define('AM.controller.Menus', {
 					return;
 				}
 
-				var tab = tabs.down("#" + record.raw.controller);
+				var tab = tabs.down("#" + record.raw.controller + record.raw.id);
 				if (tab == undefined) {
 
-					var c = this.getController(record.raw.controller);
+					//var c = this.getController(record.raw.controller);
+					var c = Ext.create("AM.controller."+record.raw.controller)
+					
 					var controllerParam;
 					if(record.raw.controllerParam!=""){
 						controllerParam = Ext.decode(record.raw.controllerParam)
@@ -43,13 +45,14 @@ Ext.define('AM.controller.Menus', {
 								layout : 'fit',
 								closable: true,
 								autoDestroy:true,
+								iconCls: record.get("icon_cls"),
 								
 
 								autoScroll : true,
 								bodyPadding : 0,
 								xtype : record.raw.views,
 
-								id : record.raw.controller
+								id : record.raw.controller + record.raw.id 
 
 							});
 

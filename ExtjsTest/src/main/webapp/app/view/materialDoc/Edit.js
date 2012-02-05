@@ -140,6 +140,7 @@ Ext.define('AM.view.materialDoc.Edit', {
 					}, {
 						text : 'Cancel',
 						scope : this,
+						action: 'cancel',
 						handler : this.close
 					}]
 
