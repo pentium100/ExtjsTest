@@ -72,12 +72,12 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
         this.lineId_in = lineId_in;
     }
     
-    public String MaterialDocItem.getReamrk() {
-        return this.reamrk;
+    public String MaterialDocItem.getRemark() {
+        return this.remark;
     }
     
-    public void MaterialDocItem.setReamrk(String reamrk) {
-        this.reamrk = reamrk;
+    public void MaterialDocItem.setRemark(String remark) {
+        this.remark = remark;
     }
     
 }
