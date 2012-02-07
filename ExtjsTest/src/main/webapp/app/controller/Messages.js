@@ -8,7 +8,7 @@ Ext.define('AM.controller.Messages', {
 			init : function() {
 				this.control({
 							'messageList ' : {
-								itemdblclick : this.editMessage,
+								itemdblclick : this.editMessage
 								
 							},
 							
