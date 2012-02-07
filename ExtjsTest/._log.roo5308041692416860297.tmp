@@ -1,0 +1,337 @@
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-16 23:23:26
+project --topLevelPackage com.itg.ExtjsTest --projectName ExtjsTest --java 6
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-16 23:23:27
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-16 23:23:30
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-16 23:25:40
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-17 22:34:31
+hint
+persistence setup --provider HIBERNATE --database MSSQL 
+hint
+entity --class ~.domain.Contract 
+enum type --class ~.domain.ContractType
+hint
+hint
+enum constant --name PURCHASE
+enum constant --name SALE
+hint
+// [failed] entity --class ~.domain.Contract
+field enum --type ~.domain.ContractType --fieldName contractType
+entity --class ~.domain.Supplier
+field string --fieldName name
+// [failed] entity --class ~.domain.Contract
+field reference --fieldName supplier --type ~.domain.Supplier
+field date --fieldName eta --type java.util.Date
+entity --class ~.domain.ContractItem
+field string --fieldName model
+field number --fieldName quantity --type java.lang.Double
+// [failed] entity --class ~.domain.Contract
+field set --fieldName items --type ~.domain.ContractItem
+// [failed] entity --class ~.domain.ContractItem
+field reference --fieldName contract --type ~.domain.Contract
+hint
+hint controllers
+controller all --package ~.web
+hint
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-17 23:05:00
+// Spring Roo 1.1.3.RELEASE [rev 4404ffb] log opened at 2011-12-22 09:27:49
+// Spring Roo 1.1.3.RELEASE [rev 4404ffb] log closed at 2011-12-22 12:23:53
+// Spring Roo 1.1.3.RELEASE [rev 4404ffb] log opened at 2011-12-26 17:06:54
+// Spring Roo 1.1.3.RELEASE [rev 4404ffb] log closed at 2011-12-26 17:34:46
+// Spring Roo 1.1.3.RELEASE [rev 4404ffb] log opened at 2011-12-27 17:34:31
+// Spring Roo 1.1.3.RELEASE [rev 4404ffb] log closed at 2011-12-27 17:36:31
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-27 17:38:26
+// [failed] entity --class ~.domain.Contract
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-27 17:49:59
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-27 17:55:12
+hint
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-27 17:57:00
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-27 18:01:00
+hint
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-27 18:03:31
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-29 22:21:10
+hint
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2011-12-29 22:24:11
+hint
+hint
+// [failed] entity --class ~.domain.Contract
+// [failed] entity --class ~.domain.Contract
+field string contractNo 
+// [failed] field string --fieldName contractNo --sizeMax 30
+// [failed] field string --fieldName contractNo --sizemax 30
+field string --fieldName contractNo --sizemax 30
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2011-12-29 22:55:45
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2012-01-04 22:56:02
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log opened at 2012-01-04 22:59:05
+download status
+download accept terms of use
+download status
+hint web
+// Spring Roo 1.1.5.RELEASE [rev d3a68c3] log closed at 2012-01-04 23:11:00
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-04 23:11:35
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName jackson-core-asl
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr url add --url http://spring-roo-repository.springsource.org/repository.xml.zip
+osgi obr start --bundleSymbolicName jackson-mapper-asl
+osgi obr url remove --url http://spring-roo-repository.springsource.org/repository.xml.zip
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-04 23:15:05
+web mvc json all
+web mvc json all
+web mvc json add --jsonObject ~.doman.Contract --class ~.web.ContractController
+web mvc json all
+web mvc json all
+hint
+hint
+back
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-04 23:29:59
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-04 23:30:03
+web mvc json all
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-04 23:31:23
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-04 23:35:27
+hint entity
+hint
+hint 
+entity jpa --class ~.domain.Contract
+entity jpa --class ~.domain.Contract
+entity jpa --class ~.domain.ContractItem
+hint entity
+hint
+web mvc json all 
+field string --fieldName model --sizeMax 25 
+field number --fieldName quantity --type java.lang.Double
+persistence setup --database MSSQL --provider HIBERNATE 
+field string --fieldName contractNo
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-05 00:15:13
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-09 22:26:10
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-09 22:26:46
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-09 22:26:59
+hint
+entity jpa --class ~.domain.ContractItem
+field string --fieldName model --sizeMax 30
+field number --fieldName quantity --type float
+entity jpa --class ~.domain.Contract
+field string --fieldName contractNo --notNull --unique
+field set --type ~.domain.ContractItem --fieldName items
+entity jpa --class ~.domain.ContractItem
+field reference --fieldName contract --type ~.domain.Contract
+entity jpa --class ~.domain.Contract
+field date --fieldName lastShippingDate --type java.util.Calendar
+field string --fieldName contractNo --sizeMax 30 --notNull --unique
+field set --type ~.domain.ContractItem --fieldName items
+field string --fieldName model --class ~.domain.ContractItem
+field number --fieldName quantity --type float
+persistence setup --database MSSQL --provider HIBERNATE 
+web mvc json all
+web mvc json all 
+web mvc json all --package ~.web
+web mvc json all --package ~.web
+web mvc json all --package com.itg.extjstest.web
+web mvc json all --package com.itg.extjstest.web
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-09 22:47:12
+hint
+web mvc json add --class ~.web.Contract --jsonObject ~.domain.Contract
+web mvc json add --class ~.web.ContractItem --jsonObject ~.domain.ContractItem
+enum type --class ~.domain.ContractType
+enum constant --name PURCHASE
+enum constant --name SALE
+field enum --fieldName contractType --type ~.domain.ContractType --class ~.domain.Contract
+web mvc json setup
+web mvc json all
+web mvc json all
+web mvc json all --package ~.domain.web
+web mvc json all --package ~.web
+// [failed] json all
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-10 00:03:27
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-10 22:08:48
+// [failed] field date ----fieldName lastShippingDate --type java.util.Date --class ~.domain.Contract
+field date ----fieldName lastShippingDate --type java.util.Date --class ~.domain.Contract
+web mvc json all
+web mvc json all --package ~.web
+web mvc json all --package ~.web
+web mvc json all --package ~.web
+web mvc json add --jsonObject Contract --class ~.web.ContractController
+web mvc json all
+web mvc json all
+web mvc json add --jsonObject ~.domain.Contract  --class ~.web.ContractController 
+web mvc json add --jsonObject ~.domain.Contract  --class ~.web.ContractController 
+web mvc json all
+web mvc json all
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-10 23:08:40
+web mvc json all
+web mvc json all --package ~.web
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-10 23:51:36
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-15 19:07:23
+field string --fieldName controller --sizeMax 50 --class ~.domain.Menu
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-15 19:20:20
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-15 20:00:35
+entity jpa --class ~.domain.Menu 
+field string --fieldName text
+field boolean --fieldName leaf
+field string --fieldName controller
+field reference --fieldName parent --type Menu
+field string --fieldName iconCls
+web mvc json add --jsonObject ~.domain.Menu --class ~.web.MenuController
+hint
+focus --class ~.domain.Menu
+finder list
+finder add --finderName findMenusByParent
+web mvc json add --jsonObject ~.domain.Menu --class ~.web.MenuController
+hint
+hint
+hint web mvc json
+hint web mvc 
+// [failed] web mvc setup
+focus --class ~.domain.Menu
+finder list
+finder add --finderName findMenuByParent 
+finder add --finderName findMenusByParent 
+finder add --finderName findMenusByParent 
+finder add --finderName findMenusByParents 
+finder list
+finder add --finderName findMenusByParent --class ~.domain.Menu 
+json add
+// [failed] field string --fieldName view
+field string --fieldName views
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-15 22:47:09
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-21 23:07:19
+hint
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-21 23:14:45
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-21 23:15:13
+focus --class ~.domain.Contract
+field string --fieldName supplier --sizeMax 50
+field string --fieldName payTerm --sizeMax 50
+field string --fieldName remark --sizeMax 50
+focus --class ~.domain.ContractItem
+field string --fieldName remark --sizeMax 500
+focus --class ~.domain.Contract
+// [failed] field string --fieldName remark --sizeMax 500
+focus --class ~.domain.ContractItem
+field number --fieldName unitPrice --type java.lang.Double
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2011-11-29 23:36:25
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 10:11:50
+hint
+entity jpa --class ~.domain.MaterialDoc 
+entity jpa --class ~.domain.MaterialDoc --identifierColumn docNo 
+field reference --fieldName contract --type Contract
+// [failed] field reference --fieldName contract --type Contract --notNull false
+field string --fieldName deliveryNote --sizeMax 50 
+field string --fieldName plateNum --sizeMax 50 
+field string --fieldName batchNo --sizeMax 50 
+field string --fieldName workingNo --sizeMax 50 
+field date --fieldName docDate --type java.util.Date --notNull yes
+entity jpa --class ~.domain.MaterialDocItem --identifierColumn lineId
+field reference --fieldName materialDoc --type MaterialDoc
+field string --fieldName moveType --sizeMax 3 
+field string --fieldName model_contract --sizeMax 20
+field string --fieldName model_tested --sizeMax 20
+field number --fieldName grossWeight --type java.lang.Double
+field number --fieldName netWeight --type java.lang.Double
+field string --fieldName warehouse --sizeMax 50
+field reference --fieldName lineId_in --type MaterialDocItem
+field string --fieldName reamrk --sizeMax 3000
+focus --class ~.domain.MaterialDoc
+field set --fieldName items --type MaterialDocItem
+// [failed] field set --fieldName items --type MaterialDocItem --cardinality ONE_TO_MANY
+field set --fieldName items --type MaterialDocItem --cardinality ONE_TO_MANY
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 10:44:32
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+web mvc setup
+web mvc json add --jsonObject ~.domain.MaterialDoc --class ~.web.MaterialDocController
+web mvc json add --jsonObject ~.domain.MaterialDoc --class ~.web.MaterialDocController
+focus --class ~.domain.MaterialDoc
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 11:25:59
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 11:26:05
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+focus --class ~.domain.MaterialDoc
+hint
+entity jpa --class MaterialDoc --identifierColumn docNo --identifierField docNo
+field reference --fieldName contract --type Contract
+field string --fieldName deliveryNote --sizeMax 50 
+field string --fieldName batchNo --sizeMax 50 
+field string --fieldName workingNo --sizeMax 50 
+field date --fieldName docDate --type java.util.Date --notNull yes
+field set --fieldName items --type MaterialDocItem --cardinality ONE_TO_MANY
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 11:52:36
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 14:27:09
+focus --class ~.domain.MaterialDoc
+hint enum
+enum type --class ~.domain.MaterialDocType
+enum constant --name PROCESS
+// [failed] enum constant --name IN
+enum constant --name MOVEIN
+enum constant --name MOVEOUT
+enum constant --name MOVE
+entity jpa --class ~.domain.MaterialDocType
+field string --fieldName materialType --sizeMax 4
+focus --class ~.domain.MaterialDoc
+field reference --fieldName docType --type MaterialDocType
+web mvc json add --jsonObject ~.domain.MaterialDocType --class ~.web.MaterialDocTypeController
+web mvc json add --jsonObject ~.domain.MaterialDoc --class ~.web.MaterialDocController
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 20:18:57
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 20:19:17
+web mvc json add --class ~.web.MaterialDocController --jsonObject ~.domain.MaterialDoc
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 21:00:04
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 21:41:38
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 21:47:06
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-25 21:56:16
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-25 22:01:09
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-26 20:58:25
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-26 21:02:02
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-01-26 21:02:05
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-26 21:42:08
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-02 11:52:24
+entity jpa --class ~.domain.Message 
+json add --class ~.domain.Message
+field string --fieldName department --sizeMax 20
+// [failed] field string --fieldName group --sizeMax 20
+field string --fieldName type --sizeMax 4 --regexp  aa|bb|cc|dd
+field string --fieldName article --sizeMax 50
+field number --fieldName quantity --type java.lang.Double
+field string --fieldName departure --sizeMax 40
+field date --fieldName eta --type java.util.Date 
+field string --fieldName supplier --sizeMax 50
+field string --fieldName owner --sizeMax 50
+field number --fieldName costPrice --type java.lang.Double
+field number --fieldName suggestedPrice --type java.lang.Double
+field string --fieldName remark 
+field date --fieldName validDate --type java.util.Date
+field boolean --fieldName isUrgent 
+entity jpa --class ~.domain.Specification
+json add --class ~.domain.Specification
+field string --fieldName specification --sizeMax 50 --notnull
+field number --fieldName typical --type java.lang.Double
+field number --fieldName reject --type java.lang.Double
+focus --class ~.domain.Message
+field set --fieldName specifications --type ~.domain.Specification --cardinality ONE_TO_MANY --fetch EAGER
+web mvc json add --jsonObject ~.domain.Message --class ~.web.MessageController 
+focus --class ~.domain.Menu
+field string --fieldName controllerParam --sizeMax 200
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-02 14:01:11
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-02 14:49:31
+focus --class ~.domain.Message
+field date --fieldName validBefore --type java.util.Date
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-02 14:50:24
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-03 21:50:49
+hint
+hint security
+// [failed] security setup
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-03 23:33:37
