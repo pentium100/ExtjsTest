@@ -74,6 +74,16 @@ Ext.define('AM.view.message.MessageEdit', {
 							name:'costPrice'
                         },
                         {
+                            xtype: 'datefield',
+                            fieldLabel: '有效期',
+							name:'validBefore'
+                        },
+                        {
+                            xtype: 'checkbox',
+                            fieldLabel: '是否紧急',
+							name:'isUrgent'
+                        },
+                        {
                             xtype: 'textareafield',
                             height: 72,
                             width: 764,

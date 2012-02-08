@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.Message;
@@ -22,74 +24,92 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/messages")
 public class MessageController {
-	
-	
-	
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> createFromJson(@RequestBody String json) {
-        Message message = Message.fromJsonToMessage(json);
-        message = message.merge();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
 
-        
-        
-        if (message == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.METHOD_FAILURE);
-        }
-        
-        
+	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJson(@RequestBody String json) {
+		Message message = Message.fromJsonToMessage(json);
+		message = message.merge();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (message == null) {
+			return new ResponseEntity<String>(headers,
+					HttpStatus.METHOD_FAILURE);
+		}
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		List<Message> messages = new ArrayList<Message>();
 		messages.add(message);
 		map.put("success", true);
 		String resultJson = Message.mapToJson(map, messages);
-        
-		return new ResponseEntity<String>(resultJson, headers,
-				HttpStatus.CREATED);
-        
-    }
-    
-    @RequestMapping(method = RequestMethod.PUT, value = "/{id}",  headers = "Accept=application/json")
-    public ResponseEntity<String> updateFromJson(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        Message message = Message.fromJsonToMessage(json);
-        message = message.merge();
-        if ( message == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        
-        
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		List<Message> messages = new ArrayList<Message>();
-		messages.add(message);
-		map.put("success", true);
-		String resultJson = Message.mapToJson(map, messages);
-        
-		return new ResponseEntity<String>(resultJson, headers,
-				HttpStatus.CREATED);
-        
-        
-        //return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
 
-    @RequestMapping(headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> listJson() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        List<Message> result = Message.findAllMessages();
-        
+		return new ResponseEntity<String>(resultJson, headers,
+				HttpStatus.CREATED);
+
+	}
+
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}", headers = "Accept=application/json")
+	public ResponseEntity<String> updateFromJson(@RequestBody String json, HttpServletRequest request) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		Message message = Message.fromJsonToMessage(json);
+		List<Message> messages = new ArrayList<Message>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		org.springframework.http.HttpStatus status = HttpStatus.CREATED;
+		
+		
+		String validateMessage = message.validateObject(request.getLocale());
+		
+		if (!validateMessage.equals("")){
+			map.put("success", false);
+			map.put("message", validateMessage);
+			status = HttpStatus.NOT_ACCEPTABLE;
+			String resultJson = Message.mapToJson(map, messages);
+			return new ResponseEntity<String>(resultJson, headers,
+					status);
+
+		}
+		
+		try {
+			message = message.merge();
+
+			messages.add(message);
+			map.put("success", true);
+
+
+		} catch (Exception e) {
+			
+			map.put("success", false);
+			map.put("message", e.getLocalizedMessage());
+			status = HttpStatus.NOT_ACCEPTABLE;
+		}
+
+		String resultJson = Message.mapToJson(map, messages);
+
+		return new ResponseEntity<String>(resultJson, headers,
+				status);
+
+		//if (message == null) {
+		//	return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		//}
+
+
+
+		// return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> listJson() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		List<Message> result = Message.findAllMessages();
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("total", result.size());
 		map.put("success", true);
 		String resultJson = Message.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
-        
-        
-        
-    }
 
-    
+	}
+
 }
