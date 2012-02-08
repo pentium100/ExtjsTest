@@ -1,4 +1,4 @@
-Ext.define('AM.model.MaterialDocItem', {
+Ext.define('AM.model.MaterialDocItemSearch', {
 			extend : 'Ext.data.Model',
 			idProperty : 'lindId',
 			fields : [{
@@ -7,7 +7,7 @@ Ext.define('AM.model.MaterialDocItem', {
 					}, {
 						name : 'remark',
 						type : 'string'
-						
+
 					}, {
 						name : 'model_contract',
 						type : 'string'
@@ -30,21 +30,35 @@ Ext.define('AM.model.MaterialDocItem', {
 					}, {
 						name : 'version',
 						type : 'int'
+					}, {
+						name : 'contractNo',
+						mapping : 'materialDoc.contract.ContractNo'
+					}, {
+						name : 'deliveryNote',
+						mapping : 'materialDoc.deliveryNote'
+					}, {
+						name : 'deliveryNote',
+						mapping : 'materialDoc.deliveryNote'
+					}, {
+						name : 'batchNo',
+						mapping : 'materialDoc.batchNo'
+					}, {
+						name : 'docDate',
+						mapping : 'materialDoc.docDate'
 					}
-					
-					],
+
+			],
 
 			associations : [{
 						type : 'belongsTo',
 						model : 'AM.model.MaterialDocItem',
-						primaryKey: 'lineId',
-						foreignKey: 'lineId_in'
-					},{
+						primaryKey : 'lineId',
+						foreignKey : 'lineId_in'
+					}, {
 						type : 'belongsTo',
 						model : 'AM.model.MaterialDoc',
-						primaryKey: 'docNo',
-						foreignKey: 'materialDoc'
+						primaryKey : 'docNo',
+						foreignKey : 'materialDoc'
 					}]
 
-			
 		});

@@ -335,10 +335,14 @@ hint security
 // [failed] security setup
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-03 23:33:37
-// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-07 12:35:37
-focus --class ~.domain.Message
-field string --fieldName eta --sizeMax 150
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-07 19:58:19
+web mvc json add --class ~.web.MaterialDocItemController --jsonObject ~.domain.MaterialDocItem
+focus --class ~.domain.MaterialDocItem
+// [failed] field reference --fieldName materialDoc --type ~.domain.MaterialDoc
 exit
-// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-07 12:47:54
-// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-07 12:48:05
-// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-07 12:54:57
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-07 21:04:40
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-07 22:22:04
+focus --class ~.domain.MaterialDocItem
+field string --fieldName remark --sizeMax 3000
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-07 22:45:42

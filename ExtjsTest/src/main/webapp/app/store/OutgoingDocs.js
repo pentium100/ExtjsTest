@@ -1,13 +1,13 @@
 
 
-Ext.define('AM.store.MaterialDocs', {
+Ext.define('AM.store.OutgoingDocs', {
 			extend : 'Ext.data.Store',
 			model : 'AM.model.MaterialDoc',
 
 			autoLoad : true,
 			proxy : {
 				type : 'rest',
-				url : 'materialdocs/1',
+				url : 'materialdocs/2',
 				reader : {
 					type : 'json',
 					root : 'materialdocs',

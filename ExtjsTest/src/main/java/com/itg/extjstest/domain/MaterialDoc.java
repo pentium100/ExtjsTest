@@ -1,5 +1,6 @@
 package com.itg.extjstest.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +12,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +27,7 @@ import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
 
 import com.itg.extjstest.util.ContractTypeObjectFactory;
+import com.itg.extjstest.util.FilterItem;
 
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
@@ -91,5 +99,35 @@ public class MaterialDoc {
 
 
 	}
+	
+	public static List<MaterialDoc> findMaterialDocsByFilter(
+			List<FilterItem> filters, Integer start, Integer page, Integer limit) {
+               
+               
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<MaterialDoc> c = cb.createQuery(MaterialDoc.class);
+		Root<MaterialDoc> root = c.from(MaterialDoc.class);
+		
+		Join<MaterialDoc,MaterialDocItem> j = root.join("items");
+		
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", root);
+		paths.put("items", j);
+		
+		List<Predicate> criteria = new ArrayList<Predicate>();
+
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				criteria.add(f.getPredicate(cb, paths));
+			}
+
+			c.where(cb.and(criteria.toArray(new Predicate[0])));
+		}
+
+		return entityManager().createQuery(c).setFirstResult(start)
+				.setMaxResults(limit).getResultList();
+
+	}
+	
     
 }

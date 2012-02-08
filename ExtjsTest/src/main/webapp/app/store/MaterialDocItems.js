@@ -1,16 +1,16 @@
 
 
-Ext.define('AM.store.MaterialDocs', {
+Ext.define('AM.store.MaterialDocItems', {
 			extend : 'Ext.data.Store',
-			model : 'AM.model.MaterialDoc',
+			model : 'AM.model.MaterialDocItemSearch',
 
 			autoLoad : true,
 			proxy : {
 				type : 'rest',
-				url : 'materialdocs/1',
+				url : 'materialdocitems/1',
 				reader : {
 					type : 'json',
-					root : 'materialdocs',
+					root : 'materialdocitems',
 					successProperty : 'success'
 				},
 
