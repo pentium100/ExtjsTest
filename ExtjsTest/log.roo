@@ -335,3 +335,10 @@ hint security
 // [failed] security setup
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-03 23:33:37
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-07 12:35:37
+focus --class ~.domain.Message
+field string --fieldName eta --sizeMax 150
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-07 12:47:54
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-07 12:48:05
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-07 12:54:57

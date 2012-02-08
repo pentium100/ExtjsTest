@@ -29,14 +29,6 @@ privileged aspect MessageController_Roo_Controller_Json {
         return new ResponseEntity<String>(message.toJson(), headers, HttpStatus.OK);
     }
     
-    @RequestMapping(headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> MessageController.listJson() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        List<Message> result = Message.findAllMessages();
-        return new ResponseEntity<String>(Message.toJsonArray(result), headers, HttpStatus.OK);
-    }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> MessageController.createFromJsonArray(@RequestBody String json) {

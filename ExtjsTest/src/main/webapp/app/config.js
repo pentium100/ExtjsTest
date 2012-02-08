@@ -166,7 +166,7 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 					var itemUpdated = false, i;
 					var masterUpdated = item.dirty === true
 							&& item.phantom !== true && item.isValid();
-					if (!masterUpdated) {
+					if (!masterUpdated&&!item.phantom) {
 
 						for (i = 0; i < item.associations.length; i++) {
 							var association = item.associations.get(i);

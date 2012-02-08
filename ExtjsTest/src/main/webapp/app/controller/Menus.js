@@ -27,8 +27,8 @@ Ext.define('AM.controller.Menus', {
 				var tab = tabs.down("#" + record.raw.controller + record.raw.id);
 				if (tab == undefined) {
 
-					//var c = this.getController(record.raw.controller);
-					var c = Ext.create("AM.controller."+record.raw.controller)
+					var c = this.getController(record.raw.controller);
+					//var c = Ext.create("AM.controller."+record.raw.controller)
 					
 					var controllerParam;
 					if(record.raw.controllerParam!=""){

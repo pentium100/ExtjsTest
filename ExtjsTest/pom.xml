@@ -6,7 +6,7 @@
 	<artifactId>ExtjsTest</artifactId>
 	<packaging>war</packaging>
 	<version>0.1.0.BUILD-SNAPSHOT</version>
-	<name>ExtjsTest</name>
+	<name>ExtjsTest</name>  
 	<properties>
 		<roo.version>1.2.0.RELEASE</roo.version>
 		<spring.version>3.1.0.RELEASE</spring.version>

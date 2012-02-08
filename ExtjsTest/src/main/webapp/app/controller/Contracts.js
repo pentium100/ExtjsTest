@@ -8,8 +8,8 @@ Ext.define('AM.controller.Contracts', {
 			init : function() {
 				this.control({
 							'contractList' : {
-								itemdblclick : this.editContract,
-								activate:this.loadContractData
+								itemdblclick : this.editContract
+								//,activate:this.loadContractData
 							},
 							
 							'contractEdit button[action=save]' : {
@@ -119,10 +119,6 @@ Ext.define('AM.controller.Contracts', {
 				//		})
 				win.close();
 			},
-            loadContractData: function(grid, eOpts ){
-            	
-            	grid.getStore().load();
-            },
 			onPanelRendered : function() {
 				console.log('The panel was rendered');
 			}

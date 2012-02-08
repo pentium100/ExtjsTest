@@ -50,14 +50,6 @@ privileged aspect Message_Roo_JavaBean {
         this.departure = departure;
     }
     
-    public Date Message.getEta() {
-        return this.eta;
-    }
-    
-    public void Message.setEta(Date eta) {
-        this.eta = eta;
-    }
-    
     public String Message.getSupplier() {
         return this.supplier;
     }
@@ -120,6 +112,14 @@ privileged aspect Message_Roo_JavaBean {
     
     public void Message.setValidBefore(Date validBefore) {
         this.validBefore = validBefore;
+    }
+    
+    public String Message.getEta() {
+        return this.eta;
+    }
+    
+    public void Message.setEta(String eta) {
+        this.eta = eta;
     }
     
 }

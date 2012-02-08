@@ -31,7 +31,7 @@ Ext.define('AM.view.message.MessageEdit', {
                             xtype: 'combobox',
                             fieldLabel: '类别',
                             store: 'MessageTypesStore',
-							name: 'messageType'
+							name: 'type'
                         },
                         {
                             xtype: 'textfield',
@@ -49,7 +49,7 @@ Ext.define('AM.view.message.MessageEdit', {
 							name: 'departure'
                         },
                         {
-                            xtype: 'datefield',
+                            xtype: 'textfield',
                             fieldLabel: 'ETA',
 							name: 'eta'
                         },

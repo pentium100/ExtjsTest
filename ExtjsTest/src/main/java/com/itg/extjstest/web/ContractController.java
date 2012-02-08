@@ -65,7 +65,7 @@ public class ContractController {
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}", headers = "Accept=application/json")
 	public ResponseEntity<String> updateFromJson(@RequestBody String json) {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json;charset=utf-8");
+		headers.add("Content-Type", "application/json; charset=utf-8");
 
 		Contract contract = Contract.fromJsonToContract(json);
 		contract = contract.merge();
@@ -88,7 +88,7 @@ public class ContractController {
 		Contract contract = Contract.fromJsonToContract(json);
 		contract = contract.merge();
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
+		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<Contract> contracts = new ArrayList<Contract>();
 		contracts.add(contract);
 		HashMap<String, Object> map = new HashMap<String, Object>();

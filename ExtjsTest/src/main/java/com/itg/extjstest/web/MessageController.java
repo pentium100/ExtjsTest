@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.Message;
 
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @RooWebJson(jsonObject = Message.class)
 @Controller
@@ -28,7 +30,7 @@ public class MessageController {
         Message message = Message.fromJsonToMessage(json);
         message = message.merge();
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
+        headers.add("Content-Type", "application/json; charset=utf-8");
 
         
         
@@ -48,12 +50,13 @@ public class MessageController {
         
     }
     
-    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}",  headers = "Accept=application/json")
     public ResponseEntity<String> updateFromJson(@RequestBody String json) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
+        headers.add("Content-Type", "application/json; charset=utf-8");
         Message message = Message.fromJsonToMessage(json);
-        if (message.merge() == null) {
+        message = message.merge();
+        if ( message == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
         
@@ -71,6 +74,22 @@ public class MessageController {
         //return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
 
-    
+    @RequestMapping(headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> listJson() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        List<Message> result = Message.findAllMessages();
+        
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("total", result.size());
+		map.put("success", true);
+		String resultJson = Message.mapToJson(map, result);
+		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
+        
+        
+        
+    }
+
     
 }

@@ -61,7 +61,7 @@ Ext.define('AM.controller.MaterialDocs', {
 			addMaterialDoc : function(button) {
 
 				var record = new AM.model.MaterialDoc();
-				record.setDocType({id:this.docType});
+				record.setDocType({'id':this.docType});
 				this.getStore('MaterialDocs').insert(0, record);
 				var view = Ext.widget('materialDocEdit');
 				view.down('form').loadRecord(record);

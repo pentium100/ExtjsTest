@@ -9,6 +9,10 @@ Ext.define('AM.model.Message', {
 						type : 'string'
 						
 					}, {
+						name : 'type',
+						type : 'string'
+						
+					}, {
 						name : 'article',
 						type : 'string'
 
@@ -22,7 +26,7 @@ Ext.define('AM.model.Message', {
 
 					}, {
 						name : 'eta',
-						type : 'date'
+						type : 'string'
 
 					}, {
 						name : 'supplier',
