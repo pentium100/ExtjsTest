@@ -5,7 +5,6 @@ package com.itg.extjstest.web;
 
 import com.itg.extjstest.domain.Message;
 import com.itg.extjstest.web.MessageController;
-import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +27,6 @@ privileged aspect MessageController_Roo_Controller_Json {
         }
         return new ResponseEntity<String>(message.toJson(), headers, HttpStatus.OK);
     }
-    
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> MessageController.createFromJsonArray(@RequestBody String json) {

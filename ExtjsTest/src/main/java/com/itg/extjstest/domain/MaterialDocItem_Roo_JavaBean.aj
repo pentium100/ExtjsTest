@@ -80,4 +80,12 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
         this.remark = remark;
     }
     
+    public short MaterialDocItem.getDirection() {
+        return this.direction;
+    }
+    
+    public void MaterialDocItem.setDirection(short direction) {
+        this.direction = direction;
+    }
+    
 }

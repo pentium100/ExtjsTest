@@ -75,6 +75,7 @@ Ext.define('AM.controller.MaterialDocs', {
 				var store = grid.getStore();
 				var record = new AM.model.MaterialDocItem();
 				record.set('moveType', this.moveType1);
+				record.set('direction', 1);
 
 				// var edit = grid.editing;
 
