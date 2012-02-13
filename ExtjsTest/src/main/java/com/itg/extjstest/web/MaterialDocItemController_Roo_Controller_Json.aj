@@ -19,7 +19,7 @@ privileged aspect MaterialDocItemController_Roo_Controller_Json {
     @RequestMapping(value = "/{lineId}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> MaterialDocItemController.showJson(@PathVariable("lineId") Long lineId) {
-        MaterialDocItem materialdocitem = MaterialDocItem.findMaterialDocItem(id);
+        MaterialDocItem materialdocitem = MaterialDocItem.findMaterialDocItem(lineId);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         if (materialdocitem == null) {
@@ -72,7 +72,7 @@ privileged aspect MaterialDocItemController_Roo_Controller_Json {
     
     @RequestMapping(value = "/{lineId}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     public ResponseEntity<String> MaterialDocItemController.deleteFromJson(@PathVariable("lineId") Long lineId) {
-        MaterialDocItem materialDocItem = MaterialDocItem.findMaterialDocItem(id);
+        MaterialDocItem materialDocItem = MaterialDocItem.findMaterialDocItem(lineId);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         if (materialDocItem == null) {

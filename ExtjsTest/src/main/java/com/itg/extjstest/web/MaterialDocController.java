@@ -81,6 +81,15 @@ public class MaterialDocController {
         
         headers.add("Content-Type", "application/json; charset=utf-8");        
         MaterialDoc materialDoc = MaterialDoc.fromJsonToMaterialDoc(json);
+        
+        Set<MaterialDocItem> items = materialDoc.getItems();
+        for(MaterialDocItem item:items){
+        	item.setMaterialDoc(materialDoc);
+        	//if(item.getMoveType().equals("101")){
+        	//	item.setLineId_in(item);
+        	//}
+        }
+        
         materialDoc = materialDoc.merge();
         if (materialDoc == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
@@ -108,8 +117,12 @@ public class MaterialDocController {
         Set<MaterialDocItem> items = materialDoc.getItems();
         for(MaterialDocItem item:items){
         	item.setMaterialDoc(materialDoc);
-        	
+        	//if(item.getMoveType().equals("101")){
+        	//	item.setLineId_in(item);
+        	//}
         }
+        
+        
         
         materialDoc = materialDoc.merge();
         

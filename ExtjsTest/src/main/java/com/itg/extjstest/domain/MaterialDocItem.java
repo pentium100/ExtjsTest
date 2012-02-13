@@ -8,12 +8,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.persistence.ManyToOne;
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
+import javax.persistence.criteria.Subquery;
 import javax.validation.constraints.Size;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -51,26 +55,73 @@ public class MaterialDocItem {
     @Size(max = 3000)
     private String remark;
 
+    private short direction;
+
     public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(List<com.itg.extjstest.util.FilterItem> filters, int start, int page, int limit) {
-        CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-        CriteriaQuery<MaterialDocItem> c = cb.createQuery(MaterialDocItem.class);
+        
+    	CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+        
+        List<Predicate> criteria = new ArrayList<Predicate>();
+        CriteriaQuery<Tuple> c = cb.createTupleQuery();
+        
         Root<MaterialDocItem> root = c.from(MaterialDocItem.class);
+        Join<MaterialDocItem, MaterialDoc> header = root.join("materialDoc");
+        Join<MaterialDoc, Contract> contract = header.join("contract");
+    
         
-        Join<MaterialDocItem, MaterialDoc> j = root.join("materialDoc");
         
-        Join<MaterialDoc, Contract> contract = j.join("contract");
+        Subquery<Tuple> subQuery = c.subquery(Tuple.class);
+        Root<MaterialDocItem> out = subQuery.from(MaterialDocItem.class);
+        subQuery.where(cb.isNotNull(out.get("lineId_in")));
+
+        Expression<Double> weight = out.get("netWeight");
+        Expression<Integer> direction = out.get("direction");
+        Expression<? extends Number> directionWeight = cb.prod(weight, direction);
+        Expression<? extends Number> sumOfdirectionWeight = cb.sum(directionWeight);
+        //subQuery.select(sumOfdirectionWeight);
+        //Join<MaterialDocItem, MaterialDocItem> out = root.join("lineId_in");
+        
+        
+        criteria.add(cb.isNull(root.get("lineId_in")));   // lineId_in 为空, 表示为首条进仓记录.
+        //criteria.add(cb.isNotNull(out.get("lineId_in")));   //        lineId_in 不为空, 表示为后继进出仓记录.
+        
+        
+        //Predicate gt1 = cb.gt(directionWeight, 0);
+        //criteria.add(gt1);
+        
+        
+        //c.select(root.get("lineId"), cb.sum(directionWeight));
+        c.groupBy(root.get("lineId"));
+        c.having(cb.gt(cb.sum(directionWeight), 0));
         HashMap<String, Path> paths = new HashMap<String, Path>();
         paths.put("", root);
-        paths.put("materialDoc", j);
+        paths.put("materialDoc", header);
         paths.put("contract", contract);
-        List<Predicate> criteria = new ArrayList<Predicate>();
+        
         if (filters != null) {
             for (FilterItem f : filters) {
                 criteria.add(f.getPredicate(cb, paths));
             }
             c.where(cb.and(criteria.toArray(new Predicate[0])));
         }
-        return entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
+        
+        
+        //List<Object[]> result = entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
+        //List<MaterialDocItem> l = new ArrayList<MaterialDocItem>();
+        //for(Object[] o :result){
+        	
+        //	MaterialDocItem item = new MaterialDocItem();
+        	//item.setLineId((Long) o[0]);
+        	//item.setNetWeight((Double) o[1]);
+        //	l.add(item);
+        	
+        //}
+        
+        return null;
+        //return entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
+    	
+    	//return null;
+    			
     }
 
     public static String mapToJson(HashMap<java.lang.String, java.lang.Object> map, List<com.itg.extjstest.domain.MaterialDocItem> result) {

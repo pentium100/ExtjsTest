@@ -346,6 +346,14 @@ focus --class ~.domain.MaterialDocItem
 field string --fieldName remark --sizeMax 3000
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-07 22:45:42
+<<<<<<< HEAD
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-10 14:59:48
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-10 15:04:13
+=======
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-11 18:33:18
+focus --class ~.domain.MaterialDocItem
+field number --fieldName direction --type short
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-11 18:48:45
+>>>>>>> branch 'master' of ssh://git@github.com/pentium100/ExtjsTest.git

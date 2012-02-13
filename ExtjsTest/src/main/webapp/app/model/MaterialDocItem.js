@@ -1,6 +1,6 @@
 Ext.define('AM.model.MaterialDocItem', {
 			extend : 'Ext.data.Model',
-			idProperty : 'lindId',
+			idProperty : 'lineId',
 			fields : [{
 						name : 'moveType',
 						type : 'string'
@@ -24,6 +24,9 @@ Ext.define('AM.model.MaterialDocItem', {
 					}, {
 						name : 'warehouse',
 						type : 'string'
+					}, {
+						name : 'direction',
+						type : 'int'
 					}, {
 						name : 'lineId',
 						type : 'int'
