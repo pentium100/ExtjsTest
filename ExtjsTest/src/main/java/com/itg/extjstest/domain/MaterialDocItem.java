@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -34,105 +35,144 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJson
 public class MaterialDocItem {
 
-    @ManyToOne
-    private MaterialDoc materialDoc;
+	@ManyToOne
+	private MaterialDoc materialDoc;
 
-    @Size(max = 3)
-    private String moveType;
+	@Size(max = 3)
+	private String moveType;
 
-    @Size(max = 20)
-    private String model_contract;
+	@Size(max = 20)
+	private String model_contract;
 
-    @Size(max = 20)
-    private String model_tested;
+	@Size(max = 20)
+	private String model_tested;
 
-    private Double grossWeight;
+	private Double grossWeight;
 
-    private Double netWeight;
+	private Double netWeight;
 
-    @Size(max = 50)
-    private String warehouse;
+	@Size(max = 50)
+	private String warehouse;
 
-    @ManyToOne
-    private com.itg.extjstest.domain.MaterialDocItem lineId_in;
+	@ManyToOne(fetch = FetchType.LAZY)
+	private com.itg.extjstest.domain.MaterialDocItem lineId_in;
 
-    @Size(max = 3000)
-    private String remark;
+	@Size(max = 3000)
+	private String remark;
 
-    
-    @Column(nullable = true)
-    private short direction;
+	@Column(nullable = true)
+	private short direction;
 
-    public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(List<com.itg.extjstest.util.FilterItem> filters, int start, int page, int limit) {
-        
-    	CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-        
-        List<Predicate> criteria = new ArrayList<Predicate>();
-        CriteriaQuery<Tuple> c = cb.createTupleQuery();
-        
-        Root<MaterialDocItem> root = c.from(MaterialDocItem.class);
-        Join<MaterialDocItem, MaterialDoc> header = root.join("materialDoc");
-        Join<MaterialDoc, Contract> contract = header.join("contract");
-    
-        
-        
-        Subquery<Tuple> subQuery = c.subquery(Tuple.class);
-        Root<MaterialDocItem> out = subQuery.from(MaterialDocItem.class);
-        subQuery.where(cb.isNotNull(out.get("lineId_in")));
+	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter2(
+			List<com.itg.extjstest.util.FilterItem> filters, int start,
+			int page, int limit) {
 
-        Expression<Double> weight = out.get("netWeight");
-        Expression<Integer> direction = out.get("direction");
-        Expression<? extends Number> directionWeight = cb.prod(weight, direction);
-        Expression<? extends Number> sumOfdirectionWeight = cb.sum(directionWeight);
-        //subQuery.select(sumOfdirectionWeight);
-        //Join<MaterialDocItem, MaterialDocItem> out = root.join("lineId_in");
-        
-        
-        criteria.add(cb.isNull(root.get("lineId_in")));   // lineId_in 为空, 表示为首条进仓记录.
-        //criteria.add(cb.isNotNull(out.get("lineId_in")));   //        lineId_in 不为空, 表示为后继进出仓记录.
-        
-        
-        //Predicate gt1 = cb.gt(directionWeight, 0);
-        //criteria.add(gt1);
-        
-        
-        //c.select(root.get("lineId"), cb.sum(directionWeight));
-        c.groupBy(root.get("lineId"));
-        c.having(cb.gt(cb.sum(directionWeight), 0));
-        HashMap<String, Path> paths = new HashMap<String, Path>();
-        paths.put("", root);
-        paths.put("materialDoc", header);
-        paths.put("contract", contract);
-        
-        if (filters != null) {
-            for (FilterItem f : filters) {
-                criteria.add(f.getPredicate(cb, paths));
-            }
-            c.where(cb.and(criteria.toArray(new Predicate[0])));
-        }
-        
-        
-        //List<Object[]> result = entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
-        //List<MaterialDocItem> l = new ArrayList<MaterialDocItem>();
-        //for(Object[] o :result){
-        	
-        //	MaterialDocItem item = new MaterialDocItem();
-        	//item.setLineId((Long) o[0]);
-        	//item.setNetWeight((Double) o[1]);
-        //	l.add(item);
-        	
-        //}
-        
-        return null;
-        //return entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
-    	
-    	//return null;
-    			
-    }
+		String query = "select i.lineId_in.lineId, sum(i.direction*i.netWeight)"
+				+ "   from MaterialDocItem i "
+				+ "   group by i.lineId_in.lineId, i.warehouse"
+				+ "   having sum(i.direction*i.netWeight)>0";
 
-    public static String mapToJson(HashMap<java.lang.String, java.lang.Object> map, List<com.itg.extjstest.domain.MaterialDocItem> result) {
-        map.put("materialdocitems", result);
-        String resultJson = new JSONSerializer().exclude("*.class").include("materialdocitems").include("materialdocitems.materialDoc").include("materialdocitems.materialDoc.docType").transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class).serialize(map);
-        return resultJson;
-    }
+		List result = entityManager().createQuery(query).getResultList();
+		return result;
+
+	}
+
+	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(
+			List<com.itg.extjstest.util.FilterItem> filters, int start,
+			int page, int limit) {
+
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+
+		List<Predicate> criteria = new ArrayList<Predicate>();
+		CriteriaQuery<Tuple> c = cb.createTupleQuery();
+
+		Root<MaterialDocItem> fromMaterialDocItem = c
+				.from(MaterialDocItem.class);
+		// Join<MaterialDocItem, MaterialDoc> joinMaterialDoc =
+		// fromMaterialDocItem.join("materialDoc");
+		// Join<MaterialDoc, Contract> joinContract =
+		// joinMaterialDoc.join("contract");
+
+		Expression<Double> weight = fromMaterialDocItem.get("netWeight");
+		Expression<Double> direction = fromMaterialDocItem.get("direction");
+		Expression<Double> directionWeight = (Expression<Double>) cb.prod(
+				weight, direction);
+		Expression<Double> sumOfDirectionWeight = cb.sum(directionWeight);
+
+		c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId").alias("lineId_in"),
+				fromMaterialDocItem.get("warehouse").alias("warehouse"),
+				sumOfDirectionWeight.alias("stockWeight")));
+		c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"),
+				fromMaterialDocItem.get("warehouse"));
+		c.having(cb.gt(sumOfDirectionWeight, 0));
+		
+
+		Subquery<MaterialDocItem> subq = c.subquery(MaterialDocItem.class);
+		Root<MaterialDocItem> subFromMaterialDocItem = subq
+				.from(MaterialDocItem.class);
+		Root<MaterialDoc> subFromMaterialDoc = subq.from(MaterialDoc.class);
+		Root<Contract> subFromContract = subq.from(Contract.class);
+
+		subq.select(subFromMaterialDocItem);
+		List<Predicate> subCriteria = new ArrayList<Predicate>();
+
+		subCriteria.add(cb.equal(subFromMaterialDocItem.get("lineId"),
+				subFromMaterialDocItem.get("lineId_in")));
+		subCriteria.add(cb.equal(subFromMaterialDocItem.get("materialDoc"),
+				subFromMaterialDoc.get("docNo")));
+		subCriteria.add(cb.equal(subFromMaterialDoc.get("contract"),
+				subFromContract.get("id")));
+
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", fromMaterialDocItem);
+
+		HashMap<String, Path> subPaths = new HashMap<String, Path>();
+		subPaths.put("", subFromMaterialDocItem);
+		subPaths.put("materialDoc", subFromMaterialDoc);
+		subPaths.put("contract", subFromContract);
+
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				if (!f.getField().equals("warehouse")) {
+					subCriteria.add(f.getPredicate(cb, subPaths));
+				}else{
+					criteria.add(f.getPredicate(cb, paths));
+				}
+			}
+			subq.where(cb.and(subCriteria.toArray(new Predicate[0])));
+		}
+		
+		c.where(cb.in(fromMaterialDocItem.get("lineId_in")).value(subq));
+
+		List<Tuple> result = entityManager().createQuery(c)
+				.setFirstResult(start).setMaxResults(limit).getResultList();
+		List<MaterialDocItem> l = new ArrayList<MaterialDocItem>();
+		for (Tuple o : result) {
+
+			Long lineId = (Long) o.get("lineId_in");
+			MaterialDocItem item = MaterialDocItem.findMaterialDocItem(lineId);
+			MaterialDoc materialDoc = item.getMaterialDoc();
+			Contract contract = materialDoc.getContract();
+			item.setWarehouse((String) o.get("warehouse"));
+			item.setNetWeight((Double) o.get("stockWeight"));
+			entityManager().detach(item);
+			l.add(item);
+
+		}
+		return l;
+	}
+
+	public static String mapToJson(
+			HashMap<java.lang.String, java.lang.Object> map,
+			List<com.itg.extjstest.domain.MaterialDocItem> result) {
+		map.put("materialdocitems", result);
+		String resultJson = new JSONSerializer()
+				.exclude("*.class")
+				.include("materialdocitems")
+				.include("materialdocitems.materialDoc")
+				.include("materialdocitems.materialDoc.docType")
+				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+						Date.class).serialize(map);
+		return resultJson;
+	}
 }

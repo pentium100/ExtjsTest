@@ -32,10 +32,10 @@ Ext.define('AM.model.MaterialDocItemSearch', {
 						type : 'int'
 					}, {
 						name : 'contractNo',
-						mapping : 'materialDoc.contract.ContractNo'
+						mapping : 'materialDoc.contract.contractNo'
 					}, {
-						name : 'deliveryNote',
-						mapping : 'materialDoc.deliveryNote'
+						name : 'plateNum',
+						mapping : 'materialDoc.plateNum'
 					}, {
 						name : 'deliveryNote',
 						mapping : 'materialDoc.deliveryNote'
