@@ -9,21 +9,42 @@ import javax.servlet.http.HttpServletRequest;
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.Message;
+import com.itg.extjstest.util.FilterItem;
 
+import flexjson.JSONDeserializer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RooWebJson(jsonObject = Message.class)
 @Controller
 @RequestMapping("/messages")
 public class MessageController {
+	
+	
+	
+	@Autowired
+	@Qualifier("authenticationManager")
+	protected AuthenticationManager authenticationManager;
 
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
@@ -48,36 +69,34 @@ public class MessageController {
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}", headers = "Accept=application/json")
-	public ResponseEntity<String> updateFromJson(@RequestBody String json, HttpServletRequest request) {
+	public ResponseEntity<String> updateFromJson(@RequestBody String json,
+			HttpServletRequest request) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		Message message = Message.fromJsonToMessage(json);
 		List<Message> messages = new ArrayList<Message>();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		org.springframework.http.HttpStatus status = HttpStatus.CREATED;
-		
-		
+
 		String validateMessage = message.validateObject(request.getLocale());
-		
-		if (!validateMessage.equals("")){
+
+		if (!validateMessage.equals("")) {
 			map.put("success", false);
 			map.put("message", validateMessage);
 			status = HttpStatus.NOT_ACCEPTABLE;
 			String resultJson = Message.mapToJson(map, messages);
-			return new ResponseEntity<String>(resultJson, headers,
-					status);
+			return new ResponseEntity<String>(resultJson, headers, status);
 
 		}
-		
+
 		try {
 			message = message.merge();
 
 			messages.add(message);
 			map.put("success", true);
 
-
 		} catch (Exception e) {
-			
+
 			map.put("success", false);
 			map.put("message", e.getLocalizedMessage());
 			status = HttpStatus.NOT_ACCEPTABLE;
@@ -85,24 +104,50 @@ public class MessageController {
 
 		String resultJson = Message.mapToJson(map, messages);
 
-		return new ResponseEntity<String>(resultJson, headers,
-				status);
+		return new ResponseEntity<String>(resultJson, headers, status);
 
-		//if (message == null) {
-		//	return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-		//}
-
-
+		// if (message == null) {
+		// return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		// }
 
 		// return new ResponseEntity<String>(headers, HttpStatus.OK);
 	}
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> listJson() {
+	public ResponseEntity<String> listJson(
+
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "messageType", required = false) String messageType) {
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		List<Message> result = Message.findAllMessages();
+
+		List<Message> result;
+		List<FilterItem> filters = new ArrayList<FilterItem>();
+		if (filter != null) {
+			filters = new JSONDeserializer<List<FilterItem>>()
+					.use(null, ArrayList.class).use("values", FilterItem.class)
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
+
+		}
+
+		if (messageType != null) {
+			FilterItem typeFilter = new FilterItem();
+			typeFilter.setComparison("eq");
+			typeFilter.setField("type");
+			typeFilter.setValue(messageType);
+			typeFilter.setType("string");
+
+			filters.add(typeFilter);
+		}
+
+		// List<Message> result = Message.findAllMessages();
+		result = Message.findMessagesByFilter(filters, start, page, limit);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("total", result.size());
@@ -111,5 +156,43 @@ public class MessageController {
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
 
 	}
+
+	@RequestMapping(headers = "Accept=text/html")
+	public String listMessageByType(@RequestParam(value="messageType", required=true) String messageType,
+			                        ModelMap model) {
+		
+		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+		grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
+
+		UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken("jonh", "admin", grantedAuthorities);
+		
+		//uat.setDetails(user);
+		SecurityContext context = SecurityContextHolder.getContext();
+		
+		
+		Authentication userAuth = authenticationManager.authenticate(uat);
+
+		context.setAuthentication(userAuth);
+		
+		model.addAttribute("messageType", messageType);
+		
+		return "viewMessage";
+
+	}
+
+	// @RequestMapping(headers = "Accept=application/json")
+	// @ResponseBody
+	// public ResponseEntity<String> listJson() {
+	// HttpHeaders headers = new HttpHeaders();
+	// headers.add("Content-Type", "application/json; charset=utf-8");
+	// List<Message> result = Message.findAllMessages();
+
+	// HashMap<String, Object> map = new HashMap<String, Object>();
+	// map.put("total", result.size());
+	// map.put("success", true);
+	// String resultJson = Message.mapToJson(map, result);
+	// return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
+
+	// }
 
 }

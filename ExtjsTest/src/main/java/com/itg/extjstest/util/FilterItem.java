@@ -66,7 +66,7 @@ public class FilterItem {
 		}
 
 		if (type.equals("list")) {
-			return path.get(fieldName).in(getIntegerListValue());
+			return path.get(fieldName).in(getStringListValue());
 		}
 
 		if (type.equals("string")) {
@@ -84,6 +84,19 @@ public class FilterItem {
 		}
 
 		return null;
+	}
+
+	private List<String> getStringListValue() {
+		// TODO Auto-generated method stub
+		ArrayList<String> result = new ArrayList<String>();
+
+		String[] values = value.split(",");
+		for (String s : values) {
+			result.add(String.valueOf(s));
+		}
+
+		return result;
+
 	}
 
 	private List<Integer> getIntegerListValue() {

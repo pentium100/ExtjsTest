@@ -5,7 +5,15 @@ Ext.define('AM.controller.Messages', {
 			stores : ['MessagesStore', 'MessageTypesStore'],
 			models : ['Message', 'Specification'],
 
-			init : function() {
+			init : function(param) {
+				
+				if(param&&param.messageType){
+					
+					//var filters = this.getView('message.MessageList').filters;
+					//alter(filters.getFilterData());
+					
+				}
+				
 				this.control({
 							'messageList' : {
 								itemdblclick : this.editMessage

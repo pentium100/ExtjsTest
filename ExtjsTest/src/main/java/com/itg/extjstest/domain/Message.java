@@ -5,6 +5,7 @@ import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,6 +18,12 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -28,6 +35,8 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+
+import com.itg.extjstest.util.FilterItem;
 
 @RooJavaBean
 @RooToString
@@ -112,5 +121,32 @@ public class Message {
     public static Message fromJsonToMessage(String json) {
         return new JSONDeserializer<Message>().use(null, Message.class).deserialize(json);
     }
+
+	public static List<Message> findMessagesByFilter(List<FilterItem> filters,
+			Integer start, Integer page, Integer limit) {
+		// TODO Auto-generated method stub
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<Message> c = cb.createQuery(Message.class);
+		Root<Message> root = c.from(Message.class);
+		
+	
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", root);
+
+		
+		List<Predicate> criteria = new ArrayList<Predicate>();
+
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				criteria.add(f.getPredicate(cb, paths));
+			}
+
+			c.where(cb.and(criteria.toArray(new Predicate[0])));
+		}
+
+		return entityManager().createQuery(c).setFirstResult(start)
+				.setMaxResults(limit).getResultList();
+
+	}
 
 }

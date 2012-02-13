@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -18,6 +20,8 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 import javax.persistence.criteria.Subquery;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -55,6 +59,8 @@ public class MaterialDocItem {
     @Size(max = 3000)
     private String remark;
 
+    
+    @Column(nullable = true)
     private short direction;
 
     public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(List<com.itg.extjstest.util.FilterItem> filters, int start, int page, int limit) {
