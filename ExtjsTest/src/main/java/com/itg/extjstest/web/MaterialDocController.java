@@ -85,9 +85,9 @@ public class MaterialDocController {
         Set<MaterialDocItem> items = materialDoc.getItems();
         for(MaterialDocItem item:items){
         	item.setMaterialDoc(materialDoc);
-        	//if(item.getMoveType().equals("101")){
-        	//	item.setLineId_in(item);
-        	//}
+        	if(item.getMoveType().equals("101")){
+        		item.setLineId_in(item);
+        	}
         }
         
         materialDoc = materialDoc.merge();
@@ -117,9 +117,9 @@ public class MaterialDocController {
         Set<MaterialDocItem> items = materialDoc.getItems();
         for(MaterialDocItem item:items){
         	item.setMaterialDoc(materialDoc);
-        	//if(item.getMoveType().equals("101")){
-        	//	item.setLineId_in(item);
-        	//}
+        	if(item.getMoveType().equals("101")){
+        		item.setLineId_in(item);
+        	}
         }
         
         
