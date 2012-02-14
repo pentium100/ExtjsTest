@@ -357,3 +357,8 @@ field number --fieldName direction --type short
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-11 18:48:45
 >>>>>>> branch 'master' of ssh://git@github.com/pentium100/ExtjsTest.git
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-14 15:14:54
+focus --class ~.domain.Message
+// [failed] field bool --fieldName isUrgent 
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-14 15:16:46

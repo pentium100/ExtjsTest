@@ -1,8 +1,10 @@
 package com.itg.extjstest.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +20,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,12 +43,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/messages")
 public class MessageController {
-	
-	
-	
+
 	@Autowired
 	@Qualifier("authenticationManager")
 	protected AuthenticationManager authenticationManager;
+
+	@Autowired
+	@Qualifier("jdbcTemplate")
+	protected NamedParameterJdbcTemplate jdbcTemplate;
 
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
@@ -158,25 +164,43 @@ public class MessageController {
 	}
 
 	@RequestMapping(headers = "Accept=text/html")
-	public String listMessageByType(@RequestParam(value="messageType", required=true) String messageType,
-			                        ModelMap model) {
-		
-		List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-		grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
+	public String listMessageByType(
+			@RequestParam(value = "messageType", required = true) String messageType,
+			@RequestParam(value = "id", required = true) Integer loginId,
+			ModelMap model) {
 
-		UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken("jonh", "admin", grantedAuthorities);
-		
-		//uat.setDetails(user);
-		SecurityContext context = SecurityContextHolder.getContext();
-		
-		
-		Authentication userAuth = authenticationManager.authenticate(uat);
+		String query = "select * from z_mt_oa_status where id = :loginId and logtime > :now ";
 
-		context.setAuthentication(userAuth);
-		
-		model.addAttribute("messageType", messageType);
-		
-		return "viewMessage";
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("loginId", loginId);
+		Date now = new Date();
+		now = new Date(now.getTime() - (1 * 1000 * 60));
+		params.put("now", now);
+
+		List<Map<String, Object>> l = jdbcTemplate.queryForList(query, params);
+
+		if (l.size() > 0) {
+
+			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+			grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
+
+			UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken(
+					"john", "admin", grantedAuthorities);
+
+			// uat.setDetails(user);
+			SecurityContext context = SecurityContextHolder.getContext();
+
+			Authentication userAuth = authenticationManager.authenticate(uat);
+
+			context.setAuthentication(userAuth);
+			model.addAttribute("messageType", messageType);
+
+			return "viewMessage";
+			
+		}else{
+			return "redirect:/login.jsp";
+		}
+
 
 	}
 

@@ -81,7 +81,8 @@ Ext.define('AM.view.message.MessageEdit', {
                         {
                             xtype: 'checkbox',
                             fieldLabel: '是否紧急',
-							name:'isUrgent'
+							name:'isUrgent',
+							inputValue : 'true'
                         },
                         {
                             xtype: 'textareafield',

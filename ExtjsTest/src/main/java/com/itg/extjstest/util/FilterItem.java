@@ -67,6 +67,12 @@ public class FilterItem {
 
 		if (type.equals("list")) {
 			return path.get(fieldName).in(getStringListValue());
+			//return path.get(fieldName).in(getIntegerListValue());
+		}
+
+		if (type.equals("sList")) {
+			
+			return path.get(fieldName).in(getIntegerListValue());
 		}
 
 		if (type.equals("string")) {

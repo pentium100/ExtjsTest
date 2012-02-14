@@ -111,6 +111,12 @@ public class Contract {
 
 		if (filters != null) {
 			for (FilterItem f : filters) {
+				
+				if(f.getField().equals("contractType")){
+					f.setType("sList");
+				}
+				
+				
 				criteria.add(f.getPredicate(cb, paths));
 			}
 
