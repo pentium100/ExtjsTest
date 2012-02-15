@@ -3,6 +3,16 @@ Ext.Loader.setConfig({
 		});
 Ext.Loader.setPath('Ext.ux', 'js/extjs4/examples/ux');
 Ext.require(['Ext.form.field.Trigger']);
+//Ext.require([
+//	  'Ext.data.*',
+//    'Ext.tip.QuickTipManager',
+//    'Ext.form.*',
+//    'Ext.ux.data.PagingMemoryProxy',
+//    'Ext.grid.Panel',
+//	'Ext.view.View',
+	
+//]);
+
 
 Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 				'Ext.ux.grid.menu.ListMenu'], function() {
