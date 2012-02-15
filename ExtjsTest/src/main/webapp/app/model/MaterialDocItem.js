@@ -1,6 +1,17 @@
 Ext.define('AM.model.MaterialDocItem', {
 			extend : 'Ext.data.Model',
 			idProperty : 'lineId',
+			
+			proxy : {
+				type : 'rest',
+				url : 'materialdocitems/1',
+				reader : {
+					type : 'json',
+					root : 'materialdocitems',
+					successProperty : 'success'
+				}
+			},
+			
 			fields : [{
 						name : 'moveType',
 						type : 'string'
@@ -40,8 +51,11 @@ Ext.define('AM.model.MaterialDocItem', {
 			associations : [{
 						type : 'belongsTo',
 						model : 'AM.model.MaterialDocItem',
+						//associatedName : 'lineId_in',
+						getterName : 'getLineId_in',
+						setterName : 'setLineId_in',
 						primaryKey: 'lineId',
-						foreignKey: 'lineId_in'
+						foreignKey: 'lineId_in_key'
 					},{
 						type : 'belongsTo',
 						model : 'AM.model.MaterialDoc',

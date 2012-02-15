@@ -41,8 +41,7 @@ Ext.define('AM.controller.Messages', {
 			deleteMessage : function(button) {
 				var viewport = button.up('viewport');
 				var grid = viewport.down('messageList');
-				var selection = grid.getView().getSelectionModel()
-						.getSelection()[0];
+				var selection = grid.getView().getSelectionModel().getSelection()[0];
 				if (selection) {
 					grid.getStore().remove(selection);
 					grid.getStore().sync();

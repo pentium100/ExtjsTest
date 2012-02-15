@@ -27,6 +27,11 @@ Ext.define('AM.controller.OutgoingDocs', {
 								click : this.searchMaterialDocItem
 							},
 
+							
+							'materialDocItemSearch gridpanel' : {
+								itemdblclick : this.selectMaterialDocItem
+							},
+							
 							'contractSearch button[action=search]' : {
 								click : this.searchContract
 							},
@@ -59,7 +64,18 @@ Ext.define('AM.controller.OutgoingDocs', {
 
 				view.down('form').loadRecord(record);
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
-
+				
+	
+  
+                var store = record.items();
+                
+                store.each(function(record){
+                	
+                	record.getLineId_in();
+                
+                }, this);
+                
+                
 				view.down('grid').reconfigure(record.items());
 
 			},
@@ -210,6 +226,25 @@ Ext.define('AM.controller.OutgoingDocs', {
 
 				store.load();
 			},
+			
+			selectMaterialDocItem : function(grid, record) {
+				var win = grid.up('window');
+				win.close();
+				var view = win.parentWindow;
+				var grid = view.down('gridpanel');
+				var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
+				itemRecord.set('lineId_in', record.data);
+				itemRecord.set('model_contract', record.data.model_contract);
+				itemRecord.set('model_tested', record.data.model_tested);
+				itemRecord.set('deliveryNote', record.data.deliveryNote);
+				itemRecord.set('batchNo', record.data.batchNo);
+				itemRecord.set('plateNum', record.data.plateNum);
+				itemRecord.set('warehouse', record.data.warehouse);
+				itemRecord.set('netWeight', record.data.netWeight);
+				itemRecord.set('direction', -1);
+				
+				
+			},
 			selectContract : function(grid, record) {
 				var win = grid.up('window');
 				win.close();
@@ -223,18 +258,18 @@ Ext.define('AM.controller.OutgoingDocs', {
 				// oldRecord.get('contract').setDirty();
 			},
 
-			selectMaterialDocItem : function(grid, record) {
-				var win = grid.up('window');
-				win.close();
-				var view = win.parentWindow;
-				var form = view.down('form');
-				var oldRecord = form.getRecord();
-				// oldRecord.set('contract_id', record.get('id'));
-				oldRecord.setLineid_in(record.data);
-				oldRecord.set('model_contract', record.get('model_contract'));
-				form.loadRecord(oldRecord);
-				// oldRecord.get('contract').setDirty();
-			},
+			//selectMaterialDocItem : function(grid, record) {
+			//	var win = grid.up('window');
+			//	win.close();
+			//	var view = win.parentWindow;
+			//	var form = view.down('form');
+			//	var oldRecord = form.getRecord();
+
+			//	oldRecord.setLineid_in(record.data);
+			//	oldRecord.set('model_contract', record.get('model_contract'));
+			//	form.loadRecord(oldRecord);
+
+			//},
 
 			saveMaterialDoc : function(button) {
 

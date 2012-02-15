@@ -102,7 +102,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 							editor : {
 								xtype : 'trigger',
 								triggerCls : 'icon-search',
-								editable : true,
+								editable : false,
 
 								onTriggerClick : function(e) {
 									var view = Ext.widget(
@@ -120,8 +120,8 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'model_tested',
-							text : '型号(检验后)',
-							field : 'textfield'
+							text : '型号(检验后)'
+							
 						}, {
 							xtype : 'numbercolumn',
 							dataIndex : 'netWeight',
@@ -129,24 +129,24 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 							field : 'numberfield'
 						}, {
 							xtype : 'gridcolumn',
-							dataIndex : 'model_tested',
-							text : '进仓单号',
-							field : 'textfield'
+							dataIndex : 'deliveryNote',
+							text : '进仓单号'
+							
 						}, {
 							xtype : 'gridcolumn',
-							dataIndex : 'model_tested',
-							text : '车号/卡号',
-							field : 'textfield'
+							dataIndex : 'plateNum',
+							text : '车号/卡号'
+							
 						}, {
 							xtype : 'gridcolumn',
-							dataIndex : 'model_tested',
-							text : '批号',
-							field : 'textfield'
+							dataIndex : 'batchNo',
+							text : '批号'
+							
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'warehouse',
-							text : '仓库',
-							field : 'textfield'
+							text : '仓库'
+							
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'remark',
