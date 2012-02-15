@@ -121,7 +121,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 							xtype : 'gridcolumn',
 							dataIndex : 'model_tested',
 							text : '型号(检验后)'
-							
+
 						}, {
 							xtype : 'numbercolumn',
 							dataIndex : 'netWeight',
@@ -130,23 +130,31 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'deliveryNote',
-							text : '进仓单号'
-							
+							text : '进仓单号',
+							renderer : function(value, metaData, record) {
+
+								if ((record['AM.model.MaterialDocItemBelongsToInstance'])
+										) {
+									return record['AM.model.MaterialDocItemBelongsToInstance'].get('deliveryNote');
+								}
+
+							}
+
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'plateNum',
 							text : '车号/卡号'
-							
+
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'batchNo',
 							text : '批号'
-							
+
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'warehouse',
 							text : '仓库'
-							
+
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'remark',

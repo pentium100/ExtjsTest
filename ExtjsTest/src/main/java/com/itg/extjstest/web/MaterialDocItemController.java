@@ -73,6 +73,27 @@ public class MaterialDocItemController {
 	}
 	
 	
-	
+    @RequestMapping(value = "/{lineId}", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> showJson(@PathVariable("lineId") Long lineId) {
+        MaterialDocItem materialdocitem = MaterialDocItem.findMaterialDocItem(lineId);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        if (materialdocitem == null) {
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+        }
+        
+        List<MaterialDocItem> result = new ArrayList<MaterialDocItem>();
+        result.add(materialdocitem);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("total", 1);
+		map.put("success", true);
+		String resultJson = MaterialDocItem.mapToJson(map, result);
+		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
+        
+        
+        //return new ResponseEntity<String>(materialdocitem.toJson(), headers, HttpStatus.OK);
+    }
+
 
 }

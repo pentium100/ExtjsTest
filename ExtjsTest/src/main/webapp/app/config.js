@@ -3,17 +3,74 @@ Ext.Loader.setConfig({
 		});
 Ext.Loader.setPath('Ext.ux', 'js/extjs4/examples/ux');
 Ext.require(['Ext.form.field.Trigger']);
-//Ext.require([
-//	  'Ext.data.*',
-//    'Ext.tip.QuickTipManager',
-//    'Ext.form.*',
-//    'Ext.ux.data.PagingMemoryProxy',
-//    'Ext.grid.Panel',
-//	'Ext.view.View',
-	
-//]);
+// Ext.require([
+// 'Ext.data.*',
+// 'Ext.tip.QuickTipManager',
+// 'Ext.form.*',
+// 'Ext.ux.data.PagingMemoryProxy',
+// 'Ext.grid.Panel',
+// 'Ext.view.View',
 
+// ]);
 
+Ext.require(['Ext.data.BelongsToAssociation'], function() {
+
+	Ext.data.BelongsToAssociation.override({
+		createGetter : function() {
+			var me = this, ownerModel = me.ownerModel, associatedName = me.associatedName, associatedModel = me.associatedModel, foreignKey = me.foreignKey, primaryKey = me.primaryKey, instanceName = me.instanceName;
+
+			// 'this' refers to the Model instance inside this function
+			return function(options, scope) {
+				options = options || {};
+
+				var model = this, foreignKeyId = model.get(foreignKey), instance, args;
+
+				if (model[instanceName] === undefined) {
+					instance = Ext.ModelManager.create({}, associatedName);
+					instance.set(primaryKey, foreignKeyId);
+
+					if (typeof options == 'function') {
+						options = {
+							callback : options,
+							scope : scope || model
+						};
+					}
+
+					//var readOp = new Ext.data.Operation({
+					//			action : 'read',
+					//			id : foreignKeyId
+					//		});
+					//var proxy = associatedModel.getProxy();
+					//proxy.read(readOp);
+					//instance = readOp.getRecords()[0];
+
+					associatedModel.load(foreignKeyId, options);
+
+					// model[instanceName] = associatedModel;
+					model[instanceName] = instance;
+					return associatedModel;
+				} else {
+					instance = model[instanceName];
+					args = [instance];
+					scope = scope || model;
+
+					// TODO: We're duplicating the callback invokation code that
+					// the instance.load() call above
+					// makes here - ought to be able to normalize this - perhaps
+					// by caching at the Model.load layer
+					// instead of the association layer.
+					Ext.callback(options, scope, args);
+					Ext.callback(options.success, scope, args);
+					Ext.callback(options.failure, scope, args);
+					Ext.callback(options.callback, scope, args);
+
+					return instance;
+				}
+			};
+		}
+
+	});
+});
 Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 				'Ext.ux.grid.menu.ListMenu'], function() {
 			//
@@ -108,10 +165,10 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 						}
 
-						//record.getDocType(function(docType, operation) {
-						//			// do something with the category object
-						//			alert(docType.get('id')); // alerts 20
-						//		}, this);
+						// record.getDocType(function(docType, operation) {
+						// // do something with the category object
+						// alert(docType.get('id')); // alerts 20
+						// }, this);
 						// if(association.type=='belongsTo'){
 						// var childData = data[association.name];
 						// data[association.name].push();
@@ -177,7 +234,7 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 					var itemUpdated = false, i;
 					var masterUpdated = item.dirty === true
 							&& item.phantom !== true && item.isValid();
-					if (!masterUpdated&&!item.phantom) {
+					if (!masterUpdated && !item.phantom) {
 
 						for (i = 0; i < item.associations.length; i++) {
 							var association = item.associations.get(i);
@@ -261,115 +318,104 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							}
 						}()
 					});
-					
-			Ext.define( 'Ext.data.ux.Store',{
-			
-			    extend: 'Ext.data.Store', 
-				
-				constructor: function(config){
-					Ext.data.ux.Store.superclass.constructor.call(this, config)
-					this.addListener('write', function(store, operation){
-						
-									var record = operation.getRecords()[0];
-									var name = Ext.String.capitalize(operation.action);
-									var verb;
-                    
-                    
-									if (name == 'Destroy') {
-										record = operation.records[0];
-										verb = 'Destroyed';
-									} else {
-										verb = name + 'd';
-									}
-									Ext.example.msg(name, Ext.String.format("{0} successful: {1}", verb, record.getId()));
 
+			Ext.define('Ext.data.ux.Store', {
 
-						
-						}, this
-					
-					
-					);
-					
-					var proxy = this.getProxy();
-					proxy.addListener('exception', function(proxy, res){
-						
-						var response;
-						if(res.responseText){
-						  response = Ext.decode(res.responseText);
+						extend : 'Ext.data.Store',
+
+						constructor : function(config) {
+							Ext.data.ux.Store.superclass.constructor.call(this,
+									config)
+							this.addListener('write',
+									function(store, operation) {
+
+										var record = operation.getRecords()[0];
+										var name = Ext.String
+												.capitalize(operation.action);
+										var verb;
+
+										if (name == 'Destroy') {
+											record = operation.records[0];
+											verb = 'Destroyed';
+										} else {
+											verb = name + 'd';
+										}
+										Ext.example.msg(name,
+												Ext.String.format(
+														"{0} successful: {1}",
+														verb, record.getId()));
+
+									}, this
+
+							);
+
+							var proxy = this.getProxy();
+							proxy.addListener('exception',
+									function(proxy, res) {
+
+										var response;
+										if (res.responseText) {
+											response = Ext
+													.decode(res.responseText);
+										}
+
+										var errmsg;
+										if (response && response.message) {
+
+											errmsg = response.message;
+
+										} else {
+											errmsg = '系统错误，请与管理员联系。';
+										}
+										Ext.MessageBox.show({
+													title : '错误信息',
+													msg : errmsg,
+													buttons : Ext.MessageBox.OK,
+													icon : Ext.MessageBox.ERROR,
+													closable : false,
+													modal : true
+												});
+
+									}, this);
+
+							// Copy configured listeners into *this* object so
+							// that the base class's
+
+							// constructor will add them.
+							// this.listeners = config.listeners;
+
+							// Call our superclass constructor to complete
+							// construction process.
+
 						}
-						
-						
-						var errmsg;
-						if(response&&response.message){
-							
-							errmsg = response.message;
 
-						}else{
-							errmsg = '系统错误，请与管理员联系。';
-						}
-						Ext.MessageBox.show({
-								title: '错误信息',
-								msg: errmsg,
-								buttons: Ext.MessageBox.OK,
-								icon: Ext.MessageBox.ERROR,
-								closable: false,
-								modal:true
-						});
+					});
+			// Ext.data.Store.override({
 
-						
-					}, this);
+			// listeners:{
+			// write: function(store, operation){
 
+			// var record = operation.getRecords()[0];
+			// var name = Ext.String.capitalize(operation.action);
+			// var verb;
 
+			// if (name == 'Destroy') {
+			// record = operation.records[0];
+			// verb = 'Destroyed';
+			// } else {
+			// verb = name + 'd';
+			// }
+			// Ext.example.msg(name, Ext.String.format("{0} Message: {1}", verb,
+			// record.getId()));
 
+			// }
 
+			// }
 
-					// Copy configured listeners into *this* object so that the base class's
-
-// constructor will add them.
-					//this.listeners = config.listeners;
-
-					// Call our superclass constructor to complete construction process.
-					
-				}
-				
-
-				
-			});				
-			//Ext.data.Store.override({
-					
-			//		listeners:{
-			//			write: function(store, operation){
-			
-			//						var record = operation.getRecords()[0];
-			//						var name = Ext.String.capitalize(operation.action);
-			//						var verb;
-                    
-                    
-			//						if (name == 'Destroy') {
-			//							record = operation.records[0];
-			//							verb = 'Destroyed';
-			//						} else {
-			//							verb = name + 'd';
-			//						}
-			//						Ext.example.msg(name, Ext.String.format("{0} Message: {1}", verb, record.getId()));
-
-			
-			
-			//			}		
-						
-		
-			//		}
-	
-	
-			//	});
-
-
-		
+			// });
 
 		});
 
 Ext.JSON.encodeDate = function(d) {
 	return Ext.Date.format(d, '"Y-m-d H:i:s"');
 };
-
-

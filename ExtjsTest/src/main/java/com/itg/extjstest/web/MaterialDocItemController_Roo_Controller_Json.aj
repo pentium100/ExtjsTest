@@ -16,17 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect MaterialDocItemController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{lineId}", headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> MaterialDocItemController.showJson(@PathVariable("lineId") Long lineId) {
-        MaterialDocItem materialdocitem = MaterialDocItem.findMaterialDocItem(lineId);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        if (materialdocitem == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(materialdocitem.toJson(), headers, HttpStatus.OK);
-    }
     
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> MaterialDocItemController.createFromJson(@RequestBody String json) {

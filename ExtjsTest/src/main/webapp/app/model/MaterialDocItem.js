@@ -44,6 +44,8 @@ Ext.define('AM.model.MaterialDocItem', {
 					}, {
 						name : 'version',
 						type : 'int'
+					},{
+						name:'lineId_in_key'
 					}
 					
 					],
