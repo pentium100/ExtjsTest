@@ -580,11 +580,26 @@
 					<configuration>
 						<type>runtime</type>
 						<properties>
-						<cargo.remote.username>admin</cargo.remote.username>
-						<cargo.remote.password>admin</cargo.remote.password>
-						<cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
+							<cargo.remote.username>admin</cargo.remote.username>
+							<cargo.remote.password>admin</cargo.remote.password>
+							<cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
 						</properties>
+
+
 					</configuration>
+					<deployer>
+						<type>remote</type>
+						<deployables>
+							<deployable>
+								<groupId>com.itg.extjstest</groupId>
+								<artifactId>ExtjsTest</artifactId>
+								<type>war</type>
+								<properties>
+									<context>ExtjsTest</context>
+								</properties>
+							</deployable>
+						</deployables>
+					</deployer>
 				</configuration>
 
 			</plugin>
