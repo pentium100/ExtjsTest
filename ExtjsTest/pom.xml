@@ -6,7 +6,43 @@
 	<artifactId>ExtjsTest</artifactId>
 	<packaging>war</packaging>
 	<version>0.1.0.BUILD-SNAPSHOT</version>
-	<name>ExtjsTest</name>  
+	<name>ExtjsTest</name>
+
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<db.driver>net.sourceforge.jtds.jdbc.Driver</db.driver>
+				<db.url>jdbc\:jtds\:sqlserver\://localhost\:1433/WKB</db.url>
+				<db.username>sa</db.username>
+				<db.password>36987</db.password>
+
+				<db2.driver>net.sourceforge.jtds.jdbc.Driver</db2.driver>
+				<db2.url>jdbc\:jtds\:sqlserver\://172.16.10.54\:1433/aspnetdb</db2.url>
+				<db2.username>sa</db2.username>
+				<db2.password>123456</db2.password>
+
+			</properties>
+		</profile>
+
+		<profile>
+			<id>prd</id>
+			<properties>
+				<db.driver>net.sourceforge.jtds.jdbc.Driver</db.driver>
+				<db.url>jdbc\:jtds\:sqlserver\://172.16.10.112\:1433/CoalCenter</db.url>
+				<db.username>sa</db.username>
+				<db.password>36987</db.password>
+
+				<db2.driver>net.sourceforge.jtds.jdbc.Driver</db2.driver>
+				<db2.url>jdbc\:jtds\:sqlserver\://172.16.10.54\:1433/aspnetdb</db2.url>
+				<db2.username>sa</db2.username>
+				<db2.password>123456</db2.password>
+
+			</properties>
+		</profile>
+
+	</profiles>
+
 	<properties>
 		<roo.version>1.2.0.RELEASE</roo.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
@@ -529,6 +565,38 @@
 					</webAppConfig>
 				</configuration>
 			</plugin>
+
+
+			<plugin>
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.2.0</version>
+				<configuration>
+					<container>
+						<containerId>tomcat7x</containerId>
+						<home>e:\tomcat 7.0</home>
+						<type>remote</type>
+					</container>
+					<configuration>
+						<type>runtime</type>
+						<properties>
+						<cargo.remote.username>admin</cargo.remote.username>
+						<cargo.remote.password>admin</cargo.remote.password>
+						<cargo.tomcat.manager.url>http://localhost:8080/manager</cargo.tomcat.manager.url>
+						</properties>
+					</configuration>
+				</configuration>
+
+			</plugin>
+
 		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 	</build>
 </project>
