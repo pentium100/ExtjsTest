@@ -15,7 +15,7 @@ Ext.define('AM.store.Contracts', {
 			// }
 
 			// ]
-			autoLoad : false,
+			autoLoad : true,
 			proxy : {
 				type : 'rest',
 				url : 'contracts',

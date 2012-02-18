@@ -24,18 +24,30 @@ Ext.define('AM.controller.Menus', {
 					return;
 				}
 
-				var tab = tabs.down("#" + record.raw.controller + record.raw.id);
+				var tab = tabs
+						.down("#" + record.raw.controller + record.raw.id);
 				if (tab == undefined) {
 
-					var c = this.getController(record.raw.controller);
-					//var c = Ext.create("AM.controller."+record.raw.controller)
-					
-					var controllerParam;
-					if(record.raw.controllerParam!=""){
-						controllerParam = Ext.decode(record.raw.controllerParam)
+					// var initNeeded = true;
+					if (!this.application.controllers.get(record.raw.controller)) {
+						var c = this.getController(record.raw.controller);
+						var controllerParam;
+						if (record.raw.controllerParam != "") {
+							controllerParam = Ext
+									.decode(record.raw.controllerParam)
+						}
+
+						c.init(controllerParam);
+
+						// initNeeded = false;
 					}
-					
-					c.init(controllerParam);
+
+					// var c =
+					// Ext.create("AM.controller."+record.raw.controller)
+
+					// if(initNeeded){
+					// c.init(controllerParam);
+					// }
 
 					tab = tabs.add({
 								// we use the tabs.items property to get the
@@ -43,16 +55,15 @@ Ext.define('AM.controller.Menus', {
 								// items/tabs
 								title : record.get("text"),
 								layout : 'fit',
-								closable: true,
-								autoDestroy:true,
-								iconCls: record.get("icon_cls"),
-								
+								closable : true,
+								autoDestroy : true,
+								iconCls : record.get("icon_cls"),
 
 								autoScroll : true,
 								bodyPadding : 0,
 								xtype : record.raw.views,
 
-								id : record.raw.controller + record.raw.id 
+								id : record.raw.controller + record.raw.id
 
 							});
 

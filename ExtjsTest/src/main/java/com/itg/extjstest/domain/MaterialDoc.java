@@ -59,7 +59,7 @@ public class MaterialDoc {
     @DateTimeFormat(style = "M-")
     private Date docDate;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<MaterialDocItem> items = new HashSet<MaterialDocItem>();
 
     @ManyToOne

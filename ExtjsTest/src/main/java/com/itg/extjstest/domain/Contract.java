@@ -52,7 +52,7 @@ public class Contract {
 	@Size(max = 30)
 	private String contractNo;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<ContractItem> items = new HashSet<ContractItem>();
 
 	@Enumerated

@@ -150,18 +150,18 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							 * to the preparedData. Set a flag on them to show
 							 * that they are to be deleted
 							 */
-							Ext.each(childStore.removed, function(
-											removedChildRecord) {
+							//Ext.each(childStore.removed, function(
+							//				removedChildRecord) {
 										// Set a flag here to identify removed
 										// records
-										removedChildRecord.set('forDeletion',
-												true);
-										var removedChildData = this.getRecordData
-												.call(this, removedChildRecord);
-										data[association.name]
-												.push(removedChildData);
-										record.setDirty();
-									}, me);
+							//			removedChildRecord.set('forDeletion',
+							//					true);
+							//			var removedChildData = this.getRecordData
+							//					.call(this, removedChildRecord);
+							//			data[association.name]
+							//					.push(removedChildData);
+							//			record.setDirty();
+							//		}, me);
 
 						}
 

@@ -9,7 +9,8 @@ Ext.define('AM.controller.Contracts', {
 				this.control({
 							'contractList' : {
 								itemdblclick : this.editContract
-								//,activate:this.loadContractData
+								,activate:this.loadContractData
+								,destroy: this.freeUpStore
 							},
 							
 							'contractEdit button[action=save]' : {
@@ -36,7 +37,13 @@ Ext.define('AM.controller.Contracts', {
 						});
 
 			},
-
+            loadContractData:function(){
+            	this.getStore('Contracts').load();
+            },
+            freeUpStore: function(){
+            	//var store = this.getStore('Contracts');
+            	//Ext.data.StoreManager.remove(store);
+            },
 			deleteContract : function(button) {
 				var viewport = button.up('viewport');
 				var grid = viewport.down('contractList');
