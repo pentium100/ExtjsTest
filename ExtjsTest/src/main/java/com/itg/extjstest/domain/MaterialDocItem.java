@@ -11,6 +11,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -24,6 +27,8 @@ import javax.persistence.criteria.Subquery;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
@@ -62,6 +67,27 @@ public class MaterialDocItem {
 
 	@Column(nullable = true)
 	private short direction;
+	
+	
+	
+    @Transient
+    private String contractNo;
+
+    @Transient
+    private String deliveryNote;
+
+    @Transient
+    private String batchNo;
+
+    @Transient
+    private String plateNum;
+
+    @Transient
+    private String workingNo;
+
+    @Transient    
+    private Date docDate;
+
 
 	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter2(
 			List<com.itg.extjstest.util.FilterItem> filters, int start,
@@ -174,5 +200,19 @@ public class MaterialDocItem {
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
 						Date.class).serialize(map);
 		return resultJson;
+	}
+	
+	public void fillLineInInfo(){
+		
+		if(!getLineId_in().equals(this)){
+			MaterialDocItem i = getLineId_in();
+			setBatchNo(i.getMaterialDoc().getBatchNo());
+			setPlateNum(i.getMaterialDoc().getPlateNum());
+			setDeliveryNote(i.getMaterialDoc().getDeliveryNote());
+			setDocDate(i.getMaterialDoc().getDocDate());
+			setWorkingNo(i.getMaterialDoc().getWorkingNo());
+			setContractNo(i.getMaterialDoc().getContract().getContractNo());
+
+		}
 	}
 }

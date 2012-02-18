@@ -64,6 +64,16 @@ public class MaterialDocController {
         
         List<MaterialDoc> result = MaterialDoc.findMaterialDocsByFilter(filters, start, page, limit);
         
+        for(MaterialDoc md:result){
+        	for(MaterialDocItem mi:md.getItems()){
+        		mi.getLineId_in();
+        		mi.fillLineInInfo();
+        		
+        		
+        	}
+        }
+        
+        
         
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("total", MaterialDoc.countMaterialDocs());
@@ -88,11 +98,26 @@ public class MaterialDocController {
         	if(item.getMoveType().equals("101")){
         		item.setLineId_in(item);
         	}
+        	
+        	//if(item.getLineId_in()!=null){
+        		
+        	//	MaterialDocItem lineId_in = MaterialDocItem.findMaterialDocItem(item.getLineId_in().getLineId());
+        	//	item.setLineId_in(lineId_in);
+        	//}
+        	
         }
+        
+        
         
         materialDoc = materialDoc.merge();
         if (materialDoc == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+        }
+        
+        for(MaterialDocItem mi:materialDoc.getItems()){
+        	
+        	mi.fillLineInInfo();
+        	
         }
         
         
@@ -132,10 +157,13 @@ public class MaterialDocController {
         if (materialDoc == null) {
             return new ResponseEntity<String>(headers, HttpStatus.METHOD_FAILURE);
         }
-        
-        
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		List<MaterialDoc> materialDocs = new ArrayList<MaterialDoc>();
+		
+		for(MaterialDocItem mi:materialDoc.getItems()){
+			mi.fillLineInInfo();
+		}
+		
 		materialDocs.add(materialDoc);
 		map.put("success", true);
 		String resultJson = MaterialDoc.mapToJson(map, materialDocs);

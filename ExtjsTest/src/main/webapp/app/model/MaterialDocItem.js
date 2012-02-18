@@ -44,21 +44,45 @@ Ext.define('AM.model.MaterialDocItem', {
 					}, {
 						name : 'version',
 						type : 'int'
+					}, {
+						name : 'lineId_in'
+						
+					}
+
+					
+					
+					,{
+						name:'contractNo',
+						persist: false
 					},{
-						name:'lineId_in_key'
+						name:'batchNo',
+						persist: false
+					},{
+						name:'plateNum',
+						persist: false
+					},{
+						name:'deliveryNote',
+						persist: false
+					},{
+						name:'workingNo',
+						persist: false
 					}
 					
 					],
 
-			associations : [{
-						type : 'belongsTo',
-						model : 'AM.model.MaterialDocItem',
-						//associatedName : 'lineId_in',
-						getterName : 'getLineId_in',
-						setterName : 'setLineId_in',
-						primaryKey: 'lineId',
-						foreignKey: 'lineId_in_key'
-					},{
+			associations : [
+			
+			        //{
+					//	type : 'belongsTo',
+					//	model : 'AM.model.MaterialDocItem',
+					//	instanceName: 'lineId_in',
+					//	getterName : 'getLineId_in',
+					//	setterName : 'setLineId_in',
+					//	primaryKey: 'lineId',
+					//	foreignKey: 'lineId_in.lineId'
+					//},
+					
+					{
 						type : 'belongsTo',
 						model : 'AM.model.MaterialDoc',
 						primaryKey: 'docNo',

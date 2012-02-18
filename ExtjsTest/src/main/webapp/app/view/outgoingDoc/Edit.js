@@ -130,15 +130,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'deliveryNote',
-							text : '进仓单号',
-							renderer : function(value, metaData, record) {
-
-								if ((record['AM.model.MaterialDocItemBelongsToInstance'])
-										) {
-									return record['AM.model.MaterialDocItemBelongsToInstance'].get('deliveryNote');
-								}
-
-							}
+							text : '进仓单号'
 
 						}, {
 							xtype : 'gridcolumn',

@@ -67,22 +67,22 @@ Ext.define('AM.controller.OutgoingDocs', {
 				
 	
   
-                var store = record.items();
+                //var store = record.items();
                 
-                store.each(function(record){
-                	record.set('lineId_in_key', record.raw.lineId_in.lineId);
+                //store.each(function(record){
+                //	record.set('lineId_in_key', record.raw.lineId_in.lineId);
                	 
-                	record.getLineId_in({
-                	   success:function(model){
-                	   	 var me = this;
-                	   	 me['AM.model.MaterialDocItemBelongsToInstance'] = model;
+                //	record.getLineId_in({
+                //	   success:function(model){
+                //	   	 var me = this;
+                //	   	 me['AM.model.MaterialDocItemBelongsToInstance'] = model;
                 	   	 
-                	   },
-                	   scope: record
+                //	   },
+                //	   scope: record
                 	
-                	});
+                //	});
                 
-                }, this);
+                //}, this);
                 
                 
 				view.down('grid').reconfigure(record.items());

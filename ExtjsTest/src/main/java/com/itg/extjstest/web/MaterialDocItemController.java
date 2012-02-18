@@ -58,11 +58,21 @@ public class MaterialDocItemController {
 
 		List<MaterialDocItem> result = MaterialDocItem.findMaterialDocItemsByFilter(filters, start, page, limit);
 		
-		//List<MaterialDocItem> result = MaterialDocItem
-		//		.findAllMaterialDocItems();
+		
+		for(MaterialDocItem i:result){
+			i.setBatchNo(i.getMaterialDoc().getBatchNo());
+			i.setPlateNum(i.getMaterialDoc().getPlateNum());
+			i.setDeliveryNote(i.getMaterialDoc().getDeliveryNote());
+			i.setDocDate(i.getMaterialDoc().getDocDate());
+			i.setWorkingNo(i.getMaterialDoc().getWorkingNo());
+			i.setContractNo(i.getMaterialDoc().getContract().getContractNo());
+		}
+		
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
+		
 		map.put("total", MaterialDocItem.countMaterialDocItems());
+		
 		map.put("success", true);
 		String resultJson = MaterialDocItem.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
@@ -76,7 +86,8 @@ public class MaterialDocItemController {
     @RequestMapping(value = "/{lineId}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> showJson(@PathVariable("lineId") Long lineId) {
-        MaterialDocItem materialdocitem = MaterialDocItem.findMaterialDocItem(lineId);
+        MaterialDocItem materialdocitem = MaterialDocItem.
+        		findMaterialDocItem(lineId);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         if (materialdocitem == null) {

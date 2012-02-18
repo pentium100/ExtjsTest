@@ -87,7 +87,7 @@ public class MaterialDoc {
 			List<MaterialDoc> result) {
 		map.put("materialdocs", result);
 		String resultJson = new JSONSerializer()
-				//.exclude("*.class")
+				.exclude("*.class")
 				//.exclude("materialdocs.items.lineId_in.materialDoc.contract")
                 //.exclude("materialdocs.items.lineId_in.materialDoc.items")				
                 //.exclude("materialdocs.items.lineId_in.materialDoc.docType")
@@ -97,7 +97,8 @@ public class MaterialDoc {
 				.include("materialdocs.docType")
                 .include("materialdocs.items.lineId_in")
                 .include("materialdocs.items.lineId_in.lineId")
-		        .exclude("materialdocs.items.lineId_in.*")				
+                .include("materialdocs.items.lineId_in.version")
+		        .exclude("materialdocs.items.lineId_in.*.*")				
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),Date.class)
 				.serialize(map);
 		

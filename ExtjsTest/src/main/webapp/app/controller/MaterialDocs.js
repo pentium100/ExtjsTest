@@ -55,6 +55,23 @@ Ext.define('AM.controller.MaterialDocs', {
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
 
 				view.down('grid').reconfigure(record.items());
+				
+				var items=record.items();
+				
+				items.each(function(item){
+					
+					    
+					    if(item.get('lineId_in')==""){
+							var lineId_in = {'lineId':item.get('lineId'), 'version':item.get('version')};
+							item.set('lineId_in', lineId_in);
+						}
+						
+					
+				}, this);
+					
+					
+					
+				
 
 			},
 
@@ -74,8 +91,12 @@ Ext.define('AM.controller.MaterialDocs', {
 				var grid = win.down('gridpanel');
 				var store = grid.getStore();
 				var record = new AM.model.MaterialDocItem();
+				
 				record.set('moveType', this.moveType1);
 				record.set('direction', 1);
+				var lineId_in = {'lineId':0, 'version':0};
+				record.set('lineId_in', lineId_in);
+				
 
 				// var edit = grid.editing;
 

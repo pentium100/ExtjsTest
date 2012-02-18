@@ -5,6 +5,7 @@ package com.itg.extjstest.domain;
 
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.MaterialDocItem;
+import java.util.Date;
 
 privileged aspect MaterialDocItem_Roo_JavaBean {
     
@@ -86,6 +87,54 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
     
     public void MaterialDocItem.setDirection(short direction) {
         this.direction = direction;
+    }
+    
+    public String MaterialDocItem.getContractNo() {
+        return this.contractNo;
+    }
+    
+    public void MaterialDocItem.setContractNo(String contractNo) {
+        this.contractNo = contractNo;
+    }
+    
+    public String MaterialDocItem.getDeliveryNote() {
+        return this.deliveryNote;
+    }
+    
+    public void MaterialDocItem.setDeliveryNote(String deliveryNote) {
+        this.deliveryNote = deliveryNote;
+    }
+    
+    public String MaterialDocItem.getBatchNo() {
+        return this.batchNo;
+    }
+    
+    public void MaterialDocItem.setBatchNo(String batchNo) {
+        this.batchNo = batchNo;
+    }
+    
+    public String MaterialDocItem.getPlateNum() {
+        return this.plateNum;
+    }
+    
+    public void MaterialDocItem.setPlateNum(String plateNum) {
+        this.plateNum = plateNum;
+    }
+    
+    public String MaterialDocItem.getWorkingNo() {
+        return this.workingNo;
+    }
+    
+    public void MaterialDocItem.setWorkingNo(String workingNo) {
+        this.workingNo = workingNo;
+    }
+    
+    public Date MaterialDocItem.getDocDate() {
+        return this.docDate;
+    }
+    
+    public void MaterialDocItem.setDocDate(Date docDate) {
+        this.docDate = docDate;
     }
     
 }

@@ -362,3 +362,6 @@ focus --class ~.domain.Message
 // [failed] field bool --fieldName isUrgent 
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-14 15:16:46
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-18 09:52:18
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-18 10:04:45
