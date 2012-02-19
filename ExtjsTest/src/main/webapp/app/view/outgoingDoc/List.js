@@ -19,37 +19,45 @@ Ext.define('AM.view.outgoingDoc.List', {
 						}, {
 							header : '单据号',
 							dataIndex : 'docNo',
-							flex : 1
+							flex : 1,
+							filterable : true
 						}, {
 							header : '合同号',
 							dataIndex : 'contractNo',
-							flex : 1
+							flex : 1,
+							filterable : true
 						}, {
 							header : '进仓单号',
 							dataIndex : 'deliveryNote',
-							flex : 1
+							flex : 1,
+							filterable : true
 						}, {
 							header : '车号/卡号',
 							dataIndex : 'plateNum',
-							flex : 1
+							flex : 1,
+							filterable : true
 						}, {
 							header : '批号',
 							dataIndex : 'batchNo',
-							flex : 1
+							flex : 1,
+							filterable : true
 						}, {
 							header : '日期',
 							dataIndex : 'docDate',
 							xtype : 'datecolumn',
 							format : 'Y-m-d',
-							flex : 1
+							flex : 1,
+							filterable : true
 						}, {
 							header : '工作号',
 							dataIndex : 'workingNo',
-							flex : 1
+							flex : 1,
+							filterable : true
 						}, {
 							header : '备注',
 							dataIndex : 'remark',
-							flex : 4
+							flex : 4,
+							filterable : true
 						}];
 
 				this.dockedItems = [{
@@ -57,16 +65,13 @@ Ext.define('AM.view.outgoingDoc.List', {
 							items : [{
 										iconCls : 'icon-add',
 										text : 'Add',
-										action: 'add'
-										
-										
-										
+										action : 'add'
+
 									}, {
 										iconCls : 'icon-delete',
 										text : 'Delete',
 										action : 'delete'
-										
-										
+
 									}]
 						}, {
 							xtype : 'pagingtoolbar',
@@ -76,6 +81,16 @@ Ext.define('AM.view.outgoingDoc.List', {
 						}
 
 				];
+
+				this.features = [{
+					ftype : 'filters',
+					// encode and local configuration options defined
+					// previously for easier reuse
+					encode : true, // json encode the filter query
+					local : false
+						// defaults to false (remote filtering)
+
+					}];
 
 				this.callParent(arguments);
 			}

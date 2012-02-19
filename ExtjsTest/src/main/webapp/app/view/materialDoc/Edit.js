@@ -9,7 +9,7 @@ Ext.define('AM.view.materialDoc.Edit', {
 	layout : {
 		type : 'border'
 	},
-	title : '货物进出仓凭证',
+	title : '货物进仓凭证',
 	views : ['contract.Search'],
 
 	initComponent : function() {

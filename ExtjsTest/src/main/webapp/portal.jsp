@@ -20,7 +20,7 @@
     
     <script type="text/javascript" src="app/app_portal.js"></script>
     
-    
+    <script type="text/javascript" src="js/extjs4/locale/ext-lang-zh_CN.js"></script>
     <script type="text/javascript">
         
         Ext.Loader.setPath('AM', 'app');

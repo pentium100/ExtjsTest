@@ -125,6 +125,13 @@ public class MaterialDoc {
 
 		if (filters != null) {
 			for (FilterItem f : filters) {
+				if(f.getField().equals("contractNo")){
+					f.setField("contract.contractNo");
+					Join<MaterialDoc,Contract> fromContract = root.join("contract");
+					paths.put("contract", fromContract);
+					
+				}
+				
 				criteria.add(f.getPredicate(cb, paths));
 			}
 

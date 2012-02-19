@@ -88,6 +88,8 @@ public class MaterialDocItem {
     @Transient    
     private Date docDate;
 
+    @Transient    
+    private String targetWarehouse;
 
 	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter2(
 			List<com.itg.extjstest.util.FilterItem> filters, int start,

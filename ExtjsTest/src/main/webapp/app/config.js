@@ -2,7 +2,7 @@ Ext.Loader.setConfig({
 			enabled : true
 		});
 Ext.Loader.setPath('Ext.ux', 'js/extjs4/examples/ux');
-Ext.require(['Ext.form.field.Trigger']);
+Ext.require(['Ext.form.field.Trigger','Ext.ux.grid.FiltersFeature']);
 // Ext.require([
 // 'Ext.data.*',
 // 'Ext.tip.QuickTipManager',
