@@ -1,5 +1,6 @@
 Ext.Loader.setConfig({
-			enabled : true
+			enabled : true,
+	 disableCaching : false
 		});
 Ext.Loader.setPath('Ext.ux', 'js/extjs4/examples/ux');
 Ext.require(['Ext.form.field.Trigger','Ext.ux.grid.FiltersFeature']);
