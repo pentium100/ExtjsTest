@@ -22,7 +22,7 @@ Ext.define('AM.view.message.MessageList', {
 								store: Ext.widget('messageTypesStore'),
 								phpMode: true
 
-							},
+							}
 							
 						}, {
 							header : '品名',

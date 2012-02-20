@@ -44,14 +44,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/messages")
 public class MessageController {
 
-	@Autowired
-	@Qualifier("authenticationManager")
-	protected AuthenticationManager authenticationManager;
 
-	@Autowired
-	@Qualifier("jdbcTemplate")
-	protected NamedParameterJdbcTemplate jdbcTemplate;
-
+	
+	
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
 		Message message = Message.fromJsonToMessage(json);
@@ -123,7 +118,7 @@ public class MessageController {
 	@ResponseBody
 	public ResponseEntity<String> listJson(
 
-			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "page", required = true) Integer page,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "filter", required = false) String filter,
@@ -163,46 +158,6 @@ public class MessageController {
 
 	}
 
-	@RequestMapping(headers = "Accept=text/html")
-	public String listMessageByType(
-			@RequestParam(value = "messageType", required = true) String messageType,
-			@RequestParam(value = "id", required = true) Integer loginId,
-			ModelMap model) {
-
-		String query = "select * from z_mt_oa_status where id = :loginId and logtime > :now ";
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("loginId", loginId);
-		Date now = new Date();
-		now = new Date(now.getTime() - (1 * 1000 * 60));
-		params.put("now", now);
-
-		List<Map<String, Object>> l = jdbcTemplate.queryForList(query, params);
-
-		if (l.size() > 0) {
-
-			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-			grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
-
-			UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken(
-					"john", "admin", grantedAuthorities);
-
-			// uat.setDetails(user);
-			SecurityContext context = SecurityContextHolder.getContext();
-
-			Authentication userAuth = authenticationManager.authenticate(uat);
-
-			context.setAuthentication(userAuth);
-			model.addAttribute("messageType", messageType);
-
-			return "viewMessage";
-			
-		}else{
-			return "redirect:/login.jsp";
-		}
-
-
-	}
 
 	// @RequestMapping(headers = "Accept=application/json")
 	// @ResponseBody

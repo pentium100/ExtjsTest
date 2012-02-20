@@ -49,7 +49,7 @@ Ext.define('AM.controller.Messages', {
 			},
 
 			editMessage : function(grid, record) {
-				console.log('Double clicked on ' + record.get('id'));
+				//console.log('Double clicked on ' + record.get('id'));
 				var view = Ext.widget('messageEdit');
 
 				view.down('form').loadRecord(record);
@@ -116,9 +116,9 @@ Ext.define('AM.controller.Messages', {
 
 			updateMessage : function(button) {
 				var win = button.up('window');
-				form = win.down('form');
+				var form = win.down('form');
 				var record = form.getRecord();
-				values = form.getValues();
+				var values = form.getValues();
 
 				record.set(values);
 
@@ -139,6 +139,6 @@ Ext.define('AM.controller.Messages', {
 				win.close();
 			},
 			onPanelRendered : function() {
-				console.log('The panel was rendered');
+				//console.log('The panel was rendered');
 			}
 		});

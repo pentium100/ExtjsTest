@@ -18,7 +18,7 @@ Ext.define('AM.store.MessagesStore', {
 					type : 'json',
 					writeAllFields : true,
 					root : ''
-				},
+				}
 
 				
 			}
