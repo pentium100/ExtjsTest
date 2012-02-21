@@ -137,4 +137,12 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
         this.docDate = docDate;
     }
     
+    public String MaterialDocItem.getTargetWarehouse() {
+        return this.targetWarehouse;
+    }
+    
+    public void MaterialDocItem.setTargetWarehouse(String targetWarehouse) {
+        this.targetWarehouse = targetWarehouse;
+    }
+    
 }

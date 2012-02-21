@@ -10,9 +10,9 @@ Ext.define('AM.view.message.MessageList', {
 
 			iconCls : 'icon-grid',
 			frame : true,
-            store : 'MessagesStore',
+            
 			initComponent : function() {
-				
+			    this.store = Ext.create('AM.store.MessagesStore');
 				this.columns = [{
 							header : '类别',
 							dataIndex : 'type',
@@ -102,7 +102,7 @@ Ext.define('AM.view.message.MessageList', {
 						}, {
 							xtype : 'pagingtoolbar',
 							displayInfo : true,
-							store : 'MessagesStore',
+							store : this.store,
 							dock : 'bottom'
 						}
 

@@ -27,8 +27,9 @@
 				
 
 				var c = this.getController('AM.controller.Messages');
-				//var param = {messageType:'${messageType}'};
-				c.init();				
+				var param = {defaultMessageType:'${messageType}', defaultUserName:'${userName}'};
+				
+				c.init(param);				
 				var list = Ext.create('AM.view.message.MessageList')
 				Ext.create('Ext.container.Viewport', {
 

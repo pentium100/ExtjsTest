@@ -50,7 +50,8 @@ Ext.define('AM.model.Message', {
 
 					}, {
 						name : 'validBefore',
-						type : 'date'
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
 
 					}, {
 						name : 'isUrgent',

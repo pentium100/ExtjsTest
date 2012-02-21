@@ -7,10 +7,11 @@ Ext.define('AM.controller.Messages', {
 
 			init : function(param) {
 				
-				if(param&&param.messageType){
+				if(param){
 					
 					//var filters = this.getView('message.MessageList').filters;
 					//alter(filters.getFilterData());
+					Ext.applyIf(this,param);
 					
 				}
 				
@@ -59,6 +60,15 @@ Ext.define('AM.controller.Messages', {
 			},
 			addMessage : function(button) {
 				var record = new AM.model.Message();
+				
+				if(this.defaultMessageType){ 
+					record.set('type', this.defaultMessageType);
+				}
+				
+				if(this.defaultUserName){
+					record.set('owner', this.defaultUserName);
+				}
+				
 				this.getStore('MessagesStore').insert(0, record);
 				var view = Ext.widget('messageEdit');
 				view.down('form').loadRecord(record);
@@ -119,6 +129,8 @@ Ext.define('AM.controller.Messages', {
 				var form = win.down('form');
 				var record = form.getRecord();
 				var values = form.getValues();
+				
+				values.validBefore = Ext.Date.parse(values.validBefore, 'Y-m-d');
 
 				record.set(values);
 

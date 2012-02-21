@@ -31,6 +31,7 @@ Ext.define('AM.view.message.MessageEdit', {
                             xtype: 'combobox',
                             fieldLabel: '类别',
                             store: 'MessageTypesStore',
+							editable: false,
 							name: 'type'
                         },
                         {
@@ -76,7 +77,8 @@ Ext.define('AM.view.message.MessageEdit', {
                         {
                             xtype: 'datefield',
                             fieldLabel: '有效期',
-							name:'validBefore'
+							name:'validBefore',
+							format:'Y-m-d'
                         },
                         {
                             xtype: 'checkbox',

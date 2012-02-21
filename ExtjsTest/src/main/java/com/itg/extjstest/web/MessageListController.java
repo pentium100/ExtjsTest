@@ -21,18 +21,16 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.itg.extjstest.domain.security.UserDetail;
 
 @Controller
 @RequestMapping("/listmessages")
 public class MessageListController {
-	
-	
+
 	@Autowired
 	@Qualifier("authenticationManager")
 	protected AuthenticationManager authenticationManager;
 
-	
-	
 	@Autowired
 	@Qualifier("jdbcTemplate")
 	protected NamedParameterJdbcTemplate jdbcTemplate;
@@ -47,7 +45,26 @@ public class MessageListController {
 		
 		SecurityContext context = SecurityContextHolder.getContext();
 		
+		int intMessageType = Integer.valueOf(messageType).intValue();
+		switch(intMessageType){
+			case 1: messageType="供应"; break;
+			case 2: messageType="需求"; break;
+			case 3: messageType="敞口"; break;
+			case 4: messageType="锁定"; break;
+		}
+		
+		UserDetail user;
+		
+		model.addAttribute("messageType", messageType);
+		
+		
 		if(!context.getAuthentication().getName().equals("anonymousUser")){
+			
+			user = (UserDetail)context.getAuthentication().getDetails();
+			if(user!=null){
+				model.addAttribute("userName", user.getUserName());
+			}
+			
 			return "viewMessage";
 		}
 		
@@ -63,27 +80,25 @@ public class MessageListController {
 
 		if (l.size() > 0) {
 
+			
 			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
 			grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
 
 			UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken(
 					"john", "admin", grantedAuthorities);
 
-			// uat.setDetails(user);
+			user = new UserDetail();
+			
+			user.setUserName((String)l.get(0).get("userName"));
+			
+			uat.setDetails(user);
 			//SecurityContext context = SecurityContextHolder.getContext();
+			
+			model.addAttribute("userName", user.getUserName());
 
 			Authentication userAuth = authenticationManager.authenticate(uat);
 
 			context.setAuthentication(userAuth);
-			int intMessageType = Integer.valueOf(messageType).intValue();
-			switch(intMessageType){
-				case 1: messageType="供应"; break;
-				case 2: messageType="需求"; break;
-				case 3: messageType="敞口"; break;
-				case 4: messageType="锁定"; break;
-			}
-			
-			model.addAttribute("messageType", messageType);
 
 			return "viewMessage";
 			
@@ -93,7 +108,5 @@ public class MessageListController {
 
 
 	}
-
-	
 
 }

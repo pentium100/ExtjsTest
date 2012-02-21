@@ -9,6 +9,10 @@
     <link rel="stylesheet" type="text/css" href="app/portal/portal.css" />
 
     
+    <link rel="stylesheet" type="text/css" href="js/extjs4/examples/shared/example.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    
 
     <!-- shared example code -->
     
@@ -31,9 +35,10 @@
             'Ext.fx.target.Component',
             'Ext.window.Window',
             'AM.portal.classes.Portlet',
+
             'AM.portal.classes.PortalColumn',
             'AM.portal.classes.PortalPanel',
-            'AM.portal.classes.Portlet',
+            
             'AM.portal.classes.PortalDropZone',
             'AM.portal.classes.GridPortlet',
             'AM.portal.classes.ChartPortlet'
@@ -46,3 +51,4 @@
     <span id="app-msg" style="display:none;"></span>
 </body>
 </html>
+

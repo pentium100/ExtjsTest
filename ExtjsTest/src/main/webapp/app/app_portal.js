@@ -4,10 +4,10 @@ Ext.Loader.setConfig({
 Ext.application({
 			name : 'AM',
 			appFolder : 'app',
-			controllers : ['Menus'],
-			views: ['AM.portal.Portal'],
+			views: ['AM.portal.Portal_OA'],
+			controllers : ['AM.controller.Messages'],
 			launch : function() {
-				Ext.create('AM.portal.Portal');
+				Ext.create('AM.portal.Portal_OA');
 			
 			}
 		});
