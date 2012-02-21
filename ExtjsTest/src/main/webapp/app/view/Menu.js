@@ -5,7 +5,7 @@ Ext.define('AM.view.Menu',{
             id: 'menu-panel',
             alias: 'widget.ammenu',
             title: '系统菜单',
-            iconCls:'icon-menu',
+            iconCls:'home',
             margins : '0 0 -1 1',
             region:'west',
             border : false,
