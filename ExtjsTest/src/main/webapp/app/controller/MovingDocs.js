@@ -11,14 +11,14 @@ Ext.define('AM.controller.MovingDocs', {
 
 				this.control({
 
-							'outgoingDocList' : {
+							'movingDocList' : {
 								itemdblclick : this.editMaterialDoc
 							},
-							'outgoingDocList button[action=add]' : {
+							'movingDocList button[action=add]' : {
 								click : this.addMaterialDoc
 							},
 
-							'outgoingDocList button[action=delete]' : {
+							'movingDocList button[action=delete]' : {
 								click : this.deleteMaterialDoc
 							},
 
@@ -31,27 +31,20 @@ Ext.define('AM.controller.MovingDocs', {
 								itemdblclick : this.selectMaterialDocItem
 							},
 							
-							'contractSearch button[action=search]' : {
-								click : this.searchContract
-							},
-
-							'contractSearch gridpanel' : {
-								itemdblclick : this.selectContract
-							},
-
-							'outgoingDocEdit button[action=save]' : {
+							
+							'movingDocEdit button[action=save]' : {
 								click : this.saveMaterialDoc
 							},
 
-							'outgoingDocEdit button[action=cancel]' : {
+							'movingDocEdit button[action=cancel]' : {
 								click : this.cancelMaterialDoc
 							},
 
-							'outgoingDocEdit button[action=add]' : {
+							'movingDocEdit button[action=add]' : {
 								click : this.addMaterialDocItem
 							},
 
-							'outgoingDocEdit button[action=delete]' : {
+							'movingDocEdit button[action=delete]' : {
 								click : this.deleteMaterialDocItem
 							}
 
@@ -59,30 +52,12 @@ Ext.define('AM.controller.MovingDocs', {
 
 			},
 			editMaterialDoc : function(grid, record) {
-				var view = Ext.widget('outgoingDocEdit');
+				var view = Ext.widget('movingDocEdit', {parentGrid: grid});
 
 				view.down('form').loadRecord(record);
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
 				
-	
-  
-                //var store = record.items();
-                
-                //store.each(function(record){
-                //	record.set('lineId_in_key', record.raw.lineId_in.lineId);
-               	 
-                //	record.getLineId_in({
-                //	   success:function(model){
-                //	   	 var me = this;
-                //	   	 me['AM.model.MaterialDocItemBelongsToInstance'] = model;
-                	   	 
-                //	   },
-                //	   scope: record
-                	
-                //	});
-                
-                //}, this);
-                
+
                 
 				view.down('grid').reconfigure(record.items());
 
@@ -96,14 +71,22 @@ Ext.define('AM.controller.MovingDocs', {
 				var record = new AM.model.MaterialDoc();
 				record.setDocType({
 							id : this.docType
+							
 						});
-				this.getStore('OutgoingDocs').insert(0, record);
-				var view = Ext.widget('outgoingDocEdit');
+						
+				//record.set("contract",{});		
+				var grid = button.up("gridpanel");
+				
+				grid.getStore().insert(0, record);
+				
+				var view = Ext.widget('movingDocEdit', {parentGrid: grid});
+				
 				view.down('form').loadRecord(record);
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
 				view.down('grid').reconfigure(record.items());
 
 			},
+			
 			addMaterialDocItem : function(button) {
 				var win = button.up('window');
 				var grid = win.down('gridpanel');
@@ -111,11 +94,8 @@ Ext.define('AM.controller.MovingDocs', {
 				var record = new AM.model.MaterialDocItem();
 				record.set('moveType', this.moveType1);
 
-				// var edit = grid.editing;
-
-				// edit.cancelEdit();
 				store.insert(0, record);
-				// edit.startEditByPosition({
+
 
 			},
 			deleteMaterialDocItem : function(button) {
@@ -133,7 +113,7 @@ Ext.define('AM.controller.MovingDocs', {
 
 			deleteMaterialDoc : function(button) {
 				var viewport = button.up('viewport');
-				var grid = viewport.down('outgoingDocList');
+				var grid = viewport.down('movingDocList');
 				var selection = grid.getView().getSelectionModel()
 						.getSelection()[0];
 				if (selection) {
@@ -302,7 +282,8 @@ Ext.define('AM.controller.MovingDocs', {
 				var form = win.down('form');
 				var grid = win.down('gridpanel')
 
-				this.getStore('OutgoingDocs').rejectChanges();
+				//this.getStore('OutgoingDocs').rejectChanges();
+				win.parentGrid.getStore().rejectChanges();
 
 				grid.getStore().rejectChanges();
 

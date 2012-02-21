@@ -1,9 +1,9 @@
-Ext.define('AM.view.outgoingDoc.List', {
+Ext.define('AM.view.movingDoc.List', {
 			extend : 'Ext.grid.Panel',
-			alias : 'widget.outgoingDocList',
+			alias : 'widget.movingDocList',
 
 			// title : 'All Contract',
-			store : 'OutgoingDocs',
+			store : 'MovingDocs',
 
 			requires : ['Ext.grid.plugin.CellEditing', 'Ext.form.field.Text',
 					'Ext.toolbar.TextItem'],
@@ -21,11 +21,11 @@ Ext.define('AM.view.outgoingDoc.List', {
 							dataIndex : 'docNo',
 							flex : 1,
 							filterable : true
-						}, {
-							header : '合同号',
-							dataIndex : 'contractNo',
-							flex : 1,
-							filterable : true
+					//	}, {
+					//		header : '合同号',
+					//		dataIndex : 'contractNo',
+					//		flex : 1,
+					//		filterable : true
 						}, {
 							header : '进仓单号',
 							dataIndex : 'deliveryNote',
@@ -76,7 +76,7 @@ Ext.define('AM.view.outgoingDoc.List', {
 						}, {
 							xtype : 'pagingtoolbar',
 							displayInfo : true,
-							store : 'OutgoingDocs',
+							store : 'MovingDocs',
 							dock : 'bottom'
 						}
 

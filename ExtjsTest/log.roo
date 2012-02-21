@@ -389,3 +389,13 @@ download status
 download accept terms of use
 finder list
 finder add --finderName findUserDetailsByUserNameEquals
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-21 19:59:42
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-21 20:00:56
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-21 20:59:47
+focus --class ~.domain.MaterialDocType
+finder list
+finder add --class ~.domain.MaterialDocType --finderName findMaterialDocTypeByDocType_txtEquals
+finder add --class ~.domain.MaterialDocType --finderName findMaterialDocTypesByDocType_txtEquals
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-21 21:02:08

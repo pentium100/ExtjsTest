@@ -8,8 +8,8 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord
 @RooJson
+@RooJpaActiveRecord(finders = { "findMaterialDocTypesByDocType_txtEquals" })
 public class MaterialDocType {
 
     @Size(max = 4)

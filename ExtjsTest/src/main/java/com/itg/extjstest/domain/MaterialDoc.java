@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -26,6 +27,7 @@ import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
 
+import com.itg.extjstest.util.ContractObjectFactory;
 import com.itg.extjstest.util.ContractTypeObjectFactory;
 import com.itg.extjstest.util.FilterItem;
 
@@ -66,7 +68,9 @@ public class MaterialDoc {
     @NotNull
     private MaterialDocType docType;
     
-    
+    @Transient    
+    private String targetWarehouse;
+
     public static String toJsonArray(Collection<MaterialDoc> collection) {
         return new JSONSerializer().exclude("*.class")
         		.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class)
@@ -78,6 +82,7 @@ public class MaterialDoc {
         		.use(null, MaterialDoc.class)
         		.use(ContractType.class, new ContractTypeObjectFactory())
         		.use("contract.contractType", new ContractTypeObjectFactory())
+        		.use(Contract.class, new ContractObjectFactory())
         		.deserialize(json);
     }
 
@@ -115,11 +120,11 @@ public class MaterialDoc {
 		CriteriaQuery<MaterialDoc> c = cb.createQuery(MaterialDoc.class);
 		Root<MaterialDoc> root = c.from(MaterialDoc.class);
 		
-		Join<MaterialDoc,MaterialDocItem> j = root.join("items");
+		//Join<MaterialDoc,MaterialDocItem> j = root.join("items");
 		
 		HashMap<String, Path> paths = new HashMap<String, Path>();
 		paths.put("", root);
-		paths.put("items", j);
+		//paths.put("items", j);
 		
 		List<Predicate> criteria = new ArrayList<Predicate>();
 

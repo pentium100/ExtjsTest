@@ -25,7 +25,12 @@ Ext.define('AM.model.MaterialDoc', {
 			}, {
 				name : 'docType'
 
+			},{
+				name : 'targetWarehouse',
+				type : 'string'
+
 			},
+
 
 
 			{

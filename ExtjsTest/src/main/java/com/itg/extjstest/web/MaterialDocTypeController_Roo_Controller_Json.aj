@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect MaterialDocTypeController_Roo_Controller_Json {
@@ -90,6 +91,14 @@ privileged aspect MaterialDocTypeController_Roo_Controller_Json {
         }
         materialDocType.remove();
         return new ResponseEntity<String>(headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(params = "find=ByDocType_txtEquals", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> MaterialDocTypeController.jsonFindMaterialDocTypesByDocType_txtEquals(@RequestParam("docType_txt") String docType_txt) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(MaterialDocType.toJsonArray(MaterialDocType.findMaterialDocTypesByDocType_txtEquals(docType_txt).getResultList()), headers, HttpStatus.OK);
     }
     
 }

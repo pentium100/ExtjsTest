@@ -6,3 +6,16 @@ insert into material_doc_type (doc_type_txt) values ( '进仓')
 insert into material_doc_type (doc_type_txt) values ( '出仓')
 
 
+
+insert into menu (id, icon_cls, text, version, parent, controller, leaf, views, controller_param) 
+values (6, 'icon_moving', '货物移仓', 0, 2, 'MovingDocs', 1, 'movingDocList', '{moveType1:351, docType:3}')
+
+select * from user_detail
+
+insert into user_detail (enabled, password, user_name, version) values (1, '21232f297a57a5a743894a0e4a801fc3', 'john', 0);
+insert into security_role (role_name, version) values ('ROLE_ADMIN', 0)
+
+select * from user_detail_roles
+insert into user_detail_roles (user_detail, roles) values (1,1)
+
+select * from security_role

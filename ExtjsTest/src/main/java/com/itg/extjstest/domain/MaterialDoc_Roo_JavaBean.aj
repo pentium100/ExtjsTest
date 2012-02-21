@@ -76,4 +76,12 @@ privileged aspect MaterialDoc_Roo_JavaBean {
         this.docType = docType;
     }
     
+    public String MaterialDoc.getTargetWarehouse() {
+        return this.targetWarehouse;
+    }
+    
+    public void MaterialDoc.setTargetWarehouse(String targetWarehouse) {
+        this.targetWarehouse = targetWarehouse;
+    }
+    
 }

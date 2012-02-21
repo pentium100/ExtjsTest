@@ -2,6 +2,7 @@ package com.itg.extjstest.web;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -68,7 +69,23 @@ public class MaterialDocController {
         	for(MaterialDocItem mi:md.getItems()){
         		mi.getLineId_in();
         		mi.fillLineInInfo();
+        	}
+        	
+        	if(md.getDocType().getDocType_txt().equals("移仓")){
+        		Contract contract = new Contract();
+        		md.setContract(contract);
         		
+        		String targetWarehouse = "";
+        		Iterator<MaterialDocItem> it = md.getItems().iterator();
+            	while(it.hasNext()){
+            		MaterialDocItem mi = it.next();
+            		if(mi.getMoveType().equals("101")){
+            			targetWarehouse = mi.getWarehouse();
+            			it.remove();
+            			
+            		}
+            	}
+            	md.setTargetWarehouse(targetWarehouse);
         		
         	}
         }
@@ -93,21 +110,32 @@ public class MaterialDocController {
         MaterialDoc materialDoc = MaterialDoc.fromJsonToMaterialDoc(json);
         
         Set<MaterialDocItem> items = materialDoc.getItems();
+        List<MaterialDocItem> newItems = new ArrayList<MaterialDocItem>();
         for(MaterialDocItem item:items){
         	item.setMaterialDoc(materialDoc);
-        	if(item.getMoveType().equals("101")){
+        	if(materialDoc.getDocType().getDocType_txt().equals("进仓")&&item.getMoveType().equals("101")){
         		item.setLineId_in(item);
         	}
         	
-        	//if(item.getLineId_in()!=null){
-        		
-        	//	MaterialDocItem lineId_in = MaterialDocItem.findMaterialDocItem(item.getLineId_in().getLineId());
-        	//	item.setLineId_in(lineId_in);
-        	//}
+        	if(materialDoc.getDocType().getDocType_txt().equals("移仓")&&item.getMoveType().equals("351")){
+        		MaterialDocItem newItem = new MaterialDocItem();
+        		newItem.setLineId_in(item.getLineId_in());
+        		newItem.setMoveType("101");
+        		newItem.setDirection((short) -1);
+        		newItem.setNetWeight(item.getNetWeight());
+        		newItem.setWarehouse(materialDoc.getTargetWarehouse());
+        		newItems.add(newItem);
+        	}
+        	
+        	
         	
         }
+        items.addAll(newItems);
         
-        
+        if(materialDoc.getDocType().getDocType_txt().equals("移仓")){
+        	materialDoc.setContract(null);
+        }
+      
         
         materialDoc = materialDoc.merge();
         if (materialDoc == null) {
@@ -121,8 +149,18 @@ public class MaterialDocController {
         }
         
         
+        
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		List<MaterialDoc> materialDocs = new ArrayList<MaterialDoc>();
+		
+        if(materialDoc.getDocType().getDocType_txt().equals("移仓")){
+    		Contract contract = new Contract();
+    		materialDoc.setContract(contract);
+
+        }
+		
+		
+		
 		materialDocs.add(materialDoc);
 		map.put("success", true);
 		String resultJson = MaterialDoc.mapToJson(map, materialDocs);
@@ -139,25 +177,50 @@ public class MaterialDocController {
         
         MaterialDocType type = MaterialDocType.findMaterialDocType(materialDoc.getDocType().getId());
         materialDoc.setDocType(type);
+        
+        if(materialDoc.getDocType().getDocType_txt().equals("移仓")){
+        	materialDoc.setContract(null);
+        }
         Set<MaterialDocItem> items = materialDoc.getItems();
+        
+        List<MaterialDocItem> newItems = new ArrayList<MaterialDocItem>();
         for(MaterialDocItem item:items){
         	item.setMaterialDoc(materialDoc);
-        	if(item.getMoveType().equals("101")){
+        	if(materialDoc.getDocType().getDocType_txt().equals("进仓")&&item.getMoveType().equals("101")){
         		item.setLineId_in(item);
         	}
+        	
+        	if(materialDoc.getDocType().getDocType_txt().equals("移仓")&&item.getMoveType().equals("351")){
+        		MaterialDocItem newItem = new MaterialDocItem();
+        		newItem.setLineId_in(item.getLineId_in());
+        		newItem.setMoveType("101");
+        		newItem.setDirection((short) -1);
+        		newItem.setNetWeight(item.getNetWeight());
+        		newItem.setWarehouse(materialDoc.getTargetWarehouse());
+        		newItems.add(newItem);
+        	}
+        	
+        	
+        	
         }
+        items.addAll(newItems);
+        
         
         
         
         materialDoc = materialDoc.merge();
         
+        if(materialDoc.getDocType().getDocType_txt().equals("移仓")){
+    		Contract contract = new Contract();
+    		materialDoc.setContract(contract);
+
+        }
+		
+        
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         
-        if (materialDoc == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.METHOD_FAILURE);
-        }
-		HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> map = new HashMap<String, Object>();
 		List<MaterialDoc> materialDocs = new ArrayList<MaterialDoc>();
 		
 		for(MaterialDocItem mi:materialDoc.getItems()){
