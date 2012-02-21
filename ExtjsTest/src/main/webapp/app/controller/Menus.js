@@ -57,7 +57,7 @@ Ext.define('AM.controller.Menus', {
 								layout : 'fit',
 								closable : true,
 								autoDestroy : true,
-								iconCls : record.get("icon_cls"),
+								iconCls : record.get("iconCls"),
 
 								autoScroll : true,
 								bodyPadding : 0,
