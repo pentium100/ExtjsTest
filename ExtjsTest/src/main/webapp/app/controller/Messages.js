@@ -2,7 +2,7 @@ Ext.define('AM.controller.Messages', {
 			extend : 'Ext.app.Controller',
 
 			views : ['message.MessageList', 'message.MessageEdit'],
-			stores : ['MessagesStore', 'MessageTypesStore'],
+			stores : ['MessageTypesStore'],
 			models : ['Message', 'Specification'],
 
 			init : function(param) {
@@ -51,7 +51,7 @@ Ext.define('AM.controller.Messages', {
 
 			editMessage : function(grid, record) {
 				//console.log('Double clicked on ' + record.get('id'));
-				var view = Ext.widget('messageEdit');
+				var view = Ext.widget('messageEdit', {parentGrid:grid});
 
 				view.down('form').loadRecord(record);
 
@@ -59,18 +59,38 @@ Ext.define('AM.controller.Messages', {
 
 			},
 			addMessage : function(button) {
+				
 				var record = new AM.model.Message();
+				var grid = button.up('gridpanel');
+					if(grid){
+						if(grid.id=="messageList-1"){
+							
+							record.set('type', "供应");							
+						}
+						if(grid.id=="messageList-2"){
+							
+							record.set('type', "需求");							
+						}
+						if(grid.id=="messageList-3"){
+							
+							record.set('type', "敞口");							
+						}
+						if(grid.id=="messageList-4"){
+							
+							record.set('type', "锁定");							
+						}
+
+
+					}
 				
-				if(this.defaultMessageType){ 
-					record.set('type', this.defaultMessageType);
+				
+				
+				if(_DEFAULT_USER_NAME){
+					record.set('owner', _DEFAULT_USER_NAME);
 				}
 				
-				if(this.defaultUserName){
-					record.set('owner', this.defaultUserName);
-				}
-				
-				this.getStore('MessagesStore').insert(0, record);
-				var view = Ext.widget('messageEdit');
+				grid.getStore().insert(0, record);
+				var view = Ext.widget('messageEdit', {parentGrid:grid});
 				view.down('form').loadRecord(record);
 				
 				
@@ -135,7 +155,8 @@ Ext.define('AM.controller.Messages', {
 				record.set(values);
 
 				// record.data.items = win.down('grid').getStore();
-				this.getStore('MessagesStore').sync();
+				var grid = win.parentGrid;
+				grid.getStore().sync();
 				win.close();
 			},
 			cancelUpdate : function(button) {
@@ -143,7 +164,8 @@ Ext.define('AM.controller.Messages', {
 				var grid = win.down('gridpanel');
 				
 				grid.getStore().rejectChanges();
-				this.getStore('MessagesStore').rejectChanges();
+				grid = win.parentGrid;
+				grid.getStore().rejectChanges();
 
 				//grid.getStore().each(function(record) {
 				//			record.reject();

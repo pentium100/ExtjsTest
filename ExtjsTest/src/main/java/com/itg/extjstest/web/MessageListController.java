@@ -65,7 +65,7 @@ public class MessageListController {
 				model.addAttribute("userName", user.getUserName());
 			}
 			
-			return "viewMessage";
+			return "portal";
 		}
 		
 		String query = "select * from z_mt_oa_status where id = :loginId and logtime > :now ";
@@ -100,7 +100,7 @@ public class MessageListController {
 
 			context.setAuthentication(userAuth);
 
-			return "viewMessage";
+			return "portal";
 			
 		}else{
 			return "redirect:/login.jsp";

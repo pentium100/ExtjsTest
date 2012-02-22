@@ -10,9 +10,21 @@ Ext.define('AM.view.message.MessageList', {
 
 			iconCls : 'icon-grid',
 			frame : true,
+			height: 300,
             
-			initComponent : function() {
-			    this.store = Ext.create('AM.store.MessagesStore');
+			initComponent : function(param) {
+				
+				
+				var storeOptions = {};
+				var messageType = this.messageType;
+				if(this.messageType){	
+					storeOptions={'messageType':messageType};
+				}
+				
+				
+			    this.store = Ext.create('AM.store.MessagesStore', storeOptions);
+				
+				
 				this.columns = [{
 							header : '类别',
 							dataIndex : 'type',

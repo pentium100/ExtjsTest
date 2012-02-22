@@ -5,21 +5,40 @@ Ext.define('AM.store.MessagesStore', {
 			model : 'AM.model.Message',
 
 			autoLoad : true,
-			proxy : {
-				type : 'rest',
-				url : 'messages',
-				reader : {
-					type : 'json',
-					root : 'messages',
-					successProperty : 'success'
-				},
+			
+            constructor: function(config) {			
+				
+				var me = this;
+				
+				config = Ext.Object.merge({}, config);
+				
+				this.proxy = {
+					type : 'rest',
+					url : 'messages',
+					reader : {
+						type : 'json',
+						root : 'messages',
+						successProperty : 'success'
+					},
 
-				writer : {
-					type : 'json',
-					writeAllFields : true,
-					root : ''
+					writer : {
+						type : 'json',
+						writeAllFields : true,
+						root : ''
+					},
+				
+					extraParams:{}
+
+				
 				}
-
+				
+				
+				
+				if(config.messageType){
+					this.proxy.extraParams.messageType = config.messageType;		
+				}
+				
+				this.callParent([config]);
 				
 			}
 			//,listeners: {
