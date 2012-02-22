@@ -22,6 +22,10 @@
 				<db2.username>coaldbo</db2.username>
 				<db2.password>maven0512</db2.password>
 
+				<cargo.remote.username>admin</cargo.remote.username>
+				<cargo.remote.password>maven0512</cargo.remote.password>
+				<cargo.tomcat.manager.url>http://172.16.123.77:8080/manager/text</cargo.tomcat.manager.url>
+
 			</properties>
 		</profile>
 
