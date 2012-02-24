@@ -41,33 +41,42 @@ public class MessageListController {
 			@RequestParam(value = "id", required = true) Integer loginId,
 			ModelMap model) {
 
-		
-		
 		SecurityContext context = SecurityContextHolder.getContext();
-		
+
 		int intMessageType = Integer.valueOf(messageType).intValue();
-		switch(intMessageType){
-			case 1: messageType="供应"; break;
-			case 2: messageType="需求"; break;
-			case 3: messageType="敞口"; break;
-			case 4: messageType="锁定"; break;
+		switch (intMessageType) {
+		case 1:
+			messageType = "供应";
+			break;
+		case 2:
+			messageType = "需求";
+			break;
+		case 3:
+			messageType = "敞口";
+			break;
+		case 4:
+			messageType = "锁定";
+			break;
 		}
-		
+
 		UserDetail user;
-		
+
 		model.addAttribute("messageType", messageType);
-		
-		
-		if(!context.getAuthentication().getName().equals("anonymousUser")){
-			
-			user = (UserDetail)context.getAuthentication().getDetails();
-			if(user!=null){
-				model.addAttribute("userName", user.getUserName());
+
+		if (!context.getAuthentication().getName().equals("anonymousUser")) {
+
+			try {
+				user = (UserDetail) context.getAuthentication().getDetails();
+				if (user != null) {
+					model.addAttribute("userName", user.getUserName());
+				}
+			} catch (Exception e) {
+
 			}
-			
+
 			return "portal";
 		}
-		
+
 		String query = "select * from z_mt_oa_status where id = :loginId and logtime > :now ";
 
 		Map<String, Object> params = new HashMap<String, Object>();
@@ -80,20 +89,19 @@ public class MessageListController {
 
 		if (l.size() > 0) {
 
-			
-			List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-			grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
+			//List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
+			//grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
 
 			UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken(
-					"john", "admin", grantedAuthorities);
+					"john", "admin");
 
 			user = new UserDetail();
-			
-			user.setUserName((String)l.get(0).get("userName"));
-			
+
+			user.setUserName((String) l.get(0).get("userName"));
+
 			uat.setDetails(user);
-			//SecurityContext context = SecurityContextHolder.getContext();
-			
+			// SecurityContext context = SecurityContextHolder.getContext();
+
 			model.addAttribute("userName", user.getUserName());
 
 			Authentication userAuth = authenticationManager.authenticate(uat);
@@ -101,11 +109,10 @@ public class MessageListController {
 			context.setAuthentication(userAuth);
 
 			return "portal";
-			
-		}else{
+
+		} else {
 			return "redirect:/login.jsp";
 		}
-
 
 	}
 

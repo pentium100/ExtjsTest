@@ -18,7 +18,7 @@
     <!-- shared example code -->
     
 
-    <script type="text/javascript" src="js/extjs4/ext-all.js"></script>
+    <script type="text/javascript" src="js/extjs4/ext-all-debug.js"></script>
     <script type="text/javascript" src="js/extjs4/examples/shared/examples.js"></script>
     <script type="text/javascript" src="app/config.js"></script>
     

@@ -13,7 +13,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(finders = { "findUserDetailsByUserNameEquals" })
-public class UserDetail {
+public class UserDetail  implements java.io.Serializable{
 
     private String userName;
 
