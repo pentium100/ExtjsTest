@@ -46,7 +46,7 @@ public class Message {
     private String department;
 
     @Size(max = 4)
-    @Pattern(regexp = "(供应|�?��|敞口|锁定)")
+    @Pattern(regexp = "(供应|需求|敞口|锁定)")
     private String type;
 
     @Size(max = 50)
