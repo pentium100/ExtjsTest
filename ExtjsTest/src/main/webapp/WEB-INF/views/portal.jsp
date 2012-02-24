@@ -43,6 +43,7 @@
         ]);
 	
 	_DEFAULT_USER_NAME = '${userName}';
+	_DEFAULT_USER_LEVEL = ${userLevel};	
 
 
 

@@ -102,7 +102,8 @@ Ext.define('AM.view.message.MessageEdit', {
                     title: '规格',
 					region: 'center',
 					plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
-
+						name: 'cellEditing'
+						
 					})],
 
                     columns: [

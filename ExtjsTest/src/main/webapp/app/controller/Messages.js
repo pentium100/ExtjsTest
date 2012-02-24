@@ -40,8 +40,8 @@ Ext.define('AM.controller.Messages', {
 			},
 
 			deleteMessage : function(button) {
-				var viewport = button.up('viewport');
-				var grid = viewport.down('messageList');
+				var grid = button.up('gridpanel');
+				//var grid = viewport.down('messageList');
 				var selection = grid.getView().getSelectionModel().getSelection()[0];
 				if (selection) {
 					grid.getStore().remove(selection);
@@ -54,8 +54,60 @@ Ext.define('AM.controller.Messages', {
 				var view = Ext.widget('messageEdit', {parentGrid:grid});
 
 				view.down('form').loadRecord(record);
-
-				view.down('grid').reconfigure(record.specifications());
+				var grid = view.down('grid');
+				grid.reconfigure(record.specifications());
+				
+				if(record.get("owner") != _DEFAULT_USER_NAME){
+					
+					Ext.each(view.down('form').items.items, function(item, index, items){
+						
+						
+						if(item.name!="remark"){
+							item.setReadOnly ( true);
+						}
+						
+					});
+					
+				
+					
+				}else{
+					
+					Ext.each(view.down('form').items.items, function(item, index, items){
+						
+						item.setReadOnly ( false);
+						
+					});
+					
+				}
+				
+					Ext.each(grid.plugins, function(plugin){
+						
+						if(plugin.name=="cellEditing"){
+							
+							plugin.addListener("beforeedit", function(e, eOpts){
+								
+								    if(eOpts.get("owner") != _DEFAULT_USER_NAME){
+										return false;
+									}
+									return true;
+								  
+								},grid, record)
+							
+						}
+						
+						
+					});
+					
+				var field = view.down('textfield[name=owner]');	
+				if(field){
+					field.setReadOnly(true);
+				}
+				
+				
+				field = view.down('numberfield[name=suggestedPrice]');
+				if(field){
+					field.setReadOnly (_DEFAULT_USER_LEVEL < 50);
+				}
 
 			},
 			addMessage : function(button) {
@@ -138,7 +190,17 @@ Ext.define('AM.controller.Messages', {
 				
 				//items.sync();
 				
+				var field = view.down('textfield[name=owner]');	
+				if(field){
+					field.setReadOnly(true);
+				}
 				
+				
+				field = view.down('numberfield[name=suggestedPrice]');
+				if(field){
+					field.setReadOnly (_DEFAULT_USER_LEVEL < 50);
+				}
+
 				view.down('grid').reconfigure(record.specifications());
 
 			},

@@ -1,5 +1,6 @@
 package com.itg.extjstest.domain.security;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -13,7 +14,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(finders = { "findUserDetailsByUserNameEquals" })
-public class UserDetail  implements java.io.Serializable{
+public class UserDetail implements Serializable {
 
     private String userName;
 
@@ -25,4 +26,6 @@ public class UserDetail  implements java.io.Serializable{
 
     @OneToMany(cascade = CascadeType.ALL)
     private Set<SecurityRole> roles = new HashSet<SecurityRole>();
+
+    private Integer userLevel;
 }

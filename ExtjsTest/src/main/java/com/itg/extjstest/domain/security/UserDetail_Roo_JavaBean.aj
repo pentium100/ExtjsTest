@@ -41,4 +41,12 @@ privileged aspect UserDetail_Roo_JavaBean {
         this.roles = roles;
     }
     
+    public Integer UserDetail.getUserLevel() {
+        return this.userLevel;
+    }
+    
+    public void UserDetail.setUserLevel(Integer userLevel) {
+        this.userLevel = userLevel;
+    }
+    
 }

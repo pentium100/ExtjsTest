@@ -399,3 +399,19 @@ finder add --class ~.domain.MaterialDocType --finderName findMaterialDocTypeByDo
 finder add --class ~.domain.MaterialDocType --finderName findMaterialDocTypesByDocType_txtEquals
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-21 21:02:08
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-24 15:40:55
+focus --class ~.domain.Message
+field date --fieldName lastChangeTime --type java.util.Date 
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-24 16:14:14
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-24 17:17:51
+// [failed] focus --class ~.domain.UserDetail
+// [failed] field number --fieldName level --type java.lang.Integer
+// [failed] field number --fieldName level --type java.lang.Integer
+// [failed] field number --fieldName level --type java.lang.Integer
+// [failed] field number --fieldName level --type int
+focus --class ~.domain.security.UserDetail
+// [failed] field number --fieldName level --type java.lang.Integer
+field number --fieldName userLevel --type java.lang.Integer
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-24 17:25:52

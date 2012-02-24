@@ -50,6 +50,7 @@ public class MessageController {
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
 		Message message = Message.fromJsonToMessage(json);
+		message.setLastChangeTime(new Date());
 		message = message.merge();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -91,6 +92,7 @@ public class MessageController {
 		}
 
 		try {
+			message.setLastChangeTime(new Date());
 			message = message.merge();
 
 			messages.add(message);

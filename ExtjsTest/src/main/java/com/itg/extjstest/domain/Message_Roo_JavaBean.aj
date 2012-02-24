@@ -122,4 +122,12 @@ privileged aspect Message_Roo_JavaBean {
         this.eta = eta;
     }
     
+    public Date Message.getLastChangeTime() {
+        return this.lastChangeTime;
+    }
+    
+    public void Message.setLastChangeTime(Date lastChangeTime) {
+        this.lastChangeTime = lastChangeTime;
+    }
+    
 }

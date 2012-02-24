@@ -69,6 +69,7 @@ public class MessageListController {
 				user = (UserDetail) context.getAuthentication().getDetails();
 				if (user != null) {
 					model.addAttribute("userName", user.getUserName());
+					model.addAttribute("userLevel", user.getUserLevel());	
 				}
 			} catch (Exception e) {
 
@@ -98,11 +99,13 @@ public class MessageListController {
 			user = new UserDetail();
 
 			user.setUserName((String) l.get(0).get("userName"));
+			user.setUserLevel((Integer) l.get(0).get("zlevel"));
 
 			uat.setDetails(user);
 			// SecurityContext context = SecurityContextHolder.getContext();
 
 			model.addAttribute("userName", user.getUserName());
+			model.addAttribute("userLevel", user.getUserLevel());
 
 			Authentication userAuth = authenticationManager.authenticate(uat);
 

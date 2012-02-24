@@ -96,10 +96,7 @@ Ext.define('AM.portal.Portal_OA', {
 											'close' : Ext.bind(
 													this.onPortletClose, this)
 										}
-									}]
-								}, {
-									id : 'col-2',
-									items : [{ 
+									},{ 
 										id : 'portlet-3',
 										title : '敞口信息',
 										tools : this.getTools(),
@@ -119,10 +116,9 @@ Ext.define('AM.portal.Portal_OA', {
 											'close' : Ext.bind(
 													this.onPortletClose, this)
 										}
-									}
-									
-									
+									}	
 									]
+							
 								}]
 
 							}
