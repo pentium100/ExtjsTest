@@ -91,6 +91,10 @@
       		<constructor-arg><ref bean="dataSource2"/></constructor-arg> 
     </bean>
     
+    <bean id="jdbcTemplate2" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+      		<constructor-arg><ref bean="dataSource"/></constructor-arg> 
+    </bean>
+
     <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager"/>
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
         <property name="persistenceUnitName" value="persistenceUnit"/>

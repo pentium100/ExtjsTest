@@ -1,35 +1,17 @@
-Ext.define('AM.view.contract.Search', {
-	extend : 'Ext.window.Window',
 
-	height : 518,
-	width : 678,
+
+Ext.define('AM.view.contract.report.NoDelivery', {
+	extend : 'Ext.panel.Panel',
 	layout : {
 		type : 'border'
 	},
-	modal : true,
-	title : '合同搜索',
-	alias : 'widget.contractSearch',
+	frame : true, 
+	alias : 'widget.NoDelivery',
 	
-	renderModel : function(value, metadata, record) {
-		var items = record.raw.items;
-		var value = "";
-		Ext.Array.each(items, function(rec, index) {
-					if (value == "") {
-						value = rec.model;
-					} else {
-						value = value + "," + rec.model;
-					}
-				});
-
-		return value;
-
-	},
-	contractTypeReadonly : true,
-	contractTypeDefaultValue : 0,
 
 	initComponent : function() {
 		var me = this;
-        var store = Ext.create('AM.store.Contracts',{autoLoad:false});
+        var store = Ext.create('AM.store.contract.report.NoDelivery',{autoLoad:false});
 		Ext.applyIf(me, {
 			        
 					dockedItems : [{
@@ -44,16 +26,6 @@ Ext.define('AM.view.contract.Search', {
 								region : 'center',
 								dock : 'top',
 								items : [{
-											xtype : 'combobox',
-											fieldLabel : '合同类型',
-											store : 'ContractType',
-											value : me.contractTypeDefaultValue,
-											readOnly : me.contractTypeReadonly,
-											editable: false,
-											valueField: 'id',
-											displayField: 'text',
-											name:'contractType'
-										}, {
 											xtype : 'textfield',
 											fieldLabel : '合同号',
 											name:'contractNo'
@@ -67,10 +39,10 @@ Ext.define('AM.view.contract.Search', {
 											name:'model'
 										}],
 								buttons : [{
-											text : 'Search',
+											text : '提交',
 											action : 'search'
 										}, {
-											text : 'Cancel',
+											text : '取消',
 											action : 'cancel',
 											scope : this,
 											handler : this.close
@@ -79,14 +51,10 @@ Ext.define('AM.view.contract.Search', {
 							}],
 					items : [{
 								xtype : 'gridpanel',
-								title : '搜索结果',
+								title : '报表清单',
 								region : 'center',
 								store : store,
 								columns : [{
-											xtype : 'gridcolumn',
-											dataIndex : 'contractType',
-											text : '合同类型'
-										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'contractNo',
 											text : '合同号'
@@ -96,19 +64,24 @@ Ext.define('AM.view.contract.Search', {
 											text : '供应商'
 										}, {
 											xtype : 'gridcolumn',
-											dataIndex : 'payTerm',
-											text : '付款方式'
-										}, {
-											xtype : 'gridcolumn',
-											dataIndex : 'model',
-											scope : this,
-											renderer : this.renderModel,
+											dataIndex : 'model_contract',
 											text : '规格'
 										}, {
 											xtype : 'gridcolumn',
-											dataIndex : 'remark',
-											text : '备注'
-										}],
+											dataIndex : 'quantity_in_contract',
+											text : '签约数量'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'quantity_in_receipt',
+											text : '到货数量'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'quantity_no_delivery',
+											text : '未到货数量'
+										} 
+												
+													
+										],
 								viewConfig : {
 
 					}			,

@@ -2,11 +2,12 @@ Ext.define('AM.controller.MaterialDocs', {
 			extend : 'Ext.app.Controller',
 
 			views : ['materialDoc.List', 'materialDoc.Edit', 'contract.Search'],
-			stores : ['MaterialDocs', 'ContractType', 'Contracts', 'MaterialDocTypes'],
-			models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType'],
+			stores : ['MaterialDocs', 'ContractType', 'Contracts',
+					'MaterialDocTypes'],
+			models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType', 'Contract', 'ContractItem'],
 
 			init : function(options) {
-				
+
 				Ext.apply(this, options);
 
 				this.control({
@@ -55,30 +56,29 @@ Ext.define('AM.controller.MaterialDocs', {
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
 
 				view.down('grid').reconfigure(record.items());
-				
-				var items=record.items();
-				
-				items.each(function(item){
-					
-					    
-					    if(item.get('lineId_in')==""){
-							var lineId_in = {'lineId':item.get('lineId'), 'version':item.get('version')};
-							item.set('lineId_in', lineId_in);
-						}
-						
-					
-				}, this);
-					
-					
-					
-				
+
+				var items = record.items();
+
+				items.each(function(item) {
+
+							if (item.get('lineId_in') == "") {
+								var lineId_in = {
+									'lineId' : item.get('lineId'),
+									'version' : item.get('version')
+								};
+								item.set('lineId_in', lineId_in);
+							}
+
+						}, this);
 
 			},
 
 			addMaterialDoc : function(button) {
 
 				var record = new AM.model.MaterialDoc();
-				record.setDocType({'id':this.docType});
+				record.setDocType({
+							'id' : this.docType
+						});
 				this.getStore('MaterialDocs').insert(0, record);
 				var view = Ext.widget('materialDocEdit');
 				view.down('form').loadRecord(record);
@@ -91,18 +91,15 @@ Ext.define('AM.controller.MaterialDocs', {
 				var grid = win.down('gridpanel');
 				var store = grid.getStore();
 				var record = new AM.model.MaterialDocItem();
-				
+
 				record.set('moveType', this.moveType1);
 				record.set('direction', 1);
-				var lineId_in = {'lineId':0, 'version':0};
+				var lineId_in = {
+					'lineId' : 0,
+					'version' : 0
+				};
 				record.set('lineId_in', lineId_in);
-				
-
-				// var edit = grid.editing;
-
-				// edit.cancelEdit();
 				store.insert(0, record);
-				// edit.startEditByPosition({
 
 			},
 			deleteMaterialDocItem : function(button) {
@@ -115,7 +112,6 @@ Ext.define('AM.controller.MaterialDocs', {
 				if (selection) {
 					store.remove(selection);
 				}
-				
 
 			},
 
@@ -178,10 +174,33 @@ Ext.define('AM.controller.MaterialDocs', {
 				var view = win.parentWindow;
 				var form = view.down('form');
 				var oldRecord = form.getRecord();
-				//oldRecord.set('contract_id', record.get('id'));
+				// oldRecord.set('contract_id', record.get('id'));
 				oldRecord.setContract(record.data);
 				oldRecord.set('contractNo', record.get('contractNo'));
 				form.loadRecord(oldRecord);
+
+				var grid = view.down('gridpanel');
+				var materialDocItems = grid.getStore();
+
+				var contractItems = record.items();
+
+				contractItems.each(function(contractItem) {
+
+							var record = new AM.model.MaterialDocItem();
+							record.set('model_contract', contractItem.get("model"));
+							record.set('moveType', this.moveType1);
+							record.set('direction', 1);
+							var lineId_in = {
+								'lineId' : 0,
+								'version' : 0
+							};
+							record.set('lineId_in', lineId_in);
+							materialDocItems.insert(0, record);
+
+							
+
+						}, this);
+
 				// oldRecord.get('contract').setDirty();
 			},
 
@@ -199,16 +218,16 @@ Ext.define('AM.controller.MaterialDocs', {
 				win.close();
 
 			},
-			
-			cancelMaterialDoc : function(button){
+
+			cancelMaterialDoc : function(button) {
 				var win = button.up('window');
 				var form = win.down('form');
 				var grid = win.down('gridpanel')
-				
+
 				this.getStore('MaterialDocs').rejectChanges();
-				
+
 				grid.getStore().rejectChanges();
-				
+
 			}
 
 		});

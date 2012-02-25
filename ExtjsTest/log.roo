@@ -415,3 +415,6 @@ focus --class ~.domain.security.UserDetail
 field number --fieldName userLevel --type java.lang.Integer
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-24 17:25:52
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-02-25 19:57:08
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-02-25 19:57:46

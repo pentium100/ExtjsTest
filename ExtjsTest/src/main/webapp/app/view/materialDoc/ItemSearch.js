@@ -91,12 +91,12 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 												}, {
 													xtype : 'gridcolumn',
 													
-													text : '型号(合同)',
+													text : '规格(合同)',
 													dataIndex: 'model_contract'
 												}, {
 													xtype : 'gridcolumn',
 													
-													text : '型号(检验后)',
+													text : '规格(检验后)',
 													dataIndex: 'model_tested'
 												}, {
 													xtype : 'gridcolumn',

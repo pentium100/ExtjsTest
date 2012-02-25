@@ -70,7 +70,7 @@ Ext.define('AM.view.movingDoc.Edit', {
 								columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'model_contract',
-									text : '型号',
+									text : '规格',
 									// field : 'trigger',
 									editor : {
 										xtype : 'trigger',
@@ -93,7 +93,7 @@ Ext.define('AM.view.movingDoc.Edit', {
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'model_tested',
-									text : '型号(检验后)'
+									text : '规格(检验后)'
 
 								}, {
 									xtype : 'numbercolumn',

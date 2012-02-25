@@ -48,15 +48,17 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 								}, {
 									xtype : 'textfield',
 									name : 'deliveryNote',
-									fieldLabel : '进仓单号'
+									fieldLabel : '出仓单号'
 								}, {
 									xtype : 'textfield',
 									name : 'plateNum',
 									fieldLabel : '车号/卡号'
+									,hidden: true
 								}, {
 									xtype : 'textfield',
 									name : 'batchNo',
 									fieldLabel : '批次号'
+									,hidden: true
 								}, {
 									xtype : 'datefield',
 									name : 'docDate',
@@ -66,6 +68,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 									xtype : 'textfield',
 									name : 'workingNo',
 									fieldLabel : '工作号'
+									,hidden: true
 								}]
 					}],
 			items : [{
@@ -97,7 +100,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 				columns : [{
 							xtype : 'gridcolumn',
 							dataIndex : 'model_contract',
-							text : '型号',
+							text : '规格',
 							// field : 'trigger',
 							editor : {
 								xtype : 'trigger',
@@ -120,7 +123,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'model_tested',
-							text : '型号(检验后)'
+							text : '规格(检验后)'
 
 						}, {
 							xtype : 'numbercolumn',

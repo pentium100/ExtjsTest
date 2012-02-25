@@ -16,7 +16,14 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord(finders = { "findUserDetailsByUserNameEquals" })
 public class UserDetail implements Serializable {
 
-    private String userName;
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1679307029304236940L;
+
+	private String userName;
 
     @NotNull
     @Size(max = 45)

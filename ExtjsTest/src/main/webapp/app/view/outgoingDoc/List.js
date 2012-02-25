@@ -27,7 +27,7 @@ Ext.define('AM.view.outgoingDoc.List', {
 							flex : 1,
 							filterable : true
 						}, {
-							header : '进仓单号',
+							header : '出仓单号',
 							dataIndex : 'deliveryNote',
 							flex : 1,
 							filterable : true
@@ -36,11 +36,14 @@ Ext.define('AM.view.outgoingDoc.List', {
 							dataIndex : 'plateNum',
 							flex : 1,
 							filterable : true
+							,hidden: true
+						
 						}, {
 							header : '批号',
 							dataIndex : 'batchNo',
 							flex : 1,
 							filterable : true
+							,hidden: true
 						}, {
 							header : '日期',
 							dataIndex : 'docDate',
@@ -48,11 +51,13 @@ Ext.define('AM.view.outgoingDoc.List', {
 							format : 'Y-m-d',
 							flex : 1,
 							filterable : true
+							
 						}, {
 							header : '工作号',
 							dataIndex : 'workingNo',
 							flex : 1,
 							filterable : true
+							,hidden: true
 						}, {
 							header : '备注',
 							dataIndex : 'remark',

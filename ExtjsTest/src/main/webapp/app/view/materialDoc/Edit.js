@@ -97,12 +97,12 @@ Ext.define('AM.view.materialDoc.Edit', {
 						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'model_contract',
-									text : '型号(合同)'
+									text : '规格(合同)'
 									,field: 'textfield'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'model_tested',
-									text : '型号(检验后)'
+									text : '规格(检验后)'
 									,field: 'textfield'
 								}, {
 									xtype : 'numbercolumn',
