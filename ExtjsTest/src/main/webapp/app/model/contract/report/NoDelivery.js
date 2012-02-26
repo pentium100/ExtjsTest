@@ -6,18 +6,22 @@ Ext.define('AM.model.contract.report.NoDelivery', {
 						type : 'string'
 						
 					},{
-						name : 'contractNo',
+						name : 'contract_no',
 						type : 'string'
 					}, {
-						name : 'model_contract',
+						name : 'model',
 						type : 'string'
 						
 					},{
-						name : 'quantity_in_contract',
+						name : 'quantity',
 						type : 'float'
 					},{
 						name : 'quantity_in_receipt',
-						type : 'float'
+						type : 'float',
+						convert:function(value, record){
+							return record.get("quantity") - record.get("quantity_no_delivery");
+						}
+						
 					},{
 						name : 'quantity_no_delivery',
 						type : 'float'

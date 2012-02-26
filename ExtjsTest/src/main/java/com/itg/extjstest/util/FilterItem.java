@@ -1,7 +1,10 @@
 package com.itg.extjstest.util;
 
 import java.lang.reflect.Array;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,13 +47,108 @@ public class FilterItem {
 	}
 
 	public String getComparison() {
+
+		if (getType().equals("list")) {
+			return "in";
+		}
+		if (getType().equals("boolean")) {
+			return "=";
+		}
+
+		if (getType().equals("string") && (getValue().equals("null"))) {
+			return "is";
+		}
+
+		if (getType().equals("string")) {
+			return "like";
+		}
+
+		if (comparison.equals("gt") || comparison.equals("greaterThan")) {
+			return ">";
+		}
+		if (comparison.equals("lt") || comparison.equals("lessThan")) {
+			return "<";
+		}
+
+		if (comparison.equals("ge") || comparison.equals("greaterOrEqual")) {
+			return ">=";
+		}
+		if (comparison.equals("le") || comparison.equals("lessOrEqual")) {
+			return "<=";
+		}
+
+		if (comparison.equals("eq") || comparison.equals("equal")) {
+			return "=";
+		}
+		if (comparison.equals("notEqual")) {
+			return "!=";
+		}
+
 		return comparison;
+
 	}
 
 	public void setComparison(String comparison) {
 		this.comparison = comparison;
 	}
 
+	
+	public String getSqlValues() {
+
+		StringBuffer result = new StringBuffer();
+		if (getType().equals("date")) {
+
+			try {
+				SimpleDateFormat s = new SimpleDateFormat("MM/dd/yyyy");
+				Date today = s.parse(getValue());
+
+				result.append("'"
+						+ new SimpleDateFormat("yyyy/MM/dd").format(today)
+						+ "'");
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+
+		if (getType().equals("datetime")) {
+
+			result.append("'" + getValue() + "'");
+
+		}
+
+		if (getType().equals("string")) {
+
+			if (getValue().equals("null")) {
+
+				result.append(" null ");
+			} else {
+
+				result.append("'%" + getValue() + "%'");
+			}
+		}
+
+		if (getType().equals("list")) {
+			result.append("(");
+			result.append( getValue());
+			result.append(")");
+
+		}
+
+		if (getType().equals("numeric")) {
+			result.append(getValue());
+
+		}
+
+		if (getType().equals("boolean")) {
+			result.append(getValue().equals("true") ? 1 : 0);
+
+		}
+
+		return result.toString();
+	}
+	
 	public Predicate getPredicate(CriteriaBuilder cb,
 			HashMap<String, Path> paths) {
 		// TODO Auto-generated method stub
@@ -80,7 +178,7 @@ public class FilterItem {
 					+ getValue() + "%");
 		}
 		if (type.equals("int")) {
-			if (getComparison().equals("eq")) {
+			if (getComparison().equals("=")) {
 				
 				return cb.equal(path.get(fieldName).as(Integer.class), 
 						Integer.valueOf(getValue()) );
@@ -114,6 +212,21 @@ public class FilterItem {
 		}
 
 		return result;
+	}
+
+	public String getSqlWhere() {
+		
+		StringBuffer result = new StringBuffer();
+
+
+		result.append(getField());
+		result.append(" ");
+		result.append(getComparison());
+		result.append(" ");
+		result.append(getSqlValues());
+		result.append(" ");
+		return result.toString();
+		
 	}
 
 }

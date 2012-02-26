@@ -435,6 +435,11 @@
 			<version>2.5.1</version>
 			<type>pom</type>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.8-beta5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

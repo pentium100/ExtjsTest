@@ -1,7 +1,7 @@
 Ext.define('AM.controller.contract.report.NoDeliverys', {
 			extend : 'Ext.app.Controller',
 
-			views :  ['contract.report.NoDelivery'],
+			views : ['contract.report.NoDelivery'],
 			stores : ['contract.report.NoDelivery'],
 			models : ['contract.report.NoDelivery'],
 
@@ -13,24 +13,28 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 
 							'NoDelivery button[action=search]' : {
 								click : this.submitReport
+							},
+
+							'NoDelivery button[action=exportToExcel]' : {
+								click : this.exportToExcel
 							}
 						});
 
 			},
 
-			submitReport : function(button) {
-				
+			exportToExcel : function(button) {
 				var panel = button.up('NoDelivery');
 				var grid = panel.down('gridpanel');
 				var store = grid.getStore();
 
 				var tmp = [];
 				var filter = {};
-				var record = button.up('form').getValues();
-				if (record.contractNo != "") {
+				var record = panel.down('form').getValues();
+				
+				if (record.contract_no != "") {
 					filter.type = "string";
-					filter.field = "contractNo";
-					filter.value = record.contractNo;
+					filter.field = "contract_no";
+					filter.value = record.contract_no;
 					tmp.push(Ext.apply({}, filter));
 				}
 
@@ -40,7 +44,45 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 					filter.value = record.supplier;
 					tmp.push(Ext.apply({}, filter));
 				}
+
+				if (record.model != "") {
+					filter.type = "string";
+					filter.field = "model";
+					filter.value = record.model;
+					tmp.push(Ext.apply({}, filter));
+				}
+                
+				param = 'filter='+encodeURI(Ext.JSON.encode(tmp))+'&excel=true&start=1&limit=10000000';
+				window.open('reports/noDelivery?'+param);
+
 				
+				
+
+			},
+
+			submitReport : function(button) {
+
+				var panel = button.up('NoDelivery');
+				var grid = panel.down('gridpanel');
+				var store = grid.getStore();
+
+				var tmp = [];
+				var filter = {};
+				var record = button.up('form').getValues();
+				if (record.contract_no != "") {
+					filter.type = "string";
+					filter.field = "contract_no";
+					filter.value = record.contract_no;
+					tmp.push(Ext.apply({}, filter));
+				}
+
+				if (record.supplier != "") {
+					filter.type = "string";
+					filter.field = "supplier";
+					filter.value = record.supplier;
+					tmp.push(Ext.apply({}, filter));
+				}
+
 				if (record.model != "") {
 					filter.type = "string";
 					filter.field = "model";

@@ -28,7 +28,7 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 								items : [{
 											xtype : 'textfield',
 											fieldLabel : '合同号',
-											name:'contractNo'
+											name:'contract_no'
 										}, {
 											xtype : 'textfield',
 											fieldLabel : '供应商',
@@ -56,7 +56,7 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 								store : store,
 								columns : [{
 											xtype : 'gridcolumn',
-											dataIndex : 'contractNo',
+											dataIndex : 'contract_no',
 											text : '合同号'
 										}, {
 											xtype : 'gridcolumn',
@@ -64,20 +64,22 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 											text : '供应商'
 										}, {
 											xtype : 'gridcolumn',
-											dataIndex : 'model_contract',
+											dataIndex : 'model',
 											text : '规格'
 										}, {
 											xtype : 'gridcolumn',
-											dataIndex : 'quantity_in_contract',
+											dataIndex : 'quantity',
 											text : '签约数量'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'quantity_in_receipt',
-											text : '到货数量'
+											text : '到货数量',
+											sortable:false
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'quantity_no_delivery',
-											text : '未到货数量'
+											text : '未到货数量',
+											sortable:false
 										} 
 												
 													
@@ -87,10 +89,14 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 					}			,
 								dockedItems : [{
 											xtype : 'pagingtoolbar',
-											width : 360,
+											//width : 360,
 											displayInfo : true,
 											dock : 'bottom',
-											store : store
+											store : store,
+											items:[{xtype:'button',
+											        text:'导出到excel',
+											        action:'exportToExcel'
+											         }]
 										}]
 
 							}]
