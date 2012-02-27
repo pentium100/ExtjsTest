@@ -1,5 +1,6 @@
 package com.itg.extjstest.util;
 
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -23,8 +24,11 @@ public class ExcelReportView extends AbstractExcelView {
 		int rowNum = 0;
 		// create a wordsheet
 		
-		response.addHeader("Content-Disposition", "attachment;filename=whatever-you-want.xls"); 
-		response.setHeader("Content-Type","application/force-download");
+		String fileName = URLEncoder.encode((String) model.get("title"), "UTF-8");
+				
+		response.addHeader("Content-Disposition", "attachment;filename="+fileName+".xls"); 
+		response.setHeader("Content-Type","application/force-download; charset=utf-8");
+		
 		
 		HSSFSheet sheet = workbook.createSheet((String) model.get("title"));
 
@@ -48,6 +52,8 @@ public class ExcelReportView extends AbstractExcelView {
 					cell.setCellValue(dataSet.get(colHeader.getField().toString()).toString());
 				}
 				cell.setCellStyle(colHeader.getStyle(workbook));
+				
+				
 
 			}
 

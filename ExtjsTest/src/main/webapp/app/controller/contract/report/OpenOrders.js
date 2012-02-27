@@ -1,9 +1,9 @@
-Ext.define('AM.controller.contract.report.NoDeliverys', {
+Ext.define('AM.controller.contract.report.OpenOrders', {
 			extend : 'Ext.app.Controller',
 
-			views : ['contract.report.NoDelivery'],
-			stores : ['contract.report.NoDelivery'],
-			models : ['contract.report.NoDelivery'],
+			views : ['contract.report.OpenOrder'],
+			stores : ['contract.report.OpenOrder'],
+			models : ['contract.report.OpenOrder'],
 
 			init : function(options) {
 
@@ -11,11 +11,11 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 
 				this.control({
 
-							'NoDelivery button[action=search]' : {
+							'OpenOrder button[action=search]' : {
 								click : this.submitReport
 							},
 
-							'NoDelivery button[action=exportToExcel]' : {
+							'OpenOrder button[action=exportToExcel]' : {
 								click : this.exportToExcel
 							}
 						});
@@ -23,7 +23,7 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 			},
 
 			exportToExcel : function(button) {
-				var panel = button.up('NoDelivery');
+				var panel = button.up('OpenOrder');
 				var grid = panel.down('gridpanel');
 				var store = grid.getStore();
 
@@ -31,20 +31,6 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 				var filter = {};
 				var record = panel.down('form').getValues();
 				
-				if (record.contract_no != "") {
-					filter.type = "string";
-					filter.field = "contract_no";
-					filter.value = record.contract_no;
-					tmp.push(Ext.apply({}, filter));
-				}
-
-				if (record.supplier != "") {
-					filter.type = "string";
-					filter.field = "supplier";
-					filter.value = record.supplier;
-					tmp.push(Ext.apply({}, filter));
-				}
-
 				if (record.model != "") {
 					filter.type = "string";
 					filter.field = "model";
@@ -53,7 +39,7 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 				}
                 
 				param = 'filter='+encodeURI(Ext.JSON.encode(tmp))+'&excel=true&start=1&limit=10000000';
-				window.open('reports/noDeliverys?'+param);
+				window.open('reports/openOrders?'+param);
 
 				
 				
@@ -62,26 +48,13 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 
 			submitReport : function(button) {
 
-				var panel = button.up('NoDelivery');
+				var panel = button.up('OpenOrder');
 				var grid = panel.down('gridpanel');
 				var store = grid.getStore();
 
 				var tmp = [];
 				var filter = {};
 				var record = button.up('form').getValues();
-				if (record.contract_no != "") {
-					filter.type = "string";
-					filter.field = "contract_no";
-					filter.value = record.contract_no;
-					tmp.push(Ext.apply({}, filter));
-				}
-
-				if (record.supplier != "") {
-					filter.type = "string";
-					filter.field = "supplier";
-					filter.value = record.supplier;
-					tmp.push(Ext.apply({}, filter));
-				}
 
 				if (record.model != "") {
 					filter.type = "string";

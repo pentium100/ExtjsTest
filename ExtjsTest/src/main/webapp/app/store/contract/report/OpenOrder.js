@@ -1,16 +1,16 @@
 
 
-Ext.define('AM.store.contract.report.NoDelivery', {
+Ext.define('AM.store.contract.report.OpenOrder', {
 			extend : 'Ext.data.ux.Store',
-			model : 'AM.model.contract.report.NoDelivery',
+			model : 'AM.model.contract.report.OpenOrder',
 			remoteSort: true,
 
 			proxy : {
 				type : 'rest',
-				url : 'reports/noDeliverys',
+				url : 'reports/openOrders',
 				reader : {
 					type : 'json',
-					root : 'noDeliverys',
+					root : 'openOrders',
 					successProperty : 'success'
 				}
 			}
