@@ -41,11 +41,27 @@ Ext.define('AM.controller.Messages', {
 
 			deleteMessage : function(button) {
 				var grid = button.up('gridpanel');
-				//var grid = viewport.down('messageList');
+				
 				var selection = grid.getView().getSelectionModel().getSelection()[0];
 				if (selection) {
-					grid.getStore().remove(selection);
-					grid.getStore().sync();
+					
+					
+					if(selection.get("owner")==_DEFAULT_USER_NAME){
+					
+						grid.getStore().remove(selection);
+						grid.getStore().sync();
+					}else{
+						
+						Ext.MessageBox.show({
+													title : '错误信息',
+													msg : '您只能删除自已创建的信息！',
+													buttons : Ext.MessageBox.OK,
+													icon : Ext.MessageBox.ERROR,
+													closable : false,
+													modal : true
+												});
+					}
+						
 				}
 			},
 
