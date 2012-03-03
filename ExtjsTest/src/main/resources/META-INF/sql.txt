@@ -29,3 +29,6 @@ values (8, 'icon-report', '已签约未到货',0, 7, 'AM.controller.contract.rep
 
 insert into menu (id,icon_cls, text, version, parent, controller, leaf, views)
 values (9, 'icon-report', '敞口业务报表',0, 7, 'AM.controller.contract.report.OpenOrders', 1, 'OpenOrder')
+
+  insert into menu(id, icon_cls, text, parent, controller,leaf, views)
+  values (10, 'icon-report', '合同查询', 7, 'AM.controller.contract.report.ContractHistory', 1, 'ContractHistory')
