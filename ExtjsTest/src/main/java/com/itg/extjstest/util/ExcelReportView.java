@@ -36,8 +36,10 @@ public class ExcelReportView extends AbstractExcelView {
 
 		List<ReportHeader> headers = (List<ReportHeader>) model.get("headers");
 
+		int i = 0;
 		for (ReportHeader colHeader : headers) {
-			header.createCell(colHeader.getPosition()).setCellValue(colHeader.getHeader());
+			header.createCell(i++).setCellValue(colHeader.getHeader());
+			
 		}
 		String dataRoot = (String) model.get("dataRoot");
 
@@ -46,8 +48,10 @@ public class ExcelReportView extends AbstractExcelView {
 
 		for (Map<String, Object> dataSet : dataSets) {
 			HSSFRow row = sheet.createRow(rowNum++);
+			i = 0;
 			for (ReportHeader colHeader : headers) {
-				HSSFCell cell = row.createCell(colHeader.getPosition());
+				
+				HSSFCell cell = row.createCell(i++);
 				if (dataSet.get(colHeader.getField().toString()) != null) {
 					cell.setCellValue(dataSet.get(colHeader.getField().toString()).toString());
 				}

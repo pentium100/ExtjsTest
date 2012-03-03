@@ -334,4 +334,183 @@ public class ReportController {
 
 	}
 	
+	
+
+	
+	@RequestMapping(value = "/contractHistorys")
+	public String ContractHistorys(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "excel", required = false) String excel,
+			ModelMap map) {
+
+		List<Map<String, String>> sorts = new ArrayList<Map<String, String>>();
+		if (sort != null && (!sort.equals(""))) {
+			sorts = new JSONDeserializer<List<Map<String, String>>>()
+					.deserialize(sort);
+		}
+
+		StringBuffer sortString = new StringBuffer();
+
+		for (Map<String, String> s : sorts) {
+			if (!sortString.toString().equals("")) {
+				sortString.append(",");
+			}
+
+			sortString.append(" " + s.get("property") + " "
+					+ s.get("direction"));
+		}
+		if (!sortString.toString().equals("")) {
+			sortString.append(",");
+		}
+
+		sortString.append(" contract_type asc, contract_no asc ");
+
+		List<FilterItem> filters = null;
+		if (filter != null) {
+			filters = new JSONDeserializer<List<FilterItem>>()
+					.use(null, ArrayList.class).use("values", FilterItem.class)
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
+
+		}
+
+		StringBuffer whereString = new StringBuffer();
+		for (FilterItem f : filters) {
+			
+			if(!whereString.toString().equals("")){
+				whereString.append(" and " );
+			}
+
+			whereString.append(f.getSqlWhere());
+		}
+
+		StringBuffer query = new StringBuffer();
+		StringBuffer cte = new StringBuffer();
+
+		cte.append("with ContractHistory as (");
+		cte.append("select (ROW_NUMBER() over (order by "
+				+ sortString.toString()
+				+ " )) as rowNum, ");
+		
+
+		cte.append(" case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, contract_no,supplier, pay_term, contract.remark, model, quantity,unit_price,contract_item.remark as item_remark  "); 
+		cte.append(" from contract");  
+		cte.append(" inner join contract_items on contract.id = contract_items.contract    ");
+		cte.append(" inner join contract_item on contract_item.id = contract_items.items   ");
+		
+		
+		
+		if (!whereString.toString().equals("")){
+			cte.append(" where " + whereString);
+		}
+		cte.append(" )");
+		
+		query.append(" select * from ContractHistory where rowNum>:start and rowNum<=:start+:limit");
+		
+
+		// SqlParameterSource param = new MapSqlParameterSource();
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("start", start);
+		param.put("limit", limit);
+
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(
+				cte.toString()+query.toString(), param);
+
+		if (excel != null && excel.equals("true")) {
+			map.put("dataRoot", "contractHistorys");
+			map.put("contractHistorys", result);
+			List<ReportHeader> headers = new ArrayList<ReportHeader>();
+			ReportHeader header;
+			
+			header = new ReportHeader();
+			header.setHeader("合同类型");
+			header.setField("contract_type");
+			header.setPosition(0);
+			headers.add(header);
+
+			header.setHeader("合同号");
+			header.setField("contract_no");
+			header.setPosition(1);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("供应商");
+			header.setField("supplier");
+			header.setPosition(2);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("付款方式");
+			header.setField("pay_term");
+			header.setPosition(3);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("备注");
+			header.setField("remark");
+			header.setPosition(3);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("规格");
+			header.setField("model");
+			header.setPosition(2);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("签约数量");
+			header.setField("quantity");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setPosition(3);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("单价");
+			header.setField("unit_price");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setPosition(3);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("备注");
+			header.setField("item_remark");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setPosition(3);
+			headers.add(header);
+			
+			
+			map.put("headers", headers);
+			map.put("title", "合同查询");
+			
+			return "ExportToExcel";
+					
+
+		} else {
+			HashMap<String, Object> map2 = new HashMap<String, Object>();
+			
+			Long recordCount = jdbcTemplate.queryForLong(
+					cte.toString()+"select count(*) from ContractHistory", param);
+
+			map2.put("total", recordCount);
+			map2.put("success", true);
+			map2.put("contractHistorys", result);
+			//map2.put("dataRoot", "noDeliverys");
+
+			String resultJson = new JSONSerializer()
+					.exclude("*.class")
+					.include("contractHistorys")
+					.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+							Date.class).serialize(map2);
+			map.put("result", resultJson);
+
+			return "resultOnly";
+		}
+
+	}
+	
+	
 }
