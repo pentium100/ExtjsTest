@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.itg.extjstest.domain.Contract;
+import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.ContractType;
 import com.itg.extjstest.util.ContractTypeObjectFactory;
 import com.itg.extjstest.util.FilterItem;
@@ -68,6 +69,11 @@ public class ContractController {
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
 		Contract contract = Contract.fromJsonToContract(json);
+		
+		for(ContractItem item : contract.getItems()){
+			item.setContract(contract);
+		}
+		
 		contract = contract.merge();
 		if (contract == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
@@ -86,6 +92,11 @@ public class ContractController {
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
 		Contract contract = Contract.fromJsonToContract(json);
+		
+		for(ContractItem item : contract.getItems()){
+			item.setContract(contract);
+		}
+		
 		contract = contract.merge();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");

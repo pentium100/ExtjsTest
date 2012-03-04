@@ -32,3 +32,7 @@ values (9, 'icon-report', '敞口业务报表',0, 7, 'AM.controller.contract.rep
 
   insert into menu(id, icon_cls, text, parent, controller,leaf, views)
   values (10, 'icon-report', '合同查询', 7, 'AM.controller.contract.report.ContractHistory', 1, 'ContractHistory')
+  
+  insert into menu(id, icon_cls, text, parent, controller,leaf, views)
+  values (11, 'icon-report', '库存查询', 7, 'AM.controller.materialDoc.report.StockQuery', 1, 'StockQuery')
+  

@@ -121,9 +121,12 @@ public class MaterialDocController {
         		MaterialDocItem newItem = new MaterialDocItem();
         		newItem.setLineId_in(item.getLineId_in());
         		newItem.setMoveType("101");
-        		newItem.setDirection((short) -1);
+        		newItem.setDirection((short) 1);
         		newItem.setNetWeight(item.getNetWeight());
         		newItem.setWarehouse(materialDoc.getTargetWarehouse());
+        		newItem.setMaterialDoc(materialDoc);
+        		newItem.setModel_contract(item.getModel_contract());
+        		newItem.setModel_tested(item.getModel_tested());
         		newItems.add(newItem);
         	}
         	
@@ -194,7 +197,7 @@ public class MaterialDocController {
         		MaterialDocItem newItem = new MaterialDocItem();
         		newItem.setLineId_in(item.getLineId_in());
         		newItem.setMoveType("101");
-        		newItem.setDirection((short) -1);
+        		newItem.setDirection((short) 1);
         		newItem.setNetWeight(item.getNetWeight());
         		newItem.setWarehouse(materialDoc.getTargetWarehouse());
         		newItems.add(newItem);
@@ -214,7 +217,21 @@ public class MaterialDocController {
     		Contract contract = new Contract();
     		materialDoc.setContract(contract);
 
+    		String targetWarehouse = "";
+    		Iterator<MaterialDocItem> it = materialDoc.getItems().iterator();
+        	while(it.hasNext()){
+        		MaterialDocItem mi = it.next();
+        		if(mi.getMoveType().equals("101")){
+        			targetWarehouse = mi.getWarehouse();
+        			it.remove();
+        			
+        		}
+        	}
+        	materialDoc.setTargetWarehouse(targetWarehouse);
+    		
         }
+        
+        
 		
         
         HttpHeaders headers = new HttpHeaders();

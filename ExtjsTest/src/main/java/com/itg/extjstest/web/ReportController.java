@@ -1,6 +1,8 @@
 package com.itg.extjstest.web;
 
 import java.sql.ResultSet;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.itg.extjstest.domain.Contract;
+import com.itg.extjstest.domain.MaterialDocItem;
 import com.itg.extjstest.domain.Message;
 import com.itg.extjstest.util.FilterItem;
 import com.itg.extjstest.util.ReportHeader;
@@ -84,6 +87,10 @@ public class ReportController {
 
 		}
 
+		
+
+		
+		
 		StringBuffer whereString = new StringBuffer();
 		for (FilterItem f : filters) {
 
@@ -117,7 +124,6 @@ public class ReportController {
 
 		List<Map<String, Object>> result = jdbcTemplate.queryForList(
 				cte.toString()+query.toString(), param);
-		
 		
 
 		if (excel != null && excel.equals("true")) {
@@ -345,7 +351,7 @@ public class ReportController {
 			@RequestParam(value = "filter", required = false) String filter,
 			@RequestParam(value = "sort", required = false) String sort,
 			@RequestParam(value = "excel", required = false) String excel,
-			ModelMap map) {
+			ModelMap map) throws ParseException {
 
 		List<Map<String, String>> sorts = new ArrayList<Map<String, String>>();
 		if (sort != null && (!sort.equals(""))) {
@@ -378,9 +384,16 @@ public class ReportController {
 
 		}
 
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("start", start);
+		param.put("limit", limit);
+		
+		
+		
 		StringBuffer whereString = new StringBuffer();
 		for (FilterItem f : filters) {
 			
+	
 			if(!whereString.toString().equals("")){
 				whereString.append(" and " );
 			}
@@ -390,6 +403,7 @@ public class ReportController {
 
 		StringBuffer query = new StringBuffer();
 		StringBuffer cte = new StringBuffer();
+
 
 		cte.append("with ContractHistory as (");
 		cte.append("select (ROW_NUMBER() over (order by "
@@ -412,10 +426,8 @@ public class ReportController {
 		query.append(" select * from ContractHistory where rowNum>:start and rowNum<=:start+:limit");
 		
 
-		// SqlParameterSource param = new MapSqlParameterSource();
-		Map<String, Object> param = new HashMap<String, Object>();
-		param.put("start", start);
-		param.put("limit", limit);
+
+
 
 		List<Map<String, Object>> result = jdbcTemplate.queryForList(
 				cte.toString()+query.toString(), param);
@@ -512,5 +524,209 @@ public class ReportController {
 
 	}
 	
+
 	
+	@RequestMapping(value = "/stockQuerys")
+	public String stockQuerys(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "endDate", required = false) String endDate,
+			@RequestParam(value = "excel", required = false) String excel,
+			ModelMap map) throws ParseException {
+
+		List<Map<String, String>> sorts = new ArrayList<Map<String, String>>();
+		if (sort != null && (!sort.equals(""))) {
+			sorts = new JSONDeserializer<List<Map<String, String>>>()
+					.deserialize(sort);
+		}
+
+		StringBuffer sortString = new StringBuffer();
+
+		for (Map<String, String> s : sorts) {
+			if (!sortString.toString().equals("")) {
+				sortString.append(",");
+			}
+
+			sortString.append(" " + s.get("property") + " "
+					+ s.get("direction"));
+		}
+		if (!sortString.toString().equals("")) {
+			sortString.append(",");
+		}
+
+		sortString.append(" model asc ");
+
+		List<FilterItem> filters = null;
+		if (filter != null) {
+			filters = new JSONDeserializer<List<FilterItem>>()
+					.use(null, ArrayList.class).use("values", FilterItem.class)
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
+
+		}
+
+		
+		
+		StringBuffer whereString = new StringBuffer();
+		for (FilterItem f : filters) {
+			
+			if(!whereString.toString().equals("")){
+				whereString.append(" and " );
+			}
+
+			whereString.append(f.getSqlWhere());
+		}
+
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		param.put("endDate", sdf.parse(endDate));
+		param.put("start", start);
+		param.put("limit", limit);
+		
+		
+		StringBuffer query = new StringBuffer();
+		StringBuffer cte = new StringBuffer();
+
+		
+		cte.append("with StockQuery as (");
+		cte.append("select (ROW_NUMBER() over (order by "
+				+ sortString.toString()
+				+ " )) as rowNum, ");
+		
+
+		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, "); 
+		cte.append("     stock.warehouse, stock.net_weight, ");
+		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
+		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier ");
+		cte.append(" from material_doc  ");
+		cte.append("      inner join material_doc_item on material_doc_item.material_doc = material_doc.doc_no ");
+		cte.append("      inner join contract on contract.id =  material_doc.contract ");
+		cte.append("      left join contract_item on material_doc.contract = contract_item.contract "); 
+		cte.append("                             and material_doc_item.model_contract = contract_item.model, "); 
+		cte.append(" ( ");
+		cte.append("  select line_id_in, warehouse, SUM(net_weight*direction) as net_weight ");
+		cte.append("     from material_doc_item  ");
+		cte.append("     inner join material_doc_items on material_doc_items.items = material_doc_item.line_id ");
+		cte.append("     inner join material_doc on material_doc.doc_no = material_doc_items.material_doc and material_doc.doc_date <= :endDate ");
+		cte.append("     group by line_id_in,warehouse ");
+		cte.append("     having SUM(net_weight*direction)>0) stock ");
+		cte.append("  where material_doc_item.line_id = stock.line_id_in ");
+   
+	      
+		
+		
+		if (!whereString.toString().equals("")){
+			cte.append(" and " + whereString);
+		}
+		cte.append(" )");
+		
+		query.append(" select * from StockQuery where rowNum>:start and rowNum<=:start+:limit");
+		
+		
+		
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(
+				cte.toString()+query.toString(), param);
+
+		
+
+		if (excel != null && excel.equals("true")) {
+			map.put("dataRoot", "stockQuerys");
+			map.put("stockQuerys", result);
+			List<ReportHeader> headers = new ArrayList<ReportHeader>();
+			ReportHeader header;
+			
+			header = new ReportHeader();
+			header.setHeader("合同号");
+			header.setField("contract_no");
+			headers.add(header);
+			
+
+			header = new ReportHeader();
+			header.setHeader("供应商");
+			header.setField("supplier");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("进仓单号");
+			header.setField("deliveryNote");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进仓日期");
+			header.setField("doc_date");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("车号/卡号");
+			header.setField("plate_num");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("批次号");
+			header.setField("batch_no");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("规格(检验后)");
+			header.setField("model_tested");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("规格(合同)");
+			header.setField("model_contract");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("净重");
+			header.setField("net_weight");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("单价");
+			header.setField("unit_price");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("仓库");
+			header.setField("warehouse");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+		
+			
+			map.put("headers", headers);
+			map.put("title", "敞口业务报表");
+			
+			return "ExportToExcel";
+					
+
+		} else {
+			HashMap<String, Object> map2 = new HashMap<String, Object>();
+			
+			Long recordCount = jdbcTemplate.queryForLong(
+					cte.toString()+"select count(*) from StockQuery", param);
+
+			
+			map2.put("total", recordCount);
+			map2.put("success", true);
+			map2.put("stockQuerys", result);
+			//map2.put("dataRoot", "noDeliverys");
+
+			String resultJson = new JSONSerializer()
+					.exclude("*.class")
+					.include("stockQuerys")
+					.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+							Date.class).serialize(map2);
+			map.put("result", resultJson);
+
+			return "resultOnly";
+		}
+
+	}
+
 }
