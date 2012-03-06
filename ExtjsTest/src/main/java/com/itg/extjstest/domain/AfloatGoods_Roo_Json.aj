@@ -16,9 +16,7 @@ privileged aspect AfloatGoods_Roo_Json {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }
     
-    public static AfloatGoods AfloatGoods.fromJsonToAfloatGoods(String json) {
-        return new JSONDeserializer<AfloatGoods>().use(null, AfloatGoods.class).deserialize(json);
-    }
+
     
     public static String AfloatGoods.toJsonArray(Collection<AfloatGoods> collection) {
         return new JSONSerializer().exclude("*.class").serialize(collection);

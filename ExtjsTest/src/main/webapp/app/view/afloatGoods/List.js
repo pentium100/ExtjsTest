@@ -12,7 +12,7 @@ Ext.define('AM.view.afloatGoods.List', {
 			frame : true,
 
 			initComponent : function() {
-				this.columns = [ {
+				this.columns = [{
 							header : '合同号',
 							dataIndex : 'contractNo',
 							filterable : true,
@@ -40,29 +40,29 @@ Ext.define('AM.view.afloatGoods.List', {
 						}, {
 							header : '转货时间',
 							dataIndex : 'transportDate',
-							xtype:'datecolumn',
-							format:'Y-m-d',
+							xtype : 'datecolumn',
+							format : 'Y-m-d',
 							filterable : true,
 							flex : 1
 						}, {
 							header : '发货时间',
 							dataIndex : 'dispatchDate',
-							xtype:'datecolumn',
-							format:'Y-m-d',
+							xtype : 'datecolumn',
+							format : 'Y-m-d',
 							filterable : true,
 							flex : 1
 						}, {
 							header : '预计到货日',
 							dataIndex : 'eta',
-							xtype:'datecolumn',
-							format:'Y-m-d',
+							xtype : 'datecolumn',
+							format : 'Y-m-d',
 							filterable : true,
 							flex : 1
 						}, {
 							header : '实际到货日期',
 							dataIndex : 'arrivalDate',
-							xtype:'datecolumn',
-							format:'Y-m-d',
+							xtype : 'datecolumn',
+							format : 'Y-m-d',
 							filterable : true,
 							flex : 1
 						}, {
@@ -77,34 +77,28 @@ Ext.define('AM.view.afloatGoods.List', {
 							items : [{
 										iconCls : 'icon-add',
 										text : 'Add',
-										scope : this,
-										handler : this.onAddClick
+										action : 'add'
+
 									}, {
 										iconCls : 'icon-delete',
 										text : 'Delete',
-										disabled : false,
-										itemId : 'delete',
-										scope : this,
-										handler : this.onDeleteClick
+										action : 'delete'
+
 									}]
 						}, {
 							xtype : 'pagingtoolbar',
 							displayInfo : true,
-							store : 'Contracts',
+							store : 'afloatGoods.AfloatGoods',
 							dock : 'bottom'
 						}
 
 				];
 
 				this.features = [{
-					ftype : 'filters',
-					// encode and local configuration options defined
-					// previously for easier reuse
-					encode : true, // json encode the filter query
-					local : false
-						// defaults to false (remote filtering)
-
-					}];
+							ftype : 'filters',
+							encode : true, // json encode the filter query
+							local : false
+						}];
 
 				this.callParent(arguments);
 			}

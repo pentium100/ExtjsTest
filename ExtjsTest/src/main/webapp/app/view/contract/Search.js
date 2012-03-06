@@ -114,7 +114,7 @@ Ext.define('AM.view.contract.Search', {
 					}			,
 								dockedItems : [{
 											xtype : 'pagingtoolbar',
-											width : 360,
+											
 											displayInfo : true,
 											dock : 'bottom',
 											store : store

@@ -1,4 +1,4 @@
-Ext.define('AM.view.aflaotGoods.Edit', {
+Ext.define('AM.view.afloatGoods.Edit', {
 			extend : 'Ext.window.Window',
 			alias : 'widget.afloatGoodsEdit',
 
@@ -7,39 +7,43 @@ Ext.define('AM.view.aflaotGoods.Edit', {
 			autoShow : true,
 			height : 400,
 			width : 825,
-			modal: true,
+			modal : true,
 
 			initComponent : function() {
+				var me = this;
 				this.items = [
 
 				{
 							region : 'north',
 							xtype : 'form',
+							layout : {
+								type : 'column'
+							},
 							items : [{
-									xtype : 'trigger',
-									fieldLabel : '合同号',
-									name : 'contractNo',
-									triggerCls : 'icon-search',
-									editable : false,
-									anchor : '100%',
+										xtype : 'trigger',
+										fieldLabel : '合同号',
+										name : 'contractNo',
+										triggerCls : 'icon-search',
+										editable : false,
+										anchor : '100%',
 
-									onTriggerClick : function(e) {
-										var view = Ext.widget('contractSearch',
-												{
-													parentWindow : me,
-													contractTypeReadonly : true,
-													contractTypeDefaultValue : "0"
+										onTriggerClick : function(e) {
+											var view = Ext.widget(
+													'contractSearch', {
+														parentWindow : me,
+														contractTypeReadonly : true,
+														contractTypeDefaultValue : "0"
 
-												});
+													});
 
-										view.show();
+											view.show();
 
-									}
-								}, {
+										}
+									}, {
 										xtype : 'textfield',
 										name : 'supplier',
 										fieldLabel : '供应商',
-										readonly:true
+										readOnly : true
 									}, {
 										xtype : 'textfield',
 										name : 'plateNum',
@@ -56,30 +60,30 @@ Ext.define('AM.view.aflaotGoods.Edit', {
 										xtype : 'datefield',
 										name : 'transportDate',
 										fieldLabel : '转货时间',
-										format: 'Y-m-d'
-										
+										format : 'Y-m-d'
+
 									}, {
 										xtype : 'datefield',
 										name : 'dispatchDate',
 										fieldLabel : '发货日期',
-										format: 'Y-m-d'
-										
+										format : 'Y-m-d'
+
 									}, {
 										xtype : 'datefield',
 										name : 'eta',
 										fieldLabel : '预计到货日期',
-										format: 'Y-m-d'
-										
+										format : 'Y-m-d'
+
 									}, {
 										xtype : 'datefield',
 										name : 'arrivalDate',
 										fieldLabel : '实际到货日期',
-										format: 'Y-m-d'
-										
+										format : 'Y-m-d'
+
 									}, {
 										xtype : 'textfield',
 										name : 'remark',
-										width: 764,
+										 width: 764,
 										fieldLabel : '备注'
 									}]
 						}, {

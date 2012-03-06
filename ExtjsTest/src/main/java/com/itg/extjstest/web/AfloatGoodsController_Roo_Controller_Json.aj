@@ -29,23 +29,6 @@ privileged aspect AfloatGoodsController_Roo_Controller_Json {
         return new ResponseEntity<String>(afloatgoods.toJson(), headers, HttpStatus.OK);
     }
     
-    @RequestMapping(headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> AfloatGoodsController.listJson() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        List<AfloatGoods> result = AfloatGoods.findAllAfloatGoodses();
-        return new ResponseEntity<String>(AfloatGoods.toJsonArray(result), headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> AfloatGoodsController.createFromJson(@RequestBody String json) {
-        AfloatGoods afloatGoods = AfloatGoods.fromJsonToAfloatGoods(json);
-        afloatGoods.persist();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> AfloatGoodsController.createFromJsonArray(@RequestBody String json) {
@@ -57,16 +40,6 @@ privileged aspect AfloatGoodsController_Roo_Controller_Json {
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
     
-    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> AfloatGoodsController.updateFromJson(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        AfloatGoods afloatGoods = AfloatGoods.fromJsonToAfloatGoods(json);
-        if (afloatGoods.merge() == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> AfloatGoodsController.updateFromJsonArray(@RequestBody String json) {

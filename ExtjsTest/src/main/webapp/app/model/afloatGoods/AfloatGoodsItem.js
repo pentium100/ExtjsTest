@@ -1,4 +1,4 @@
-Ext.define('AM.model.afloatGoods.AflotGoodsItem', {
+Ext.define('AM.model.afloatGoods.AfloatGoodsItem', {
 			extend : 'Ext.data.Model',
 			idProperty: 'id',
 			fields : [{

@@ -7,7 +7,7 @@ Ext.define('AM.store.afloatGoods.AfloatGoods', {
 			autoLoad : true,
 			proxy : {
 				type : 'rest',
-				url : 'afloatGoods',
+				url : 'afloatgoodses',
 				reader : {
 					type : 'json',
 					root : 'afloatGoods',
