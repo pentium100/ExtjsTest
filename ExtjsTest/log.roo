@@ -456,3 +456,15 @@ hint
 hint
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-01-01 21:23:37
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-06 17:08:41
+// [failed] focus --class ~.domain.UserDetail
+focus --class ~.domain.security.UserDetail
+field string --fieldName fullName --sizeMax 50
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-06 17:10:44
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-06 17:14:48
+focus --class ~.domain.security.UserDetail
+json add --class ~.domain.security.UserDetail
+web mvc json add --jsonObject ~.domain.security.UserDetail --class ~.web.UserDetailController
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-06 17:17:38

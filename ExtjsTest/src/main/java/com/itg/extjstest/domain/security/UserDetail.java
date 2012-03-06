@@ -9,21 +9,18 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
+import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord(finders = { "findUserDetailsByUserNameEquals" })
+@RooJson
 public class UserDetail implements Serializable {
 
+    private static final long serialVersionUID = -1679307029304236940L;
 
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1679307029304236940L;
-
-	private String userName;
+    private String userName;
 
     @NotNull
     @Size(max = 45)
@@ -35,4 +32,7 @@ public class UserDetail implements Serializable {
     private Set<SecurityRole> roles = new HashSet<SecurityRole>();
 
     private Integer userLevel;
+
+    @Size(max = 50)
+    private String fullName;
 }

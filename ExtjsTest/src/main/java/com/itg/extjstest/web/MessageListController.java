@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.GrantedAuthorityImpl;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,41 +39,50 @@ public class MessageListController {
 
 	@RequestMapping(headers = "Accept=text/html")
 	public String listMessageByType(
-			@RequestParam(value = "messageType", required = true) String messageType,
-			@RequestParam(value = "id", required = true) Integer loginId,
+			@RequestParam(value = "messageType", required = false) String messageType,
+			@RequestParam(value = "id", required = false) Integer loginId,
 			ModelMap model) {
 
 		SecurityContext context = SecurityContextHolder.getContext();
 
-		int intMessageType = Integer.valueOf(messageType).intValue();
-		switch (intMessageType) {
-		case 1:
-			messageType = "供应";
-			break;
-		case 2:
-			messageType = "需求";
-			break;
-		case 3:
-			messageType = "敞口";
-			break;
-		case 4:
-			messageType = "锁定";
-			break;
+		if ((messageType!=null)&&(!messageType.equals(""))) {
+			int intMessageType = Integer.valueOf(messageType).intValue();
+			switch (intMessageType) {
+			case 1:
+				messageType = "供应";
+				break;
+			case 2:
+				messageType = "需求";
+				break;
+			case 3:
+				messageType = "敞口";
+				break;
+			case 4:
+				messageType = "锁定";
+				break;
+			}
 		}
+		UserDetail user = null;
 
-		UserDetail user;
 
 		model.addAttribute("messageType", messageType);
 
 		if (!context.getAuthentication().getName().equals("anonymousUser")) {
 
 			try {
-				user = (UserDetail) context.getAuthentication().getDetails();
+				
+				user = UserDetail.findUserDetailsByUserNameEquals(context.getAuthentication().getName()).getSingleResult();
+				
+				
+				
+	
 				if (user != null) {
 					model.addAttribute("userName", user.getUserName());
-					model.addAttribute("userLevel", user.getUserLevel());	
+					model.addAttribute("userLevel", user.getUserLevel());
 				}
+				
 			} catch (Exception e) {
+				Logger.getLogger(this.getClass()).error(e);
 
 			}
 
@@ -90,8 +101,9 @@ public class MessageListController {
 
 		if (l.size() > 0) {
 
-			//List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-			//grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
+			// List<GrantedAuthority> grantedAuthorities = new
+			// ArrayList<GrantedAuthority>();
+			// grantedAuthorities.add(new GrantedAuthorityImpl("USER"));
 
 			UsernamePasswordAuthenticationToken uat = new UsernamePasswordAuthenticationToken(
 					"john", "admin");

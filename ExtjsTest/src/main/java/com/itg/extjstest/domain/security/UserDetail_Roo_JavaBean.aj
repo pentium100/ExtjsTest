@@ -49,4 +49,12 @@ privileged aspect UserDetail_Roo_JavaBean {
         this.userLevel = userLevel;
     }
     
+    public String UserDetail.getFullName() {
+        return this.fullName;
+    }
+    
+    public void UserDetail.setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+    
 }
