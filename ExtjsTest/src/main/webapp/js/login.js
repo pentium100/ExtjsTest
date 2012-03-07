@@ -42,7 +42,7 @@ frame: true,
 
 defaults: 
 { 
-allowBlank: false 
+allowBlank: true 
 }, 
 items: 
 [ 

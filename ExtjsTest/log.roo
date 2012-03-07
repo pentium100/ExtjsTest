@@ -468,3 +468,10 @@ json add --class ~.domain.security.UserDetail
 web mvc json add --jsonObject ~.domain.security.UserDetail --class ~.web.UserDetailController
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-06 17:17:38
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-07 14:29:22
+focus --class ~.domain.security.SecurityRole
+finder list
+finder add --finderName findSecurityRolesByRoleNameEquals
+finder add --finderName findSecurityRolesByRoleNameLike
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-07 14:32:52

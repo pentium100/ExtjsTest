@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Portal Layout Sample</title>
+    <title>煤炭内部信息中心</title>
 
     <link rel="stylesheet" type="text/css" href="js/extjs4/resources/css/ext-all.css" />
     <link rel="stylesheet" type="text/css" href="app/portal/portal.css" />

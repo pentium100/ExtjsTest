@@ -5,7 +5,6 @@ package com.itg.extjstest.web;
 
 import com.itg.extjstest.domain.security.UserDetail;
 import com.itg.extjstest.web.UserDetailController;
-import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,24 +29,6 @@ privileged aspect UserDetailController_Roo_Controller_Json {
         return new ResponseEntity<String>(userdetail.toJson(), headers, HttpStatus.OK);
     }
     
-    @RequestMapping(headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> UserDetailController.listJson() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        List<UserDetail> result = UserDetail.findAllUserDetails();
-        return new ResponseEntity<String>(UserDetail.toJsonArray(result), headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> UserDetailController.createFromJson(@RequestBody String json) {
-        UserDetail userDetail = UserDetail.fromJsonToUserDetail(json);
-        userDetail.persist();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> UserDetailController.createFromJsonArray(@RequestBody String json) {
         for (UserDetail userDetail: UserDetail.fromJsonArrayToUserDetails(json)) {
@@ -56,17 +37,6 @@ privileged aspect UserDetailController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> UserDetailController.updateFromJson(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        UserDetail userDetail = UserDetail.fromJsonToUserDetail(json);
-        if (userDetail.merge() == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")

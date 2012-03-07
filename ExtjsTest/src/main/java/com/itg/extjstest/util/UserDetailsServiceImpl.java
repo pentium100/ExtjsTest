@@ -1,6 +1,7 @@
 package com.itg.extjstest.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,6 +24,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 		if (userDetail == null)
 			throw new UsernameNotFoundException("user not found");
+
+		
+        Md5PasswordEncoder md5 = new Md5PasswordEncoder();  
+        String md5Password = md5.encodePassword("123", null);
+        //userDetail.setPassword(md5Password);
 
 		return assembler.buildUserFromUserEntity(userDetail);
 
