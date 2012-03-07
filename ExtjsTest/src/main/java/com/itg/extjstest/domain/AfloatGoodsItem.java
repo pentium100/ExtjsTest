@@ -20,4 +20,7 @@ public class AfloatGoodsItem {
     private String model;
 
     private Double quantity;
+
+    @Size(max = 50)
+    private String batchNo;
 }

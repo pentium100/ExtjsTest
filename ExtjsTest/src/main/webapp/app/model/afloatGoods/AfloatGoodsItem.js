@@ -8,6 +8,9 @@ Ext.define('AM.model.afloatGoods.AfloatGoodsItem', {
 						name : 'quantity',
 						type : 'float'
 					}, {
+						name : 'batchNo',
+						type : 'string'
+					}, {
 						name : 'id',
 						type : 'int'
 					}, {

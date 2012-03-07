@@ -475,3 +475,13 @@ finder add --finderName findSecurityRolesByRoleNameEquals
 finder add --finderName findSecurityRolesByRoleNameLike
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-07 14:32:52
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-07 21:54:30
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-07 21:55:04
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-07 21:55:35
+focus --class ~.domain.AfloatGoods
+field boolean --fieldName original 
+focus --class ~.domain.AfloatGoodsItem
+field string --fieldName batchNo --sizeMax 50
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-07 21:58:13

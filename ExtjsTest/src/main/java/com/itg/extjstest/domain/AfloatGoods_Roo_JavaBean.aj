@@ -91,4 +91,12 @@ privileged aspect AfloatGoods_Roo_JavaBean {
         this.items = items;
     }
     
+    public Boolean AfloatGoods.getOriginal() {
+        return this.original;
+    }
+    
+    public void AfloatGoods.setOriginal(Boolean original) {
+        this.original = original;
+    }
+    
 }

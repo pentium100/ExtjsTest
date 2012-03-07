@@ -66,6 +66,13 @@ Ext.define('AM.view.afloatGoods.List', {
 							filterable : true,
 							flex : 1
 						}, {
+							header : '正本单据',
+							dataIndex : 'original',
+							xtype : 'gridcolumn',
+							inputValue:'true',
+							filterable : true,
+							flex : 1
+						}, {
 							header : '备注',
 							dataIndex : 'remark',
 							filterable : true,

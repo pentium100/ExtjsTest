@@ -32,4 +32,12 @@ privileged aspect AfloatGoodsItem_Roo_JavaBean {
         this.quantity = quantity;
     }
     
+    public String AfloatGoodsItem.getBatchNo() {
+        return this.batchNo;
+    }
+    
+    public void AfloatGoodsItem.setBatchNo(String batchNo) {
+        this.batchNo = batchNo;
+    }
+    
 }

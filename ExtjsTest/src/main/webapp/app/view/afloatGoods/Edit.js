@@ -81,6 +81,12 @@ Ext.define('AM.view.afloatGoods.Edit', {
 										format : 'Y-m-d'
 
 									}, {
+										xtype : 'checkbox',
+										name : 'original',
+										fieldLabel : '正本单据',
+										inputValue: 'true'
+
+									}, {
 										xtype : 'textfield',
 										name : 'remark',
 										 width: 764,
@@ -112,17 +118,19 @@ Ext.define('AM.view.afloatGoods.Edit', {
 									})],
 							columns : [{
 										xtype : 'gridcolumn',
-										id : 'model',
 										dataIndex : 'model',
 										text : '规格',
-
 										field : 'textfield'
 									}, {
 										xtype : 'numbercolumn',
-										itemId : 'quantity',
 										dataIndex : 'quantity',
 										text : '数量',
 										field : 'numberfield'
+									},{
+										xtype : 'gridcolumn',
+										dataIndex : 'batchNo',
+										text : '批次号',
+										field : 'textfield'
 									}]
 						}];
 

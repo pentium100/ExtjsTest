@@ -43,6 +43,10 @@ Ext.define('AM.model.afloatGoods.AfloatGoods', {
 						type : 'date',
 						dateFormat : 'Y-m-d H:i:s'
 					},{
+						name : 'original',
+						type : 'boolean'
+						
+					},{
 						name : 'remark',
 						type : 'string'
 					},{
