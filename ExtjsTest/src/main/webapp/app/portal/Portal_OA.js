@@ -67,8 +67,6 @@ Ext.define('AM.portal.Portal_OA', {
 							{
 								id : 'app-portal',
 								xtype : 'portalpanel',
-
-								id : 'HomePage',
 								title : '首页',
 								iconCls : 'home',
 								layout : 'fit',

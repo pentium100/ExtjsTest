@@ -5,9 +5,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.servlet.http.HttpServletRequest;
 
 import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.Menu;
+import com.itg.extjstest.domain.security.UserDetail;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,5 +48,20 @@ public class MenuController {
 		return new ResponseEntity<String>(Menu.toJsonArray(result), headers,
 				HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/getUserInfo", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> getUserInfo(HttpServletRequest request){
+		
+		
+		UserDetail user = UserDetail.findUserDetailsByUserNameEquals(request.getRemoteUser()).getSingleResult();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		return new ResponseEntity<String>(user.toJson(), headers,
+				HttpStatus.OK);
+		
+	}
+	
 
 }

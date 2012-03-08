@@ -1,5 +1,14 @@
 Ext.define('AM.controller.Menus', {
 			extend : 'Ext.app.Controller',
+	        
+			uses : [
+				'AM.view.message.MessageList', 'AM.view.message.MessageEdit',
+				'AM.portal.classes.Portlet',
+				'AM.portal.classes.PortalColumn',
+				'AM.portal.classes.PortalPanel',
+				
+                'AM.portal.classes.PortalDropZone'
+			],		
 
 			refs : [{
 						ref : 'menu',
@@ -49,23 +58,27 @@ Ext.define('AM.controller.Menus', {
 					// c.init(controllerParam);
 					// }
 
+
 					tab = tabs.add({
 								// we use the tabs.items property to get the
 								// length of current
 								// items/tabs
 								title : record.get("text"),
-								layout : 'fit',
+								//layout : 'fit',
 								closable : true,
 								autoDestroy : true,
 								iconCls : record.get("iconCls"),
 
-								autoScroll : true,
-								bodyPadding : 0,
+								//autoScroll : true,
+								//bodyPadding : 0,
 								xtype : record.raw.views,
+								
 
 								id : record.raw.controller + record.raw.id
 
 							});
+							
+					tab.show();		
 
 				}
 				tabs.setActiveTab(tab);

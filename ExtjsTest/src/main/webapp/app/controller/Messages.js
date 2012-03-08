@@ -1,7 +1,7 @@
 Ext.define('AM.controller.Messages', {
 			extend : 'Ext.app.Controller',
 
-			views : ['message.MessageList', 'message.MessageEdit'],
+			views  : ['message.MessagePortal', 'message.MessageList', 'message.MessageEdit'],
 			stores : ['MessageTypesStore'],
 			models : ['Message', 'Specification'],
 

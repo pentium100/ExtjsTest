@@ -4,6 +4,22 @@ Ext.application({
 			appFolder : 'app',
 			controllers : ['Menus'],
 			launch : function() {
+				
+				Ext.Ajax.request({
+					url: 'menus/getUserInfo',
+					params: {
+						
+					},
+					success: function(response){
+						
+						var user = Ext.JSON.decode(response.responseText);
+						_DEFAULT_USER_NAME = user.userName;
+						_DEFAULT_USER_LEVEL = user.userLevel;
+						
+					}
+				});
+				
+				
 				Ext.create('Ext.container.Viewport', {
 
 							layout : 'fit',
