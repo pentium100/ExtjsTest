@@ -89,19 +89,7 @@ public class MaterialDocItem {
     private Date docDate;
 
 
-	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter2(
-			List<com.itg.extjstest.util.FilterItem> filters, int start,
-			int page, int limit) {
 
-		String query = "select i.lineId_in.lineId, sum(i.direction*i.netWeight)"
-				+ "   from MaterialDocItem i "
-				+ "   group by i.lineId_in.lineId, i.warehouse"
-				+ "   having sum(i.direction*i.netWeight)>0";
-
-		List result = entityManager().createQuery(query).getResultList();
-		return result;
-
-	}
 
 	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(
 			List<com.itg.extjstest.util.FilterItem> filters, int start,
@@ -214,5 +202,47 @@ public class MaterialDocItem {
 			setContractNo(i.getMaterialDoc().getContract().getContractNo());
 
 		}
+	}
+
+	public static List<MaterialDocItem> findIncomingMaterialDocItemsByFilter(
+			List<FilterItem> filters, int start, int page, int limit) {
+		
+		
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<MaterialDocItem> c = cb.createQuery(MaterialDocItem.class);
+		Root<MaterialDocItem> root = c.from(MaterialDocItem.class);
+		
+		Join<MaterialDocItem,MaterialDoc> materialDoc = root.join("materialDoc");
+		Join<MaterialDoc, Contract> contract = materialDoc.join("contract");
+		
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", root);
+		paths.put("materialDoc", materialDoc);
+		paths.put("contract", contract);
+		
+		List<Predicate> criteria = new ArrayList<Predicate>();
+
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				if(f.getField().equals("contractNo")){
+					f.setField("contract.contractNo");
+				}
+				
+				criteria.add(f.getPredicate(cb, paths));
+			}
+
+			c.where(cb.and(criteria.toArray(new Predicate[0])));
+		}
+
+		return entityManager().createQuery(c).setFirstResult(start)
+				.setMaxResults(limit).getResultList();
+
+		//return null;
+	
+		
+		
+		
+		
+		
 	}
 }

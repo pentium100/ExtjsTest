@@ -485,3 +485,43 @@ focus --class ~.domain.AfloatGoodsItem
 field string --fieldName batchNo --sizeMax 50
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-07 21:58:13
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-10 21:29:24
+entity jpa --class  ~.domain.Inspection 
+field date --fieldName InspectionDate --type java.util.util.Date
+field string --fieldName authority --sizeMax 50
+field string --fieldName docNo --sizeMax 50
+field boolean --fieldName original
+entity jpa --class ~.domain.InspectionItem 
+field reference --fieldName materialDocItem --type ~.domain.MaterialDocItem --cardinality ONE_TO_ONE
+field number --fieldName netWeight --type java.lang.Double
+field number --fieldName si --type java.lang.Double
+field number --fieldName fe --type java.lang.Double
+field number --fieldName al --type java.lang.Double
+field number --fieldName ca --type java.lang.Double
+field number --fieldName p --type java.lang.Double
+field string --fieldName remark --sizeMax 500
+focus --class ~.domain.InspectionItem 
+focus --class ~.domain.Inspection
+field set --fieldName items --type ~.domain.InspectionItem
+// [failed] focus --class ~.domain.InsepctionItem
+// [failed] focus --class ~.domain.InsepctionItem
+focus --class ~.domain.InspectionItem
+field reference --type ~.domain.Inspection --fieldName inspection --cardinality many_to_one
+focus --class ~.domain.Inspection
+json add 
+web mvc json add --jsonObject ~.domain.Inspection  --class ~.web.InspectionController
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-10 21:52:53
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-10 22:00:14
+focus --class ~.domain.Inspection
+field string --fieldName remark --sizeMax 250
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-10 22:01:34
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-10 23:01:14
+focus --class ~.domain.Inspection
+field string --fieldName contracts --sizeMax 200
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-10 23:02:23
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-10 23:59:27
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-11 00:00:31

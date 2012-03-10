@@ -46,7 +46,7 @@ public class AfloatGoodsController {
 					.deserialize(filter);
 
 		}
-		result = AfloatGoods.findContractsByFilter(filters, start, page, limit);
+		result = AfloatGoods.findAfloatGoodsByFilter(filters, start, page, limit);
 		
 		
 		HttpHeaders headers = new HttpHeaders();

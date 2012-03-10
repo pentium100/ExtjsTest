@@ -44,19 +44,27 @@ public class MaterialDocItemController {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
 					// .use("values.value", ArrayList.class)
-					.use("values.value", String.class).deserialize(filter);
+					.use("values.value", String.class)
+					.deserialize(filter);
 
 		}
-
+		
+		List<MaterialDocItem> result = null;
 		if (queryMode == 1) {
 			FilterItem f = new FilterItem();
 			f.setComparison("gt");
 			f.setField("quantity");
 			f.setType("int");
 			f.setValue(String.valueOf(0));
+			result = MaterialDocItem.findMaterialDocItemsByFilter(filters, start, page, limit);			
 		}
-
-		List<MaterialDocItem> result = MaterialDocItem.findMaterialDocItemsByFilter(filters, start, page, limit);
+		
+		if (queryMode ==2 ){
+			
+			result = MaterialDocItem.findIncomingMaterialDocItemsByFilter(filters, start, page, limit);
+		}
+		
+		 
 		
 		
 		for(MaterialDocItem i:result){
