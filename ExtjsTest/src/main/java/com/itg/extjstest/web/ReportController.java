@@ -87,10 +87,6 @@ public class ReportController {
 
 		}
 
-		
-
-		
-		
 		StringBuffer whereString = new StringBuffer();
 		for (FilterItem f : filters) {
 
@@ -106,16 +102,14 @@ public class ReportController {
 				+ " )) as rowNum, model, quantity_purchases = sum(case when c.contract_type=0 then quantity else 0 end),");
 		cte.append("                   quantity_sales = sum(case when c.contract_type=1 then quantity else 0 end),");
 		cte.append("                   quantity_open = sum(case when c.contract_type=1 then -quantity else quantity end)");
-        
-		cte.append("  from contract c inner join contract_items cis on c.id = cis.contract " );
-		cte.append("                  inner join contract_item ci on cis.items = ci.id " );
+
+		cte.append("  from contract c inner join contract_items cis on c.id = cis.contract ");
+		cte.append("                  inner join contract_item ci on cis.items = ci.id ");
 		cte.append(whereString);
 		cte.append(" group by model ");
 		cte.append(" )");
-		
-		
+
 		query.append(" select * from OpenOrder where rowNum>:start and rowNum<=:start+:limit");
-		
 
 		// SqlParameterSource param = new MapSqlParameterSource();
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -123,59 +117,56 @@ public class ReportController {
 		param.put("limit", limit);
 
 		List<Map<String, Object>> result = jdbcTemplate.queryForList(
-				cte.toString()+query.toString(), param);
-		
+				cte.toString() + query.toString(), param);
 
 		if (excel != null && excel.equals("true")) {
 			map.put("dataRoot", "openOrders");
 			map.put("openOrders", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-			
+
 			header = new ReportHeader();
 			header.setHeader("型号");
 			header.setField("model");
 			header.setPosition(0);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("采购数量");
 			header.setField("quantity_purchases");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(1);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("销售数量");
 			header.setField("quantity_sales");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(2);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("敞口数量");
 			header.setField("quantity_open");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(3);
 			headers.add(header);
-			
-			
+
 			map.put("headers", headers);
 			map.put("title", "敞口业务报表");
-			
+
 			return "ExportToExcel";
-					
 
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
-			
-			Long recordCount = jdbcTemplate.queryForLong(
-					cte.toString()+" select count(*) from OpenOrder", param);
-			
+
+			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+					+ " select count(*) from OpenOrder", param);
+
 			map2.put("total", recordCount);
 			map2.put("success", true);
 			map2.put("openOrders", result);
-			//map2.put("dataRoot", "noDeliverys");
+			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
 					.exclude("*.class")
@@ -188,7 +179,7 @@ public class ReportController {
 		}
 
 	}
-	
+
 	@RequestMapping(value = "/noDeliverys")
 	public String reportNoDeliverys(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -254,9 +245,8 @@ public class ReportController {
 		cte.append("                       where md.doc_type = 1 and md.contract = c.id and mi.model_contract = i.model),0))>0 ");
 		cte.append(whereString);
 		cte.append(" )");
-		
+
 		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
-		
 
 		// SqlParameterSource param = new MapSqlParameterSource();
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -264,34 +254,33 @@ public class ReportController {
 		param.put("limit", limit);
 
 		List<Map<String, Object>> result = jdbcTemplate.queryForList(
-				cte.toString()+query.toString(), param);
+				cte.toString() + query.toString(), param);
 
 		if (excel != null && excel.equals("true")) {
 			map.put("dataRoot", "noDeliverys");
 			map.put("noDeliverys", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-			
+
 			header = new ReportHeader();
-			
-			
+
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			header.setPosition(0);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("供应商");
 			header.setField("supplier");
 			header.setPosition(1);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("规格");
 			header.setField("model");
 			header.setPosition(2);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("签约数量");
 			header.setField("quantity");
@@ -305,30 +294,29 @@ public class ReportController {
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(4);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("未到货数量");
 			header.setField("quantity_no_delivery");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(5);
 			headers.add(header);
-			
+
 			map.put("headers", headers);
 			map.put("title", "已签约未到货");
-			
+
 			return "ExportToExcel";
-					
 
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
-			
-			Long recordCount = jdbcTemplate.queryForLong(
-					cte.toString()+"select count(*) from NoDelivery", param);
+
+			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+					+ "select count(*) from NoDelivery", param);
 
 			map2.put("total", recordCount);
 			map2.put("success", true);
 			map2.put("noDeliverys", result);
-			//map2.put("dataRoot", "noDeliverys");
+			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
 					.exclude("*.class")
@@ -341,10 +329,7 @@ public class ReportController {
 		}
 
 	}
-	
-	
 
-	
 	@RequestMapping(value = "/contractHistorys")
 	public String ContractHistorys(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -389,15 +374,12 @@ public class ReportController {
 		Map<String, Object> param = new HashMap<String, Object>();
 		param.put("start", start);
 		param.put("limit", limit);
-		
-		
-		
+
 		StringBuffer whereString = new StringBuffer();
 		for (FilterItem f : filters) {
-			
-	
-			if(!whereString.toString().equals("")){
-				whereString.append(" and " );
+
+			if (!whereString.toString().equals("")) {
+				whereString.append(" and ");
 			}
 
 			whereString.append(f.getSqlWhere());
@@ -406,40 +388,31 @@ public class ReportController {
 		StringBuffer query = new StringBuffer();
 		StringBuffer cte = new StringBuffer();
 
-
 		cte.append("with ContractHistory as (");
 		cte.append("select (ROW_NUMBER() over (order by "
-				+ sortString.toString()
-				+ " )) as rowNum, ");
-		
+				+ sortString.toString() + " )) as rowNum, ");
 
-		cte.append(" case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, contract_no,supplier, pay_term, contract.remark, model, quantity,unit_price,contract_item.remark as item_remark  "); 
-		cte.append(" from contract");  
+		cte.append(" case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, contract_no,supplier, pay_term, contract.remark, model, quantity,unit_price,contract_item.remark as item_remark  ");
+		cte.append(" from contract");
 		cte.append(" inner join contract_items on contract.id = contract_items.contract    ");
 		cte.append(" inner join contract_item on contract_item.id = contract_items.items   ");
-		
-		
-		
-		if (!whereString.toString().equals("")){
+
+		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
 		}
 		cte.append(" )");
-		
+
 		query.append(" select * from ContractHistory where rowNum>:start and rowNum<=:start+:limit");
-		
-
-
-
 
 		List<Map<String, Object>> result = jdbcTemplate.queryForList(
-				cte.toString()+query.toString(), param);
+				cte.toString() + query.toString(), param);
 
 		if (excel != null && excel.equals("true")) {
 			map.put("dataRoot", "contractHistorys");
 			map.put("contractHistorys", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-			
+
 			header = new ReportHeader();
 			header.setHeader("合同类型");
 			header.setField("contract_type");
@@ -450,13 +423,13 @@ public class ReportController {
 			header.setField("contract_no");
 			header.setPosition(1);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("供应商");
 			header.setField("supplier");
 			header.setPosition(2);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("付款方式");
 			header.setField("pay_term");
@@ -468,13 +441,13 @@ public class ReportController {
 			header.setField("remark");
 			header.setPosition(3);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("规格");
 			header.setField("model");
 			header.setPosition(2);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("签约数量");
 			header.setField("quantity");
@@ -495,24 +468,22 @@ public class ReportController {
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(3);
 			headers.add(header);
-			
-			
+
 			map.put("headers", headers);
 			map.put("title", "合同查询");
-			
+
 			return "ExportToExcel";
-					
 
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
-			
-			Long recordCount = jdbcTemplate.queryForLong(
-					cte.toString()+"select count(*) from ContractHistory", param);
+
+			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+					+ "select count(*) from ContractHistory", param);
 
 			map2.put("total", recordCount);
 			map2.put("success", true);
 			map2.put("contractHistorys", result);
-			//map2.put("dataRoot", "noDeliverys");
+			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
 					.exclude("*.class")
@@ -525,9 +496,7 @@ public class ReportController {
 		}
 
 	}
-	
 
-	
 	@RequestMapping(value = "/stockQuerys")
 	public String stockQuerys(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -570,45 +539,38 @@ public class ReportController {
 
 		}
 
-		
-		
 		StringBuffer whereString = new StringBuffer();
 		for (FilterItem f : filters) {
-			
-			if(!whereString.toString().equals("")){
-				whereString.append(" and " );
+
+			if (!whereString.toString().equals("")) {
+				whereString.append(" and ");
 			}
 
 			whereString.append(f.getSqlWhere());
 		}
 
-		
 		Map<String, Object> param = new HashMap<String, Object>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		param.put("endDate", sdf.parse(endDate));
 		param.put("start", start);
 		param.put("limit", limit);
-		
-		
+
 		StringBuffer query = new StringBuffer();
 		StringBuffer cte = new StringBuffer();
 
-		
 		cte.append("with StockQuery as (");
 		cte.append("select (ROW_NUMBER() over (order by "
-				+ sortString.toString()
-				+ " )) as rowNum, ");
-		
+				+ sortString.toString() + " )) as rowNum, ");
 
-		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, "); 
+		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, ");
 		cte.append("     stock.warehouse, stock.net_weight, ");
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier ");
 		cte.append(" from material_doc  ");
 		cte.append("      inner join material_doc_item on material_doc_item.material_doc = material_doc.doc_no ");
 		cte.append("      inner join contract on contract.id =  material_doc.contract ");
-		cte.append("      left join contract_item on material_doc.contract = contract_item.contract "); 
-		cte.append("                             and material_doc_item.model_contract = contract_item.model, "); 
+		cte.append("      left join contract_item on material_doc.contract = contract_item.contract ");
+		cte.append("                             and material_doc_item.model_contract = contract_item.model, ");
 		cte.append(" ( ");
 		cte.append("  select line_id_in, warehouse, SUM(net_weight*direction) as net_weight ");
 		cte.append("     from material_doc_item  ");
@@ -617,41 +579,33 @@ public class ReportController {
 		cte.append("     group by line_id_in,warehouse ");
 		cte.append("     having SUM(net_weight*direction)>0) stock ");
 		cte.append("  where material_doc_item.line_id = stock.line_id_in ");
-   
-	      
-		
-		
-		if (!whereString.toString().equals("")){
+
+		if (!whereString.toString().equals("")) {
 			cte.append(" and " + whereString);
 		}
 		cte.append(" )");
-		
-		query.append(" select * from StockQuery where rowNum>:start and rowNum<=:start+:limit");
-		
-		
-		
-		List<Map<String, Object>> result = jdbcTemplate.queryForList(
-				cte.toString()+query.toString(), param);
 
-		
+		query.append(" select * from StockQuery where rowNum>:start and rowNum<=:start+:limit");
+
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(
+				cte.toString() + query.toString(), param);
 
 		if (excel != null && excel.equals("true")) {
 			map.put("dataRoot", "stockQuerys");
 			map.put("stockQuerys", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-			
+
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			headers.add(header);
-			
 
 			header = new ReportHeader();
 			header.setHeader("供应商");
 			header.setField("supplier");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
 			header.setField("deliveryNote");
@@ -661,63 +615,60 @@ public class ReportController {
 			header.setHeader("进仓日期");
 			header.setField("doc_date");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("车号/卡号");
 			header.setField("plate_num");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("批次号");
 			header.setField("batch_no");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("规格(检验后)");
 			header.setField("model_tested");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("规格(合同)");
 			header.setField("model_contract");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("净重");
 			header.setField("net_weight");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("单价");
 			header.setField("unit_price");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("仓库");
 			header.setField("warehouse");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-		
-			
+
 			map.put("headers", headers);
 			map.put("title", "敞口业务报表");
-			
+
 			return "ExportToExcel";
-					
 
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
-			
-			Long recordCount = jdbcTemplate.queryForLong(
-					cte.toString()+"select count(*) from StockQuery", param);
 
-			
+			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+					+ "select count(*) from StockQuery", param);
+
 			map2.put("total", recordCount);
 			map2.put("success", true);
 			map2.put("stockQuerys", result);
-			//map2.put("dataRoot", "noDeliverys");
+			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
 					.exclude("*.class")
@@ -729,6 +680,219 @@ public class ReportController {
 			return "resultOnly";
 		}
 
+	}
+
+	@RequestMapping(value = "/inspectionDetails")
+	public String inspectionDetails(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "endDate", required = false) String endDate,
+			@RequestParam(value = "excel", required = false) String excel,
+			ModelMap map) throws ParseException {
+
+		List<Map<String, String>> sorts = new ArrayList<Map<String, String>>();
+		if (sort != null && (!sort.equals(""))) {
+			sorts = new JSONDeserializer<List<Map<String, String>>>()
+					.deserialize(sort);
+		}
+
+		StringBuffer sortString = new StringBuffer();
+
+		for (Map<String, String> s : sorts) {
+			if (!sortString.toString().equals("")) {
+				sortString.append(",");
+			}
+
+			sortString.append(" " + s.get("property") + " "
+					+ s.get("direction"));
+		}
+		if (!sortString.toString().equals("")) {
+			sortString.append(",");
+		}
+
+		sortString.append(" inspection_date desc ");
+
+		List<FilterItem> filters = null;
+		if (filter != null) {
+			filters = new JSONDeserializer<List<FilterItem>>()
+					.use(null, ArrayList.class).use("values", FilterItem.class)
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
+
+		}
+
+		StringBuffer whereString = new StringBuffer();
+		for (FilterItem f : filters) {
+
+			if (!whereString.toString().equals("")) {
+				whereString.append(" and ");
+			}
+
+			whereString.append(f.getSqlWhere());
+		}
+
+		Map<String, Object> param = new HashMap<String, Object>();
+
+		param.put("start", start);
+		param.put("limit", limit);
+
+		StringBuffer query = new StringBuffer();
+		StringBuffer cte = new StringBuffer();
+
+		cte.append("with InspectionDetail as (");
+		cte.append("select (ROW_NUMBER() over (order by "
+				+ sortString.toString() + " )) as rowNum, ");
+
+		cte.append("  inspection_date, authority, inspection.doc_no, original,   ");
+		cte.append("   al, ca, fe, inspection_item.net_weight, p, inspection_item.remark, si, ");
+		cte.append("   material_doc_item.model_contract, material_doc.doc_date, ");
+		cte.append("   contract.contract_no, contract.supplier, material_doc.batch_no, material_doc.plate_num, material_doc.delivery_note ");
+
+		cte.append(" FROM inspection join inspection_item on inspection.id = inspection_item.inspection ");
+		cte.append(" 				join material_doc_item on material_doc_item.line_id = inspection_item.material_doc_item ");
+		cte.append("				join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
+		cte.append("	            join contract on contract.id = material_doc.contract ");
+
+		if (!whereString.toString().equals("")) {
+			cte.append(" where " + whereString);
+		}
+		cte.append(" )");
+
+		query.append(" select * from InspectionDetail where rowNum>:start and rowNum<=:start+:limit");
+
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(
+				cte.toString() + query.toString(), param);
+
+		if (excel != null && excel.equals("true")) {
+			map.put("dataRoot", "inspectionDetails");
+			map.put("inspectionDetails", result);
+			List<ReportHeader> headers = new ArrayList<ReportHeader>();
+			ReportHeader header;
+
+			header = new ReportHeader();
+			header.setHeader("合同号");
+			header.setField("contract_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("供应商");
+			header.setField("supplier");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("规格(合同)");
+			header.setField("model_contract");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("车号/卡号");
+			header.setField("plate_num");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("批次号");
+			header.setField("batch_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进仓单号");
+			header.setField("deliveryNote");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进仓日期");
+			header.setField("doc_date");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("检验日期");
+			header.setField("inspection_date");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("机构");
+			header.setField("authority");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("编号");
+			header.setField("doc_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("正本");
+			header.setField("original");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("数量");
+			header.setField("net_weight");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("si");
+			header.setField("si");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("fe");
+			header.setField("fe");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("al");
+			header.setField("al");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("ca");
+			header.setField("ca");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("p");
+			header.setField("p");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("备注");
+			header.setField("remark");
+			headers.add(header);
+
+			map.put("headers", headers);
+			map.put("title", "检验报告");
+
+			return "ExportToExcel";
+
+		} else {
+			HashMap<String, Object> map2 = new HashMap<String, Object>();
+
+			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+					+ "select count(*) from InspectionDetail", param);
+
+			map2.put("total", recordCount);
+			map2.put("success", true);
+			map2.put("inspectionDetails", result);
+			// map2.put("dataRoot", "noDeliverys");
+
+			String resultJson = new JSONSerializer()
+					.exclude("*.class")
+					.include("inspectionDetails")
+					.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+							Date.class).serialize(map2);
+			map.put("result", resultJson);
+
+			return "resultOnly";
+		}
 	}
 
 }

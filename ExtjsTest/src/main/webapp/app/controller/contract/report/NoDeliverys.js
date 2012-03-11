@@ -52,7 +52,7 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 					tmp.push(Ext.apply({}, filter));
 				}
                 
-				param = 'filter='+encodeURI(Ext.JSON.encode(tmp))+'&excel=true&start=1&limit=10000000';
+				param = 'filter='+encodeURI(Ext.JSON.encode(tmp))+'&excel=true&start=0&limit=10000000';
 				window.open('reports/noDeliverys?'+param);
 
 				

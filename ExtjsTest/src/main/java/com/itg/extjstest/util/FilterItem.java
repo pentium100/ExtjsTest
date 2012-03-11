@@ -99,11 +99,11 @@ public class FilterItem {
 		if (getType().equals("date")) {
 
 			try {
-				SimpleDateFormat s = new SimpleDateFormat("MM/dd/yyyy");
+				SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
 				Date today = s.parse(getValue());
 
 				result.append("'"
-						+ new SimpleDateFormat("yyyy/MM/dd").format(today)
+						+ new SimpleDateFormat("yyyy-MM-dd").format(today)
 						+ "'");
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
@@ -136,7 +136,7 @@ public class FilterItem {
 
 		}
 
-		if (getType().equals("numeric")) {
+		if (getType().equals("numeric")||getType().equals("int")) {
 			result.append(getValue());
 
 		}

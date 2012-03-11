@@ -34,7 +34,7 @@ Ext.define('AM.controller.contract.report.ContractHistory', {
 				var tmp = [];
 				tmp = this.getFilterParam(record);
 				var param;
-				param = 'filter='+encodeURI(Ext.JSON.encode(tmp))+'&excel=true&start=1&limit=10000000';				
+				param = 'filter='+encodeURI(Ext.JSON.encode(tmp))+'&excel=true&start=0&limit=10000000';				
 				
 				window.open('reports/contractHistorys?'+param);
 
