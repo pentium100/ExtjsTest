@@ -2,7 +2,6 @@ Ext.define('AM.controller.Menus', {
 			extend : 'Ext.app.Controller',
 	        
 			uses : [
-				'AM.view.message.MessageList', 'AM.view.message.MessageEdit',
 				'AM.portal.classes.Portlet',
 				'AM.portal.classes.PortalColumn',
 				'AM.portal.classes.PortalPanel',
@@ -70,7 +69,7 @@ Ext.define('AM.controller.Menus', {
 								iconCls : record.get("iconCls"),
 
 								//autoScroll : true,
-								//bodyPadding : 0,
+								bodyPadding : 0,
 								xtype : record.raw.views,
 								
 

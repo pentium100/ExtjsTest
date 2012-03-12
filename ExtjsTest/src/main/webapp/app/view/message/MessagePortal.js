@@ -68,7 +68,7 @@ Ext.define('AM.view.message.MessagePortal', {
 										title : '供应信息',
 										//tools : this.getTools(),
 										items : Ext
-												.create('AM.view.message.MessageList', {id:'messageList-1', messageType:"供应"}),
+												.create('AM.view.message.MessageList', {id:'messageList-1', messageType:"供应"})
 										//listeners : {
 										//	'close' : Ext.bind(
 										//			this.onPortletClose, this)

@@ -5,7 +5,7 @@ Ext.define('AM.view.userDetail.Edit', {
     alias : 'widget.userDetailEdit',
 
     title : 'Edit User',
-    layout: 'fit',
+    
 	height : 414,
 	width : 806,
 
@@ -50,7 +50,7 @@ Ext.define('AM.view.userDetail.Edit', {
                             xtype: 'checkbox',
                             fieldLabel: '激活',
 							name: 'enabled',
-							inputValue: 'true',
+							inputValue: 'true'
                         },
                         {
                             xtype: 'numberfield',
