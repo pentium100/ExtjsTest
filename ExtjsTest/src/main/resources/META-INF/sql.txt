@@ -46,3 +46,10 @@ values (13, 'icon-inspection', '检验信息',0, 2, 'AM.controller.inspection.In
   insert into menu (icon_cls, text, version, parent, controller, leaf, views)
 values ('icon-user', '用户管理', 0, 2, 'AM.controller.userDetail.UserDetail', 1, 'userDetailList')
   
+  
+     insert into menu(id, icon_cls, text, parent, controller,leaf, views)
+  values (11, 'icon-report', '检验报告查询', 7, 'AM.controller.inspection.report.InspectionDetail', 1, 'InspectionDetail')
+  
+  
+insert into menu(id, icon_cls, text, parent, controller,leaf, views)
+  values (15, 'icon-report', '在途信息查询', 7, 'AM.controller.afloatGoods.report.AfloatGoodsDetail', 1, 'AfloatGoodsDetail')  

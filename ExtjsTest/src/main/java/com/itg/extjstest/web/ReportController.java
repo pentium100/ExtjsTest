@@ -895,4 +895,201 @@ public class ReportController {
 		}
 	}
 
+	
+	@RequestMapping(value = "/afloatGoodsDetails")
+	public String afloatGoodsDetails(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "endDate", required = false) String endDate,
+			@RequestParam(value = "excel", required = false) String excel,
+			ModelMap map) throws ParseException {
+
+		List<Map<String, String>> sorts = new ArrayList<Map<String, String>>();
+		if (sort != null && (!sort.equals(""))) {
+			sorts = new JSONDeserializer<List<Map<String, String>>>()
+					.deserialize(sort);
+		}
+
+		StringBuffer sortString = new StringBuffer();
+
+		for (Map<String, String> s : sorts) {
+			if (!sortString.toString().equals("")) {
+				sortString.append(",");
+			}
+
+			sortString.append(" " + s.get("property") + " "
+					+ s.get("direction"));
+		}
+		if (!sortString.toString().equals("")) {
+			sortString.append(",");
+		}
+
+		sortString.append(" dispatch_date desc ");
+
+		List<FilterItem> filters = null;
+		if (filter != null) {
+			filters = new JSONDeserializer<List<FilterItem>>()
+					.use(null, ArrayList.class).use("values", FilterItem.class)
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
+
+		}
+
+		StringBuffer whereString = new StringBuffer();
+		for (FilterItem f : filters) {
+
+			if (!whereString.toString().equals("")) {
+				whereString.append(" and ");
+			}
+
+			whereString.append(f.getSqlWhere());
+		}
+
+		Map<String, Object> param = new HashMap<String, Object>();
+
+		param.put("start", start);
+		param.put("limit", limit);
+
+		StringBuffer query = new StringBuffer();
+		StringBuffer cte = new StringBuffer();
+
+		cte.append("with AfloatGoodsDetail as (");
+		cte.append("select (ROW_NUMBER() over (order by "
+				+ sortString.toString() + " )) as rowNum, ");
+
+		cte.append("    contract.contract_no,  ");
+		cte.append("    supplier, plate_num, dispatch, destination, transport_date,  ");
+		cte.append("	dispatch_date, eta, arrival_date, original, afloat_goods.remark, ");
+		cte.append("	afloat_goods_item.model, beyond_days = DATEDIFF(day, eta, getDate()), ");
+		cte.append("	afloat_goods_item.batch_no, afloat_goods_item.quantity ");
+      
+
+		cte.append("   FROM afloat_goods  ");
+		cte.append("   left join contract on afloat_goods.contract = contract.id ");
+		cte.append("   left join afloat_goods_item on  afloat_goods.id = afloat_goods_item.afloat_goods ");
+		
+		
+		
+		if (!whereString.toString().equals("")) {
+			cte.append(" where " + whereString);
+		}
+		cte.append(" )");
+
+		query.append(" select * from AfloatGoodsDetail where rowNum>:start and rowNum<=:start+:limit");
+
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(
+				cte.toString() + query.toString(), param);
+
+		if (excel != null && excel.equals("true")) {
+			map.put("dataRoot", "afloatGoodsDetails");
+			map.put("afloatGoodsDetails", result);
+			List<ReportHeader> headers = new ArrayList<ReportHeader>();
+			ReportHeader header;
+
+			header = new ReportHeader();
+			header.setHeader("合同号");
+			header.setField("contract_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("供应商");
+			header.setField("supplier");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("规格");
+			header.setField("model");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("车号/卡号");
+			header.setField("plate_num");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("批次号");
+			header.setField("batch_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("发货日期");
+			header.setField("dispatch_date");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("发货");
+			header.setField("dispatch");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("到达");
+			header.setField("destination");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("超期天数");
+			header.setField("beyond_days");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("转货时间");
+			header.setField("transport_date");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("预计到货日期");
+			header.setField("eta");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("实际到货日期");
+			header.setField("arrival_date");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("正本");
+			header.setField("original");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("数量");
+			header.setField("quantity");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("备注");
+			header.setField("remark");
+			headers.add(header);
+
+			map.put("headers", headers);
+			map.put("title", "在途信息");
+
+			return "ExportToExcel";
+
+		} else {
+			HashMap<String, Object> map2 = new HashMap<String, Object>();
+
+			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+					+ "select count(*) from AfloatGoodsDetail", param);
+
+			map2.put("total", recordCount);
+			map2.put("success", true);
+			map2.put("afloatGoodsDetails", result);
+			
+			// map2.put("dataRoot", "noDeliverys");
+
+			String resultJson = new JSONSerializer()
+					.exclude("*.class")
+					.include("afloatGoodsDetails")
+					.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+							Date.class).serialize(map2);
+			map.put("result", resultJson);
+
+			return "resultOnly";
+		}
+	}	
 }
