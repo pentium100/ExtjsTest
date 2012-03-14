@@ -1,10 +1,10 @@
 Ext.Loader.setConfig({
 			enabled : true,
-	 disableCaching : true
+			disableCaching : true
 		});
 Ext.Loader.setPath('Ext.ux', 'js/extjs4/examples/ux');
 Ext.Loader.setPath('Ext', 'js/extjs4/src');
-Ext.require(['Ext.form.field.Trigger','Ext.ux.grid.FiltersFeature']);
+Ext.require(['Ext.form.field.Trigger', 'Ext.ux.grid.FiltersFeature']);
 // Ext.require([
 // 'Ext.data.*',
 // 'Ext.tip.QuickTipManager',
@@ -38,13 +38,13 @@ Ext.require(['Ext.data.BelongsToAssociation'], function() {
 						};
 					}
 
-					//var readOp = new Ext.data.Operation({
-					//			action : 'read',
-					//			id : foreignKeyId
-					//		});
-					//var proxy = associatedModel.getProxy();
-					//proxy.read(readOp);
-					//instance = readOp.getRecords()[0];
+					// var readOp = new Ext.data.Operation({
+					// action : 'read',
+					// id : foreignKeyId
+					// });
+					// var proxy = associatedModel.getProxy();
+					// proxy.read(readOp);
+					// instance = readOp.getRecords()[0];
 
 					associatedModel.load(foreignKeyId, options);
 
@@ -74,7 +74,8 @@ Ext.require(['Ext.data.BelongsToAssociation'], function() {
 	});
 });
 Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
-				'Ext.ux.grid.menu.ListMenu'], function() {
+				'Ext.window.MessageBox', 'Ext.ux.grid.menu.ListMenu'],
+		function() {
 			//
 			Ext.data.writer.Json.override({
 				/*
@@ -152,19 +153,18 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							 * to the preparedData. Set a flag on them to show
 							 * that they are to be deleted
 							 */
-							//Ext.each(childStore.removed, function(
-							//				removedChildRecord) {
-										// Set a flag here to identify removed
-										// records
-							//			removedChildRecord.set('forDeletion',
-							//					true);
-							//			var removedChildData = this.getRecordData
-							//					.call(this, removedChildRecord);
-							//			data[association.name]
-							//					.push(removedChildData);
-							//			record.setDirty();
-							//		}, me);
-
+							// Ext.each(childStore.removed, function(
+							// removedChildRecord) {
+							// Set a flag here to identify removed
+							// records
+							// removedChildRecord.set('forDeletion',
+							// true);
+							// var removedChildData = this.getRecordData
+							// .call(this, removedChildRecord);
+							// data[association.name]
+							// .push(removedChildData);
+							// record.setDirty();
+							// }, me);
 						}
 
 						// record.getDocType(function(docType, operation) {
@@ -323,75 +323,106 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 			Ext.define('Ext.data.ux.Store', {
 
-						extend : 'Ext.data.Store',
+				extend : 'Ext.data.Store',
 
-						constructor : function(config) {
-							Ext.data.ux.Store.superclass.constructor.call(this,
-									config)
-							this.addListener('write',
-									function(store, operation) {
+				constructor : function(config) {
+					Ext.data.ux.Store.superclass.constructor.call(this, config)
+					this.addListener('write', function(store, operation) {
 
-										var record = operation.getRecords()[0];
-										var name = Ext.String
-												.capitalize(operation.action);
-										var verb;
+								var record = operation.getRecords()[0];
+								var name = Ext.String
+										.capitalize(operation.action);
+								var verb;
 
-										if (name == 'Destroy') {
-											record = operation.records[0];
-											verb = 'Destroyed';
-										} else {
-											verb = name + 'd';
-										}
-										Ext.example.msg(name,
-												Ext.String.format(
-														"{0} successful: {1}",
-														verb, record.getId()));
+								if (name == 'Destroy') {
+									record = operation.records[0];
+									verb = 'Destroyed';
+								} else {
+									verb = name + 'd';
+								}
+								Ext.example.msg(name, Ext.String.format(
+												"{0} successful: {1}", verb,
+												record.getId()));
 
-									}, this
+							}, this
 
-							);
+					);
 
-							var proxy = this.getProxy();
-							proxy.addListener('exception',
-									function(proxy, res) {
+					var proxy = this.getProxy();
+					proxy.addListener('exception', function(proxy, res) {
 
-										var response;
-										if (res.responseText) {
-											response = Ext
-													.decode(res.responseText);
-										}
+						var response;
+						if (res.responseText) {
+							response = Ext.decode(res.responseText, true);
+						}
 
-										var errmsg;
-										if (response && response.message) {
+						var errmsg;
+						if (response && response.message) {
 
-											errmsg = response.message;
-
-										} else {
-											errmsg = '系统错误，请与管理员联系。';
-										}
-										Ext.MessageBox.show({
-													title : '错误信息',
-													msg : errmsg,
-													buttons : Ext.MessageBox.OK,
-													icon : Ext.MessageBox.ERROR,
-													closable : false,
-													modal : true
-												});
-
-									}, this);
-
-							// Copy configured listeners into *this* object so
-							// that the base class's
-
-							// constructor will add them.
-							// this.listeners = config.listeners;
-
-							// Call our superclass constructor to complete
-							// construction process.
+							errmsg = response.message;
 
 						}
 
-					});
+						if (res.status == 500) {
+
+							errmsg = res.statusText;
+
+						}
+
+						if (errmsg == "") {
+
+							errmsg = '系统错误，请与管理员联系。';
+						}
+						Ext.MessageBox.show({
+									title : '错误信息',
+									msg : errmsg,
+									buttons : Ext.MessageBox.OK,
+									icon : Ext.MessageBox.ERROR,
+									closable : false,
+									modal : true
+								});
+
+						if (this.removed != undefined) {
+
+							Ext.each(this.removed, function(rec) {
+								rec.join(this);
+								this.data.add(rec);
+								rec.reject();
+								if (Ext.isDefined(this.snapshot)) {
+									this.snapshot.add(rec);
+								}
+								for (i = 0; i < rec.associations.length; i++) {
+									var association = rec.associations.get(i);
+									if (association.type == "hasMany") {
+										var childStore = rec[association.storeName];
+										childStore.rejectChanges();
+									}
+								}
+
+							}, this);
+
+
+							this.removed = [];
+							this.fireEvent('datachanged', this);
+
+						}
+
+							// this.rejectChanges();
+
+					}, this);
+
+					// Copy configured listeners into *this* object so
+					// that the base class's
+
+					// constructor will add them.
+					// this.listeners = config.listeners;
+
+					// Call our superclass constructor to complete
+					// construction process.
+
+				}
+
+			});
 			// Ext.data.Store.override({
 
 			// listeners:{
