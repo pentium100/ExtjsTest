@@ -38,7 +38,8 @@ Ext.define('AM.view.materialDoc.Edit', {
 												{
 													parentWindow : me,
 													contractTypeReadonly : true,
-													contractTypeDefaultValue : "0"
+													contractTypeDefaultValue : "0",
+													by : me.xtype
 
 												});
 

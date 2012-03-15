@@ -18,7 +18,7 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 					'contractSearch button[action=search]' : {
 						click : this.searchContract
 					},
-					'contractSearch gridpanel' : {
+					'contractSearch gridpanel[by=afloatGoodsEdit]' : {
 						itemdblclick : this.selectContract
 					},
 
@@ -152,6 +152,7 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		store.insert(0, record);
 		var view = Ext.widget('afloatGoodsEdit', {
 					parentGrid : grid
+			
 				});
 		view.down('form').loadRecord(record);
 		view.down('grid').reconfigure(record.items());

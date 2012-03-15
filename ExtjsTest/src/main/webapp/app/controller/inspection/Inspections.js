@@ -27,7 +27,7 @@ Ext.define('AM.controller.inspection.Inspections', {
 							},
 
 							
-							'materialDocItemSearch gridpanel' : {
+							'materialDocItemSearch gridpanel[by=inspectionEdit]' : {
 								itemdblclick : this.selectMaterialDocItem
 							},
 							

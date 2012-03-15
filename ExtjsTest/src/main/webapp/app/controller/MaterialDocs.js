@@ -26,7 +26,7 @@ Ext.define('AM.controller.MaterialDocs', {
 					'contractSearch button[action=search]' : {
 						click : this.searchContract
 					},
-					'contractSearch gridpanel' : {
+					'contractSearch gridpanel[by=materialDocEdit]' : {
 						itemdblclick : this.selectContract
 					},
 
@@ -81,9 +81,13 @@ Ext.define('AM.controller.MaterialDocs', {
 				});
 		this.getStore('MaterialDocs').insert(0, record);
 		var view = Ext.widget('materialDocEdit');
+		
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 		view.down('grid').reconfigure(record.items());
+		
+		
+		 
 
 	},
 	addMaterialDocItem : function(button) {

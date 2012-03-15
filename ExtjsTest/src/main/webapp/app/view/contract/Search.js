@@ -82,6 +82,7 @@ Ext.define('AM.view.contract.Search', {
 								title : '搜索结果',
 								region : 'center',
 								store : store,
+								by : this.by,
 								columns : [{
 											xtype : 'gridcolumn',
 											dataIndex : 'contractType',

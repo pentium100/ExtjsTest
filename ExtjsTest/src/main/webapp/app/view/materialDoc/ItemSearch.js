@@ -68,6 +68,7 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 										title : '搜索结果',
 										region : 'center',
 										store : store,
+										by: this.by,
 										columns : [{
 													xtype : 'gridcolumn',
 													

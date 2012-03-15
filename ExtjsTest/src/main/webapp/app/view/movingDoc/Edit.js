@@ -80,7 +80,8 @@ Ext.define('AM.view.movingDoc.Edit', {
 										onTriggerClick : function(e) {
 											var view = Ext.widget(
 													'materialDocItemSearch', {
-														parentWindow : me
+														parentWindow : me,
+														by: me.xtype
 
 													});
 

@@ -1,6 +1,7 @@
 Ext.define('AM.view.inspection.Edit', {
 			extend : 'Ext.window.Window',
 			alias : 'widget.inspectionEdit',
+			xtype : 'inspectionEdit',
 
 			title : '检验信息',
 			layout : 'border',
@@ -80,7 +81,9 @@ Ext.define('AM.view.inspection.Edit', {
 									onTriggerClick : function(e) {
 										var view = Ext.widget(
 												'materialDocItemSearch', {
-													parentWindow : me
+													parentWindow : me,
+													by: me.xtype
+													
 
 												});
 

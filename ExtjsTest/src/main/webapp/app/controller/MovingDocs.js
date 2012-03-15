@@ -27,7 +27,7 @@ Ext.define('AM.controller.MovingDocs', {
 							},
 
 							
-							'materialDocItemSearch gridpanel' : {
+							'materialDocItemSearch gridpanel[by=movingDocEdit]' : {
 								itemdblclick : this.selectMaterialDocItem
 							},
 							

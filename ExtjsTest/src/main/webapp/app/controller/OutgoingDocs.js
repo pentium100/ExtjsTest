@@ -36,7 +36,7 @@ Ext.define('AM.controller.OutgoingDocs', {
 								click : this.searchContract
 							},
 
-							'contractSearch gridpanel' : {
+							'contractSearch gridpanel[by=outgoingDocEdit]' : {
 								itemdblclick : this.selectContract
 							},
 

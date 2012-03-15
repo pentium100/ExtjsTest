@@ -1,6 +1,7 @@
 Ext.define('AM.view.afloatGoods.Edit', {
 			extend : 'Ext.window.Window',
 			alias : 'widget.afloatGoodsEdit',
+			xtype: 'afloatGoodsEdit',
 
 			title : '在途信息',
 			layout : 'border',
@@ -33,6 +34,7 @@ Ext.define('AM.view.afloatGoods.Edit', {
 														parentWindow : me,
 														contractTypeReadonly : true,
 														contractTypeDefaultValue : "0"
+														by : me.xtype
 
 													});
 
