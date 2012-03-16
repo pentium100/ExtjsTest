@@ -6,8 +6,11 @@ Ext.define('AM.view.South',{
             //frame:true,
             region:"south",
             height:23,
-            items:["当前用户：Guest",'->',"技术支持:<a href='http://www.itg.net' target='_blank' style='text-decoration:none;'><font color='#0000FF'>http://www.itg.net</font></a>&nbsp;&nbsp;"]
+            items:["当前用户：",'->',"技术支持:<a href='http://www.itg.net' target='_blank' style='text-decoration:none;'><font color='#0000FF'>http://www.itg.net</font></a>&nbsp;&nbsp;"]
         });
         this.callParent(arguments);
+        
+        
+        
     }
 })
