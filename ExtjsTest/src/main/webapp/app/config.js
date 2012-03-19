@@ -369,6 +369,13 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 						}
 
+						if (res.status == 403) {
+
+							errmsg = '您没有权限进行些操作!';
+
+						}
+
+						
 						if (errmsg == "") {
 
 							errmsg = '系统错误，请与管理员联系。';

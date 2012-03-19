@@ -1,25 +1,31 @@
-
 Ext.application({
 			name : 'AM',
 			appFolder : 'app',
 			controllers : ['Menus'],
 			launch : function() {
-				
+
 				Ext.Ajax.request({
-					url: 'menus/getUserInfo',
-					params: {
-						
-					},
-					success: function(response){
-						
-						var user = Ext.JSON.decode(response.responseText);
-						_DEFAULT_USER_NAME = user.userName;
-						_DEFAULT_USER_LEVEL = user.userLevel;
-						
-					}
-				});
-				
-				
+							url : 'menus/getUserInfo',
+							params : {
+
+				}			,
+							success : function(response) {
+
+								var user = Ext.JSON
+										.decode(response.responseText);
+								_DEFAULT_USER_NAME = user.userName;
+								_DEFAULT_USER_LEVEL = user.userLevel;
+
+								var bottom = Ext.getCmp("bottom");
+								if (bottom != undefined) {
+
+									bottom.items.get(0).setText('当前用户: '
+											+ user.fullName);
+								}
+
+							}
+						});
+
 				Ext.create('Ext.container.Viewport', {
 
 							layout : 'fit',
