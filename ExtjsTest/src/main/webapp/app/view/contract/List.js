@@ -10,6 +10,8 @@ Ext.define('AM.view.contract.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
+			stateful: true,
+   			stateId: 'contractList',
 
 			initComponent : function() {
 				this.columns = [{

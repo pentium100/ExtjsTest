@@ -10,6 +10,8 @@ Ext.define('AM.view.outgoingDoc.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
+			stateful: true,
+   			stateId: 'outgoingDocList',						
 
 			initComponent : function() {
 				this.columns = [{

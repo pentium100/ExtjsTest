@@ -10,6 +10,8 @@ Ext.define('AM.view.movingDoc.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
+			stateful: true,
+   			stateId: 'movingDocList',					
 
 			initComponent : function() {
 				this.columns = [{

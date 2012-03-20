@@ -1,7 +1,11 @@
+
+Ext.require(['Ext.state.Manager','Ext.state.CookieProvider' ]);
+
 Ext.application({
 			name : 'AM',
 			appFolder : 'app',
 			controllers : ['Menus'],
+			
 			launch : function() {
 
 				Ext.Ajax.request({
@@ -25,7 +29,7 @@ Ext.application({
 
 							}
 						});
-
+				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
 				Ext.create('Ext.container.Viewport', {
 
 							layout : 'fit',

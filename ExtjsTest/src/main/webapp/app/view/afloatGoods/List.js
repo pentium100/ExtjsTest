@@ -10,6 +10,9 @@ Ext.define('AM.view.afloatGoods.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
+			stateful: true,
+   			stateId: 'afloatGoodsList',
+			
 
 			initComponent : function() {
 				this.columns = [{

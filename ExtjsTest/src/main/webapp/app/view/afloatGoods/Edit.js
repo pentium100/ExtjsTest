@@ -33,7 +33,7 @@ Ext.define('AM.view.afloatGoods.Edit', {
 													'contractSearch', {
 														parentWindow : me,
 														contractTypeReadonly : true,
-														contractTypeDefaultValue : "0"
+														contractTypeDefaultValue : "0",
 														by : me.xtype
 
 													});

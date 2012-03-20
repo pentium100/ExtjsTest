@@ -9,6 +9,8 @@ Ext.define('AM.view.inspection.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
+			stateful: true,
+   			stateId: 'inspectionList',			
 
 			initComponent : function() {
 				this.columns = [{

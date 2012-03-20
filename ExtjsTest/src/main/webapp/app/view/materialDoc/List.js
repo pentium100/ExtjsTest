@@ -10,6 +10,8 @@ Ext.define('AM.view.materialDoc.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
+			stateful: true,
+   			stateId: 'materialDocList',		
 
 			initComponent : function() {
 				this.columns = [{
