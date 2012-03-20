@@ -83,7 +83,7 @@ Ext.define('AM.controller.inspection.report.InspectionDetail', {
 					tmp.push(Ext.apply({}, filter));
 				}
 				
-				if (record.original != "") {
+				if (record.original != undefined  && record.original != null &&record.original != "") {
 					filter.type = "int";
 					filter.field = "inspection.original";
 					filter.comparison = 'eq';
