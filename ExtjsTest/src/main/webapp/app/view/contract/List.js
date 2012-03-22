@@ -29,6 +29,7 @@ Ext.define('AM.view.contract.List', {
 							header : '合同号',
 							dataIndex : 'contractNo',
 							filterable : true,
+							width: 100,
 							flex : 1
 						}, {
 							header : '供应商',

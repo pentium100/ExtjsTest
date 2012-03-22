@@ -563,7 +563,7 @@ public class ReportController {
 				+ sortString.toString() + " )) as rowNum, ");
 
 		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, ");
-		cte.append("     stock.warehouse, stock.net_weight, ");
+		cte.append("     stock.warehouse, stock.net_weight, stock.gross_weight ");
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier ");
 		cte.append(" from material_doc  ");
@@ -572,7 +572,7 @@ public class ReportController {
 		cte.append("      left join contract_item on material_doc.contract = contract_item.contract ");
 		cte.append("                             and material_doc_item.model_contract = contract_item.model, ");
 		cte.append(" ( ");
-		cte.append("  select line_id_in, warehouse, SUM(net_weight*direction) as net_weight ");
+		cte.append("  select line_id_in, warehouse, SUM(net_weight*direction) as net_weight, SUM(gross_weight*direction) as gross_weight ");
 		cte.append("     from material_doc_item  ");
 		cte.append("     inner join material_doc_items on material_doc_items.items = material_doc_item.line_id ");
 		cte.append("     inner join material_doc on material_doc.doc_no = material_doc_items.material_doc and material_doc.doc_date <= :endDate ");

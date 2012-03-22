@@ -98,13 +98,25 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											text : '供应商'
 										}, {
 											xtype : 'gridcolumn',
+											dataIndex : 'model_contract',
+											text : '规格(合同)'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'unit_price',
+											text : '单价',
+											sortable : false
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'gross_weight',
+											text : '毛重'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'net_weight',
+											text : '净重'
+										}, {
+											xtype : 'gridcolumn',
 											dataIndex : 'delivery_note',
 											text : '进仓单号'
-										}, {
-											xtype : 'datecolumn',
-											format : 'Y-m-d',
-											dataIndex : 'doc_date',
-											text : '进仓日期'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'plate_num',
@@ -115,27 +127,19 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											text : '批次号'
 										}, {
 											xtype : 'gridcolumn',
-											dataIndex : 'model_tested',
-											text : '规格(检验后)'
-										}, {
-											xtype : 'gridcolumn',
-											dataIndex : 'model_contract',
-											text : '规格(合同)'
-										}, {
-											xtype : 'gridcolumn',
-											dataIndex : 'net_weight',
-											text : '净重'
-										}, {
-											xtype : 'gridcolumn',
-											dataIndex : 'unit_price',
-											text : '单价',
-											sortable : false
-										}, {
-											xtype : 'gridcolumn',
 											dataIndex : 'warehouse',
 											text : '仓库'
 
-										}
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'model_tested',
+											text : '规格(检验后)'
+										}, {
+											xtype : 'datecolumn',
+											format : 'Y-m-d',
+											dataIndex : 'doc_date',
+											text : '进仓日期'
+										} 
 
 								],
 								viewConfig : {

@@ -160,17 +160,13 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 									dataIndex : 'model',
 									text : '规格'
 								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'quantity',
+									text : '数量'
+								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'plate_num',
 									text : '车号'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'batch_no',
-									text : '批次号'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'dispatch',
-									text : '发货地点'
 								}, {
 									xtype : 'datecolumn',
 									dataIndex : 'dispatch_date',
@@ -178,35 +174,39 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 									format : 'Y-m-d'
 								}, {
 									xtype : 'gridcolumn',
+									dataIndex : 'dispatch',
+									text : '发货地点'
+								}, {
+									xtype : 'gridcolumn',
 									dataIndex : 'destination',
 									text : '到达'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'beyond_days',
-									text : '超期天数'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'original',
-									text : '正本'
-								}, {
-									xtype : 'numbercolumn',
-									dataIndex : 'quantity',
-									text : '数量'
-								}, {
-									xtype : 'datecolumn',
-									dataIndex : 'transport_date',
-									text : '转货时间',
-									format: 'Y-m-d'
 								}, {
 									xtype : 'datecolumn',
 									dataIndex : 'eta',
 									text : '预计到货日期',
 									format: 'Y-m-d'
 								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'beyond_days',
+									text : '超期天数'
+								}, {
 									xtype : 'datecolumn',
 									dataIndex : 'arrival_date',
 									text : '实际到货日期',
 									format : 'Y-m-d'
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'batch_no',
+									text : '批次号'
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'original',
+									text : '正本'
+								}, {
+									xtype : 'datecolumn',
+									dataIndex : 'transport_date',
+									text : '转货时间',
+									format: 'Y-m-d'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'remark',

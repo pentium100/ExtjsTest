@@ -32,6 +32,9 @@ Ext.define('AM.model.materialDoc.report.StockQuery', {
 						name : 'net_weight',
 						type : 'float'
 					},{
+						name : 'gross_weight',
+						type : 'float'
+					},{
 						name : 'unit_price',
 						type : 'float'
 					},{

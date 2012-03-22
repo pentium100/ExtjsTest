@@ -143,18 +143,6 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 									format : 'Y-m-d'
 								}, {
 									xtype : 'gridcolumn',
-									dataIndex : 'doc_no',
-									text : '编号'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'original',
-									text : '正本'
-								}, {
-									xtype : 'numbercolumn',
-									dataIndex : 'net_weight',
-									text : '数量'
-								}, {
-									xtype : 'gridcolumn',
 									dataIndex : 'si',
 									text : 'si'
 								}, {
@@ -177,6 +165,18 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 									xtype : 'gridcolumn',
 									dataIndex : 'remark',
 									text : '备注'
+								},{
+									xtype : 'gridcolumn',
+									dataIndex : 'doc_no',
+									text : '编号'
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'original',
+									text : '正本'
+								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'net_weight',
+									text : '数量'
 								}
 
 								],
