@@ -199,6 +199,7 @@ public class MaterialDocController {
         		newItem.setMoveType("101");
         		newItem.setDirection((short) 1);
         		newItem.setNetWeight(item.getNetWeight());
+        		newItem.setMaterialDoc(materialDoc);
         		newItem.setWarehouse(materialDoc.getTargetWarehouse());
         		newItems.add(newItem);
         	}

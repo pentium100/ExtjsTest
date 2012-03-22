@@ -120,7 +120,6 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 							}			,
 										dockedItems : [{
 													xtype : 'pagingtoolbar',
-													width : 360,
 													displayInfo : true,
 													dock : 'bottom',
 													store : store

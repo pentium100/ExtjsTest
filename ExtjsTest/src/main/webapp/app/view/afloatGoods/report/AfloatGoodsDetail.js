@@ -119,22 +119,12 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 											name : 'batch_no'
 										}, {
 											xtype : 'datefield',
-											fieldLabel : '预计到货日期从',
-											name : 'etaFrom',
-											format : 'Y-m-d'
-										}, {
-											xtype : 'datefield',
-											fieldLabel : '预计到货日期到',
-											name : 'etaTo',
-											format : 'Y-m-d'
-										}, {
-											xtype : 'datefield',
-											fieldLabel : '转运日期从',
+											fieldLabel : '转货日期从',
 											name : 'transportDateFrom',
 											format : 'Y-m-d'
 										}, {
 											xtype : 'datefield',
-											fieldLabel : '转运日期到',
+											fieldLabel : '转货日期到',
 											name : 'transportDateTo',
 											format : 'Y-m-d'
 										}],

@@ -43,9 +43,13 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											fieldLabel : '供应商',
 											name : 'supplier'
 										}, {
-											xtype : 'textfield',
-											fieldLabel : '规格(检验后)',
-											name : 'model_tested'
+											xtype : 'datefield',
+											fieldLabel : '进仓日期从',
+											name : 'docDateFrom'
+										}, {
+											xtype : 'datefield',
+											fieldLabel : '进仓日期到',
+											name : 'docDateTo'
 										}, {
 											xtype : 'textfield',
 											fieldLabel : '仓库',

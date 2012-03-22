@@ -153,21 +153,6 @@ Ext.define('AM.controller.afloatGoods.report.AfloatGoodsDetail', {
 				}
 
 
-				if (record.etaFrom != "") {
-					filter.type = "date";
-					filter.field = "afloat_goods.eta";
-					filter.comparison = 'ge';					
-					filter.value = record.etaFrom;
-					tmp.push(Ext.apply({}, filter));
-				}
-				
-				if (record.etaTo != "") {
-					filter.type = "date";
-					filter.field = "afloat_goods.eta";
-					filter.comparison = 'le';					
-					filter.value = record.etaTo;
-					tmp.push(Ext.apply({}, filter));
-				}
 				
 				if (record.received != "" && record.received != null) {
 					filter.type = "date";

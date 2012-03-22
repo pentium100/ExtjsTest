@@ -85,14 +85,23 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 					tmp.push(Ext.apply({}, filter));
 				}
 				
-				if (record.model_tested != "") {
-					filter.type = "string";
-					filter.field = "model_tested";
-					filter.value = record.model_tested;
+				if (record.docDateFrom != "") {
+					filter.type = "date";
+					filter.comparison = 'ge';			
+					filter.field = "material_doc.doc_date";
+					filter.value = record.docDateFrom;
 					tmp.push(Ext.apply({}, filter));
 				}
 				
-				
+				if (record.docDateTo != "") {
+					filter.type = "date";
+					filter.comparison = 'le';			
+					filter.field = "material_doc.doc_date";
+					filter.value = record.docDateTo;
+					tmp.push(Ext.apply({}, filter));
+				}
+
+
 				if (record.warehouse != "") {
 					filter.type = "string";
 					filter.field = "stock.warehouse";
