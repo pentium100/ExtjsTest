@@ -149,6 +149,18 @@ public class MaterialDocController {
 				item.setLineId_test(item);
 			}
 
+
+			if (materialDoc.getDocType().getDocType_txt().equals("出仓")
+					) {
+
+				if (item.getLineId_in().getLineId_test() == null) {
+					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
+							.getLineId_in().getLineId()));
+				}
+				
+				item.setLineId_test(item.getLineId_in().getLineId_test());
+			}
+			
 			if (materialDoc.getDocType().getDocType_txt().equals("移仓")
 					&& item.getMoveType().equals("351")) {
 
@@ -255,6 +267,17 @@ public class MaterialDocController {
 
 			}
 
+			if (materialDoc.getDocType().getDocType_txt().equals("出仓")
+					) {
+
+				if (item.getLineId_in().getLineId_test() == null) {
+					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
+							.getLineId_in().getLineId()));
+				}
+				
+				item.setLineId_test(item.getLineId_in().getLineId_test());
+			}
+						
 			if (materialDoc.getDocType().getDocType_txt().equals("移仓")
 					&& item.getMoveType().equals("351")) {
 				if (item.getLineId_in().getLineId_test() == null) {
