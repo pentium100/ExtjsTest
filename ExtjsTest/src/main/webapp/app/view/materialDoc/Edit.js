@@ -75,13 +75,7 @@ Ext.define('AM.view.materialDoc.Edit', {
 						region : 'center',
 						dockedItems : [{
 									xtype : 'toolbar',
-									items : [{
-												iconCls : 'icon-add',
-												text : 'Add',
-												scope : this,
-												itemId : 'add',
-												action : 'add'
-											}, {
+									items : [ {
 												iconCls : 'icon-delete',
 												text : 'Delete',
 												disabled : false,

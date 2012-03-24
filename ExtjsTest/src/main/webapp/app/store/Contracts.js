@@ -4,7 +4,7 @@ Ext.define('AM.store.Contracts', {
 			extend : 'Ext.data.ux.Store',
 			model : 'AM.model.Contract',
 
-			autoLoad : true,
+			autoLoad : false,
 			proxy : {
 				type : 'rest',
 				url : 'contracts',

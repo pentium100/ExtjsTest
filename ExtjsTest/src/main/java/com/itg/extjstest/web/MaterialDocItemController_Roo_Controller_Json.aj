@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect MaterialDocItemController_Roo_Controller_Json {
     
@@ -67,6 +69,14 @@ privileged aspect MaterialDocItemController_Roo_Controller_Json {
         }
         materialDocItem.remove();
         return new ResponseEntity<String>(headers, HttpStatus.OK);
+    }
+    
+    @RequestMapping(params = "find=ByLineId_up", headers = "Accept=application/json")
+    @ResponseBody
+    public ResponseEntity<String> MaterialDocItemController.jsonFindMaterialDocItemsByLineId_up(@RequestParam("lineId_up") MaterialDocItem lineId_up) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        return new ResponseEntity<String>(MaterialDocItem.toJsonArray(MaterialDocItem.findMaterialDocItemsByLineId_up(lineId_up).getResultList()), headers, HttpStatus.OK);
     }
     
 }

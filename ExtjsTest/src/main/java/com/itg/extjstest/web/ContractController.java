@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.persistence.Transient;
+
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.ContractType;
@@ -18,9 +20,12 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,8 +39,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/contracts")
 public class ContractController {
 
+
 	@RequestMapping(headers = "Accept=application/json")
-	@ResponseBody   
+	@ResponseBody
 	public ResponseEntity<String> listJson(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "start", required = false) Integer start,
@@ -47,12 +53,13 @@ public class ContractController {
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					//.use("values.value", ArrayList.class)
-					.use("values.value", String.class)
-					.deserialize(filter);
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
 
 		}
 		result = Contract.findContractsByFilter(filters, start, page, limit);
+
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
@@ -69,11 +76,11 @@ public class ContractController {
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
 		Contract contract = Contract.fromJsonToContract(json);
-		
-		for(ContractItem item : contract.getItems()){
+
+		for (ContractItem item : contract.getItems()) {
 			item.setContract(contract);
 		}
-		
+
 		contract = contract.merge();
 		if (contract == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
@@ -92,11 +99,11 @@ public class ContractController {
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
 		Contract contract = Contract.fromJsonToContract(json);
-		
-		for(ContractItem item : contract.getItems()){
+
+		for (ContractItem item : contract.getItems()) {
 			item.setContract(contract);
 		}
-		
+
 		contract = contract.merge();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -124,7 +131,5 @@ public class ContractController {
 		return resultJson;
 
 	}
-	
-	
 
 }

@@ -1,6 +1,7 @@
 package com.itg.extjstest.util;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 public class ReportHeader {
@@ -50,6 +51,11 @@ public class ReportHeader {
 			
 			style = workbook.createCellStyle();
 			style.setAlignment(align);
+			//HSSFDataFormat format= workbook.createDataFormat();
+	        //style.setDataFormat(format.getFormat("yyyy-m-d"));			
+			//style.setDataFormat(org.apache.poi.hssf.usermodel.HSSFDataFormat.getBuiltinFormat("yyyy-mm-dd"));
+			
+			
 		}
 		return style;
 	}

@@ -67,4 +67,12 @@ privileged aspect Contract_Roo_JavaBean {
         this.remark = remark;
     }
     
+    public Date Contract.getSignDate() {
+        return this.signDate;
+    }
+    
+    public void Contract.setSignDate(Date signDate) {
+        this.signDate = signDate;
+    }
+    
 }

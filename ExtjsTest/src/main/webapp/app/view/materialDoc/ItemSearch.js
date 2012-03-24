@@ -9,6 +9,7 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 			modal : true,
 			title : '挑选库存记录',
 			alias : 'widget.materialDocItemSearch',
+			xtype : 'materialDocItemSearch',
 
 
 			initComponent : function() {
@@ -30,7 +31,9 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 										items : [{
 													xtype : 'textfield',
 													fieldLabel : '合同号',
-													name: 'contractNo'
+													name: 'contractNo', 
+													value : me.contractNo,
+													readOnly: me.contractNo!=undefined
 												}, {
 													xtype : 'textfield',
 													fieldLabel : '进仓单号'

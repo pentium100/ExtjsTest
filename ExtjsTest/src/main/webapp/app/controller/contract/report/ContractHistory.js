@@ -82,6 +82,24 @@ Ext.define('AM.controller.contract.report.ContractHistory', {
 					filter.value = record.supplier;
 					tmp.push(Ext.apply({}, filter));
 				}
+				
+				if (record.signDateFrom != "") {
+					filter.type = "date";
+					filter.field = "contract.sign_date";
+					filter.comparison = 'ge';
+					filter.value = record.signDateFrom;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
+				if (record.signDateTo != "") {
+					filter.type = "date";
+					filter.field = "contract.sign_date";
+					filter.comparison = 'le';
+					filter.value = record.signDateTo;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
+				
 				if (record.pay_term != "") {
 					filter.type = "string";
 					filter.field = "pay_term";

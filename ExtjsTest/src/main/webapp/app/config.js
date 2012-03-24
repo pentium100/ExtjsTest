@@ -375,44 +375,64 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 						}
 
-						
 						if (errmsg == "") {
 
 							errmsg = '系统错误，请与管理员联系。';
 						}
-						Ext.MessageBox.show({
-									title : '错误信息',
-									msg : errmsg,
-									buttons : Ext.MessageBox.OK,
-									icon : Ext.MessageBox.ERROR,
-									closable : false,
-									modal : true
-								});
 
-						if (this.removed != undefined) {
-
-							Ext.each(this.removed, function(rec) {
-								rec.join(this);
-								this.data.add(rec);
-								rec.reject();
-								if (Ext.isDefined(this.snapshot)) {
-									this.snapshot.add(rec);
-								}
-								for (i = 0; i < rec.associations.length; i++) {
-									var association = rec.associations.get(i);
-									if (association.type == "hasMany") {
-										var childStore = rec[association.storeName];
-										childStore.rejectChanges();
-									}
-								}
-
-							}, this);
-
-
-							this.removed = [];
-							this.fireEvent('datachanged', this);
+						var icon = Ext.MessageBox.ERROR;
+						var buttons = Ext.MessageBox.OK;
+						if (res.status == 300) {
+							icon = Ext.MessageBox.WARNING;
+							buttons = Ext.MessageBox.YESNO;
 
 						}
+
+						Ext.MessageBox.show({
+							title : '错误信息',
+							msg : errmsg,
+							buttons : buttons,
+							icon : icon,
+							closable : false,
+							modal : true,
+							fn : function(btn) {
+								if (btn == "yes") {
+									var proxy = this.getProxy();
+									Ext.apply(proxy.extraParams, {focusUpdate:true});
+									this.sync();
+									Ext.apply(proxy.extraParams, {focusUpdate:false});
+								}
+
+								if (btn = "ok") {
+									if (this.removed != undefined) {
+
+										Ext.each(this.removed, function(rec) {
+											rec.join(this);
+											this.data.add(rec);
+											rec.reject();
+											if (Ext.isDefined(this.snapshot)) {
+												this.snapshot.add(rec);
+											}
+											for (i = 0; i < rec.associations.length; i++) {
+												var association = rec.associations
+														.get(i);
+												if (association.type == "hasMany") {
+													var childStore = rec[association.storeName];
+													childStore.rejectChanges();
+												}
+											}
+
+										}, this);
+
+										this.removed = [];
+										this.fireEvent('datachanged', this);
+
+									}
+
+								}
+							},
+							scope : this
+						});
 
 							// this.rejectChanges();
 

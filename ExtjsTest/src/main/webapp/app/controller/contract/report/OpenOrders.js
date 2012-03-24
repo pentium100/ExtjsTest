@@ -62,6 +62,23 @@ Ext.define('AM.controller.contract.report.OpenOrders', {
 					filter.value = record.model;
 					tmp.push(Ext.apply({}, filter));
 				}
+				
+				if (record.signDateFrom != "") {
+					filter.type = "date";
+					filter.field = "c.sign_date";
+					filter.comparison = 'ge';
+					filter.value = record.signDateFrom;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
+				if (record.signDateTo != "") {
+					filter.type = "date";
+					filter.field = "c.sign_date";
+					filter.comparison = 'le';
+					filter.value = record.signDateTo;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
 
 				var p = store.getProxy();
 				p.extraParams.filter = Ext.JSON.encode(tmp);

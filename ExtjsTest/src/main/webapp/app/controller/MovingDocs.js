@@ -1,8 +1,10 @@
 Ext.define('AM.controller.MovingDocs', {
 			extend : 'Ext.app.Controller',
 
-			views : ['movingDoc.List', 'movingDoc.Edit', 'materialDoc.ItemSearch'],
-			stores : ['MovingDocs', 'MaterialDocTypes'],
+			views : ['movingDoc.List', 'movingDoc.Edit',
+					'materialDoc.ItemSearch','contract.Search'],
+						
+			stores : ['MovingDocs', 'MaterialDocTypes','ContractType', 'Contracts'],
 			models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType'],
 
 			init : function(options) {
@@ -22,16 +24,21 @@ Ext.define('AM.controller.MovingDocs', {
 								click : this.deleteMaterialDoc
 							},
 
+							'contractSearch button[action=search]' : {
+								click : this.searchContract
+							},
+							'contractSearch gridpanel[by=movingDocEdit]' : {
+								itemdblclick : this.selectContract
+							},
+
 							'materialDocItemSearch button[action=search]' : {
 								click : this.searchMaterialDocItem
 							},
 
-							
 							'materialDocItemSearch gridpanel[by=movingDocEdit]' : {
 								itemdblclick : this.selectMaterialDocItem
 							},
-							
-							
+
 							'movingDocEdit button[action=save]' : {
 								click : this.saveMaterialDoc
 							},
@@ -52,41 +59,40 @@ Ext.define('AM.controller.MovingDocs', {
 
 			},
 			editMaterialDoc : function(grid, record) {
-				var view = Ext.widget('movingDocEdit', {parentGrid: grid});
+				var view = Ext.widget('movingDocEdit', {
+							parentGrid : grid
+						});
 
 				view.down('form').loadRecord(record);
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
-				
 
-                
 				view.down('grid').reconfigure(record.items());
 
 			},
-			
-			
-			
 
 			addMaterialDoc : function(button) {
 
 				var record = new AM.model.MaterialDoc();
 				record.setDocType({
 							id : this.docType
-							
+
 						});
-						
-				//record.set("contract",{});		
+
+				// record.set("contract",{});
 				var grid = button.up("gridpanel");
-				
+
 				grid.getStore().insert(0, record);
-				
-				var view = Ext.widget('movingDocEdit', {parentGrid: grid});
-				
+
+				var view = Ext.widget('movingDocEdit', {
+							parentGrid : grid
+						});
+
 				view.down('form').loadRecord(record);
 				view.down('form').setTitle('凭证号:' + record.get('docNo'));
 				view.down('grid').reconfigure(record.items());
 
 			},
-			
+
 			addMaterialDocItem : function(button) {
 				var win = button.up('window');
 				var grid = win.down('gridpanel');
@@ -95,7 +101,6 @@ Ext.define('AM.controller.MovingDocs', {
 				record.set('moveType', this.moveType1);
 
 				store.insert(0, record);
-
 
 			},
 			deleteMaterialDocItem : function(button) {
@@ -217,13 +222,14 @@ Ext.define('AM.controller.MovingDocs', {
 
 				store.load();
 			},
-			
+
 			selectMaterialDocItem : function(grid, record) {
 				var win = grid.up('window');
 				win.close();
 				var view = win.parentWindow;
 				var grid = view.down('gridpanel');
-				var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
+				var itemRecord = grid.getView().getSelectionModel()
+						.getSelection()[0];
 				itemRecord.set('lineId_in', record.data);
 				itemRecord.set('model_contract', record.data.model_contract);
 				itemRecord.set('model_tested', record.data.model_tested);
@@ -233,8 +239,7 @@ Ext.define('AM.controller.MovingDocs', {
 				itemRecord.set('warehouse', record.data.warehouse);
 				itemRecord.set('netWeight', record.data.netWeight);
 				itemRecord.set('direction', -1);
-				
-				
+
 			},
 			selectContract : function(grid, record) {
 				var win = grid.up('window');
@@ -249,25 +254,30 @@ Ext.define('AM.controller.MovingDocs', {
 				// oldRecord.get('contract').setDirty();
 			},
 
-			//selectMaterialDocItem : function(grid, record) {
-			//	var win = grid.up('window');
-			//	win.close();
-			//	var view = win.parentWindow;
-			//	var form = view.down('form');
-			//	var oldRecord = form.getRecord();
+			// selectMaterialDocItem : function(grid, record) {
+			// var win = grid.up('window');
+			// win.close();
+			// var view = win.parentWindow;
+			// var form = view.down('form');
+			// var oldRecord = form.getRecord();
 
-			//	oldRecord.setLineid_in(record.data);
-			//	oldRecord.set('model_contract', record.get('model_contract'));
-			//	form.loadRecord(oldRecord);
+			// oldRecord.setLineid_in(record.data);
+			// oldRecord.set('model_contract', record.get('model_contract'));
+			// form.loadRecord(oldRecord);
 
-			//},
+			// },
 
 			saveMaterialDoc : function(button) {
 
 				var win = button.up('window');
 				form = win.down('form');
 				var record = form.getRecord();
+				
 				values = form.getValues();
+				if(values.targetWarehouse==""){
+					return;
+				}
+				
 				values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
 				record.set(values);
 
@@ -282,7 +292,7 @@ Ext.define('AM.controller.MovingDocs', {
 				var form = win.down('form');
 				var grid = win.down('gridpanel')
 
-				//this.getStore('OutgoingDocs').rejectChanges();
+				// this.getStore('OutgoingDocs').rejectChanges();
 				win.parentGrid.getStore().rejectChanges();
 
 				grid.getStore().rejectChanges();

@@ -525,3 +525,37 @@ exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-10 23:59:27
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-11 00:00:31
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-24 15:47:54
+hint
+focus --class ~.domain.MaterialDocItem
+field reference --fieldName lineId_test --type ~.domain.MaterialDocItem
+focus --class ~.domain.Contract
+field date --fieldName signDate --type java.util.Date
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-24 16:00:49
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-24 16:06:26
+focus --class ~.domain.MaterialDocItem
+field reference --fieldName contract --type Contract
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-24 16:07:27
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-24 16:26:10
+focus --class ~.domain.MaterialDocItem
+field reference --fieldName lineId_up --type MaterialDocItem
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-24 16:27:54
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-24 16:31:55
+focus --class ~.domain.MaterialDocItem
+finder list
+finder add --finderName findMaterialDocItemByLineId_up
+finder add --finderName findMaterialDocItemsByLineId_up
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-24 16:34:36
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-24 21:06:55
+focus --class ~.domain.ContractItem
+field number --fieldName usedQuantity --type java.lang.Double --transient 
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-24 21:08:20
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log opened at 2012-03-24 21:23:07
+hint
+exit
+// Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-03-24 21:24:12

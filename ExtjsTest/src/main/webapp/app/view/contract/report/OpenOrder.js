@@ -27,6 +27,16 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 								region : 'center',
 								dock : 'top',
 								items : [{
+											xtype : 'datefield',
+											fieldLabel : '签约日期从',
+											name : 'signDateFrom',
+											format : 'Y-m-d'
+										}, {
+											xtype : 'datefield',
+											fieldLabel : '签约日期到',
+											name : 'signDateTo',
+											format : 'Y-m-d'
+										}, {
 											xtype : 'textfield',
 											fieldLabel : '规格',
 											name : 'model'
@@ -52,20 +62,23 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 											dataIndex : 'model',
 											text : '规格'
 										}, {
-											xtype : 'gridcolumn',
+											xtype : 'numbercolumn',
 											dataIndex : 'quantity_purchases',
 											text : '采购数量',
-											sortable:false
+											sortable : false,
+											align:'right'
 										}, {
-											xtype : 'gridcolumn',
+											xtype : 'numbercolumn',
 											dataIndex : 'quantity_sales',
 											text : '销售数量',
-											sortable:false
+											sortable : false,
+											align:'right'
 										}, {
-											xtype : 'gridcolumn',
+											xtype : 'numbercolumn',
 											dataIndex : 'quantity_open',
 											text : '敞口数量',
-											sortable:false
+											sortable : false,
+											align:'right'
 										}
 
 								],

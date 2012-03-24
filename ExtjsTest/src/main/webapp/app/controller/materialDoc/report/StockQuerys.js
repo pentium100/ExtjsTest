@@ -36,7 +36,7 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 				var param;
 				param = 'filter='+encodeURI(Ext.JSON.encode(tmp))+'&excel=true&start=0&limit=10000000&endDate='+encodeURI(record.endDate);				
 				
-				window.open('reports/StockQuerys?'+param);
+				window.open('reports/stockQuerys?'+param);
 
 				
 				

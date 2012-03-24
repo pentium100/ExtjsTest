@@ -137,4 +137,20 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
         this.docDate = docDate;
     }
     
+    public MaterialDocItem MaterialDocItem.getLineId_test() {
+        return this.lineId_test;
+    }
+    
+    public void MaterialDocItem.setLineId_test(MaterialDocItem lineId_test) {
+        this.lineId_test = lineId_test;
+    }
+    
+    public MaterialDocItem MaterialDocItem.getLineId_up() {
+        return this.lineId_up;
+    }
+    
+    public void MaterialDocItem.setLineId_up(MaterialDocItem lineId_up) {
+        this.lineId_up = lineId_up;
+    }
+    
 }

@@ -5,9 +5,9 @@ Ext.define('AM.view.contract.Edit', {
 			title : 'Edit Contract',
 			layout : 'border',
 			autoShow : true,
-			height : 400,
-			width : 450,
-			modal: true,
+			height : 300,
+			width : 800,
+			modal : true,
 
 			initComponent : function() {
 				this.items = [
@@ -15,20 +15,29 @@ Ext.define('AM.view.contract.Edit', {
 				{
 							region : 'north',
 							xtype : 'form',
+							layout : {
+								type : 'column'
+							},
 							items : [{
 										xtype : 'combo',
 										name : 'contractType',
 										fieldLabel : '合同类型',
-										store : Ext.create('AM.store.ContractType'),
+										store : Ext
+												.create('AM.store.ContractType'),
 										queryMode : 'local',
 										displayField : 'text',
 										valueField : 'text'
-										
+
 									}, {
 										xtype : 'textfield',
 										name : 'contractNo',
 										fieldLabel : '合同号'
-										
+
+									}, {
+										xtype : 'datefield',
+										name : 'signDate',
+										fieldLabel : '签约日期',
+										format : 'Y-m-d'
 
 									}, {
 										xtype : 'textfield',
@@ -86,14 +95,14 @@ Ext.define('AM.view.contract.Edit', {
 										dataIndex : 'unitPrice',
 										text : '单价',
 										field : 'numberfield'
-									},{
+									}, {
 										xtype : 'gridcolumn',
 										id : 'remark',
 										dataIndex : 'remark',
 										text : '备注',
 
 										field : 'textfield'
-									} ]
+									}]
 						}];
 
 				this.buttons = [{

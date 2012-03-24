@@ -40,6 +40,36 @@ Ext.define('AM.model.materialDoc.report.StockQuery', {
 					},{
 						name : 'warehouse',
 						type : 'string'
+					},{
+						name : 'inspection_date',
+						type : 'date'
+					},{
+						name : 'authority',
+						type : 'string'
+					},{
+						name : 'si',
+						type : 'float'
+					},{
+						name : 'fe',
+						type : 'float'
+					},{
+						name : 'al',
+						type : 'float'
+					},{
+						name : 'ca',
+						type : 'float'
+					},{
+						name : 'p',
+						type : 'float'
+					},{
+						name : 'inspection_remark',
+						type : 'string'
+					},{
+						name : 'doc_no',
+						type : 'string'
+					},{
+						name : 'original',
+						type : 'boolean'
 					}]
 
 

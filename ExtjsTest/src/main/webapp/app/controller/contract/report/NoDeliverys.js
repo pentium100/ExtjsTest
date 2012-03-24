@@ -45,6 +45,23 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 					tmp.push(Ext.apply({}, filter));
 				}
 
+				if (record.signDateFrom != "") {
+					filter.type = "date";
+					filter.field = "sign_date";
+					filter.comparison = 'ge';
+					filter.value = record.signDateFrom;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
+				if (record.signDateTo != "") {
+					filter.type = "date";
+					filter.field = "sign_date";
+					filter.comparison = 'le';
+					filter.value = record.signDateTo;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
+
 				if (record.model != "") {
 					filter.type = "string";
 					filter.field = "model";
@@ -75,6 +92,22 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 					filter.value = record.contract_no;
 					tmp.push(Ext.apply({}, filter));
 				}
+				if (record.signDateFrom != "") {
+					filter.type = "date";
+					filter.field = "sign_date";
+					filter.comparison = 'ge';
+					filter.value = record.signDateFrom;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
+				if (record.signDateTo != "") {
+					filter.type = "date";
+					filter.field = "sign_date";
+					filter.comparison = 'le';
+					filter.value = record.signDateTo;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
 
 				if (record.supplier != "") {
 					filter.type = "string";

@@ -13,7 +13,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJpaActiveRecord
 public class InspectionItem {
 
-    @ManyToOne
+    @OneToOne
     private MaterialDocItem materialDocItem;
 
     private Double netWeight;

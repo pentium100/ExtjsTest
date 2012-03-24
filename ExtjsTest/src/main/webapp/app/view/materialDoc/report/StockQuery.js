@@ -131,15 +131,52 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											text : '仓库'
 
 										}, {
-											xtype : 'gridcolumn',
-											dataIndex : 'model_tested',
-											text : '规格(检验后)'
-										}, {
 											xtype : 'datecolumn',
 											format : 'Y-m-d',
 											dataIndex : 'doc_date',
 											text : '进仓日期'
-										} 
+										}, {
+											xtype : 'datecolumn',
+											dataIndex : 'inspection_date',
+											format : 'Y-m-d',
+											text : '检验日期'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'authority',
+											text : '检验机构'
+										} , {
+											xtype : 'gridcolumn',
+											dataIndex : 'si',
+											text : 'si'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'fe',
+											text : 'fe'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'al',
+											text : 'al'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'ca',
+											text : 'ca'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'p',
+											text : 'p'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'inspection_remark',
+											text : '检验备注'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'doc_no',
+											text : '证书编号'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'original',
+											text : '正本'
+										}
 
 								],
 								viewConfig : {

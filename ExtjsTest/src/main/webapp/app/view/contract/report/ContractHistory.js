@@ -40,6 +40,16 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 									fieldLabel : '合同号',
 									name : 'contract_no'
 								}, {
+									xtype : 'datefield',
+									fieldLabel : '签约日期从',
+									name : 'signDateFrom',
+									format: 'Y-m-d'
+								}, {
+									xtype : 'datefield',
+									fieldLabel : '签约日期到',
+									name : 'signDateTo',
+									format: 'Y-m-d'
+								}, {
 									xtype : 'textfield',
 									fieldLabel : '供应商',
 									name : 'supplier'
@@ -76,6 +86,11 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 									xtype : 'gridcolumn',
 									dataIndex : 'contract_no',
 									text : '合同号'
+								}, { 
+									xtype : 'datecolumn',
+									dataIndex : 'sign_date',
+									text : '签约日期',
+									format: 'Y-m-d'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'supplier',
@@ -93,13 +108,15 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 									dataIndex : 'model',
 									text : '规格'
 								}, {
-									xtype : 'gridcolumn',
+									xtype : 'numbercolumn',
 									dataIndex : 'quantity',
-									text : '签约数量'
+									text : '签约数量',
+									align:'right'
 								}, {
-									xtype : 'gridcolumn',
+									xtype : 'numbercolumn',
 									dataIndex : 'unit_price',
 									text : '单价',
+									align:'right',
 									sortable : false
 								}, {
 									xtype : 'gridcolumn',

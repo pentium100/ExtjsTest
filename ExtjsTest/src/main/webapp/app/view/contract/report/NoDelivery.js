@@ -5,15 +5,16 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 	layout : {
 		type : 'border'
 	},
-	frame : true, 
+	frame : true,
 	alias : 'widget.NoDelivery',
-	
 
 	initComponent : function() {
 		var me = this;
-        var store = Ext.create('AM.store.contract.report.NoDelivery',{autoLoad:false});
+		var store = Ext.create('AM.store.contract.report.NoDelivery', {
+					autoLoad : false
+				});
 		Ext.applyIf(me, {
-			        
+
 					dockedItems : [{
 								xtype : 'form',
 								tpl : Ext.create('Ext.XTemplate', ''),
@@ -22,21 +23,31 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 								},
 								bodyPadding : 10,
 								preventHeader : true,
-								
+
 								region : 'center',
 								dock : 'top',
 								items : [{
 											xtype : 'textfield',
 											fieldLabel : '合同号',
-											name:'contract_no'
+											name : 'contract_no'
+										}, {
+											xtype : 'datefield',
+											fieldLabel : '签约日期从',
+											name : 'signDateFrom',
+											format : 'Y-m-d'
+										}, {
+											xtype : 'datefield',
+											fieldLabel : '签约日期到',
+											name : 'signDateTo',
+											format : 'Y-m-d'
 										}, {
 											xtype : 'textfield',
 											fieldLabel : '供应商',
-											name:'supplier'
+											name : 'supplier'
 										}, {
 											xtype : 'textfield',
 											fieldLabel : '规格',
-											name:'model'
+											name : 'model'
 										}],
 								buttons : [{
 											text : '提交',
@@ -59,6 +70,11 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 											dataIndex : 'contract_no',
 											text : '合同号'
 										}, {
+											xtype : 'datecolumn',
+											dataIndex : 'sign_date',
+											text : '签约日期',
+											format : 'Y-m-d'
+										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'supplier',
 											text : '供应商'
@@ -67,36 +83,39 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 											dataIndex : 'model',
 											text : '规格'
 										}, {
-											xtype : 'gridcolumn',
+											xtype : 'numbercolumn',
 											dataIndex : 'quantity',
-											text : '签约数量'
+											text : '签约数量',
+											align:'right'
 										}, {
-											xtype : 'gridcolumn',
+											xtype : 'numbercolumn',
 											dataIndex : 'quantity_in_receipt',
 											text : '到货数量',
-											sortable:false
+											sortable : false,
+											align:'right'
 										}, {
-											xtype : 'gridcolumn',
+											xtype : 'numbercolumn',
 											dataIndex : 'quantity_no_delivery',
 											text : '未到货数量',
-											sortable:false
-										} 
-												
-													
-										],
+											sortable : false,
+											align:'right'
+										}
+
+								],
 								viewConfig : {
 
 					}			,
 								dockedItems : [{
 											xtype : 'pagingtoolbar',
-											//width : 360,
+											// width : 360,
 											displayInfo : true,
 											dock : 'bottom',
 											store : store,
-											items:[{xtype:'button',
-											        text:'导出到excel',
-											        action:'exportToExcel'
-											         }]
+											items : [{
+														xtype : 'button',
+														text : '导出到excel',
+														action : 'exportToExcel'
+													}]
 										}]
 
 							}]

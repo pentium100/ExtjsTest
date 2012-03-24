@@ -32,6 +32,14 @@ Ext.define('AM.view.contract.List', {
 							width: 100,
 							flex : 1
 						}, {
+							header : '签约日期',
+							dataIndex : 'signDate',
+							xtype : 'datecolumn',
+							format : 'Y-m-d',
+							filterable : true,
+							width: 100,
+							flex : 1
+						}, {
 							header : '供应商',
 							dataIndex : 'supplier',
 							filterable : true,

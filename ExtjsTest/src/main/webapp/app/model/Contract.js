@@ -9,6 +9,10 @@ Ext.define('AM.model.Contract', {
 						type : 'date',
 						dateFormat : 'Y-m-d H:i:s'
 					}, {
+						name : 'signDate',
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
+					}, {
 						name : 'supplier',
 						type : 'string'
 						

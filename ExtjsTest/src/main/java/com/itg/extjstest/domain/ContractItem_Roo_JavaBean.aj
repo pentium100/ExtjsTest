@@ -48,4 +48,12 @@ privileged aspect ContractItem_Roo_JavaBean {
         this.unitPrice = unitPrice;
     }
     
+    public Double ContractItem.getUsedQuantity() {
+        return this.usedQuantity;
+    }
+    
+    public void ContractItem.setUsedQuantity(Double usedQuantity) {
+        this.usedQuantity = usedQuantity;
+    }
+    
 }

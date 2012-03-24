@@ -1,6 +1,7 @@
 package com.itg.extjstest.util;
 
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -23,13 +24,16 @@ public class ExcelReportView extends AbstractExcelView {
 
 		int rowNum = 0;
 		// create a wordsheet
-		
-		String fileName = URLEncoder.encode((String) model.get("title"), "UTF-8");
-				
-		response.addHeader("Content-Disposition", "attachment;filename="+fileName+".xls"); 
-		response.setHeader("Content-Type","application/force-download; charset=utf-8");
-		
-		
+
+		String fileName = URLEncoder.encode((String) model.get("title"),
+				"UTF-8");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+		response.addHeader("Content-Disposition", "attachment;filename="
+				+ fileName + ".xls");
+		response.setHeader("Content-Type",
+				"application/force-download; charset=utf-8");
+
 		HSSFSheet sheet = workbook.createSheet((String) model.get("title"));
 
 		HSSFRow header = sheet.createRow(rowNum++);
@@ -39,7 +43,7 @@ public class ExcelReportView extends AbstractExcelView {
 		int i = 0;
 		for (ReportHeader colHeader : headers) {
 			header.createCell(i++).setCellValue(colHeader.getHeader());
-			
+
 		}
 		String dataRoot = (String) model.get("dataRoot");
 
@@ -50,14 +54,24 @@ public class ExcelReportView extends AbstractExcelView {
 			HSSFRow row = sheet.createRow(rowNum++);
 			i = 0;
 			for (ReportHeader colHeader : headers) {
-				
+
 				HSSFCell cell = row.createCell(i++);
 				if (dataSet.get(colHeader.getField().toString()) != null) {
-					cell.setCellValue(dataSet.get(colHeader.getField().toString()).toString());
+
+					String value;
+
+					if (java.util.Date.class.isInstance(dataSet.get(colHeader
+							.getField().toString()))) {
+						value = sdf.format(dataSet.get(colHeader.getField()
+								.toString()));
+					} else {
+						value = dataSet.get(colHeader.getField().toString())
+								.toString();
+					}
+					cell.setCellValue(value);
+
 				}
 				cell.setCellStyle(colHeader.getStyle(workbook));
-				
-				
 
 			}
 

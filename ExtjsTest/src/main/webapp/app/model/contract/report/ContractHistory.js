@@ -14,6 +14,10 @@ Ext.define('AM.model.contract.report.ContractHistory', {
 						type : 'string'
 						
 					},{
+						name : 'sign_date',
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
+					}, {
 						name : 'pay_term',
 						type : 'string'
 					},{

@@ -98,15 +98,17 @@ public class ReportController {
 
 		cte.append("with OpenOrder as (");
 		cte.append("select (ROW_NUMBER() over (order by "
-				+ sortString.toString()
-				+ " )) as rowNum, model, quantity_purchases = sum(case when c.contract_type=0 then quantity else 0 end),");
+				+ sortString.toString()+")) as rowNum, " );
+		
+		cte.append( " case when GROUPING(model)=1 then '总计' else model end as model, " );
+		cte.append(" quantity_purchases = sum(case when c.contract_type=0 then quantity else 0 end),");
 		cte.append("                   quantity_sales = sum(case when c.contract_type=1 then quantity else 0 end),");
 		cte.append("                   quantity_open = sum(case when c.contract_type=1 then -quantity else quantity end)");
 
 		cte.append("  from contract c inner join contract_items cis on c.id = cis.contract ");
 		cte.append("                  inner join contract_item ci on cis.items = ci.id ");
 		cte.append(whereString);
-		cte.append(" group by model ");
+		cte.append(" group by grouping sets(model,()) ");
 		cte.append(" )");
 
 		query.append(" select * from OpenOrder where rowNum>:start and rowNum<=:start+:limit");
@@ -233,7 +235,7 @@ public class ReportController {
 		cte.append("with NoDelivery as (");
 		cte.append("select (ROW_NUMBER() over (order by "
 				+ sortString.toString()
-				+ " )) as rowNum, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price ,");
+				+ " )) as rowNum, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
 
 		cte.append("		quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
 		cte.append("		                                            left join material_doc_item mi on mi.line_id = mds.items ");
@@ -392,7 +394,7 @@ public class ReportController {
 		cte.append("select (ROW_NUMBER() over (order by "
 				+ sortString.toString() + " )) as rowNum, ");
 
-		cte.append(" case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, contract_no,supplier, pay_term, contract.remark, model, quantity,unit_price,contract_item.remark as item_remark  ");
+		cte.append(" case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, contract_no,supplier, pay_term, contract.remark, model, quantity,unit_price,contract_item.remark as item_remark, contract.sign_date  ");
 		cte.append(" from contract");
 		cte.append(" inner join contract_items on contract.id = contract_items.contract    ");
 		cte.append(" inner join contract_item on contract_item.id = contract_items.items   ");
@@ -563,21 +565,27 @@ public class ReportController {
 				+ sortString.toString() + " )) as rowNum, ");
 
 		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, ");
-		cte.append("     stock.warehouse, stock.net_weight, stock.gross_weight ");
+		cte.append("     stock.warehouse, stock.net_weight, stock.gross_weight, ");
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
-		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier ");
+		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier, ");
+		cte.append("     inspection.inspection_date, inspection.authority,inspection.doc_no,inspection.original,inspection.remark as inspection_remark, ");
+		cte.append("     inspection_item.al, inspection_item.ca, inspection_item.fe, inspection_item.p,inspection_item.si "  );
 		cte.append(" from material_doc  ");
 		cte.append("      inner join material_doc_item on material_doc_item.material_doc = material_doc.doc_no ");
 		cte.append("      inner join contract on contract.id =  material_doc.contract ");
 		cte.append("      left join contract_item on material_doc.contract = contract_item.contract ");
-		cte.append("                             and material_doc_item.model_contract = contract_item.model, ");
+		cte.append("                             and material_doc_item.model_contract = contract_item.model " );
+		cte.append("      left join inspection_item on inspection_item.material_doc_item = material_doc_item.line_id_test " );
+		cte.append("      left join inspection on inspection.id = inspection_item.inspection, " );		
+				
+				
 		cte.append(" ( ");
 		cte.append("  select line_id_in, warehouse, SUM(net_weight*direction) as net_weight, SUM(gross_weight*direction) as gross_weight ");
 		cte.append("     from material_doc_item  ");
 		cte.append("     inner join material_doc_items on material_doc_items.items = material_doc_item.line_id ");
 		cte.append("     inner join material_doc on material_doc.doc_no = material_doc_items.material_doc and material_doc.doc_date <= :endDate ");
 		cte.append("     group by line_id_in,warehouse ");
-		cte.append("     having SUM(net_weight*direction)>0) stock ");
+		cte.append("     having SUM(net_weight*direction)<>0) stock ");
 		cte.append("  where material_doc_item.line_id = stock.line_id_in ");
 
 		if (!whereString.toString().equals("")) {
@@ -595,7 +603,7 @@ public class ReportController {
 			map.put("stockQuerys", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-
+//合同号，供应商，规格（合同），单价，毛重，净重，进仓单号，车号/卡号，批次号，仓库，检验信息
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
@@ -607,40 +615,10 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("进仓单号");
-			header.setField("deliveryNote");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("进仓日期");
-			header.setField("doc_date");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("车号/卡号");
-			header.setField("plate_num");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("批次号");
-			header.setField("batch_no");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("规格(检验后)");
-			header.setField("model_tested");
-			headers.add(header);
-
-			header = new ReportHeader();
 			header.setHeader("规格(合同)");
 			header.setField("model_contract");
 			headers.add(header);
 
-			header = new ReportHeader();
-			header.setHeader("净重");
-			header.setField("net_weight");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("单价");
@@ -649,13 +627,104 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
+			header.setHeader("毛重");
+			header.setField("gross_weight");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("净重");
+			header.setField("net_weight");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("进仓单号");
+			header.setField("deliveryNote");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("车号/卡号");
+			header.setField("plate_num");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进仓日期");
+			header.setField("doc_date");
+			headers.add(header);
+
+
+			header = new ReportHeader();
+			header.setHeader("批次号");
+			header.setField("batch_no");
+			headers.add(header);
+
+			header = new ReportHeader();
 			header.setHeader("仓库");
 			header.setField("warehouse");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("检验日期");
+			header.setField("inspection_date");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("检验机构");
+			header.setField("authority");
+			headers.add(header);
+
+
+			header = new ReportHeader();
+			header.setHeader("si");
+			header.setField("si");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("fe");
+			header.setField("fe");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("al");
+			header.setField("al");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("ca");
+			header.setField("ca");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("p");
+			header.setField("p");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("检验备注");
+			header.setField("inspection_remark");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("证书编号");
+			header.setField("doc_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("正本");
+			header.setField("original");
+			headers.add(header);
+			
+			
 
 			map.put("headers", headers);
-			map.put("title", "敞口业务报表");
+			map.put("title", "库存报表");
 
 			return "ExportToExcel";
 
@@ -810,6 +879,7 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("检验日期");
 			header.setField("inspection_date");
+		
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -817,21 +887,6 @@ public class ReportController {
 			header.setField("authority");
 			headers.add(header);
 
-			header = new ReportHeader();
-			header.setHeader("编号");
-			header.setField("doc_no");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("正本");
-			header.setField("original");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("数量");
-			header.setField("net_weight");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("si");
@@ -868,6 +923,22 @@ public class ReportController {
 			header.setField("remark");
 			headers.add(header);
 
+			header = new ReportHeader();
+			header.setHeader("编号");
+			header.setField("doc_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("正本");
+			header.setField("original");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("数量");
+			header.setField("net_weight");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+			
 			map.put("headers", headers);
 			map.put("title", "检验报告");
 
@@ -988,7 +1059,7 @@ public class ReportController {
 			map.put("afloatGoodsDetails", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-
+//合同号，供应商，规格，数量，车号，发货日期，发货地点，到达地，预计到货日期，超期天数，实际到货日期，批次号，正本，转货时间，备注
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
@@ -1005,13 +1076,14 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("车号/卡号");
-			header.setField("plate_num");
+			header.setHeader("数量");
+			header.setField("quantity");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("批次号");
-			header.setField("batch_no");
+			header.setHeader("车号/卡号");
+			header.setField("plate_num");
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -1028,21 +1100,19 @@ public class ReportController {
 			header.setHeader("到达");
 			header.setField("destination");
 			headers.add(header);
+			
+
+			header = new ReportHeader();
+			header.setHeader("预计到货日期");
+			header.setField("eta");
+			headers.add(header);
+
 
 			header = new ReportHeader();
 			header.setHeader("超期天数");
 			header.setField("beyond_days");
 			headers.add(header);
 
-			header = new ReportHeader();
-			header.setHeader("转货时间");
-			header.setField("transport_date");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("预计到货日期");
-			header.setField("eta");
-			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("实际到货日期");
@@ -1050,16 +1120,23 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
+			header.setHeader("批次号");
+			header.setField("batch_no");
+			headers.add(header);
+
+			header = new ReportHeader();
 			header.setHeader("正本");
 			header.setField("original");
 			headers.add(header);
 
+			
 			header = new ReportHeader();
-			header.setHeader("数量");
-			header.setField("quantity");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setHeader("转货时间");
+			header.setField("transport_date");
 			headers.add(header);
+			
 
+	
 			header = new ReportHeader();
 			header.setHeader("备注");
 			header.setField("remark");

@@ -1,6 +1,7 @@
 package com.itg.extjstest.domain;
 
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -24,4 +25,8 @@ public class ContractItem {
     private String remark;
 
     private Double unitPrice;
+
+    
+    @Transient
+    private Double usedQuantity;
 }

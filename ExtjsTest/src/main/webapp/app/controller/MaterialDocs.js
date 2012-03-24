@@ -81,13 +81,10 @@ Ext.define('AM.controller.MaterialDocs', {
 				});
 		this.getStore('MaterialDocs').insert(0, record);
 		var view = Ext.widget('materialDocEdit');
-		
+
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 		view.down('grid').reconfigure(record.items());
-		
-		
-		 
 
 	},
 	addMaterialDocItem : function(button) {
@@ -193,6 +190,7 @@ Ext.define('AM.controller.MaterialDocs', {
 						record.set('model_contract', contractItem.get("model"));
 						record.set('moveType', this.moveType1);
 						record.set('direction', 1);
+						record.set('netWeight', contractItem.get("quantity"));
 						var lineId_in = {
 							'lineId' : 0,
 							'version' : 0
@@ -217,6 +215,7 @@ Ext.define('AM.controller.MaterialDocs', {
 		record.set(values);
 
 		// record.data.items = win.down('grid').getStore();
+
 		record.store.sync();
 		win.close();
 

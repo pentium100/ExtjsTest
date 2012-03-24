@@ -162,6 +162,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity',
+									align:'right',
 									text : '数量'
 								}, {
 									xtype : 'gridcolumn',
@@ -188,7 +189,8 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'beyond_days',
-									text : '超期天数'
+									text : '超期天数',
+									align:'right'
 								}, {
 									xtype : 'datecolumn',
 									dataIndex : 'arrival_date',

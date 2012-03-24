@@ -56,7 +56,7 @@ Ext.define('AM.controller.Contracts', {
 			},
 
 			editContract : function(grid, record) {
-				console.log('Double clicked on ' + record.get('contractNo'));
+				//console.log('Double clicked on ' + record.get('contractNo'));
 				var view = Ext.widget('contractEdit');
 
 				view.down('form').loadRecord(record);
@@ -107,7 +107,7 @@ Ext.define('AM.controller.Contracts', {
 				form = win.down('form');
 				var record = form.getRecord();
 				values = form.getValues();
-
+				values.signDate = Ext.Date.parse(values.signDate, 'Y-m-d');
 				record.set(values);
 
 				// record.data.items = win.down('grid').getStore();
@@ -127,6 +127,6 @@ Ext.define('AM.controller.Contracts', {
 				win.close();
 			},
 			onPanelRendered : function() {
-				console.log('The panel was rendered');
+				//console.log('The panel was rendered');
 			}
 		});
