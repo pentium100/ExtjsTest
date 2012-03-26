@@ -81,6 +81,7 @@ Ext.define('AM.view.contract.Edit', {
 										id : 'model',
 										dataIndex : 'model',
 										text : '规格',
+										width: 30,
 
 										field : 'textfield'
 									}, {
@@ -88,12 +89,14 @@ Ext.define('AM.view.contract.Edit', {
 										itemId : 'quantity',
 										dataIndex : 'quantity',
 										text : '数量',
+										width: 40,
 										field : 'numberfield'
 									}, {
 										xtype : 'numbercolumn',
 										itemId : 'unitPrice',
 										dataIndex : 'unitPrice',
 										text : '单价',
+										width: 40,
 										field : 'numberfield'
 									}, {
 										xtype : 'gridcolumn',

@@ -17,29 +17,25 @@ Ext.define('AM.view.inspection.List', {
 							header : '合同号',
 							dataIndex : 'contracts',
 							filterable : true,
-							flex : 1
+							width: 120
 						}, {
 							header : '检验日期',
 							dataIndex : 'inspectionDate',
 							xtype : 'datecolumn',
 							format : 'Y-m-d',
-							filterable : true,
-							flex : 1
+							filterable : true
 						}, {
 							header : '机构',
 							dataIndex : 'authority',
-							filterable : true,
-							flex : 1
+							filterable : true
 						}, {
 							header : '编号',
 							dataIndex : 'docNo',
-							filterable : true,
-							flex : 1
+							filterable : true
 						}, {
 							header : '收到证书',
 							dataIndex : 'original',
-							filterable : true,
-							flex : 1
+							filterable : true
 						}, {
 							header : '备注',
 							dataIndex : 'remark',

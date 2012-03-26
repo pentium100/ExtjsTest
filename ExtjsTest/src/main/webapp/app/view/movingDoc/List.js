@@ -16,12 +16,12 @@ Ext.define('AM.view.movingDoc.List', {
 			initComponent : function() {
 				this.columns = [{
 							header : '单据类型',
-							dataIndex : 'docType_txt',
-							flex : 1
+							dataIndex : 'docType_txt'
 						}, {
 							header : '单据号',
 							dataIndex : 'docNo',
-							flex : 1,
+							width: 100,
+							
 							filterable : true
 					//	}, {
 					//		header : '合同号',
@@ -31,29 +31,33 @@ Ext.define('AM.view.movingDoc.List', {
 						}, {
 							header : '进仓单号',
 							dataIndex : 'deliveryNote',
-							flex : 1,
+							
+							width: 100,
 							filterable : true
 						}, {
 							header : '车号/卡号',
 							dataIndex : 'plateNum',
-							flex : 1,
+							width: 100,
+							
 							filterable : true
 						}, {
 							header : '批号',
 							dataIndex : 'batchNo',
-							flex : 1,
+							width: 200,
+							
 							filterable : true
 						}, {
 							header : '日期',
 							dataIndex : 'docDate',
 							xtype : 'datecolumn',
 							format : 'Y-m-d',
-							flex : 1,
+							width: 80,
 							filterable : true
 						}, {
 							header : '工作号',
 							dataIndex : 'workingNo',
-							flex : 1,
+							width: 100,
+							
 							filterable : true
 						}, {
 							header : '备注',

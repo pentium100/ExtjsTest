@@ -23,37 +23,37 @@ Ext.define('AM.view.contract.List', {
 								store: Ext.widget('contractTypeStore'),
 								phpMode: true
 
-							},
-							flex : 1
+							}
+							
 						}, {
 							header : '合同号',
 							dataIndex : 'contractNo',
 							filterable : true,
-							width: 100,
-							flex : 1
+							width: 120
+							//flex : 1
 						}, {
 							header : '签约日期',
 							dataIndex : 'signDate',
 							xtype : 'datecolumn',
 							format : 'Y-m-d',
 							filterable : true,
-							width: 100,
-							flex : 1
+							width: 80
+							
 						}, {
 							header : '供应商',
 							dataIndex : 'supplier',
 							filterable : true,
-							flex : 1
+							width: 240
 						}, {
 							header : '付款方式',
 							dataIndex : 'payTerm',
-							filterable : true,
-							flex : 1
+							filterable : true
 						}, {
 							header : '备注',
 							dataIndex : 'remark',
 							filterable : true,
-							flex : 4
+							flex:1
+							
 						}];
 
 				this.dockedItems = [{
