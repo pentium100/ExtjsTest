@@ -346,14 +346,18 @@ public class MaterialDocController {
 
 	private String checkContractQuantity(MaterialDoc m) {
 
-		String query = "select isnull(sum(material_doc_item.net_weight),0)  as used_net_weight,  "
-				+ "            isnull(sum(contract_item.quantity),0) as signed_net_weight "
-				+ "    from material_doc_item "
-				+ "    left join material_doc on material_doc.doc_no = material_doc_item.material_doc"
-				+ "    left join contract_item on contract_item.contract = material_doc.contract "
-				+ "                           and contract_item.model = material_doc_item.model_contract "
-				+ "    where contract_item.contract = :contract and material_doc_item.model_contract = :model"
-				+ "          and material_doc.doc_no <> :doc_no";
+		
+		
+		String query = "select isnull(sum(material_doc_item.net_weight),0)  as used_net_weight, "  
+				+ "        isnull(sum(contract_item.quantity),0) as signed_net_weight "
+				+ "		from contract_item  "
+				+ "		left join material_doc_item on "
+				+ "               contract_item.model = material_doc_item.model_contract  "
+				+ "     left join material_doc on material_doc.doc_no = material_doc_item.material_doc "				                           				    				                           
+				+ "                           and contract_item.contract = material_doc.contract "
+				+ "                           and material_doc.doc_no <> :doc_no "
+				+ " 	where contract_item.contract = :contract and contract_item.model = :model ";
+		
 
 		Map<String, Object> param = new HashMap<String, Object>();
 
