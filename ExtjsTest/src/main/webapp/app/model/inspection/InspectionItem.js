@@ -3,22 +3,28 @@ Ext.define('AM.model.inspection.InspectionItem', {
 			idProperty: 'id',
 			fields : [{
 						name : 'netWeight',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'si',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'fe',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'al',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'ca',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'p',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'remark',
 						type : 'string'

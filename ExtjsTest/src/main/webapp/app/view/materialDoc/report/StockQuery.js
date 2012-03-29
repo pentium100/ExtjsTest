@@ -147,22 +147,27 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 										} , {
 											xtype : 'gridcolumn',
 											dataIndex : 'si',
+											width: 60,
 											text : 'si'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'fe',
+											width: 51,
 											text : 'fe'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'al',
+											width: 51,
 											text : 'al'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'ca',
+											width: 51,
 											text : 'ca'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'p',
+											width: 51,
 											text : 'p'
 										}, {
 											xtype : 'gridcolumn',

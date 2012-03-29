@@ -6,10 +6,12 @@ Ext.define('AM.model.ContractItem', {
 						type : 'string'
 					}, {
 						name : 'quantity',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'unitPrice',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'remark',
 						type : 'string'

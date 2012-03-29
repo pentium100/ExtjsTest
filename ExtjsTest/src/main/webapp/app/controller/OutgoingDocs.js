@@ -23,16 +23,16 @@ Ext.define('AM.controller.OutgoingDocs', {
 								click : this.deleteMaterialDoc
 							},
 
-							'materialDocItemSearch button[action=search]' : {
+							'materialDocItemSearch[by=outgoingDocEdit] button[action=search]' : {
 								click : this.searchMaterialDocItem
 							},
 
 							
-							'materialDocItemSearch gridpanel' : {
+							'materialDocItemSearch[by=outgoingDocEdit] gridpanel' : {
 								itemdblclick : this.selectMaterialDocItem
 							},
 							
-							'contractSearch button[action=search]' : {
+							'contractSearch[by=outgoingDocEdit] button[action=search]' : {
 								click : this.searchContract
 							},
 
@@ -249,7 +249,9 @@ Ext.define('AM.controller.OutgoingDocs', {
 				itemRecord.set('model_contract', record.data.model_contract);
 				itemRecord.set('model_tested', record.data.model_tested);
 				itemRecord.set('deliveryNote', record.data.deliveryNote);
+				itemRecord.set('workingNo', record.data.workingNo);
 				itemRecord.set('batchNo', record.data.batchNo);
+				
 				itemRecord.set('plateNum', record.data.plateNum);
 				itemRecord.set('warehouse', record.data.warehouse);
 				itemRecord.set('netWeight', record.data.netWeight);

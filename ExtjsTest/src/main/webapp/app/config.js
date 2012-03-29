@@ -15,6 +15,16 @@ Ext.require(['Ext.form.field.Trigger', 'Ext.ux.grid.FiltersFeature']);
 
 // ]);
 
+
+Ext.require(['Ext.form.field.Number'], function(){
+	
+	Ext.form.field.Number.override({
+		    
+		hideTrigger: true
+		
+	});
+});
+
 Ext.require(['Ext.data.BelongsToAssociation'], function() {
 
 	Ext.data.BelongsToAssociation.override({

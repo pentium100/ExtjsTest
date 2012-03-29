@@ -23,7 +23,7 @@ Ext.define('AM.controller.MaterialDocs', {
 						click : this.deleteMaterialDoc
 					},
 
-					'contractSearch button[action=search]' : {
+					'contractSearch[by=materialDocEdit] button[action=search]' : {
 						click : this.searchContract
 					},
 					'contractSearch gridpanel[by=materialDocEdit]' : {

@@ -102,7 +102,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 							xtype : 'gridcolumn',
 							dataIndex : 'model_contract',
 							text : '规格',
-							width: 40,
+							width: 80,
 							// field : 'trigger',
 							editor : {
 								xtype : 'trigger',
@@ -125,19 +125,25 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'model_tested',
-							width: 40,
+							width: 80,
 							text : '规格(检验后)'
 
 						}, {
 							xtype : 'numbercolumn',
 							dataIndex : 'netWeight',
-							width: 40,
+							width: 80,
 							text : '净重',
 							field : 'numberfield'
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'deliveryNote',
 							text : '进仓单号',
+							width: 100
+
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'workingNo',
+							text : '工作号',
 							width: 100
 
 						}, {

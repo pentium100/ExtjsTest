@@ -28,10 +28,12 @@ Ext.define('AM.model.MaterialDocItem', {
 
 					}, {
 						name : 'grossWeight',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'netWeight',
-						type : 'float'
+						type : 'float',
+						useNull:true
 					}, {
 						name : 'warehouse',
 						type : 'string'

@@ -85,6 +85,11 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 												}, {
 													xtype : 'gridcolumn',
 													
+													text : '工作号',
+													dataIndex: 'workingNo'
+												}, {
+													xtype : 'gridcolumn',
+													
 													text : '车号/卡号',
 													dataIndex: 'plateNum'
 												}, {

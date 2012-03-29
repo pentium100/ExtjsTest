@@ -43,6 +43,9 @@ Ext.define('AM.model.MaterialDocItemSearch', {
 						name : 'batchNo',
 						mapping : 'materialDoc.batchNo'
 					}, {
+						name : 'workingNo',
+						mapping : 'materialDoc.workingNo'
+					}, {
 						name : 'docDate',
 						mapping : 'materialDoc.docDate'
 					}

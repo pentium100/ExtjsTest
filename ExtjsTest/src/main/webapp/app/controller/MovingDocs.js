@@ -24,14 +24,15 @@ Ext.define('AM.controller.MovingDocs', {
 								click : this.deleteMaterialDoc
 							},
 
-							'contractSearch button[action=search]' : {
+							//'contractSearch gridpanel[by=movingDocEdit] > button[action=search]' : {
+							'contractSearch[by=movingDocEdit] button[text="Search"]' : {
 								click : this.searchContract
 							},
 							'contractSearch gridpanel[by=movingDocEdit]' : {
 								itemdblclick : this.selectContract
 							},
 
-							'materialDocItemSearch button[action=search]' : {
+							'materialDocItemSearch[by=movingDocEdit] button[action=search]' : {
 								click : this.searchMaterialDocItem
 							},
 

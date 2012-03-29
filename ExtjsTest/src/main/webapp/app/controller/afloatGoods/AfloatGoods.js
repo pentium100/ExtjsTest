@@ -15,7 +15,7 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 
 					},
 
-					'contractSearch button[action=search]' : {
+					'contractSearch[by=afloatGoodsEdit] button[action=search]' : {
 						click : this.searchContract
 					},
 					'contractSearch gridpanel[by=afloatGoodsEdit]' : {
@@ -124,8 +124,10 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 	deleteAfloatGoods : function(button) {
 		var viewport = button.up('viewport');
 		var grid = viewport.down('afloatGoodsList');
+
+		
 		var selection = grid.getView().getSelectionModel().getSelection()[0];
-		var store = gird.getStore();
+		var store = grid.getStore();
 		if (selection) {
 			store.remove(selection);
 			store.sync();

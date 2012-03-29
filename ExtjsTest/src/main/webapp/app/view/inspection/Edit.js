@@ -122,38 +122,57 @@ Ext.define('AM.view.inspection.Edit', {
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'si',
-								width: 51,
+								width: 60,
 								align: 'right',
 								text : 'si',
-								field : 'numberfield'
+								field : {xtype:'numberfield',
+									decimalPrecision:4,
+									},
+								format:'0.0000'								
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'fe',
 								width: 51,
 								align: 'right',
 								text : 'fe',
-								field : 'numberfield'
+								field : {xtype:'numberfield',
+									decimalPrecision:4,
+									},
+								format:'0.0000'								
+
 							} , {
 								xtype : 'numbercolumn',
 								dataIndex : 'al',
 								width: 51,
 								align: 'right',
 								text : 'al',
-								field : 'numberfield'
+								field : {xtype:'numberfield',
+									decimalPrecision:4,
+									},
+								format:'0.0000'								
+
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'ca',
 								width: 51,
 								align: 'right',
 								text : 'ca',
-								field : 'numberfield'
+								field : {xtype:'numberfield',
+									decimalPrecision:4,
+									},
+								format:'0.0000'								
+
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'p',
 								width: 51,
 								align: 'right',
 								text : 'p',
-								field : 'numberfield'
+								field : {xtype:'numberfield',
+									decimalPrecision:4,
+									},
+								format:'0.0000'								
+
 							}, {
 								xtype : 'gridcolumn',
 								dataIndex : '备注',

@@ -29,10 +29,10 @@ Ext.define('AM.view.movingDoc.List', {
 					//		flex : 1,
 					//		filterable : true
 						}, {
-							header : '进仓单号',
-							dataIndex : 'deliveryNote',
-							
+							header : '工作号',
+							dataIndex : 'workingNo',
 							width: 100,
+							
 							filterable : true
 						}, {
 							header : '车号/卡号',
@@ -54,10 +54,10 @@ Ext.define('AM.view.movingDoc.List', {
 							width: 80,
 							filterable : true
 						}, {
-							header : '工作号',
-							dataIndex : 'workingNo',
-							width: 100,
+							header : '进仓单号',
+							dataIndex : 'deliveryNote',
 							
+							width: 100,
 							filterable : true
 						}, {
 							header : '备注',

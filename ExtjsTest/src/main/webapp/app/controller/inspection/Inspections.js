@@ -22,7 +22,7 @@ Ext.define('AM.controller.inspection.Inspections', {
 								click : this.deleteInspection
 							},
 
-							'materialDocItemSearch button[action=search]' : {
+							'materialDocItemSearch[by=inspectionEdit] button[action=search]' : {
 								click : this.searchMaterialDocItem
 							},
 
