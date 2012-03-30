@@ -64,6 +64,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 									xtype : 'datefield',
 									name : 'docDate',
 									fieldLabel : '出仓日期',
+									allowBlank : false,
 									format : 'Y-m-d'
 								}, {
 									xtype : 'textfield',

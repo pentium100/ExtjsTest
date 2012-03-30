@@ -351,11 +351,11 @@ public class MaterialDocController {
 		String query = "select isnull(sum(material_doc_item.net_weight),0)  as used_net_weight, "  
 				+ "        isnull(sum(contract_item.quantity),0) as signed_net_weight "
 				+ "		from contract_item  "
-				+ "		left join material_doc_item on "
+				+ "		inner join material_doc_item on "
 				+ "               contract_item.model = material_doc_item.model_contract  "
-				+ "     left join material_doc on material_doc.doc_no = material_doc_item.material_doc "				                           				    				                           
+				+ "     inner join material_doc on material_doc.doc_no = material_doc_item.material_doc "				                           				    				                           
 				+ "                           and contract_item.contract = material_doc.contract "
-				+ "                           and material_doc.doc_no <> :doc_no "
+				+ "                           and material_doc.doc_no <> :doc_no and material_doc.doc_type <> 3 "
 				+ " 	where contract_item.contract = :contract and contract_item.model = :model ";
 		
 
@@ -370,7 +370,7 @@ public class MaterialDocController {
 					query.toString(), param).get(0);
 			if ((i.getNetWeight() + (Double) result2.get("used_net_weight")) > (Double) (result2
 					.get("signed_net_weight"))) {
-				return "进仓数量大于合同签约数量!";
+				return "进出仓数量大于合同签约数量!";
 			}
 
 		}

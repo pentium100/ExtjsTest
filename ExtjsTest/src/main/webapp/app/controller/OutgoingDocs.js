@@ -289,10 +289,14 @@ Ext.define('AM.controller.OutgoingDocs', {
 
 				var win = button.up('window');
 				form = win.down('form');
+				if(!form.getForm().isValid()){
+					return;
+				}
 				var record = form.getRecord();
 				values = form.getValues();
 				values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
 				record.set(values);
+				
 
 				// record.data.items = win.down('grid').getStore();
 				record.store.sync();
