@@ -136,12 +136,17 @@ public class UserDetailController {
 
 		UserDetail userDetail = UserDetail.fromJsonToUserDetail(json);
 
+		UserDetail userDetail2 = UserDetail.findUserDetailsByUserNameEquals(
+				userDetail.getUserName()).getSingleResult();
+
 		if (!request.isUserInRole("ROLE_ADMIN")) {
 
-			UserDetail userDetail2 = UserDetail
-					.findUserDetailsByUserNameEquals(userDetail.getUserName())
-					.getSingleResult();
 			if (!userDetail.getPassword().equals("")) {
+
+				Md5PasswordEncoder md5 = new Md5PasswordEncoder();
+				String md5Password = md5.encodePassword(
+						userDetail.getPassword(), null);
+				userDetail.setPassword(md5Password);
 				userDetail2.setPassword(userDetail.getPassword());
 			}
 
@@ -149,12 +154,18 @@ public class UserDetailController {
 
 		}
 
-		if (userDetail.getPassword() != null
-				&& (!userDetail.getPassword().equals(""))) {
-			Md5PasswordEncoder md5 = new Md5PasswordEncoder();
-			String md5Password = md5.encodePassword(userDetail.getPassword(),
-					null);
-			userDetail.setPassword(md5Password);
+		if (request.isUserInRole("ROLE_ADMIN")) {
+
+			if (userDetail.getPassword() != null
+					&& (!userDetail.getPassword().equals(""))) {
+				Md5PasswordEncoder md5 = new Md5PasswordEncoder();
+				String md5Password = md5.encodePassword(
+						userDetail.getPassword(), null);
+				userDetail.setPassword(md5Password);
+			} else {
+				userDetail.setPassword(userDetail2.getPassword());
+			}
+
 		}
 
 		for (SecurityRole role : userDetail.getRoles()) {
@@ -170,7 +181,7 @@ public class UserDetailController {
 		if (userDetail == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		
+
 		userDetail.setPassword("");
 
 		HashMap<String, Object> map = new HashMap<String, Object>();

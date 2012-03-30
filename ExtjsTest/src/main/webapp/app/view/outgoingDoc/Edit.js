@@ -112,8 +112,8 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 								onTriggerClick : function(e) {
 									var view = Ext.widget(
 											'materialDocItemSearch', {
-												parentWindow : me
-
+												parentWindow : me,
+												by : me.xtype
 											});
 
 									view.show();
