@@ -98,9 +98,9 @@ public class ReportController {
 
 		cte.append("with OpenOrder as (");
 		cte.append("select (ROW_NUMBER() over (order by "
-				+ sortString.toString()+")) as rowNum, " );
-		
-		cte.append( " case when GROUPING(model)=1 then '总计' else model end as model, " );
+				+ sortString.toString() + ")) as rowNum, ");
+
+		cte.append(" case when GROUPING(model)=1 then '总计' else model end as model, ");
 		cte.append(" quantity_purchases = sum(case when c.contract_type=0 then quantity else 0 end),");
 		cte.append("                   quantity_sales = sum(case when c.contract_type=1 then quantity else 0 end),");
 		cte.append("                   quantity_open = sum(case when c.contract_type=1 then -quantity else quantity end)");
@@ -569,16 +569,15 @@ public class ReportController {
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier, ");
 		cte.append("     inspection.inspection_date, inspection.authority,inspection.doc_no,inspection.original,inspection.remark as inspection_remark, ");
-		cte.append("     inspection_item.al, inspection_item.ca, inspection_item.fe, inspection_item.p,inspection_item.si "  );
+		cte.append("     inspection_item.al, inspection_item.ca, inspection_item.fe, inspection_item.p,inspection_item.si ");
 		cte.append(" from material_doc  ");
 		cte.append("      inner join material_doc_item on material_doc_item.material_doc = material_doc.doc_no ");
 		cte.append("      inner join contract on contract.id =  material_doc.contract ");
 		cte.append("      left join contract_item on material_doc.contract = contract_item.contract ");
-		cte.append("                             and material_doc_item.model_contract = contract_item.model " );
-		cte.append("      left join inspection_item on inspection_item.material_doc_item = material_doc_item.line_id_test " );
-		cte.append("      left join inspection on inspection.id = inspection_item.inspection, " );		
-				
-				
+		cte.append("                             and material_doc_item.model_contract = contract_item.model ");
+		cte.append("      left join inspection_item on inspection_item.material_doc_item = material_doc_item.line_id_test ");
+		cte.append("      left join inspection on inspection.id = inspection_item.inspection, ");
+
 		cte.append(" ( ");
 		cte.append("  select line_id_in, warehouse, SUM(net_weight*direction) as net_weight, SUM(gross_weight*direction) as gross_weight ");
 		cte.append("     from material_doc_item  ");
@@ -603,7 +602,7 @@ public class ReportController {
 			map.put("stockQuerys", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-//合同号，供应商，规格（合同），单价，毛重，净重，进仓单号，车号/卡号，批次号，仓库，检验信息
+			// 合同号，供应商，规格（合同），单价，毛重，净重，进仓单号，车号/卡号，批次号，仓库，检验信息
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
@@ -619,7 +618,6 @@ public class ReportController {
 			header.setField("model_contract");
 			headers.add(header);
 
-
 			header = new ReportHeader();
 			header.setHeader("单价");
 			header.setField("unit_price");
@@ -631,13 +629,13 @@ public class ReportController {
 			header.setField("gross_weight");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("净重");
 			header.setField("net_weight");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
 			header.setField("deliveryNote");
@@ -653,7 +651,6 @@ public class ReportController {
 			header.setField("doc_date");
 			headers.add(header);
 
-
 			header = new ReportHeader();
 			header.setHeader("批次号");
 			header.setField("batch_no");
@@ -664,7 +661,7 @@ public class ReportController {
 			header.setField("warehouse");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("检验日期");
 			header.setField("inspection_date");
@@ -674,7 +671,6 @@ public class ReportController {
 			header.setHeader("检验机构");
 			header.setField("authority");
 			headers.add(header);
-
 
 			header = new ReportHeader();
 			header.setHeader("si");
@@ -720,8 +716,6 @@ public class ReportController {
 			header.setHeader("正本");
 			header.setField("original");
 			headers.add(header);
-			
-			
 
 			map.put("headers", headers);
 			map.put("title", "库存报表");
@@ -879,14 +873,13 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("检验日期");
 			header.setField("inspection_date");
-		
+
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("机构");
 			header.setField("authority");
 			headers.add(header);
-
 
 			header = new ReportHeader();
 			header.setHeader("si");
@@ -938,7 +931,7 @@ public class ReportController {
 			header.setField("net_weight");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-			
+
 			map.put("headers", headers);
 			map.put("title", "检验报告");
 
@@ -966,7 +959,6 @@ public class ReportController {
 		}
 	}
 
-	
 	@RequestMapping(value = "/afloatGoodsDetails")
 	public String afloatGoodsDetails(
 			@RequestParam(value = "page", required = false) Integer page,
@@ -1036,14 +1028,11 @@ public class ReportController {
 		cte.append("	dispatch_date, afloat_goods.eta, arrival_date, original, afloat_goods.remark, ");
 		cte.append("	afloat_goods_item.model, beyond_days = DATEDIFF(day, afloat_goods.eta, getDate()), ");
 		cte.append("	afloat_goods_item.batch_no, afloat_goods_item.quantity ");
-      
 
 		cte.append("   FROM afloat_goods  ");
 		cte.append("   left join contract on afloat_goods.contract = contract.id ");
 		cte.append("   left join afloat_goods_item on  afloat_goods.id = afloat_goods_item.afloat_goods ");
-		
-		
-		
+
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
 		}
@@ -1059,7 +1048,7 @@ public class ReportController {
 			map.put("afloatGoodsDetails", result);
 			List<ReportHeader> headers = new ArrayList<ReportHeader>();
 			ReportHeader header;
-//合同号，供应商，规格，数量，车号，发货日期，发货地点，到达地，预计到货日期，超期天数，实际到货日期，批次号，正本，转货时间，备注
+			// 合同号，供应商，规格，数量，车号，发货日期，发货地点，到达地，预计到货日期，超期天数，实际到货日期，批次号，正本，转货时间，备注
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
@@ -1100,19 +1089,16 @@ public class ReportController {
 			header.setHeader("到达");
 			header.setField("destination");
 			headers.add(header);
-			
 
 			header = new ReportHeader();
 			header.setHeader("预计到货日期");
 			header.setField("eta");
 			headers.add(header);
 
-
 			header = new ReportHeader();
 			header.setHeader("超期天数");
 			header.setField("beyond_days");
 			headers.add(header);
-
 
 			header = new ReportHeader();
 			header.setHeader("实际到货日期");
@@ -1129,14 +1115,11 @@ public class ReportController {
 			header.setField("original");
 			headers.add(header);
 
-			
 			header = new ReportHeader();
 			header.setHeader("转货时间");
 			header.setField("transport_date");
 			headers.add(header);
-			
 
-	
 			header = new ReportHeader();
 			header.setHeader("备注");
 			header.setField("remark");
@@ -1156,7 +1139,7 @@ public class ReportController {
 			map2.put("total", recordCount);
 			map2.put("success", true);
 			map2.put("afloatGoodsDetails", result);
-			
+
 			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
@@ -1168,5 +1151,258 @@ public class ReportController {
 
 			return "resultOnly";
 		}
-	}	
+	}
+
+	@RequestMapping(value = "/materialDocItemQuerys")
+	public String materialDocItemQuery(
+			@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "start", required = false) Integer start,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "sort", required = false) String sort,
+			@RequestParam(value = "showIncoming", required = false) Boolean showIncoming,
+			@RequestParam(value = "excel", required = false) String excel,
+			ModelMap map) throws ParseException {
+
+		List<Map<String, String>> sorts = new ArrayList<Map<String, String>>();
+		if (sort != null && (!sort.equals(""))) {
+			sorts = new JSONDeserializer<List<Map<String, String>>>()
+					.deserialize(sort);
+		}
+
+		StringBuffer sortString = new StringBuffer();
+
+		for (Map<String, String> s : sorts) {
+			if (!sortString.toString().equals("")) {
+				sortString.append(",");
+			}
+
+			sortString.append(" " + s.get("property") + " "
+					+ s.get("direction"));
+		}
+		if (!sortString.toString().equals("")) {
+			sortString.append(",");
+		}
+
+		sortString.append(" doc_date asc ");
+
+		List<FilterItem> filters = null;
+		if (filter != null) {
+			filters = new JSONDeserializer<List<FilterItem>>()
+					.use(null, ArrayList.class).use("values", FilterItem.class)
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
+
+		}
+
+		StringBuffer whereString = new StringBuffer();
+		for (FilterItem f : filters) {
+
+			if (!whereString.toString().equals("")) {
+				whereString.append(" and ");
+			}
+
+			whereString.append(f.getSqlWhere());
+		}
+
+		Map<String, Object> param = new HashMap<String, Object>();
+
+		param.put("start", start);
+		param.put("limit", limit);
+
+		StringBuffer query = new StringBuffer();
+		StringBuffer cte = new StringBuffer();
+
+		cte.append("with MaterialDocItemQuery1 as (");
+		cte.append("  select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, ");
+		cte.append("       material_doc.delivery_note,  ");
+		cte.append("       case when material_doc_type.id=1  ");
+		cte.append("                 then  material_doc.delivery_note  else item_in_doc.delivery_note end ");
+		cte.append("       as delivery_note_in, ");
+
+		cte.append("       case when material_doc_type.id=2  ");
+		cte.append("                 then  material_doc.delivery_note  end ");
+		cte.append("       as delivery_note_out, ");
+
+		cte.append("       material_doc.doc_date, item_in_doc.plate_num, ");
+		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
+		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
+		cte.append("       material_doc_item.gross_weight, material_doc_item.warehouse, ");
+		cte.append("       contract_item.unit_price, item_in_doc.working_no ");
+		cte.append("	   from material_doc_item ");
+		cte.append("	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
+		cte.append("	      left join contract on contract.id = material_doc.contract ");
+		cte.append("	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
+		cte.append("	      left join contract_item on contract_item.contract  = contract.id  ");
+		cte.append("	           and contract_item.model = material_doc_item.model_contract ");
+		cte.append("  		  left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
+		cte.append("	    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
+
+		if (!whereString.toString().equals("")) {
+			cte.append(" where " + whereString);
+		}
+
+		if (showIncoming!=null&&showIncoming) {
+
+			cte.append("    	   union ");
+
+			cte.append("    	   select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, ");
+			cte.append("    	       material_doc.delivery_note,  ");
+			cte.append("    	       case when material_doc_type.id=1 ");
+			cte.append("    	                 then  material_doc.delivery_note else item_in_doc.delivery_note end ");
+			cte.append("    	       as delivery_note_in, ");
+
+			cte.append("    	       case when material_doc_type.id=2 ");
+			cte.append("    	                 then  material_doc.delivery_note end ");
+			cte.append("    	       as delivery_note_out,  ");
+
+			cte.append("    	       material_doc.doc_date, item_in_doc.plate_num, ");
+			cte.append("    	       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
+			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
+			cte.append("    	       material_doc_item.gross_weight, material_doc_item.warehouse, ");
+			cte.append("    	       contract_item.unit_price, item_in_doc.working_no  ");
+			cte.append("    	   from material_doc_item ");
+			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
+			cte.append("    	      left join contract on contract.id = material_doc.contract ");
+			cte.append("    	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
+			cte.append("    	      left join contract_item on contract_item.contract  = contract.id ");
+			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
+			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
+			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
+			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
+			cte.append("    	   from material_doc_item ");
+			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
+			cte.append("    	      left join contract on contract.id = material_doc.contract ");
+			cte.append("    	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
+			cte.append("    	      left join contract_item on contract_item.contract  = contract.id  ");
+			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
+			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
+			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
+
+			if (!whereString.toString().equals("")) {
+				cte.append(" where " + whereString);
+			}
+
+			cte.append(" ) ");
+
+		}
+
+		cte.append(" ), ");
+		cte.append(" MaterialDocItemQuery as ( ");
+
+		cte.append(" select (ROW_NUMBER() over (order by "
+				+ sortString.toString()
+				+ " )) as rowNum, * from MaterialDocItemQuery1) ");
+		
+		query.append("select * from MaterialDocItemQuery where rowNum>:start and rowNum<=:start+:limit ");
+
+		List<Map<String, Object>> result = jdbcTemplate.queryForList(
+				cte.toString() + query.toString(), param);
+
+		if (excel != null && excel.equals("true")) {
+			map.put("dataRoot", "materialDocItemQuery");
+			map.put("materialDocItemQuery", result);
+			List<ReportHeader> headers = new ArrayList<ReportHeader>();
+			ReportHeader header;
+			// 合同号，供应商，规格，数量，车号，发货日期，发货地点，到达地，预计到货日期，超期天数，实际到货日期，批次号，正本，转货时间，备注
+			header = new ReportHeader();
+
+			header.setHeader("单据类型");
+			header.setField("doc_type_txt");
+			headers.add(header);
+
+			header.setHeader("单据号");
+			header.setField("doc_no");
+			headers.add(header);
+
+			header.setHeader("合同号");
+			header.setField("contract_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("供应商");
+			header.setField("supplier");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("规格(合同)");
+			header.setField("model_contract");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("单价");
+			header.setField("unit_price");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("毛重");
+			header.setField("gross_weight");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("净重");
+			header.setField("net_weight");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进仓单号");
+			header.setField("delivery_note_in");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("出仓单号");
+			header.setField("delivery_note_out");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("车号/卡号");
+			header.setField("plate_num");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进仓日期");
+			header.setField("doc_date");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("批次号");
+			header.setField("batch_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("仓库");
+			header.setField("warehouse");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			map.put("headers", headers);
+			map.put("title", "进出仓明细查询");
+
+			return "ExportToExcel";
+
+		} else {
+			HashMap<String, Object> map2 = new HashMap<String, Object>();
+
+			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+					+ "select count(*) from MaterialDocItemQuery", param);
+
+			map2.put("total", recordCount);
+			map2.put("success", true);
+			map2.put("materialDocItemQuerys", result);
+
+			// map2.put("dataRoot", "noDeliverys");
+
+			String resultJson = new JSONSerializer()
+					.exclude("*.class")
+					.include("materialDocItemQuerys")
+					.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+							Date.class).serialize(map2);
+			map.put("result", resultJson);
+
+			return "resultOnly";
+		}
+	}
 }

@@ -56,3 +56,7 @@ values ('icon-user', '用户管理', 0, 2, 'AM.controller.userDetail.UserDetail'
   
 insert into menu(id, icon_cls, text, parent, controller,leaf, views)
   values (15, 'icon-report', '在途信息查询', 7, 'AM.controller.afloatGoods.report.AfloatGoodsDetail', 1, 'AfloatGoodsDetail')  
+  
+  
+  insert into menu(id, icon_cls, text, parent, controller,leaf, views)
+  values (17, 'icon-report', '进出仓明细查询', 7, 'AM.controller.materialDoc.report.MaterialDocItemQuerys', 1, 'MaterialDocItemQuery')  

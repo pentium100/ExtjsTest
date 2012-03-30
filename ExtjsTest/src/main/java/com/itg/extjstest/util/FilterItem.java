@@ -55,7 +55,7 @@ public class FilterItem {
 			return "=";
 		}
 
-		if (getType().equals("string") && (getValue().equals("null"))) {
+		if (getType().equals("string") && (getValue()==null||(getValue().equals("null")))) {
 			return "is";
 		}
 
@@ -120,7 +120,7 @@ public class FilterItem {
 
 		if (getType().equals("string")) {
 
-			if (getValue().equals("null")) {
+			if (getValue()==null||getValue().equals("null")) {
 
 				result.append(" null ");
 			} else {
