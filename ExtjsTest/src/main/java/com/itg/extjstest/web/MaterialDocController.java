@@ -348,16 +348,23 @@ public class MaterialDocController {
 
 		
 		
-		String query = "select isnull(sum(material_doc_item.net_weight),0)  as used_net_weight, "  
-				+ "        isnull(sum(contract_item.quantity),0) as signed_net_weight "
-				+ "		from contract_item  "
-				+ "		inner join material_doc_item on "
-				+ "               contract_item.model = material_doc_item.model_contract  "
-				+ "     inner join material_doc on material_doc.doc_no = material_doc_item.material_doc "				                           				    				                           
-				+ "                           and contract_item.contract = material_doc.contract "
-				+ "                           and material_doc.doc_no <> :doc_no and material_doc.doc_type <> 3 "
-				+ " 	where contract_item.contract = :contract and contract_item.model = :model ";
 		
+		if(m.getDocType().getId()==3){
+			return "";
+		}
+		String query = "		select isnull(SUM(contract_item.quantity),0) as signed_net_weight , "
+				+ "	       (select isnull(SUM(material_doc_item.net_weight),0) " 
+				+ "	                       from material_doc_item  "
+				+ "	                       inner join material_doc on material_doc.doc_no = material_doc_item.material_doc "
+				+ "	                                              and material_doc.contract = :contract and material_doc.doc_type <> 3 "
+				+ "	                                              and material_doc.doc_no <> :doc_no "
+				+ "	                       where  material_doc_item.model_contract = :model "
+
+				+ "	        ) as used_net_weight "                                              
+				+ "	from contract_item "
+				+ "	where contract_item.contract = :contract and contract_item.model =  :model ";
+	
+	
 
 		Map<String, Object> param = new HashMap<String, Object>();
 
