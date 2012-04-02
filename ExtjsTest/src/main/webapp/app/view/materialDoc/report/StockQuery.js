@@ -31,7 +31,7 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											fieldLabel : '截止日期',
 											name : 'endDate',
 											format : 'Y-m-d',
-											allowBlank: false,
+											allowBlank : false,
 											value : new Date()
 
 										}, {
@@ -104,15 +104,18 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											xtype : 'gridcolumn',
 											dataIndex : 'unit_price',
 											text : '单价',
-											sortable : false
+											sortable : false,
+											align: 'right'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'gross_weight',
-											text : '毛重'
+											text : '毛重',
+											align: 'right'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'net_weight',
-											text : '净重'
+											text : '净重',
+											align: 'right'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'delivery_note',
@@ -144,30 +147,30 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											xtype : 'gridcolumn',
 											dataIndex : 'authority',
 											text : '检验机构'
-										} , {
+										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'si',
-											width: 60,
+											width : 60,
 											text : 'si'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'fe',
-											width: 51,
+											width : 51,
 											text : 'fe'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'al',
-											width: 51,
+											width : 51,
 											text : 'al'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'ca',
-											width: 51,
+											width : 51,
 											text : 'ca'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'p',
-											width: 51,
+											width : 51,
 											text : 'p'
 										}, {
 											xtype : 'gridcolumn',
@@ -184,9 +187,10 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 										}
 
 								],
-								viewConfig : {
-
-					}			,
+								features : [{
+											ftype : 'remotesummary',
+											remoteRoot : 'remoteSummary'
+										}],
 								dockedItems : [{
 											xtype : 'pagingtoolbar',
 											// width : 360,

@@ -9,6 +9,9 @@ Ext.define('AM.model.contract.report.NoDelivery', {
 						name : 'contract_no',
 						type : 'string'
 					}, {
+						name : 'contract_type',
+						type : 'string'
+					}, {
 						name : 'sign_date',
 						type : 'date',
 						dateFormat : 'Y-m-d H:i:s'

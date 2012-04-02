@@ -1,3 +1,6 @@
+
+
+Ext.require(['Ext.ux.grid.feature.RemoteSummary']);
 Ext.define('AM.controller.contract.report.ContractHistory', {
 			extend : 'Ext.app.Controller',
 

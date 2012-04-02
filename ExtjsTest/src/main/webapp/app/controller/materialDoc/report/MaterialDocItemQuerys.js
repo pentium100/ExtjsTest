@@ -73,7 +73,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				}
 				if (record.doc_type_txt!=undefined&&record.doc_type_txt != "") {
 					filter.type = "string";
-					filter.field = "material_doc_type.doc_type_txt";
+					filter.field = "doc_type_txt";
 					filter.value = record.doc_type_txt;
 					tmp.push(Ext.apply({}, filter));
 				}

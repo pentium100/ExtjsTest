@@ -235,16 +235,16 @@ public class ReportController {
 		cte.append("with NoDelivery as (");
 		cte.append("select (ROW_NUMBER() over (order by "
 				+ sortString.toString()
-				+ " )) as rowNum, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
+				+ " )) as rowNum, case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
 
 		cte.append("		quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
 		cte.append("		                                            left join material_doc_item mi on mi.line_id = mds.items ");
-		cte.append("                       where md.doc_type = 1 and md.contract = c.id and mi.model_contract = i.model),0))");
-		cte.append("      from contract c left join contract_items cis on c.id = cis.contract and c.contract_type = 0 ");
-		cte.append("                      left join contract_item i on cis.items = i.id");
-		cte.append("   where (i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
-		cte.append("                                            left join material_doc_item mi on mi.line_id = mds.items ");
-		cte.append("                       where md.doc_type = 1 and md.contract = c.id and mi.model_contract = i.model),0))>0 ");
+		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and md.contract = c.id and mi.model_contract = i.model),0))");
+		cte.append("      from contract c ");
+		cte.append("                   left join contract_item i on i.contract = c.id");
+		cte.append("   where (i.quantity-isNull((select SUM(net_weight) from material_doc md ");
+		cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
+		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and md.contract = c.id and mi.model_contract = i.model),0))>0 ");
 		cte.append(whereString);
 		cte.append(" )");
 
@@ -266,6 +266,11 @@ public class ReportController {
 
 			header = new ReportHeader();
 
+			header.setHeader("合同类型");
+			header.setField("contract_type");
+			header.setPosition(0);
+			headers.add(header);
+			
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			header.setPosition(0);
@@ -427,7 +432,7 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("供应商");
+			header.setHeader("供应商/客户");
 			header.setField("supplier");
 			header.setPosition(2);
 			headers.add(header);
@@ -479,12 +484,17 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-					+ "select count(*) from ContractHistory", param);
+			List<Map<String, Object>> summary = jdbcTemplate
+					.queryForList(
+							cte.toString()
+									+ "select count(*) as reccount, sum(quantity) as quantity from ContractHistory",
+							param);
 
-			map2.put("total", recordCount);
+			map2.put("total", summary.get(0).get("reccount"));
 			map2.put("success", true);
 			map2.put("contractHistorys", result);
+			map2.put("remoteSummary", summary.get(0));
+
 			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
@@ -725,13 +735,16 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-					+ "select count(*) from StockQuery", param);
+			List<Map<String, Object>> summary = jdbcTemplate
+					.queryForList(
+							cte.toString()
+									+ "select count(*) as reccount, sum(net_weight) as net_weight from StockQuery",
+							param);
 
-			map2.put("total", recordCount);
+			map2.put("total", summary.get(0).get("reccount"));
 			map2.put("success", true);
 			map2.put("stockQuerys", result);
-			// map2.put("dataRoot", "noDeliverys");
+			map2.put("remoteSummary", summary.get(0));
 
 			String resultJson = new JSONSerializer()
 					.exclude("*.class")
@@ -1171,7 +1184,7 @@ public class ReportController {
 		}
 
 		StringBuffer sortString = new StringBuffer();
-
+		
 		for (Map<String, String> s : sorts) {
 			if (!sortString.toString().equals("")) {
 				sortString.append(",");
@@ -1196,13 +1209,20 @@ public class ReportController {
 		}
 
 		StringBuffer whereString = new StringBuffer();
+		StringBuffer whereOutside = new StringBuffer();
 		for (FilterItem f : filters) {
 
-			if (!whereString.toString().equals("")) {
-				whereString.append(" and ");
-			}
+			if (f.getField().equals("doc_type_txt")) {
+				whereOutside.append(f.getSqlWhere());		
+				
 
-			whereString.append(f.getSqlWhere());
+			} else {
+				if (!whereString.toString().equals("")) {
+					whereString.append(" and ");
+				}
+
+				whereString.append(f.getSqlWhere());
+			}
 		}
 
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -1242,7 +1262,7 @@ public class ReportController {
 			cte.append(" where " + whereString);
 		}
 
-		if (showIncoming!=null&&showIncoming) {
+		if (showIncoming != null && showIncoming) {
 
 			cte.append("    	   union ");
 
@@ -1292,8 +1312,14 @@ public class ReportController {
 
 		cte.append(" select (ROW_NUMBER() over (order by "
 				+ sortString.toString()
-				+ " )) as rowNum, * from MaterialDocItemQuery1) ");
-		
+				+ " )) as rowNum, * from MaterialDocItemQuery1 ") ;
+				
+		if (!whereOutside.toString().equals("")) {
+			cte.append(" where " + whereOutside);
+		}
+				
+		cte.append(" ) ");
+
 		query.append("select * from MaterialDocItemQuery where rowNum>:start and rowNum<=:start+:limit ");
 
 		List<Map<String, Object>> result = jdbcTemplate.queryForList(
@@ -1406,3 +1432,4 @@ public class ReportController {
 		}
 	}
 }
+

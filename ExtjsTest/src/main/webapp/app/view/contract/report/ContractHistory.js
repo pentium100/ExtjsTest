@@ -43,15 +43,15 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 									xtype : 'datefield',
 									fieldLabel : '签约日期从',
 									name : 'signDateFrom',
-									format: 'Y-m-d'
+									format : 'Y-m-d'
 								}, {
 									xtype : 'datefield',
 									fieldLabel : '签约日期到',
 									name : 'signDateTo',
-									format: 'Y-m-d'
+									format : 'Y-m-d'
 								}, {
 									xtype : 'textfield',
-									fieldLabel : '供应商',
+									fieldLabel : '供应商/客户',
 									name : 'supplier'
 								}, {
 									xtype : 'textfield',
@@ -61,7 +61,7 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 									xtype : 'textfield',
 									fieldLabel : '付款方式',
 									name : 'pay_term'
-								}],  //合同类型	合同号	供应商	付款方式	备注	规格	数量	单价	备注
+								}], // 合同类型 合同号 供应商 付款方式 备注 规格 数量 单价 备注
 						buttons : [{
 									text : '提交',
 									action : 'submit'
@@ -78,57 +78,59 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 						title : '报表清单',
 						region : 'center',
 						store : store,
-						columns : [{  //合同类型	合同号	供应商	付款方式	备注	规格	数量	单价	备注
-									xtype : 'gridcolumn',
-									dataIndex : 'contract_type',
-									text : '合同类型'
-								}, { 
-									xtype : 'gridcolumn',
-									dataIndex : 'contract_no',
-									text : '合同号'
-								}, { 
-									xtype : 'datecolumn',
-									dataIndex : 'sign_date',
-									text : '签约日期',
-									format: 'Y-m-d'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'supplier',
-									text : '供应商'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'pay_term',
-									text : '付款方式'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'remark',
-									text : '备注'
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'model',
-									text : '规格'
-								}, {
-									xtype : 'numbercolumn',
-									dataIndex : 'quantity',
-									text : '签约数量',
-									align:'right'
-								}, {
-									xtype : 'numbercolumn',
-									dataIndex : 'unit_price',
-									text : '单价',
-									align:'right',
-									sortable : false
-								}, {
-									xtype : 'gridcolumn',
-									dataIndex : 'item_remark',
-									text : '备注',
-									sortable : false
-								}
+						columns : [{ // 合同类型 合同号 供应商 付款方式 备注 规格 数量 单价 备注
+							xtype : 'gridcolumn',
+							dataIndex : 'contract_type',
+							text : '合同类型'
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'contract_no',
+							text : '合同号'
+						}, {
+							xtype : 'datecolumn',
+							dataIndex : 'sign_date',
+							text : '签约日期',
+							format : 'Y-m-d'
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'supplier',
+							text : '供应商/客户'
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'pay_term',
+							text : '付款方式'
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'remark',
+							text : '备注'
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'model',
+							text : '规格'
+						}, {
+							xtype : 'numbercolumn',
+							dataIndex : 'quantity',
+							text : '签约数量',
+							align : 'right',
+							summaryType: 'sum'
+						}, {
+							xtype : 'numbercolumn',
+							dataIndex : 'unit_price',
+							text : '单价',
+							align : 'right',
+							sortable : false
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'item_remark',
+							text : '备注',
+							sortable : false
+						}
 
 						],
-						viewConfig : {
-
-			}			,
+						features : [{
+									ftype : 'remotesummary',
+									remoteRoot:'remoteSummary'
+								}],
 						dockedItems : [{
 									xtype : 'pagingtoolbar',
 									// width : 360,

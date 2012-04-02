@@ -1,3 +1,5 @@
+
+Ext.require(['Ext.ux.grid.feature.RemoteSummary']);
 Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 			extend : 'Ext.app.Controller',
 

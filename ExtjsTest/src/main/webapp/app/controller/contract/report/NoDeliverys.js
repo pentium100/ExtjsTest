@@ -30,6 +30,13 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 				var tmp = [];
 				var filter = {};
 				var record = panel.down('form').getValues();
+
+				if (record.contract_type !=undefined&&record.contract_type != "") {
+					filter.type = "string";
+					filter.field = "contract_type";
+					filter.value = record.contract_type;
+					tmp.push(Ext.apply({}, filter));
+				}
 				
 				if (record.contract_no != "") {
 					filter.type = "string";
@@ -86,6 +93,14 @@ Ext.define('AM.controller.contract.report.NoDeliverys', {
 				var tmp = [];
 				var filter = {};
 				var record = button.up('form').getValues();
+				
+				if (record.contract_type !=undefined&&record.contract_type != "") {
+					filter.type = "string";
+					filter.field = "contract_type";
+					filter.value = record.contract_type;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
 				if (record.contract_no != "") {
 					filter.type = "string";
 					filter.field = "contract_no";
