@@ -252,6 +252,7 @@ Ext.define('AM.controller.OutgoingDocs', {
 				itemRecord.set('workingNo', record.data.workingNo);
 				itemRecord.set('batchNo', record.data.batchNo);
 				
+				
 				itemRecord.set('plateNum', record.data.plateNum);
 				itemRecord.set('warehouse', record.data.warehouse);
 				itemRecord.set('netWeight', record.data.netWeight);
