@@ -3,6 +3,7 @@
 
 package com.itg.extjstest.domain;
 
+import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.MaterialDocItem;
 import java.util.Date;
@@ -151,6 +152,14 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
     
     public void MaterialDocItem.setLineId_up(MaterialDocItem lineId_up) {
         this.lineId_up = lineId_up;
+    }
+    
+    public Contract MaterialDocItem.getContract() {
+        return this.contract;
+    }
+    
+    public void MaterialDocItem.setContract(Contract contract) {
+        this.contract = contract;
     }
     
 }

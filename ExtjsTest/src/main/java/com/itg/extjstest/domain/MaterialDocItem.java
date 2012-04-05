@@ -90,6 +90,9 @@ public class MaterialDocItem {
     @ManyToOne
     private com.itg.extjstest.domain.MaterialDocItem lineId_up;
 
+    @ManyToOne
+    private Contract contract;
+
     public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(List<com.itg.extjstest.util.FilterItem> filters, int start, int page, int limit) {
         CriteriaBuilder cb = entityManager().getCriteriaBuilder();
         List<Predicate> criteria = new ArrayList<Predicate>();
