@@ -239,12 +239,12 @@ public class ReportController {
 
 		cte.append("		quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
 		cte.append("		                                            left join material_doc_item mi on mi.line_id = mds.items ");
-		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and md.contract = c.id and mi.model_contract = i.model),0))");
+		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model),0))");
 		cte.append("      from contract c ");
 		cte.append("                   left join contract_item i on i.contract = c.id");
 		cte.append("   where (i.quantity-isNull((select SUM(net_weight) from material_doc md ");
 		cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
-		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and md.contract = c.id and mi.model_contract = i.model),0))>0 ");
+		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model),0))>0 ");
 		cte.append(whereString);
 		cte.append(" )");
 
@@ -582,8 +582,8 @@ public class ReportController {
 		cte.append("     inspection_item.al, inspection_item.ca, inspection_item.fe, inspection_item.p,inspection_item.si ");
 		cte.append(" from material_doc  ");
 		cte.append("      inner join material_doc_item on material_doc_item.material_doc = material_doc.doc_no ");
-		cte.append("      inner join contract on contract.id =  material_doc.contract ");
-		cte.append("      left join contract_item on material_doc.contract = contract_item.contract ");
+		cte.append("      inner join contract on contract.id =  material_doc_item.contract ");
+		cte.append("      left join contract_item on material_doc_item.contract = contract_item.contract ");
 		cte.append("                             and material_doc_item.model_contract = contract_item.model ");
 		cte.append("      left join inspection_item on inspection_item.material_doc_item = material_doc_item.line_id_test ");
 		cte.append("      left join inspection on inspection.id = inspection_item.inspection, ");
@@ -830,7 +830,7 @@ public class ReportController {
 		cte.append(" FROM inspection join inspection_item on inspection.id = inspection_item.inspection ");
 		cte.append(" 				join material_doc_item on material_doc_item.line_id = inspection_item.material_doc_item ");
 		cte.append("				join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
-		cte.append("	            join contract on contract.id = material_doc.contract ");
+		cte.append("	            join contract on contract.id = material_doc_item.contract ");
 
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
@@ -1251,7 +1251,7 @@ public class ReportController {
 		cte.append("       contract_item.unit_price, item_in_doc.working_no ");
 		cte.append("	   from material_doc_item ");
 		cte.append("	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
-		cte.append("	      left join contract on contract.id = material_doc.contract ");
+		cte.append("	      left join contract on contract.id = material_doc_item.contract ");
 		cte.append("	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
 		cte.append("	      left join contract_item on contract_item.contract  = contract.id  ");
 		cte.append("	           and contract_item.model = material_doc_item.model_contract ");
@@ -1283,21 +1283,27 @@ public class ReportController {
 			cte.append("    	       contract_item.unit_price, item_in_doc.working_no  ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
-			cte.append("    	      left join contract on contract.id = material_doc.contract ");
+
 			cte.append("    	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
+			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
+			cte.append("    	      left join contract on contract.id = material_doc_item.contract ");
 			cte.append("    	      left join contract_item on contract_item.contract  = contract.id ");
 			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
-			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
+		
+			
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
-			cte.append("    	      left join contract on contract.id = material_doc.contract ");
+
 			cte.append("    	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
-			cte.append("    	      left join contract_item on contract_item.contract  = contract.id  ");
-			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
+
 			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
+			
+			cte.append("    	      left join contract on contract.id = material_doc_item.contract ");
+			cte.append("    	      left join contract_item on contract_item.contract  = contract.id  ");
+			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
 
 			if (!whereString.toString().equals("")) {
 				cte.append(" where " + whereString);

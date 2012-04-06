@@ -113,7 +113,7 @@ public class MaterialDocItem {
         List<Predicate> subCriteria = new ArrayList<Predicate>();
         subCriteria.add(cb.equal(subFromMaterialDocItem.get("lineId"), subFromMaterialDocItem.get("lineId_in")));
         subCriteria.add(cb.equal(subFromMaterialDocItem.get("materialDoc"), subFromMaterialDoc.get("docNo")));
-        subCriteria.add(cb.equal(subFromMaterialDoc.get("contract"), subFromContract.get("id")));
+        subCriteria.add(cb.equal(subFromMaterialDocItem.get("contract"), subFromContract.get("id")));
         HashMap<String, Path> paths = new HashMap<String, Path>();
         paths.put("", fromMaterialDocItem);
         HashMap<String, Path> subPaths = new HashMap<String, Path>();

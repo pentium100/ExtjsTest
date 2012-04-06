@@ -147,6 +147,8 @@ public class MaterialDocController {
 					&& item.getMoveType().equals("101")) {
 				item.setLineId_in(item);
 				item.setLineId_test(item);
+				item.setContract(materialDoc.getContract());
+				
 			}
 
 
@@ -157,7 +159,7 @@ public class MaterialDocController {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
-				
+				item.setContract(materialDoc.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 			}
 			
@@ -165,12 +167,15 @@ public class MaterialDocController {
 					&& item.getMoveType().equals("351")) {
 
 				// MaterialDocItem newItem = new MaterialDocItem();
-
+				
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
-
+				
+				MaterialDocItem itemIn = MaterialDocItem.findMaterialDocItem(item.getLineId_in().getLineId());
+				materialDoc.setContract(itemIn.getContract());
+				item.setContract(itemIn.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 				MaterialDocItem newItem = MaterialDocItem
 						.findMaterialDocItemsByLineId_up(item)
@@ -178,6 +183,7 @@ public class MaterialDocController {
 				if (newItem == null) {
 					newItem = new MaterialDocItem();
 				}
+				newItem.setContract(itemIn.getContract());
 				newItem.setLineId_test(item.getLineId_in());
 				newItem.setLineId_in(newItem);
 				newItem.setMoveType("101");
@@ -264,6 +270,8 @@ public class MaterialDocController {
 					&& item.getMoveType().equals("101")) {
 				item.setLineId_in(item);
 				item.setLineId_test(item);
+				
+				item.setContract(materialDoc.getContract());
 
 			}
 
@@ -274,7 +282,7 @@ public class MaterialDocController {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
-				
+				item.setContract(materialDoc.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 			}
 						
@@ -285,10 +293,14 @@ public class MaterialDocController {
 							.getLineId_in().getLineId()));
 				}
 
+				MaterialDocItem itemIn = MaterialDocItem.findMaterialDocItem(item.getLineId_in().getLineId());
+				item.setContract(itemIn.getContract());
+				materialDoc.setContract(itemIn.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 
 				MaterialDocItem newItem = new MaterialDocItem();
 				newItem.setLineId_test(item.getLineId_test());
+				newItem.setContract(itemIn.getContract());
 				newItem.setLineId_in(newItem);
 				newItem.setLineId_up(item);
 				newItem.setLineId(null);
@@ -300,12 +312,12 @@ public class MaterialDocController {
 				newItem.setModel_tested(item.getModel_tested());
 
 				newItem.setWarehouse(materialDoc.getTargetWarehouse());
-				items.add(newItem);
-				// newItems.add(newItem);
+				//items.add(newItem);
+				newItems.add(newItem);
 			}
 
 		}
-		// items.addAll(newItems);
+		items.addAll(newItems);
 
 		// materialDoc =
 		materialDoc.setDocNo(null);

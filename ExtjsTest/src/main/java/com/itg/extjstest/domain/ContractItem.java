@@ -1,7 +1,9 @@
 package com.itg.extjstest.domain;
 
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -12,6 +14,10 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooToString
 @RooJpaActiveRecord
 @RooJson
+@Table(
+		uniqueConstraints={
+        	@UniqueConstraint(columnNames={"contract", "model"})}		
+		)
 public class ContractItem {
 
     @ManyToOne

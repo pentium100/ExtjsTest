@@ -25,27 +25,6 @@ Ext.define('AM.view.movingDoc.Edit', {
 						title : '凭证号:',
 						dock : 'top',
 						items : [{
-									xtype : 'trigger',
-									fieldLabel : '合同号',
-									name : 'contractNo',
-									triggerCls : 'icon-search',
-									editable : false,
-									anchor : '100%',
-
-									onTriggerClick : function(e) {
-										var view = Ext.widget('contractSearch',
-												{
-													parentWindow : me,
-													contractTypeReadonly : true,
-													contractTypeDefaultValue : "0",
-													by : me.xtype
-
-												});
-
-										view.show();
-
-									}
-								}, {
 									xtype : 'textfield',
 									name : 'workingNo',
 									fieldLabel : '工作号'
@@ -106,13 +85,13 @@ Ext.define('AM.view.movingDoc.Edit', {
 								editable : false,
 
 								onTriggerClick : function(e) {
-									if(me.down("form").getValues().contractNo==""){return;}
-									var contractNo = me.down("form").getValues().contractNo;
+									//if(me.down("form").getValues().contractNo==""){return;}
+									//var contractNo = me.down("form").getValues().contractNo;
 									var view = Ext.create(
 											'AM.view.materialDoc.ItemSearch', {
 												parentWindow : me,
-												by : me.xtype,
-												contractNo: contractNo
+												by : me.xtype
+												
 												
 
 											});
