@@ -62,6 +62,10 @@ public class FilterItem {
 		if (getType().equals("string")) {
 			return "like";
 		}
+		
+		if (getType().equals("string")) {
+			return "like";
+		}
 
 		if (comparison.equals("gt") || comparison.equals("greaterThan")) {
 			return ">";

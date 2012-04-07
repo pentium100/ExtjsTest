@@ -1,9 +1,14 @@
 Ext.define('AM.model.materialDoc.report.StockQuery', {
 			extend : 'Ext.data.Model',
-			//合同号	供应商  进仓单号	进仓日期	车号/卡号	批次号	规格(合同)	规格(检验后)	净重	仓库	
+			//合同号	供应商  进仓单号	进仓日期	车号/卡号	批次号	规格(合同)	规格(检验后)	净重	仓库
+			
+			idProperty: 'report_key',
 
 
-			fields : [ {
+			fields : [{
+						name : 'report_key',
+						type : 'string'
+					}, 	{
 						name : 'contract_no',
 						type : 'string'
 					}, {

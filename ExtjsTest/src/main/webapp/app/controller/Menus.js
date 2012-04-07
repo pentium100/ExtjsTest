@@ -32,8 +32,8 @@ Ext.define('AM.controller.Menus', {
 					return;
 				}
 
-				var tab = tabs
-						.down("#" + record.raw.controller + record.raw.id);
+				var tab = tabs.items.get(record.raw.controller + record.raw.id);
+				//		.down("#" + record.raw.controller + record.raw.id);
 				if (tab == undefined) {
 
 					// var initNeeded = true;

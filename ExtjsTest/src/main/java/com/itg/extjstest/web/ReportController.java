@@ -578,6 +578,7 @@ public class ReportController {
 		cte.append("     stock.warehouse, stock.net_weight, stock.gross_weight, ");
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier, ");
+		cte.append("     convert(varchar(40),stock.line_id_in)+'--'+stock.warehouse as report_key, ");
 		cte.append("     inspection.inspection_date, inspection.authority,inspection.doc_no,inspection.original,inspection.remark as inspection_remark, ");
 		cte.append("     inspection_item.al, inspection_item.ca, inspection_item.fe, inspection_item.p,inspection_item.si ");
 		cte.append(" from material_doc  ");

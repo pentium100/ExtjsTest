@@ -10,9 +10,15 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 
 	initComponent : function() {
 		var me = this;
-		var store = Ext.create('AM.store.materialDoc.report.StockQuery', {
-					autoLoad : false
-				});
+		//var store = Ext.create('AM.store.materialDoc.report.StockQuery', {
+		//			autoLoad : false
+		//		});
+		var checkBoxSelMod = Ext.create('Ext.selection.CheckboxModel',{
+							checkOnly: true
+							
+		
+			
+		});
 		Ext.applyIf(me, {
 
 					dockedItems : [{
@@ -86,7 +92,9 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 								xtype : 'gridpanel',
 								title : '报表清单',
 								region : 'center',
-								store : store,
+								store : 'materialDoc.report.StockQuery',
+								selModel: checkBoxSelMod,
+								//selType:'checkboxmodel',
 								// 合同号 进仓单号 进仓日期 车号/卡号 批次号 规格(合同) 规格(检验后) 净重 仓库
 								columns : [{
 											xtype : 'gridcolumn',
@@ -196,7 +204,7 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											// width : 360,
 											displayInfo : true,
 											dock : 'bottom',
-											store : store,
+											store : 'materialDoc.report.StockQuery',
 											items : [{
 														xtype : 'button',
 														text : '导出到excel',
