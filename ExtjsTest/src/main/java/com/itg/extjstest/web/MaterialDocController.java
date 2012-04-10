@@ -196,10 +196,10 @@ public class MaterialDocController {
 				
 				newItems.add(newItem);
 			}
-			items.addAll(newItems);
+			
 
-		}
-
+		}   
+		items.addAll(newItems);
 		// if(materialDoc.getDocType().getDocType_txt().equals("移仓")){
 		// materialDoc.setContract(null);
 		// }
