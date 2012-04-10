@@ -75,7 +75,7 @@ public class AfloatGoodsController {
 		}
 		afloatGoods = afloatGoods.merge();
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
+		headers.add("Content-Type", "application/json; charset=utf-8");
 		
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -93,7 +93,7 @@ public class AfloatGoodsController {
 		
 		
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Content-Type", "application/json");
+		headers.add("Content-Type", "application/json; charset=utf-8");
 		AfloatGoods afloatGoods = AfloatGoods.fromJsonToAfloatGoods(json);
 		
 		for(AfloatGoodsItem item : afloatGoods.getItems()){

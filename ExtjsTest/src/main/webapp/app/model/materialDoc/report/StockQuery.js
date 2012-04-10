@@ -20,7 +20,8 @@ Ext.define('AM.model.materialDoc.report.StockQuery', {
 						type : 'string'
 					},{
 						name : 'doc_date',
-						type : 'date'
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
 					},{
 						name : 'plate_num',
 						type : 'string'
@@ -47,7 +48,8 @@ Ext.define('AM.model.materialDoc.report.StockQuery', {
 						type : 'string'
 					},{
 						name : 'inspection_date',
-						type : 'date'
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
 					},{
 						name : 'authority',
 						type : 'string'

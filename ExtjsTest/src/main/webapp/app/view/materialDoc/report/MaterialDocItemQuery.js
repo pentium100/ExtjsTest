@@ -18,7 +18,7 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 
 			dockedItems : [{
 						xtype : 'form',
-						tpl : Ext.create('Ext.XTemplate', ''),
+						//tpl : Ext.create('Ext.XTemplate', ''),
 						layout : {
 							type : 'column'
 						},
@@ -47,10 +47,12 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 								}, {
 									xtype : 'datefield',
 									fieldLabel : '日期从',
-									name : 'docDateFrom'
+									name : 'docDateFrom',
+									format : 'Y-m-d'
 								}, {
 									xtype : 'datefield',
 									fieldLabel : '日期到',
+									format : 'Y-m-d',
 									name : 'docDateTo'
 								}, {
 									xtype : 'textfield',

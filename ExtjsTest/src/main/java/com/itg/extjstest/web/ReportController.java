@@ -270,47 +270,48 @@ public class ReportController {
 			header.setField("contract_type");
 			header.setPosition(0);
 			headers.add(header);
-			
+
+			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
-			header.setPosition(0);
+			header.setPosition(1);
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("供应商");
 			header.setField("supplier");
-			header.setPosition(1);
+			header.setPosition(2);
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("规格");
 			header.setField("model");
-			header.setPosition(2);
+			header.setPosition(3);
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("签约数量");
 			header.setField("quantity");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(3);
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("到货数量");
-			header.setField("quantity_in_receipt");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(4);
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("未到货数量");
-			header.setField("quantity_no_delivery");
+			header.setHeader("执行数量");
+			header.setField("quantity_in_receipt");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(5);
 			headers.add(header);
 
+			header = new ReportHeader();
+			header.setHeader("未执行数量");
+			header.setField("quantity_no_delivery");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setPosition(6);
+			headers.add(header);
+
 			map.put("headers", headers);
-			map.put("title", "已签约未到货");
+			map.put("title", "合同执行情况表");
 
 			return "ExportToExcel";
 
@@ -425,7 +426,8 @@ public class ReportController {
 			header.setField("contract_type");
 			header.setPosition(0);
 			headers.add(header);
-
+			
+			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			header.setPosition(1);
@@ -876,7 +878,7 @@ public class ReportController {
 
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
-			header.setField("deliveryNote");
+			header.setField("delivery_note");
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -1185,7 +1187,7 @@ public class ReportController {
 		}
 
 		StringBuffer sortString = new StringBuffer();
-		
+
 		for (Map<String, String> s : sorts) {
 			if (!sortString.toString().equals("")) {
 				sortString.append(",");
@@ -1214,8 +1216,7 @@ public class ReportController {
 		for (FilterItem f : filters) {
 
 			if (f.getField().equals("doc_type_txt")) {
-				whereOutside.append(f.getSqlWhere());		
-				
+				whereOutside.append(f.getSqlWhere());
 
 			} else {
 				if (!whereString.toString().equals("")) {
@@ -1290,8 +1291,7 @@ public class ReportController {
 			cte.append("    	      left join contract on contract.id = material_doc_item.contract ");
 			cte.append("    	      left join contract_item on contract_item.contract  = contract.id ");
 			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
-		
-			
+
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
@@ -1301,7 +1301,7 @@ public class ReportController {
 
 			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
-			
+
 			cte.append("    	      left join contract on contract.id = material_doc_item.contract ");
 			cte.append("    	      left join contract_item on contract_item.contract  = contract.id  ");
 			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
@@ -1319,12 +1319,12 @@ public class ReportController {
 
 		cte.append(" select (ROW_NUMBER() over (order by "
 				+ sortString.toString()
-				+ " )) as rowNum, * from MaterialDocItemQuery1 ") ;
-				
+				+ " )) as rowNum, * from MaterialDocItemQuery1 ");
+
 		if (!whereOutside.toString().equals("")) {
 			cte.append(" where " + whereOutside);
 		}
-				
+
 		cte.append(" ) ");
 
 		query.append("select * from MaterialDocItemQuery where rowNum>:start and rowNum<=:start+:limit ");
@@ -1343,11 +1343,14 @@ public class ReportController {
 			header.setHeader("单据类型");
 			header.setField("doc_type_txt");
 			headers.add(header);
-
+			
+			header = new ReportHeader();
 			header.setHeader("单据号");
 			header.setField("doc_no");
 			headers.add(header);
-
+			
+			
+			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			headers.add(header);
@@ -1439,4 +1442,3 @@ public class ReportController {
 		}
 	}
 }
-

@@ -23,7 +23,8 @@ Ext.define('AM.model.afloatGoods.report.AfloatGoodsDetail', {
 						
 					}, {
 						name : 'transport_date',
-						type : 'string'
+						type : 'string',
+						dateFormat : 'Y-m-d H:i:s'
 						
 					},{
 						name : 'original',

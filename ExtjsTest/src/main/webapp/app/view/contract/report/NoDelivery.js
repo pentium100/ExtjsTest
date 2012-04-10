@@ -51,7 +51,7 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 									format : 'Y-m-d'
 								}, {
 									xtype : 'textfield',
-									fieldLabel : '供应商',
+									fieldLabel : '供应商/客户',
 									name : 'supplier'
 								}, {
 									xtype : 'textfield',
@@ -103,13 +103,13 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity_in_receipt',
-									text : '到货数量',
+									text : '执行数量',
 									sortable : false,
 									align : 'right'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity_no_delivery',
-									text : '未到货数量',
+									text : '未执行数量',
 									sortable : false,
 									align : 'right'
 								}

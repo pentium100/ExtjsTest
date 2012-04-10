@@ -139,7 +139,7 @@ public class MaterialDocController {
 		}
 		
 		Set<MaterialDocItem> items = materialDoc.getItems();
-		// List<MaterialDocItem> newItems = new ArrayList<MaterialDocItem>();
+		List<MaterialDocItem> newItems = new ArrayList<MaterialDocItem>();
 
 		for (MaterialDocItem item : items) {
 			item.setMaterialDoc(materialDoc);
@@ -193,8 +193,10 @@ public class MaterialDocController {
 				newItem.setMaterialDoc(materialDoc);
 				newItem.setModel_contract(item.getModel_contract());
 				newItem.setModel_tested(item.getModel_tested());
-				items.add(newItem);
+				
+				newItems.add(newItem);
 			}
+			items.addAll(newItems);
 
 		}
 
