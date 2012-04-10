@@ -232,6 +232,7 @@ Ext.define('AM.controller.MovingDocs', {
 				var itemRecord = grid.getView().getSelectionModel()
 						.getSelection()[0];
 				itemRecord.set('lineId_in', record.data);
+				itemRecord.set('contractNo', record.data.contractNo);
 				itemRecord.set('model_contract', record.data.model_contract);
 				itemRecord.set('model_tested', record.data.model_tested);
 				itemRecord.set('deliveryNote', record.data.deliveryNote);

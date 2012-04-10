@@ -58,6 +58,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				var p = store.getProxy();
 				p.extraParams.filter = Ext.JSON.encode(tmp);
 				p.extraParams.showIncoming = record.showIncoming;
+				store.currentPage = 1;
 				store.load();
 			},
 			
@@ -82,6 +83,13 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 					filter.type = "string";
 					filter.field = "contract.supplier";
 					filter.value = record.supplier;
+					tmp.push(Ext.apply({}, filter));
+				}
+
+				if (record.working_no != "") {
+					filter.type = "string";
+					filter.field = "material_doc.working_no";
+					filter.value = record.working_no;
 					tmp.push(Ext.apply({}, filter));
 				}
 

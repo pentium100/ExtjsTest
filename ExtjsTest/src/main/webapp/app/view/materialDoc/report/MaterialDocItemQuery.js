@@ -72,6 +72,10 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									name : 'batch_no'
 								}, {
 									xtype : 'textfield',
+									fieldLabel : '工作号',
+									name : 'working_no'
+								}, {
+									xtype : 'textfield',
 									fieldLabel : '规格(合同)',
 									name : 'model_contract'
 								}, {
@@ -146,6 +150,10 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'gridcolumn',
 									dataIndex : 'working_no',
 									text : '工作号'
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'purchase_contract_no',
+									text : '采购合同号'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'warehouse',

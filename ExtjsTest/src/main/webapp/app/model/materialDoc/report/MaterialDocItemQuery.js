@@ -52,7 +52,12 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 					},{
 						name : 'working_no',
 						type : 'string'
-					}]
+					},{
+						name : 'purchase_contract_no',
+						type : 'string'
+					}
+					
+					]
 
 
 		});

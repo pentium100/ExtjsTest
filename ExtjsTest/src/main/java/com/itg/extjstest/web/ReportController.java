@@ -577,11 +577,11 @@ public class ReportController {
 				+ sortString.toString() + " )) as rowNum, ");
 
 		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, ");
-		cte.append("     stock.warehouse, stock.net_weight, stock.gross_weight, ");
+		cte.append("     stock.warehouse, stock.net_weight, material_doc_item.gross_weight, ");
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier, ");
 		cte.append("     convert(varchar(40),stock.line_id_in)+'--'+stock.warehouse as report_key, ");
-		cte.append("     inspection.inspection_date, inspection.authority,inspection.doc_no,inspection.original,inspection.remark as inspection_remark, ");
+		cte.append("     inspection.inspection_date, inspection.authority,inspection.doc_no,inspection.original,inspection_item.remark as inspection_remark, ");
 		cte.append("     inspection_item.al, inspection_item.ca, inspection_item.fe, inspection_item.p,inspection_item.si ");
 		cte.append(" from material_doc  ");
 		cte.append("      inner join material_doc_item on material_doc_item.material_doc = material_doc.doc_no ");
@@ -1245,7 +1245,7 @@ public class ReportController {
 		cte.append("       case when material_doc_type.id=2  ");
 		cte.append("                 then  material_doc.delivery_note  end ");
 		cte.append("       as delivery_note_out, ");
-
+        cte.append("       contract_in.contract_no as purchase_contract_no, ");
 		cte.append("       material_doc.doc_date, item_in_doc.plate_num, ");
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
@@ -1258,7 +1258,8 @@ public class ReportController {
 		cte.append("	      left join contract_item on contract_item.contract  = contract.id  ");
 		cte.append("	           and contract_item.model = material_doc_item.model_contract ");
 		cte.append("  		  left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
-		cte.append("	    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
+		cte.append("	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
+		cte.append("          left join contract contract_in on contract_in.id = item_in.contract    ");
 
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
@@ -1277,7 +1278,7 @@ public class ReportController {
 			cte.append("    	       case when material_doc_type.id=2 ");
 			cte.append("    	                 then  material_doc.delivery_note end ");
 			cte.append("    	       as delivery_note_out,  ");
-
+			cte.append("      		   contract_in.contract_no as purchase_contract_no, ");
 			cte.append("    	       material_doc.doc_date, item_in_doc.plate_num, ");
 			cte.append("    	       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
@@ -1293,6 +1294,7 @@ public class ReportController {
 			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
 
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
+			cte.append("              left join contract contract_in on contract_in.id = item_in.contract    ");			
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
@@ -1305,6 +1307,7 @@ public class ReportController {
 			cte.append("    	      left join contract on contract.id = material_doc_item.contract ");
 			cte.append("    	      left join contract_item on contract_item.contract  = contract.id  ");
 			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
+			
 
 			if (!whereString.toString().equals("")) {
 				cte.append(" where " + whereString);
