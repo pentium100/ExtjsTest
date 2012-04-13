@@ -209,6 +209,25 @@ public class MaterialDocController {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
 
+		
+		if (materialDoc.getDocType().getDocType_txt().equals("移仓")) {
+			// Contract contract = new Contract();
+			// materialDoc.setContract(contract);
+
+			String targetWarehouse = "";
+			Iterator<MaterialDocItem> it = materialDoc.getItems().iterator();
+			while (it.hasNext()) {
+				MaterialDocItem mi = it.next();
+				if (mi.getMoveType().equals("101")) {
+					targetWarehouse = mi.getWarehouse();
+					it.remove();
+
+				}
+			}
+			materialDoc.setTargetWarehouse(targetWarehouse);
+
+		}
+		
 		for (MaterialDocItem mi : materialDoc.getItems()) {
 
 			mi.fillLineInInfo();

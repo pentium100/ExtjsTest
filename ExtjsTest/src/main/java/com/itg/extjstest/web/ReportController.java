@@ -1042,7 +1042,7 @@ public class ReportController {
 		cte.append("    contract.contract_no,  ");
 		cte.append("    supplier, plate_num, dispatch, destination, transport_date,  ");
 		cte.append("	dispatch_date, afloat_goods.eta, arrival_date, original, afloat_goods.remark, ");
-		cte.append("	afloat_goods_item.model, beyond_days = DATEDIFF(day, afloat_goods.eta, getDate()), ");
+		cte.append("	afloat_goods_item.model, beyond_days = case when arrival_date is null then DATEDIFF(day, afloat_goods.eta, getDate()) else 0 end, ");
 		cte.append("	afloat_goods_item.batch_no, afloat_goods_item.quantity ");
 
 		cte.append("   FROM afloat_goods  ");

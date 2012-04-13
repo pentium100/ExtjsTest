@@ -126,7 +126,7 @@ Ext.define('AM.view.inspection.Edit', {
 								align: 'right',
 								text : 'si',
 								field : {xtype:'numberfield',
-									decimalPrecision:4,
+									decimalPrecision:4
 									},
 								format:'0.0000'								
 							}, {
@@ -136,7 +136,7 @@ Ext.define('AM.view.inspection.Edit', {
 								align: 'right',
 								text : 'fe',
 								field : {xtype:'numberfield',
-									decimalPrecision:4,
+									decimalPrecision:4
 									},
 								format:'0.0000'								
 
@@ -147,7 +147,7 @@ Ext.define('AM.view.inspection.Edit', {
 								align: 'right',
 								text : 'al',
 								field : {xtype:'numberfield',
-									decimalPrecision:4,
+									decimalPrecision:4
 									},
 								format:'0.0000'								
 
@@ -158,7 +158,7 @@ Ext.define('AM.view.inspection.Edit', {
 								align: 'right',
 								text : 'ca',
 								field : {xtype:'numberfield',
-									decimalPrecision:4,
+									decimalPrecision:4
 									},
 								format:'0.0000'								
 
@@ -169,13 +169,13 @@ Ext.define('AM.view.inspection.Edit', {
 								align: 'right',
 								text : 'p',
 								field : {xtype:'numberfield',
-									decimalPrecision:4,
+									decimalPrecision:4
 									},
 								format:'0.0000'								
 
 							}, {
 								xtype : 'gridcolumn',
-								dataIndex : '备注',
+								dataIndex : 'remark',
 								text : '备注',
 								field : 'textfield'
 							}]

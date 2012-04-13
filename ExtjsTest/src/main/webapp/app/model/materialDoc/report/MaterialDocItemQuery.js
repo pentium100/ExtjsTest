@@ -24,7 +24,8 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 						type : 'string'
 					},{
 						name : 'doc_date',
-						type : 'date'
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
 					},{
 						name : 'plate_num',
 						type : 'string'
