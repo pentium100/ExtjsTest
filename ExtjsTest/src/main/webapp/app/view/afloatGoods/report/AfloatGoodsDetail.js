@@ -10,7 +10,8 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 
 	initComponent : function() {
 		var me = this;
-		var store = Ext.create('AM.store.afloatGoods.report.AfloatGoodsDetail', {
+		var store = Ext.create('AM.store.afloatGoods.report.AfloatGoodsDetail',
+				{
 					autoLoad : false
 				});
 		Ext.applyIf(me, {
@@ -55,7 +56,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 											xtype : 'combo',
 											fieldLabel : '货物状态',
 											name : 'received',
-											
+
 											forceSelection : true,
 											store : Ext.create(
 													'Ext.data.Store', {
@@ -63,7 +64,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 														data : [{
 																	"id" : '',
 																	"text" : ""
-																},{
+																}, {
 																	"id" : 'not null',
 																	"text" : "已到"
 																}, {
@@ -80,7 +81,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 											xtype : 'combo',
 											fieldLabel : '正本单据',
 											name : 'original',
-											
+
 											forceSelection : true,
 											store : Ext.create(
 													'Ext.data.Store', {
@@ -88,7 +89,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 														data : [{
 																	"id" : '',
 																	"text" : ""
-																},{
+																}, {
 																	"id" : '1',
 																	"text" : "已收到"
 																}, {
@@ -145,7 +146,8 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 								region : 'center',
 								store : store,
 								stateful : true,
-								stateId : 'afloatGoodsDetail',								
+								stateId : 'afloatGoodsDetail',
+
 								columns : [{ // 合同号 供应商 规格 车号 批次号 进仓单号 检验日期
 									// 机构 编号 正本
 									// 数量 SI fe al ca p 备注
@@ -164,7 +166,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity',
-									align:'right',
+									align : 'right',
 									text : '数量'
 								}, {
 									xtype : 'gridcolumn',
@@ -187,12 +189,12 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 									xtype : 'datecolumn',
 									dataIndex : 'eta',
 									text : '预计到货日期',
-									format: 'Y-m-d'
+									format : 'Y-m-d'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'beyond_days',
 									text : '超期天数',
-									align:'right'
+									align : 'right'
 								}, {
 									xtype : 'datecolumn',
 									dataIndex : 'arrival_date',
@@ -210,7 +212,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 									xtype : 'datecolumn',
 									dataIndex : 'transport_date',
 									text : '转货时间',
-									format: 'Y-m-d'
+									format : 'Y-m-d'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'remark',
