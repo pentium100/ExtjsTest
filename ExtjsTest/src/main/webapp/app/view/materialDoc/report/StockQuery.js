@@ -94,6 +94,8 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 								region : 'center',
 								store : 'materialDoc.report.StockQuery',
 								selModel: checkBoxSelMod,
+								stateful : true,
+								stateId : 'stockQuery',								
 								//selType:'checkboxmodel',
 								// 合同号 进仓单号 进仓日期 车号/卡号 批次号 规格(合同) 规格(检验后) 净重 仓库
 								columns : [{

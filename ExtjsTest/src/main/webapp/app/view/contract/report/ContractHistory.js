@@ -78,6 +78,8 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 						title : '报表清单',
 						region : 'center',
 						store : store,
+						stateful : true,
+						stateId : 'contractHistory',						
 						columns : [{ // 合同类型 合同号 供应商 付款方式 备注 规格 数量 单价 备注
 							xtype : 'gridcolumn',
 							dataIndex : 'contract_type',

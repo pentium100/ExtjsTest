@@ -100,6 +100,8 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 						title : '报表清单',
 						region : 'center',
 						store : store,
+						stateful : true,
+						stateId : 'materialDocItemQuery',						
 						// 合同号 进仓单号 进仓日期 车号/卡号 批次号 规格(合同) 规格(检验后) 净重 仓库
 						columns : [{
 									xtype : 'gridcolumn',

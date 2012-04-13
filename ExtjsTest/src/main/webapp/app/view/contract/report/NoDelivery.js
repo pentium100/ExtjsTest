@@ -74,6 +74,8 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 						title : '报表清单',
 						region : 'center',
 						store : store,
+						stateful : true,
+						stateId : 'noDelivery',						
 						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'contract_type',

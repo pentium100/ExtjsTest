@@ -144,6 +144,8 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 								title : '报表清单',
 								region : 'center',
 								store : store,
+								stateful : true,
+								stateId : 'afloatGoodsDetail',								
 								columns : [{ // 合同号 供应商 规格 车号 批次号 进仓单号 检验日期
 									// 机构 编号 正本
 									// 数量 SI fe al ca p 备注

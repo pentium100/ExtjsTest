@@ -55,7 +55,7 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 											xtype : 'combo',
 											fieldLabel : '证书',
 											name : 'original',
-											
+
 											forceSelection : true,
 											store : Ext.create(
 													'Ext.data.Store', {
@@ -63,7 +63,7 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 														data : [{
 																	"id" : '',
 																	"text" : ""
-																},{
+																}, {
 																	"id" : '1',
 																	"text" : "已收到"
 																}, {
@@ -109,6 +109,9 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 								title : '报表清单',
 								region : 'center',
 								store : store,
+								stateful : true,
+								stateId : 'inspectionDetail',
+
 								columns : [{ // 合同号 供应商 规格 车号 批次号 进仓单号 检验日期
 									// 机构 编号 正本
 									// 数量 SI fe al ca p 备注
@@ -165,7 +168,7 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 									xtype : 'gridcolumn',
 									dataIndex : 'remark',
 									text : '备注'
-								},{
+								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'doc_no',
 									text : '编号'

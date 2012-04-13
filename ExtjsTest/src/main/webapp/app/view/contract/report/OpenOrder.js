@@ -57,6 +57,8 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 								title : '报表清单',
 								region : 'center',
 								store : store,
+								stateful : true,
+								stateId : 'openOrder',								
 								columns : [{
 											xtype : 'gridcolumn',
 											dataIndex : 'model',
