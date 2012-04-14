@@ -10,15 +10,13 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 
 	initComponent : function() {
 		var me = this;
-		//var store = Ext.create('AM.store.materialDoc.report.StockQuery', {
-		//			autoLoad : false
-		//		});
-		var checkBoxSelMod = Ext.create('Ext.selection.CheckboxModel',{
-							checkOnly: true
-							
-		
-			
-		});
+		// var store = Ext.create('AM.store.materialDoc.report.StockQuery', {
+		// autoLoad : false
+		// });
+		var checkBoxSelMod = Ext.create('Ext.selection.CheckboxModel', {
+					checkOnly : true
+
+				});
 		Ext.applyIf(me, {
 
 					dockedItems : [{
@@ -93,15 +91,16 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 								title : '报表清单',
 								region : 'center',
 								store : 'materialDoc.report.StockQuery',
-								selModel: checkBoxSelMod,
+								selModel : checkBoxSelMod,
 								stateful : true,
-								stateId : 'stockQuery',								
-								//selType:'checkboxmodel',
+								stateId : 'stockQuery',
+								// selType:'checkboxmodel',
 								// 合同号 进仓单号 进仓日期 车号/卡号 批次号 规格(合同) 规格(检验后) 净重 仓库
 								columns : [{
 											xtype : 'gridcolumn',
 											dataIndex : 'contract_no',
-											text : '合同号'
+											text : '合同号',
+											flex : 0
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'supplier',
@@ -115,17 +114,17 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 											dataIndex : 'unit_price',
 											text : '单价',
 											sortable : false,
-											align: 'right'
+											align : 'right'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'gross_weight',
 											text : '毛重',
-											align: 'right'
+											align : 'right'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'net_weight',
 											text : '净重',
-											align: 'right'
+											align : 'right'
 										}, {
 											xtype : 'gridcolumn',
 											dataIndex : 'delivery_note',

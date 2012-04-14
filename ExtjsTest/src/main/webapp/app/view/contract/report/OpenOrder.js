@@ -58,29 +58,30 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 								region : 'center',
 								store : store,
 								stateful : true,
-								stateId : 'openOrder',								
+								stateId : 'openOrder',
 								columns : [{
 											xtype : 'gridcolumn',
 											dataIndex : 'model',
-											text : '规格'
+											text : '规格',
+											flex : 0
 										}, {
 											xtype : 'numbercolumn',
 											dataIndex : 'quantity_purchases',
 											text : '采购数量',
 											sortable : false,
-											align:'right'
+											align : 'right'
 										}, {
 											xtype : 'numbercolumn',
 											dataIndex : 'quantity_sales',
 											text : '销售数量',
 											sortable : false,
-											align:'right'
+											align : 'right'
 										}, {
 											xtype : 'numbercolumn',
 											dataIndex : 'quantity_open',
 											text : '敞口数量',
 											sortable : false,
-											align:'right'
+											align : 'right'
 										}
 
 								],

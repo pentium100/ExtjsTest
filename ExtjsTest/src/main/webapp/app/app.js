@@ -1,5 +1,5 @@
 
-Ext.require(['Ext.state.Manager','Ext.state.CookieProvider' ]);
+Ext.require(['Ext.state.Manager','Ext.state.LocalStorageProvider' ]);
 
 Ext.application({
 			name : 'AM',
@@ -29,7 +29,7 @@ Ext.application({
 
 							}
 						});
-				Ext.state.Manager.setProvider(new Ext.state.CookieProvider());
+				Ext.state.Manager.setProvider(new Ext.state.LocalStorageProvider());
 				Ext.create('Ext.container.Viewport', {
 
 							layout : 'fit',

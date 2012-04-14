@@ -118,7 +118,9 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 
 									xtype : 'gridcolumn',
 									dataIndex : 'contract_no',
-									text : '合同号'
+									text : '合同号',
+									flex : 0
+
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'supplier',

@@ -106,7 +106,8 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'doc_type_txt',
-									text : '单据类型'
+									text : '单据类型',
+									flex: 0
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'contract_no',

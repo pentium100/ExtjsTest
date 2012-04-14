@@ -79,7 +79,8 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'contract_type',
-									text : '合同类型'
+									text : '合同类型',
+									flex: 0
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'contract_no',

@@ -79,11 +79,12 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 						region : 'center',
 						store : store,
 						stateful : true,
-						stateId : 'contractHistory',						
+						stateId : 'contractHistory',
 						columns : [{ // 合同类型 合同号 供应商 付款方式 备注 规格 数量 单价 备注
 							xtype : 'gridcolumn',
 							dataIndex : 'contract_type',
-							text : '合同类型'
+							text : '合同类型',
+							flex : 0
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'contract_no',
@@ -114,7 +115,7 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 							dataIndex : 'quantity',
 							text : '签约数量',
 							align : 'right',
-							summaryType: 'sum'
+							summaryType : 'sum'
 						}, {
 							xtype : 'numbercolumn',
 							dataIndex : 'unit_price',
@@ -131,7 +132,7 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 						],
 						features : [{
 									ftype : 'remotesummary',
-									remoteRoot:'remoteSummary'
+									remoteRoot : 'remoteSummary'
 								}],
 						dockedItems : [{
 									xtype : 'pagingtoolbar',

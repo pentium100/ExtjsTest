@@ -7,6 +7,8 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 	},
 	frame : true,
 	alias : 'widget.AfloatGoodsDetail',
+	//stateful : true,
+	//stateId : 'afloatGoodsDetail',
 
 	initComponent : function() {
 		var me = this;
@@ -14,9 +16,9 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 				{
 					autoLoad : false
 				});
-		Ext.applyIf(me, {
+		//Ext.applyIf(me, {
 
-					dockedItems : [{
+					this.dockedItems = [{
 								xtype : 'form',
 								layout : {
 									type : 'column'
@@ -139,14 +141,14 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 											handler : this.close
 
 										}]
-							}],
-					items : [{
+							}];
+					this.items = [{
 								xtype : 'gridpanel',
 								title : '报表清单',
 								region : 'center',
 								store : store,
 								stateful : true,
-								stateId : 'afloatGoodsDetail',
+								stateId : 'afloatGoodsDetailGrid',
 
 								columns : [{ // 合同号 供应商 规格 车号 批次号 进仓单号 检验日期
 									// 机构 编号 正本
@@ -162,7 +164,8 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'model',
-									text : '规格'
+									text : '规格',
+									flex: 0
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity',
@@ -220,9 +223,6 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 								}
 
 								],
-								viewConfig : {
-
-					}			,
 								dockedItems : [{
 											xtype : 'pagingtoolbar',
 											// width : 360,
@@ -236,8 +236,9 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 													}]
 										}]
 
-							}]
-				});
+							}];
+				//}
+				//);
 
 		me.callParent(arguments);
 	}
