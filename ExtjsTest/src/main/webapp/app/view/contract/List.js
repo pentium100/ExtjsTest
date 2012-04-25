@@ -10,8 +10,8 @@ Ext.define('AM.view.contract.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
-			stateful: true,
-   			stateId: 'contractList',
+			stateful : true,
+			stateId : 'contractList',
 
 			initComponent : function() {
 				this.columns = [{
@@ -20,30 +20,30 @@ Ext.define('AM.view.contract.List', {
 							filterable : true,
 							filter : {
 								type : 'list',
-								store: Ext.widget('contractTypeStore'),
-								phpMode: true
+								store : Ext.widget('contractTypeStore'),
+								phpMode : true
 
 							}
-							
+
 						}, {
 							header : '合同号',
 							dataIndex : 'contractNo',
 							filterable : true,
-							width: 120
-							//flex : 1
-						}, {
+							width : 120
+							// flex : 1
+					}	, {
 							header : '签约日期',
 							dataIndex : 'signDate',
 							xtype : 'datecolumn',
 							format : 'Y-m-d',
 							filterable : true,
-							width: 80
-							
+							width : 80
+
 						}, {
 							header : '供应商',
 							dataIndex : 'supplier',
 							filterable : true,
-							width: 240
+							width : 240
 						}, {
 							header : '付款方式',
 							dataIndex : 'payTerm',
@@ -52,8 +52,8 @@ Ext.define('AM.view.contract.List', {
 							header : '备注',
 							dataIndex : 'remark',
 							filterable : true,
-							flex:1
-							
+							flex : 1
+
 						}];
 
 				this.dockedItems = [{

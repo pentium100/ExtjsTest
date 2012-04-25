@@ -20,8 +20,9 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 
 					'StockQuery button[action=exportToExcel]' : {
 						click : this.exportToExcel
-					},
-					'StockQuery grid' : {
+					}
+					,
+					'StockQuery' : {
 						// select : this.saveSelection,
 						deselect : this.deleteSelection
 					}
@@ -43,7 +44,7 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 	saveSelection : function(store, operation, eOpts) {
 		//console.log("i'm here!");
 		this.isLoading = true;
-		var grid = Ext.ComponentQuery.query('StockQuery grid')[0];
+		var grid = Ext.ComponentQuery.query('StockQuery')[0];
 		Ext.each(grid.selModel.selected.keys, function(value, index) {
 
 					var key = value.replace(
@@ -55,7 +56,7 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 
 	setSelection : function(store, records, successful, operation, eOpts) {
 
-		var grid = Ext.ComponentQuery.query('StockQuery grid')[0];
+		var grid = Ext.ComponentQuery.query('StockQuery')[0];
 		var selModel = grid.selModel;
 		Ext.each(records, function(record) {
 
@@ -70,8 +71,9 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 	},
 
 	exportToExcel : function(button) {
-		var panel = button.up('StockQuery');
-		var grid = panel.down('gridpanel');
+		//var panel = button.up('StockQuery');
+		//var grid = panel.down('gridpanel');
+		var grid = button.up('StockQuery');
 		var store = grid.getStore();
         this.saveSelection();
 		var record = panel.down('form').getValues();
@@ -89,8 +91,9 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 
 	submitReport : function(button) {
 
-		var panel = button.up('StockQuery');
-		var grid = panel.down('gridpanel');
+		//var panel = button.up('StockQuery');
+		//var grid = panel.down('gridpanel');
+		var grid = button.up('StockQuery');
 		var store = grid.getStore();
 
 		var tmp = [];
