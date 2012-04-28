@@ -30,7 +30,7 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'supplier',
-							text : '供应商',
+							text : '供应商'
 
 						}, {
 							xtype : 'gridcolumn',
@@ -128,10 +128,10 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							store : 'materialDoc.report.StockQuery',
 							selModel : checkBoxSelMod,
 
-							// features : [{
-							// ftype : 'remotesummary',
-							// remoteRoot : 'remoteSummary'
-							// }],
+							 features : [{
+							 ftype : 'remotesummary',
+							 remoteRoot : 'remoteSummary'
+							 }],
 							//dockedItems : [],
 
 							dockedItems : [{

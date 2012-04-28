@@ -1,4 +1,4 @@
-Ext.define('Ext.ux.grid.feature.RemoteSummary', {
+Ext.define('AM.ux.grid.feature.RemoteSummary', {
     extend : 'Ext.grid.feature.Summary',
     alias  : 'feature.remotesummary',
 

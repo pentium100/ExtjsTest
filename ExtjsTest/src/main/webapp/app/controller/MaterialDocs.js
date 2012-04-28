@@ -50,12 +50,6 @@ Ext.define('AM.controller.MaterialDocs', {
 
 	},
 	editMaterialDoc : function(grid, record) {
-		var view = Ext.widget('materialDocEdit');
-
-		view.down('form').loadRecord(record);
-		view.down('form').setTitle('凭证号:' + record.get('docNo'));
-
-		view.down('grid').reconfigure(record.items());
 
 		var items = record.items();
 
@@ -67,9 +61,20 @@ Ext.define('AM.controller.MaterialDocs', {
 							'version' : item.get('version')
 						};
 						item.set('lineId_in', lineId_in);
+						//item.lineId_in = lineId_in;
+						item.dirty = false;
 					}
+					
 
 				}, this);
+				
+		var view = Ext.widget('materialDocEdit');
+
+		view.down('form').loadRecord(record);
+		view.down('form').setTitle('凭证号:' + record.get('docNo'));
+
+		view.down('grid').reconfigure(record.items());
+			
 
 	},
 

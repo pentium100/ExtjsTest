@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" type="text/css" href="js/extjs4/resources/css/ext-all.css"/>
 
-    <link rel="stylesheet" type="text/css" href="js/extjs4/examples/shared/example.css"/>
+    <link rel="stylesheet" type="text/css" href="css/example.css"/>
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     
     <script type="text/javascript" src="js/extjs4/ext-debug.js"></script>
