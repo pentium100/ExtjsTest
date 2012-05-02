@@ -566,3 +566,6 @@ focus --class ~.domain.MaterialDocItem
 field reference --type Contract --fieldName contract
 exit
 // Spring Roo 1.2.0.RELEASE [rev 39eb957] log closed at 2012-04-05 17:15:19
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-04-28 23:05:37
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-04-28 23:07:53
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-02 17:39:08
