@@ -71,6 +71,9 @@ public class MaterialDoc {
     @Transient    
     private String targetWarehouse;
 
+    @Transient    
+    private StockLocation targetStockLocation;
+
     public static String toJsonArray(Collection<MaterialDoc> collection) {
         return new JSONSerializer().exclude("*.class")
         		.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class)

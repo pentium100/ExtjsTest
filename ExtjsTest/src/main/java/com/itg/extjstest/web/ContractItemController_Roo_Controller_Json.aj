@@ -20,13 +20,13 @@ privileged aspect ContractItemController_Roo_Controller_Json {
     @RequestMapping(value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> ContractItemController.showJson(@PathVariable("id") Long id) {
-        ContractItem contractitem = ContractItem.findContractItem(id);
+        ContractItem contractItem = ContractItem.findContractItem(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        if (contractitem == null) {
+        if (contractItem == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<String>(contractitem.toJson(), headers, HttpStatus.OK);
+        return new ResponseEntity<String>(contractItem.toJson(), headers, HttpStatus.OK);
     }
     
     @RequestMapping(headers = "Accept=application/json")

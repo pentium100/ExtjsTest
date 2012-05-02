@@ -7,6 +7,7 @@ import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.MaterialDocItem;
 import com.itg.extjstest.domain.MaterialDocType;
+import com.itg.extjstest.domain.StockLocation;
 import java.util.Date;
 import java.util.Set;
 
@@ -82,6 +83,14 @@ privileged aspect MaterialDoc_Roo_JavaBean {
     
     public void MaterialDoc.setTargetWarehouse(String targetWarehouse) {
         this.targetWarehouse = targetWarehouse;
+    }
+    
+    public StockLocation MaterialDoc.getTargetStockLocation() {
+        return this.targetStockLocation;
+    }
+    
+    public void MaterialDoc.setTargetStockLocation(StockLocation targetStockLocation) {
+        this.targetStockLocation = targetStockLocation;
     }
     
 }

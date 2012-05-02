@@ -3,8 +3,9 @@
 
 package com.itg.extjstest.web;
 
-import com.itg.extjstest.domain.MaterialDoc;
-import com.itg.extjstest.web.MaterialDocController;
+import com.itg.extjstest.domain.StockLocation;
+import com.itg.extjstest.web.StockLocationController;
+import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,51 +15,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-privileged aspect MaterialDocController_Roo_Controller_Json {
+privileged aspect StockLocationController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{docNo}", headers = "Accept=application/json")
+    @RequestMapping(value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
-    public ResponseEntity<String> MaterialDocController.showJson(@PathVariable("docNo") Long docNo) {
-        MaterialDoc materialDoc = MaterialDoc.findMaterialDoc(docNo);
+    public ResponseEntity<String> StockLocationController.showJson(@PathVariable("id") Long id) {
+        StockLocation stockLocation = StockLocation.findStockLocation(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        if (materialDoc == null) {
+        if (stockLocation == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<String>(materialDoc.toJson(), headers, HttpStatus.OK);
+        return new ResponseEntity<String>(stockLocation.toJson(), headers, HttpStatus.OK);
     }
     
+    
+    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocController.createFromJsonArray(@RequestBody String json) {
-        for (MaterialDoc materialDoc: MaterialDoc.fromJsonArrayToMaterialDocs(json)) {
-            materialDoc.persist();
+    public ResponseEntity<String> StockLocationController.createFromJsonArray(@RequestBody String json) {
+        for (StockLocation stockLocation: StockLocation.fromJsonArrayToStockLocations(json)) {
+            stockLocation.persist();
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
     
+    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocController.updateFromJsonArray(@RequestBody String json) {
+    public ResponseEntity<String> StockLocationController.updateFromJsonArray(@RequestBody String json) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        for (MaterialDoc materialDoc: MaterialDoc.fromJsonArrayToMaterialDocs(json)) {
-            if (materialDoc.merge() == null) {
+        for (StockLocation stockLocation: StockLocation.fromJsonArrayToStockLocations(json)) {
+            if (stockLocation.merge() == null) {
                 return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
             }
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
-    
-    @RequestMapping(value = "/{docNo}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocController.deleteFromJson(@PathVariable("docNo") Long docNo) {
-        MaterialDoc materialDoc = MaterialDoc.findMaterialDoc(docNo);
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    public ResponseEntity<String> StockLocationController.deleteFromJson(@PathVariable("id") Long id) {
+        StockLocation stockLocation = StockLocation.findStockLocation(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
-        if (materialDoc == null) {
+        if (stockLocation == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        materialDoc.remove();
+        stockLocation.remove();
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     

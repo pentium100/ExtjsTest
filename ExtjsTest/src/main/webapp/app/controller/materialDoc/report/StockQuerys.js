@@ -71,7 +71,7 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 	},
 
 	exportToExcel : function(button) {
-		//var panel = button.up('StockQuery');
+		var panel = button.up('StockQuery');
 		//var grid = panel.down('gridpanel');
 		var grid = button.up('StockQuery');
 		var store = grid.getStore();

@@ -6,6 +6,7 @@ package com.itg.extjstest.domain;
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.MaterialDocItem;
+import com.itg.extjstest.domain.StockLocation;
 import java.util.Date;
 
 privileged aspect MaterialDocItem_Roo_JavaBean {
@@ -160,6 +161,14 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
     
     public void MaterialDocItem.setContract(Contract contract) {
         this.contract = contract;
+    }
+    
+    public StockLocation MaterialDocItem.getStockLocation() {
+        return this.stockLocation;
+    }
+    
+    public void MaterialDocItem.setStockLocation(StockLocation stockLocation) {
+        this.stockLocation = stockLocation;
     }
     
 }

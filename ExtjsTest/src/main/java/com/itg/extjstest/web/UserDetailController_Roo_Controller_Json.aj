@@ -20,13 +20,13 @@ privileged aspect UserDetailController_Roo_Controller_Json {
     @RequestMapping(value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> UserDetailController.showJson(@PathVariable("id") Long id) {
-        UserDetail userdetail = UserDetail.findUserDetail(id);
+        UserDetail userDetail = UserDetail.findUserDetail(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        if (userdetail == null) {
+        if (userDetail == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<String>(userdetail.toJson(), headers, HttpStatus.OK);
+        return new ResponseEntity<String>(userDetail.toJson(), headers, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")

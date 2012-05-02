@@ -21,13 +21,13 @@ privileged aspect MaterialDocTypeController_Roo_Controller_Json {
     @RequestMapping(value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> MaterialDocTypeController.showJson(@PathVariable("id") Long id) {
-        MaterialDocType materialdoctype = MaterialDocType.findMaterialDocType(id);
+        MaterialDocType materialDocType = MaterialDocType.findMaterialDocType(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        if (materialdoctype == null) {
+        if (materialDocType == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<String>(materialdoctype.toJson(), headers, HttpStatus.OK);
+        return new ResponseEntity<String>(materialDocType.toJson(), headers, HttpStatus.OK);
     }
     
     @RequestMapping(headers = "Accept=application/json")

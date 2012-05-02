@@ -19,13 +19,13 @@ privileged aspect AfloatGoodsController_Roo_Controller_Json {
     @RequestMapping(value = "/{id}", headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> AfloatGoodsController.showJson(@PathVariable("id") Long id) {
-        AfloatGoods afloatgoods = AfloatGoods.findAfloatGoods(id);
+        AfloatGoods afloatGoods = AfloatGoods.findAfloatGoods(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
-        if (afloatgoods == null) {
+        if (afloatGoods == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<String>(afloatgoods.toJson(), headers, HttpStatus.OK);
+        return new ResponseEntity<String>(afloatGoods.toJson(), headers, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
