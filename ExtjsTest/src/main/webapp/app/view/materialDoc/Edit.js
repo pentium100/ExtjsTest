@@ -75,7 +75,7 @@ Ext.define('AM.view.materialDoc.Edit', {
 						region : 'center',
 						dockedItems : [{
 									xtype : 'toolbar',
-									items : [ {
+									items : [{
 												iconCls : 'icon-delete',
 												text : 'Delete',
 												disabled : false,
@@ -92,23 +92,23 @@ Ext.define('AM.view.materialDoc.Edit', {
 						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'model_contract',
-									text : '规格(合同)'
-									,field: 'textfield'
+									text : '规格(合同)',
+									field : 'textfield'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'model_tested',
-									text : '规格(检验后)'
-									,field: 'textfield'
+									text : '规格(检验后)',
+									field : 'textfield'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'grossWeight',
-									text : '毛重'
-									,field: 'numberfield'
+									text : '毛重',
+									field : 'numberfield'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'netWeight',
-									text : '净重'
-									,field: 'numberfield'
+									text : '净重',
+									field : 'numberfield'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'moveType',
@@ -116,13 +116,33 @@ Ext.define('AM.view.materialDoc.Edit', {
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'warehouse',
-									text : '仓库'
-									,field: 'textfield'
+									text : '仓库',
+									field : 'textfield'
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'stockLocation_id',
+									text : '仓库2',
+									fieldLabel : '仓库2',
+									triggerCls : 'icon-search',
+									editable : false,
+									field : 'trigger',
+									onTriggerClick : function(e) {
+										var view = Ext.widget('stockLocationSearch',
+												{
+													parentWindow : me,
+													by : me.xtype
+
+												});
+
+										view.show();
+
+									}
+
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'remark',
-									text : '备注'
-									,field: 'textfield'
+									text : '备注',
+									field : 'textfield'
 								}],
 						viewConfig : {
 
@@ -135,7 +155,7 @@ Ext.define('AM.view.materialDoc.Edit', {
 					}, {
 						text : 'Cancel',
 						scope : this,
-						action: 'cancel',
+						action : 'cancel',
 						handler : this.close
 					}]
 

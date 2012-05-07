@@ -25,13 +25,11 @@ Ext.define('AM.model.MaterialDoc', {
 			}, {
 				name : 'docType'
 
-			},{
+			}, {
 				name : 'targetWarehouse',
 				type : 'string'
 
 			},
-
-
 
 			{
 				name : 'docType_txt',
@@ -53,6 +51,7 @@ Ext.define('AM.model.MaterialDoc', {
 				name : 'items',
 				primaryKey : 'lineId'
 			}],
+
 	belongsTo : [{
 				model : 'AM.model.MaterialDocType',
 				name : 'docType',

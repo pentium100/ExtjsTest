@@ -62,7 +62,6 @@ public class MaterialDocController {
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					// .use("values.value", ArrayList.class)
 					.use("values.value", String.class).deserialize(filter);
 
 		}

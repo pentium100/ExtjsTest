@@ -34,6 +34,10 @@ Ext.define('AM.controller.MaterialDocs', {
 						click : this.saveMaterialDoc
 					},
 
+					'stockLocationSearch[by=materialDocEdit] button[action=search]' : {
+						click : this.searchStockLocation
+					},
+
 					'materialDocEdit button[action=cancel]' : {
 						click : this.cancelMaterialDoc
 					},
@@ -49,6 +53,28 @@ Ext.define('AM.controller.MaterialDocs', {
 				});
 
 	},
+
+	searchStockLocation : function(button) {
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
+
+		var tmp = [];
+		var filter = {};
+		var record = button.up('form').getValues();
+		if (record.stockLocation != "") {
+			filter.type = "string";
+			filter.field = "stockLocation";
+			filter.value = record.stockLocation;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		var p = store.getProxy();
+		p.extraParams.filter = Ext.JSON.encode(tmp);
+
+		store.load();
+
+	},
 	editMaterialDoc : function(grid, record) {
 
 		var items = record.items();
@@ -61,20 +87,18 @@ Ext.define('AM.controller.MaterialDocs', {
 							'version' : item.get('version')
 						};
 						item.set('lineId_in', lineId_in);
-						//item.lineId_in = lineId_in;
+						// item.lineId_in = lineId_in;
 						item.dirty = false;
 					}
-					
 
 				}, this);
-				
+
 		var view = Ext.widget('materialDocEdit');
 
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 
 		view.down('grid').reconfigure(record.items());
-			
 
 	},
 
