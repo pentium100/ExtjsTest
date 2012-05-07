@@ -1,10 +1,10 @@
 Ext.define('AM.controller.MaterialDocs', {
 	extend : 'Ext.app.Controller',
 
-	views : ['materialDoc.List', 'materialDoc.Edit', 'contract.Search'],
+	views : ['materialDoc.List', 'materialDoc.Edit', 'contract.Search', 'master.stockLocation.Search'],
 	stores : ['MaterialDocs', 'ContractType', 'Contracts', 'MaterialDocTypes'],
 	models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType', 'Contract',
-			'ContractItem'],
+			'ContractItem', 'master.stockLocation.StockLocation'],
 
 	init : function(options) {
 
@@ -36,6 +36,10 @@ Ext.define('AM.controller.MaterialDocs', {
 
 					'stockLocationSearch[by=materialDocEdit] button[action=search]' : {
 						click : this.searchStockLocation
+					},
+
+					'stockLocationSearch[by=materialDocEdit] gridpanel' : {
+						itemdblclick : this.selectStockLocation
 					},
 
 					'materialDocEdit button[action=cancel]' : {
@@ -196,6 +200,20 @@ Ext.define('AM.controller.MaterialDocs', {
 		store.load();
 	},
 
+	selectStockLocation : function(grid, record){
+		var win = grid.up('window');
+		win.close();
+		
+		var view = win.parentWindow;
+		var grid = view.down('gridpanel');
+		var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
+		itemRecord.setStockLocation(record);
+		
+		
+
+		
+		
+	},
 	selectContract : function(grid, record) {
 		var win = grid.up('window');
 		win.close();

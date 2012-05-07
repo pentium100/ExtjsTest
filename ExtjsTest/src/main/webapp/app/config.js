@@ -12,17 +12,111 @@ Ext.require(['Ext.form.field.Trigger', 'Ext.ux.grid.FiltersFeature']);
 // 'Ext.ux.data.PagingMemoryProxy',
 // 'Ext.grid.Panel',
 // 'Ext.view.View',
-
 // ]);
+Ext.require(['Ext.form.field.Number'], function() {
 
+			Ext.form.field.Number.override({
 
-Ext.require(['Ext.form.field.Number'], function(){
-	
-	Ext.form.field.Number.override({
-		    
-		hideTrigger: true
-		
+						hideTrigger : true
+
+					});
+		});
+
+Ext.require(['Ext.data.association.HasOne'], function() {
+
+	Ext.data.association.HasOne.override({
+		createSetter : function() {
+			var me = this, ownerModel = me.ownerModel, associatedModel = me.associatedModel, associatedName = me.associatedName, primaryKey = me.primaryKey, instanceName = me.instanceName, foreignKey = me.foreignKey;
+
+			// 'this' refers to the Model instance inside this function
+			return function(value, options, scope) {
+				if (value && value.isModel) {
+					model = this;
+					model[instanceName].set(value.data);
+
+					value = value.getId();
+					// associatedModel.loadData(value.data);
+				}
+
+				this.set(foreignKey, value);
+
+				if (Ext.isFunction(options)) {
+					options = {
+						callback : options,
+						scope : scope || this
+					};
+				}
+
+				if (Ext.isObject(options)) {
+					return this.save(options);
+				}
+			};
+
+		},
+		createGetter : function() {
+			var me = this, ownerModel = me.ownerModel, associatedName = me.associatedName, associatedModel = me.associatedModel, foreignKey = me.foreignKey, primaryKey = me.primaryKey, instanceName = me.instanceName;
+
+			// 'this' refers to the Model instance
+			// inside this function
+			return function(options, scope) {
+				options = options || {};
+
+				var model = this, foreignKeyId = model.get(foreignKey), success, instance, args;
+
+				if (options.reload === true
+						|| model[instanceName] === undefined) {
+					instance = Ext.ModelManager.create({}, associatedName);
+					instance.set(primaryKey, foreignKeyId);
+
+					if (typeof options == 'function') {
+						options = {
+							callback : options,
+							scope : scope || model
+						};
+					}
+
+					// Overwrite the success handler so
+					// we can assign the current
+					// instance
+					success = options.success;
+					options.success = function(rec) {
+						model[instanceName] = rec;
+						if (success) {
+							success.call(this, arguments);
+						}
+					};
+
+					// associatedModel.load(foreignKeyId,
+					// options);
+					// assign temporarily while we wait
+					// for data to return
+					model[instanceName] = instance;
+					return instance;
+				} else {
+					instance = model[instanceName];
+					args = [instance];
+					scope = scope || model;
+
+					// TODO: We're duplicating the
+					// callback invokation code that the
+					// instance.load() call above
+					// makes here - ought to be able to
+					// normalize this - perhaps by
+					// caching at the Model.load layer
+					// instead of the association layer.
+					Ext.callback(options, scope, args);
+					Ext.callback(options.success, scope, args);
+					Ext.callback(options.failure, scope, args);
+					Ext.callback(options.callback, scope, args);
+
+					return instance;
+				}
+			};
+
+		}
+
 	});
+
 });
 
 Ext.require(['Ext.data.BelongsToAssociation'], function() {
@@ -31,7 +125,8 @@ Ext.require(['Ext.data.BelongsToAssociation'], function() {
 		createGetter : function() {
 			var me = this, ownerModel = me.ownerModel, associatedName = me.associatedName, associatedModel = me.associatedModel, foreignKey = me.foreignKey, primaryKey = me.primaryKey, instanceName = me.instanceName;
 
-			// 'this' refers to the Model instance inside this function
+			// 'this' refers to the Model instance
+			// inside this function
 			return function(options, scope) {
 				options = options || {};
 
@@ -48,17 +143,20 @@ Ext.require(['Ext.data.BelongsToAssociation'], function() {
 						};
 					}
 
-					// var readOp = new Ext.data.Operation({
+					// var readOp = new
+					// Ext.data.Operation({
 					// action : 'read',
 					// id : foreignKeyId
 					// });
-					// var proxy = associatedModel.getProxy();
+					// var proxy =
+					// associatedModel.getProxy();
 					// proxy.read(readOp);
-					// instance = readOp.getRecords()[0];
-
+					// instance =
+					// readOp.getRecords()[0];
 					associatedModel.load(foreignKeyId, options);
 
-					// model[instanceName] = associatedModel;
+					// model[instanceName] =
+					// associatedModel;
 					model[instanceName] = instance;
 					return associatedModel;
 				} else {
@@ -66,10 +164,13 @@ Ext.require(['Ext.data.BelongsToAssociation'], function() {
 					args = [instance];
 					scope = scope || model;
 
-					// TODO: We're duplicating the callback invokation code that
+					// TODO: We're duplicating the
+					// callback invokation code that
 					// the instance.load() call above
-					// makes here - ought to be able to normalize this - perhaps
-					// by caching at the Model.load layer
+					// makes here - ought to be able to
+					// normalize this - perhaps
+					// by caching at the Model.load
+					// layer
 					// instead of the association layer.
 					Ext.callback(options, scope, args);
 					Ext.callback(options.success, scope, args);
@@ -112,7 +213,8 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							}
 						}
 						if (!record.phantom) {
-							// always include the id for non phantoms
+							// always include the id for non
+							// phantoms
 							data[record.idProperty] = record.getId();
 						}
 					}
@@ -122,16 +224,26 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 						association = record.associations.get(i);
 
+						if (association.type == "hasOne") {
+							data[association.associationKey] = record[association.instanceName].data;
+
+						}
+
 						if (association.type == "hasMany") {
 							data[association.name] = [];
 							childStore = record[association.storeName];
 
-							// Iterate over all the children in the current
+							// Iterate over all the children in
+							// the current
 							// association
 							childStore.each(function(childRecord) {
 
-										// Recursively get the record data for
-										// children (depth
+										// Recursively
+										// get the
+										// record data
+										// for
+										// children
+										// (depth
 										// first)
 										childRecord.setDirty(true);
 										var childData = this.getRecordData
@@ -163,13 +275,16 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							 * to the preparedData. Set a flag on them to show
 							 * that they are to be deleted
 							 */
-							// Ext.each(childStore.removed, function(
+							// Ext.each(childStore.removed,
+							// function(
 							// removedChildRecord) {
-							// Set a flag here to identify removed
+							// Set a flag here to identify
+							// removed
 							// records
 							// removedChildRecord.set('forDeletion',
 							// true);
-							// var removedChildData = this.getRecordData
+							// var removedChildData =
+							// this.getRecordData
 							// .call(this, removedChildRecord);
 							// data[association.name]
 							// .push(removedChildData);
@@ -177,17 +292,22 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							// }, me);
 						}
 
-						// record.getDocType(function(docType, operation) {
-						// // do something with the category object
-						// alert(docType.get('id')); // alerts 20
+						// record.getDocType(function(docType,
+						// operation) {
+						// // do something with the category
+						// object
+						// alert(docType.get('id')); // alerts
+						// 20
 						// }, this);
 						// if(association.type=='belongsTo'){
-						// var childData = data[association.name];
+						// var childData =
+						// data[association.name];
 						// data[association.name].push();
 						// }
 					}
 
-					// Only return data if it was dirty, new or marked for
+					// Only return data if it was dirty, new or
+					// marked for
 					// deletion.
 					if (record.dirty | record.phantom
 							| record.get('forDeletion')) {
@@ -220,7 +340,8 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 						if (index > -1) {
 							isPhantom = record.phantom === true;
 							if (!isMove && !isPhantom) {
-								// don't push phantom records onto removed
+								// don't push phantom records
+								// onto removed
 								record.set('forDeletion', true);
 								me.removed.push(record);
 							}
@@ -242,7 +363,8 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 
 			Ext.data.Store.override({
 				filterUpdated : function(item) {
-					// only want dirty records, not phantoms that are valid
+					// only want dirty records, not phantoms
+					// that are valid
 					var itemUpdated = false, i;
 					var masterUpdated = item.dirty === true
 							&& item.phantom !== true && item.isValid();
@@ -251,17 +373,29 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 						for (i = 0; i < item.associations.length; i++) {
 							var association = item.associations.get(i);
 							// data[association.name] = [];
+							if (association.type == "hasOne") {
+								if (!itemUpdated) {
+									itemUpdated = item[association.instanceName].dirty;
+								}
+								// if(itemUpdated){
+								// break;
+								// }
+							}
 							if (association.type == "hasMany") {
 								var childStore = item[association.storeName];
 
-								// Iterate over all the children in the current
+								// Iterate over all the children
+								// in the current
 								// association
 								var toCreate = childStore.getNewRecords(), toUpdate = childStore
 										.getUpdatedRecords(), toDestroy = childStore
 										.getRemovedRecords();
 								if (toCreate.length > 0 || toUpdate.length > 0
 										|| toDestroy.length > 0) {
+
 									itemUpdated = true;
+
+									// break;
 								}
 							}
 
@@ -408,9 +542,13 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							fn : function(btn) {
 								if (btn == "yes") {
 									var proxy = this.getProxy();
-									Ext.apply(proxy.extraParams, {focusUpdate:true});
+									Ext.apply(proxy.extraParams, {
+												focusUpdate : true
+											});
 									this.sync();
-									Ext.apply(proxy.extraParams, {focusUpdate:false});
+									Ext.apply(proxy.extraParams, {
+												focusUpdate : false
+											});
 								}
 
 								if (btn = "ok") {
@@ -445,45 +583,38 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 						});
 
 							// this.rejectChanges();
-
 					}, this);
 
-					// Copy configured listeners into *this* object so
+					// Copy configured listeners into
+					// *this* object so
 					// that the base class's
-
 					// constructor will add them.
-					// this.listeners = config.listeners;
-
-					// Call our superclass constructor to complete
+					// this.listeners =
+					// config.listeners;
+					// Call our superclass constructor
+					// to complete
 					// construction process.
-
 				}
 
 			});
 			// Ext.data.Store.override({
-
 			// listeners:{
 			// write: function(store, operation){
-
 			// var record = operation.getRecords()[0];
 			// var name = Ext.String.capitalize(operation.action);
 			// var verb;
-
 			// if (name == 'Destroy') {
 			// record = operation.records[0];
 			// verb = 'Destroyed';
 			// } else {
 			// verb = name + 'd';
 			// }
-			// Ext.example.msg(name, Ext.String.format("{0} Message: {1}", verb,
+			// Ext.example.msg(name, Ext.String.format("{0} Message:
+			// {1}", verb,
 			// record.getId()));
-
 			// }
-
 			// }
-
 			// });
-
 		});
 
 Ext.JSON.encodeDate = function(d) {

@@ -13,7 +13,7 @@ Ext.define('AM.view.master.stockLocation.Search', {
 			initComponent : function() {
 				var me = this;
 				var store = Ext.create(
-						'AM.store.master.stockLocation.StockLocation', {
+						'AM.store.master.stockLocation.StockLocations', {
 							autoLoad : false
 						});
 				Ext.applyIf(me, {
