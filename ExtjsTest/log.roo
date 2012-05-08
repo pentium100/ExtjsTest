@@ -603,3 +603,7 @@ hint
 web mvc json add --class ~.web.StockLocationController --jsonObject ~.domain.StockLocation 
 exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-02 22:05:28
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-08 10:26:25
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-08 10:28:37
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-08 11:21:16
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-08 11:21:42

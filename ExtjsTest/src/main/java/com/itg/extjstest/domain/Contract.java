@@ -47,73 +47,87 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJson
 public class Contract {
 
-    @NotNull
-    @Column(unique = true)
-    @Size(max = 30)
-    private String contractNo;
+	@NotNull
+	@Column(unique = true)
+	@Size(max = 30)
+	private String contractNo;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private Set<ContractItem> items = new HashSet<ContractItem>();
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	private Set<ContractItem> items = new HashSet<ContractItem>();
 
-    @Enumerated
-    private ContractType contractType;
+	@Enumerated
+	private ContractType contractType;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date lastShippingDate;
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date lastShippingDate;
 
-    @Size(max = 50)
-    private String supplier;
+	@Size(max = 50)
+	private String supplier;
 
-    @Size(max = 50)
-    private String payTerm;
+	@Size(max = 50)
+	private String payTerm;
 
-    @Size(max = 500)
-    private String remark;
+	@Size(max = 500)
+	private String remark;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(style = "M-")
-    private Date signDate;
-    
-    
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(style = "M-")
+	private Date signDate;
 
-    public String toJson() {
-        return new JSONSerializer().exclude("*.class").transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class).serialize(this);
-    }
+	public String toJson() {
+		return new JSONSerializer()
+				.exclude("*.class")
+				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+						Date.class).serialize(this);
+	}
 
-    public static String toJsonArray(Collection<com.itg.extjstest.domain.Contract> collection) {
-        return new JSONSerializer().exclude("*.class").transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class).include("items").serialize(collection);
-    }
+	public static String toJsonArray(
+			Collection<com.itg.extjstest.domain.Contract> collection) {
+		return new JSONSerializer()
+				.exclude("*.class")
+				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
+						Date.class).include("items").serialize(collection);
+	}
 
-    public static com.itg.extjstest.domain.Contract fromJsonToContract(String json) {
-        return new JSONDeserializer<Contract>().use(null, Contract.class).use(ContractType.class, new ContractTypeObjectFactory()).deserialize(json);
-    }
+	public static com.itg.extjstest.domain.Contract fromJsonToContract(
+			String json) {
+		return new JSONDeserializer<Contract>().use(null, Contract.class)
+				.use(ContractType.class, new ContractTypeObjectFactory())
+				.deserialize(json);
+	}
 
-    public static List<com.itg.extjstest.domain.Contract> findContractsByFilter(List<com.itg.extjstest.util.FilterItem> filters, Integer start, Integer page, Integer limit) {
-        CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-        CriteriaQuery<Contract> c = cb.createQuery(Contract.class);
-        Root<Contract> rootContract = c.from(Contract.class);
-        Join<Contract, ContractItem> j = rootContract.join("items");
-        HashMap<String, Path> paths = new HashMap<String, Path>();
-        paths.put("", rootContract);
-        paths.put("items", j);
-        List<Predicate> criteria = new ArrayList<Predicate>();
-        if (filters != null) {
-            for (FilterItem f : filters) {
-                if (f.getField().equals("contractType")) {
-                    f.setType("sList");
-                }
-                criteria.add(f.getPredicate(cb, paths));
-            }
-            c.where(cb.and(criteria.toArray(new Predicate[0])));
-        }
-        
-        List<com.itg.extjstest.domain.Contract> list; 
-        list = entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
-        
-        
+	public static List<com.itg.extjstest.domain.Contract> findContractsByFilter(
+			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
+			Integer page, Integer limit, boolean byItems) {
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<Contract> c = cb.createQuery(Contract.class);
+		Root<Contract> rootContract = c.from(Contract.class);
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", rootContract);
+		List<Predicate> criteria = new ArrayList<Predicate>();
+		if (byItems) {
+			Join<Contract, ContractItem> j = rootContract.join("items");
+			paths.put("items", j);
 
-        
-        return list;
-    }
+		}
+		
+		
+		if (filters != null) {
+			for (FilterItem f : filters) {
+
+				if (f.getField().equals("contractType")) {
+					f.setType("sList");
+				}
+				criteria.add(f.getPredicate(cb, paths));
+			}
+			c.where(cb.and(criteria.toArray(new Predicate[0])));
+		}
+
+		List<com.itg.extjstest.domain.Contract> list;
+		list = entityManager().createQuery(c).setFirstResult(start)
+				.setMaxResults(limit).getResultList();
+
+		return list;
+	}
 }

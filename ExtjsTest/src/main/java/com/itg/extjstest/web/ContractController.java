@@ -46,7 +46,8 @@ public class ContractController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "limit", required = false) Integer limit,
-			@RequestParam(value = "filter", required = false) String filter) {
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "byItems", required = false) Boolean byItems) {
 
 		List<Contract> result;
 		List<FilterItem> filters = null;
@@ -57,7 +58,10 @@ public class ContractController {
 					.use("values.value", String.class).deserialize(filter);
 
 		}
-		result = Contract.findContractsByFilter(filters, start, page, limit);
+		if(byItems==null){
+			byItems = false;
+		}
+		result = Contract.findContractsByFilter(filters, start, page, limit,byItems);
 
 
 		HttpHeaders headers = new HttpHeaders();

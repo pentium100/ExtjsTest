@@ -60,3 +60,10 @@ insert into menu(id, icon_cls, text, parent, controller,leaf, views)
   
   insert into menu(id, icon_cls, text, parent, controller,leaf, views)
   values (17, 'icon-report', '进出仓明细查询', 7, 'AM.controller.materialDoc.report.MaterialDocItemQuerys', 1, 'MaterialDocItemQuery')  
+  
+  insert into menu ( icon_cls, text, version, parent, controller, leaf, views, controller_param) 
+values ( '', '主数据管理', 0, 2, null, 0, null, null)
+
+insert into menu ( icon_cls, text, version, parent, controller, leaf, views, controller_param) 
+values ( '', '仓库管理', 0, 17, 'AM.controller.master.stockLocation.StockLocation', 1, 'stockLocationList', null)
+  

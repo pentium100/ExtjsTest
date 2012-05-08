@@ -29,7 +29,7 @@ Ext.define('AM.view.contract.Search', {
 
 	initComponent : function() {
 		var me = this;
-        var store = Ext.create('AM.store.Contracts',{autoLoad:false});
+        var store = Ext.create('AM.store.ContractItems',{autoLoad:false});
 		Ext.applyIf(me, {
 			        
 					dockedItems : [{

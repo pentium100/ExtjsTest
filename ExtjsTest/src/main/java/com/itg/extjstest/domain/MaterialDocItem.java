@@ -94,6 +94,7 @@ public class MaterialDocItem {
     private Contract contract;
 
     @ManyToOne
+    @NotNull
     private StockLocation stockLocation;
 
     public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(List<com.itg.extjstest.util.FilterItem> filters, int start, int page, int limit) {

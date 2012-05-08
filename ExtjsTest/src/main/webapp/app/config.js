@@ -620,3 +620,59 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 Ext.JSON.encodeDate = function(d) {
 	return Ext.Date.format(d, '"Y-m-d H:i:s"');
 };
+
+Ext.require(['Ext.data.Model'], function() {
+
+	Ext.data.Model.override({
+		copyFrom : function(sourceRecord) {
+
+			if (sourceRecord) {
+
+				var me = this, fields = me.fields.items, fieldCount = fields.length, field, i = 0, myData = me[me.persistenceProperty], sourceData = sourceRecord[sourceRecord.persistenceProperty], value;
+
+				for (; i < fieldCount; i++) {
+					field = fields[i];
+
+					// Do not use setters.
+					// Copy returned values in directly from the data object.
+					// Converters have already been called because new Records
+					// have been created to copy from.
+					// This is a direct record-to-record value copy operation.
+					value = sourceData[field.name];
+					if (value !== undefined) {
+						myData[field.name] = value;
+					}
+				}
+
+				// If this is a phantom record being updated from a concrete
+				// record, copy the ID in.
+				if (me.phantom && !sourceRecord.phantom) {
+					me.setId(sourceRecord.getId());
+				}
+
+				// copy hasmany association property from source.
+				for (i = 0; i < sourceRecord.associations.length; i++) {
+
+					association = sourceRecord.associations.get(i);
+
+					// if (association.type == "hasOne") {
+					// me[association.associationKey] =
+					// sourceRecord[association.instanceName].data;
+
+					// }
+
+					if (association.type == "hasMany") {
+
+						var clientStore = me[association.storeName];
+						var sourceStore = sourceRecord[association.storeName];
+
+						clientStore.loadData(sourceStore.getRange());
+
+					}
+				}
+
+			}
+
+		}
+	});
+});
