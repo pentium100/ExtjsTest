@@ -161,9 +161,9 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 			tmp.push(Ext.apply({}, filter));
 		}
 
-		if (record.warehouse != "") {
+		if (record.stock_location != "") {
 			filter.type = "string";
-			filter.field = "stock.warehouse";
+			filter.field = "stock.stock_location";
 			filter.value = record.warehouse;
 			tmp.push(Ext.apply({}, filter));
 		}

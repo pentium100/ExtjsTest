@@ -66,7 +66,7 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							text : '批次号'
 						}, {
 							xtype : 'gridcolumn',
-							dataIndex : 'warehouse',
+							dataIndex : 'stock_location',
 							text : '仓库'
 
 						}, {
@@ -183,7 +183,7 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 												}, {
 													xtype : 'textfield',
 													fieldLabel : '仓库',
-													name : 'warehouse'
+													name : 'stock_location'
 												}, {
 													xtype : 'textfield',
 													fieldLabel : '进仓单号',

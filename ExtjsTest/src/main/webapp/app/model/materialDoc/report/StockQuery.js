@@ -44,7 +44,7 @@ Ext.define('AM.model.materialDoc.report.StockQuery', {
 						name : 'unit_price',
 						type : 'float'
 					},{
-						name : 'warehouse',
+						name : 'stock_location',
 						type : 'string'
 					},{
 						name : 'inspection_date',

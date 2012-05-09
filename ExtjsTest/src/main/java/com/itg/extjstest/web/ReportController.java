@@ -577,10 +577,10 @@ public class ReportController {
 				+ sortString.toString() + " )) as rowNum, ");
 
 		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, ");
-		cte.append("     stock.warehouse, stock.net_weight, material_doc_item.gross_weight, ");
+		cte.append("     stock.stock_location, stock.net_weight, material_doc_item.gross_weight, ");
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier, ");
-		cte.append("     convert(varchar(40),stock.line_id_in)+'--'+stock.warehouse as report_key, ");
+		cte.append("     convert(varchar(40),stock.line_id_in)+'--'+stock.stock_location as report_key, ");
 		cte.append("     inspection.inspection_date, inspection.authority,inspection.doc_no,inspection.original,inspection_item.remark as inspection_remark, ");
 		cte.append("     inspection_item.al, inspection_item.ca, inspection_item.fe, inspection_item.p,inspection_item.si ");
 		cte.append(" from material_doc  ");
@@ -592,11 +592,12 @@ public class ReportController {
 		cte.append("      left join inspection on inspection.id = inspection_item.inspection, ");
 
 		cte.append(" ( ");
-		cte.append("  select line_id_in, warehouse, SUM(net_weight*direction) as net_weight, SUM(gross_weight*direction) as gross_weight ");
+		cte.append("  select line_id_in, stock_location.stock_location, SUM(net_weight*direction) as net_weight, SUM(gross_weight*direction) as gross_weight ");
 		cte.append("     from material_doc_item  ");
 		cte.append("     inner join material_doc_items on material_doc_items.items = material_doc_item.line_id ");
+		cte.append("     inner join stock_location on stock_location.id = material_doc_item.stock_location " );
 		cte.append("     inner join material_doc on material_doc.doc_no = material_doc_items.material_doc and material_doc.doc_date <= :endDate ");
-		cte.append("     group by line_id_in,warehouse ");
+		cte.append("     group by line_id_in,stock_location.stock_location ");
 		cte.append("     having SUM(net_weight*direction)<>0) stock ");
 		cte.append("  where material_doc_item.line_id = stock.line_id_in ");
 
@@ -671,7 +672,7 @@ public class ReportController {
 
 			header = new ReportHeader();
 			header.setHeader("仓库");
-			header.setField("warehouse");
+			header.setField("stock_location");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
@@ -1249,10 +1250,11 @@ public class ReportController {
 		cte.append("       material_doc.doc_date, item_in_doc.plate_num, ");
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
-		cte.append("       material_doc_item.gross_weight, material_doc_item.warehouse, ");
+		cte.append("       material_doc_item.gross_weight, stock_location.stock_location, ");
 		cte.append("       contract_item.unit_price, item_in_doc.working_no ");
 		cte.append("	   from material_doc_item ");
 		cte.append("	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
+		cte.append("          left join stock_location on stock_location.id = material_doc_item.stock_location" );
 		cte.append("	      left join contract on contract.id = material_doc_item.contract ");
 		cte.append("	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
 		cte.append("	      left join contract_item on contract_item.contract  = contract.id  ");
@@ -1282,10 +1284,11 @@ public class ReportController {
 			cte.append("    	       material_doc.doc_date, item_in_doc.plate_num, ");
 			cte.append("    	       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
-			cte.append("    	       material_doc_item.gross_weight, material_doc_item.warehouse, ");
+			cte.append("    	       material_doc_item.gross_weight, stock_location.stock_location, ");
 			cte.append("    	       contract_item.unit_price, item_in_doc.working_no  ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
+			cte.append("              left join stock_location on stock_location.id = material_doc_item.stock_location" );			
 
 			cte.append("    	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
 			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
@@ -1413,7 +1416,7 @@ public class ReportController {
 
 			header = new ReportHeader();
 			header.setHeader("仓库");
-			header.setField("warehouse");
+			header.setField("stock_location");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 

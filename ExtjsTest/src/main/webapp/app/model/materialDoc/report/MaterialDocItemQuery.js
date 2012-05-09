@@ -48,7 +48,7 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 						name : 'unit_price',
 						type : 'float'
 					},{
-						name : 'warehouse',
+						name : 'stock_location',
 						type : 'string'
 					},{
 						name : 'working_no',
