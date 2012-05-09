@@ -113,13 +113,8 @@ Ext.define('AM.view.materialDoc.Edit', {
 					text : '移动类型'
 				}, {
 					xtype : 'gridcolumn',
-					dataIndex : 'warehouse',
-					text : '仓库',
-					field : 'textfield'
-				}, {
-					xtype : 'gridcolumn',
 					dataIndex : 'stockLocation_id',
-					text : '仓库2',
+					text : '仓库',
 
 					renderer : function(value, mateData, record) {
 						var stockLocation = record.getStockLocation();

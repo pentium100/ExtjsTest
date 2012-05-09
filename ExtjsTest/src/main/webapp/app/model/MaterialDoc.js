@@ -49,7 +49,8 @@ Ext.define('AM.model.MaterialDoc', {
 	hasMany : [{
 				model : 'AM.model.MaterialDocItem',
 				name : 'items',
-				primaryKey : 'lineId'
+				primaryKey : 'lineId',
+				storeConfig:{filterOnLoad:false}
 			}],
 
 	belongsTo : [{

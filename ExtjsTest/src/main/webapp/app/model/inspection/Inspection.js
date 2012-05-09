@@ -1,6 +1,6 @@
 Ext.define('AM.model.inspection.Inspection', {
 			extend : 'Ext.data.Model',
-			idProperty: 'id',
+			idProperty : 'id',
 			fields : [{
 						name : 'inspectionDate',
 						type : 'date',
@@ -8,22 +8,22 @@ Ext.define('AM.model.inspection.Inspection', {
 					}, {
 						name : 'authority',
 						type : 'string'
-						
+
 					}, {
 						name : 'docNo',
 						type : 'string'
-						
+
 					}, {
 						name : 'original',
 						type : 'boolean'
-						
-					},{
+
+					}, {
 						name : 'remark',
 						type : 'string'
-					},{
+					}, {
 						name : 'contracts',
 						type : 'string'
-					},{
+					}, {
 						name : 'id',
 						type : 'int'
 					}, {
@@ -33,7 +33,10 @@ Ext.define('AM.model.inspection.Inspection', {
 
 			hasMany : [{
 						model : 'AM.model.inspection.InspectionItem',
-						name : 'items'
+						name : 'items',
+						storeConfig : {
+							filterOnLoad : false
+						}
 					}]
 
 		});

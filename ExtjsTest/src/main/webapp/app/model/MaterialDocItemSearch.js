@@ -62,6 +62,15 @@ Ext.define('AM.model.MaterialDocItemSearch', {
 						model : 'AM.model.MaterialDoc',
 						primaryKey : 'docNo',
 						foreignKey : 'materialDoc'
+					}, {
+						type : 'hasOne',
+
+						model : 'AM.model.master.stockLocation.StockLocation',
+						primaryKey : 'id',
+						foreignKey : 'stockLocation_id',
+						associationKey : 'stockLocation',
+						getterName : 'getStockLocation',
+						setterName : 'setStockLocation'
 					}]
 
 		});

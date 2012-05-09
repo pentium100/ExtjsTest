@@ -54,7 +54,8 @@ public class MaterialDocItem {
 
     private Double netWeight;
 
-    @Size(max = 50)
+    
+    @Transient
     private String warehouse;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -106,31 +107,34 @@ public class MaterialDocItem {
         Expression<Double> direction = fromMaterialDocItem.get("direction");
         Expression<Double> directionWeight = (Expression<Double>) cb.prod(weight, direction);
         Expression<Double> sumOfDirectionWeight = cb.sum(directionWeight);
-        c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId").alias("lineId_in"), fromMaterialDocItem.get("warehouse").alias("warehouse"), sumOfDirectionWeight.alias("stockWeight")));
-        c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"), fromMaterialDocItem.get("warehouse"));
+        c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId").alias("lineId_in"), fromMaterialDocItem.get("stockLocation").get("id").alias("stockLocation"), sumOfDirectionWeight.alias("stockWeight")));
+        c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"), fromMaterialDocItem.get("stockLocation"));
         c.having(cb.gt(sumOfDirectionWeight, 0));
         Subquery<MaterialDocItem> subq = c.subquery(MaterialDocItem.class);
         Root<MaterialDocItem> subFromMaterialDocItem = subq.from(MaterialDocItem.class);
         Root<MaterialDoc> subFromMaterialDoc = subq.from(MaterialDoc.class);
         Root<Contract> subFromContract = subq.from(Contract.class);
+        Root<StockLocation> subFromStockLocation = subq.from(StockLocation.class);
         subq.select(subFromMaterialDocItem);
         List<Predicate> subCriteria = new ArrayList<Predicate>();
         subCriteria.add(cb.equal(subFromMaterialDocItem.get("lineId"), subFromMaterialDocItem.get("lineId_in")));
         subCriteria.add(cb.equal(subFromMaterialDocItem.get("materialDoc"), subFromMaterialDoc.get("docNo")));
         subCriteria.add(cb.equal(subFromMaterialDocItem.get("contract"), subFromContract.get("id")));
+        subCriteria.add(cb.equal(subFromMaterialDocItem.get("stockLocation"), subFromStockLocation.get("id")));
         HashMap<String, Path> paths = new HashMap<String, Path>();
         paths.put("", fromMaterialDocItem);
         HashMap<String, Path> subPaths = new HashMap<String, Path>();
         subPaths.put("", subFromMaterialDocItem);
         subPaths.put("materialDoc", subFromMaterialDoc);
         subPaths.put("contract", subFromContract);
+        subPaths.put("stockLocation", subFromStockLocation);
         if (filters != null) {
             for (FilterItem f : filters) {
-                if (!f.getField().equals("warehouse")) {
+                //if (!f.getField().equals("stockLocation.stockLocation")) {
                     subCriteria.add(f.getPredicate(cb, subPaths));
-                } else {
-                    criteria.add(f.getPredicate(cb, paths));
-                }
+                //} else {
+                //    criteria.add(f.getPredicate(cb, paths));
+                //}
             }
             subq.where(cb.and(subCriteria.toArray(new Predicate[0])));
         }
@@ -140,9 +144,11 @@ public class MaterialDocItem {
         for (Tuple o : result) {
             Long lineId = (Long) o.get("lineId_in");
             MaterialDocItem item = MaterialDocItem.findMaterialDocItem(lineId);
+            StockLocation stockLocation = StockLocation.findStockLocation((Long)o.get("stockLocation"));
+            
             MaterialDoc materialDoc = item.getMaterialDoc();
             Contract contract = materialDoc.getContract();
-            item.setWarehouse((String) o.get("warehouse"));
+            item.setWarehouse(stockLocation.getStockLocation());
             item.setNetWeight((Double) o.get("stockWeight"));
             entityManager().detach(item);
             l.add(item);

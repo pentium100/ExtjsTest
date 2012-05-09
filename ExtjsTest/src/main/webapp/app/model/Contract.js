@@ -1,6 +1,6 @@
 Ext.define('AM.model.Contract', {
 			extend : 'Ext.data.Model',
-			idProperty: 'id',
+			idProperty : 'id',
 			fields : [{
 						name : 'contractType',
 						type : 'string'
@@ -15,19 +15,19 @@ Ext.define('AM.model.Contract', {
 					}, {
 						name : 'supplier',
 						type : 'string'
-						
+
 					}, {
 						name : 'payTerm',
 						type : 'string'
-						
-					},{
+
+					}, {
 						name : 'contractNo',
 						type : 'string'
 					}, {
 						name : 'remark',
 						type : 'string'
-						
-					},{
+
+					}, {
 						name : 'id',
 						type : 'int'
 					}, {
@@ -37,7 +37,10 @@ Ext.define('AM.model.Contract', {
 
 			hasMany : [{
 						model : 'AM.model.ContractItem',
-						name : 'items'
+						name : 'items',
+						storeConfig : {
+							filterOnLoad : false
+						}
 					}]
 
 		});

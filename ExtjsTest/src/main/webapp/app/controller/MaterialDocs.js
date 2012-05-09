@@ -1,7 +1,8 @@
 Ext.define('AM.controller.MaterialDocs', {
 	extend : 'Ext.app.Controller',
 
-	views : ['materialDoc.List', 'materialDoc.Edit', 'contract.Search', 'master.stockLocation.Search'],
+	views : ['materialDoc.List', 'materialDoc.Edit', 'contract.Search',
+			'master.stockLocation.Search'],
 	stores : ['MaterialDocs', 'ContractType', 'Contracts', 'MaterialDocTypes'],
 	models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType', 'Contract',
 			'ContractItem', 'master.stockLocation.StockLocation'],
@@ -92,7 +93,8 @@ Ext.define('AM.controller.MaterialDocs', {
 						};
 						item.set('lineId_in', lineId_in);
 						// item.lineId_in = lineId_in;
-						item.dirty = false;
+						// item.dirty = false;
+						item.commit(true);
 					}
 
 				}, this);
@@ -113,6 +115,7 @@ Ext.define('AM.controller.MaterialDocs', {
 					'id' : this.docType
 				});
 		this.getStore('MaterialDocs').insert(0, record);
+		record.store = this.getStore('MaterialDocs');
 		var view = Ext.widget('materialDocEdit');
 
 		view.down('form').loadRecord(record);
@@ -134,6 +137,7 @@ Ext.define('AM.controller.MaterialDocs', {
 		};
 		record.set('lineId_in', lineId_in);
 		store.insert(0, record);
+		// record.store = store;
 
 	},
 	deleteMaterialDocItem : function(button) {
@@ -200,19 +204,15 @@ Ext.define('AM.controller.MaterialDocs', {
 		store.load();
 	},
 
-	selectStockLocation : function(grid, record){
+	selectStockLocation : function(grid, record) {
 		var win = grid.up('window');
 		win.close();
-		
+
 		var view = win.parentWindow;
 		var grid = view.down('gridpanel');
 		var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
 		itemRecord.setStockLocation(record);
-		
-		
 
-		
-		
 	},
 	selectContract : function(grid, record) {
 		var win = grid.up('window');
@@ -261,10 +261,36 @@ Ext.define('AM.controller.MaterialDocs', {
 		values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
 		record.set(values);
 
-		// record.data.items = win.down('grid').getStore();
+		// var itemsStore = record.getItemsStore();
 
-		record.store.sync();
-		win.close();
+		// record.data.items = win.down('grid').getStore();
+		var items = record.items();
+		var canUpdate = true;
+
+		items.each(function(item) {
+
+			var stockLocation = item.getStockLocation();
+			if (stockLocation.get('id') == 0) {
+				Ext.MessageBox.show({
+							title : '错误信息',
+							msg : '行项目上的仓库必输!',
+							buttons : Ext.Msg.OK,
+							icon : Ext.MessageBox.ERROR,
+							closable : false,
+							modal : true
+						});
+				canUpdate = false;
+
+			}
+
+		}, this);
+
+		if (canUpdate) {
+			record.store.sync();
+			win.close();
+		}
+		
+		delete canUpdate;
 
 	},
 
@@ -273,9 +299,8 @@ Ext.define('AM.controller.MaterialDocs', {
 		var form = win.down('form');
 		var grid = win.down('gridpanel')
 
-		this.getStore('MaterialDocs').rejectChanges();
-
 		grid.getStore().rejectChanges();
+		this.getStore('MaterialDocs').rejectChanges();
 
 	}
 

@@ -71,6 +71,7 @@ Ext.define('AM.controller.inspection.Inspections', {
 				var store = grid.getStore();
 				store.insert(0,record);
 				//this.getStore('OutgoingDocs').insert(0, record);
+				record.store = store;
 				
 				var view = Ext.widget('inspectionEdit');
 				view.down('form').loadRecord(record);

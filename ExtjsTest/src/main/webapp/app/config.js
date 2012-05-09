@@ -225,7 +225,9 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 						association = record.associations.get(i);
 
 						if (association.type == "hasOne") {
-							data[association.associationKey] = record[association.instanceName].data;
+							if (record[association.instanceName] != undefined) {
+								data[association.associationKey] = record[association.instanceName].data;
+							}
 
 						}
 
@@ -330,7 +332,7 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 					var me = this, sync = false, i = 0, length = records.length, isPhantom, index, record;
 
 					for (; i < length; i++) {
-						record = records[i];
+						var record = records[i];
 						index = me.data.indexOf(record);
 
 						if (me.snapshot) {
@@ -375,7 +377,9 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							// data[association.name] = [];
 							if (association.type == "hasOne") {
 								if (!itemUpdated) {
-									itemUpdated = item[association.instanceName].dirty;
+									if (item[association.instanceName] != undefined) {
+										itemUpdated = item[association.instanceName].dirty;
+									}
 								}
 								// if(itemUpdated){
 								// break;
@@ -420,7 +424,7 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 					});
 
 			Ext.data.Store.override({
-						rejectChanges : function() {
+						rejectChanges22 : function() {
 							var me = this;
 
 							// re-add removed records
@@ -434,6 +438,9 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							// records
 							// ('phantoms')
 							me.each(function(rec) {
+										if (rec == undefined) {
+											return;
+										}
 										if (rec.dirty) {
 											rec.reject();
 										}

@@ -74,6 +74,7 @@ public class MaterialDocItemController {
 			i.setDocDate(i.getMaterialDoc().getDocDate());
 			i.setWorkingNo(i.getMaterialDoc().getWorkingNo());
 			i.setContractNo(i.getMaterialDoc().getContract().getContractNo());
+			i.setWarehouse(i.getStockLocation().getStockLocation());
 		}
 		
 		

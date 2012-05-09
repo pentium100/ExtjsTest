@@ -5,7 +5,7 @@ Ext.define('AM.controller.MovingDocs', {
 					'materialDoc.ItemSearch','contract.Search'],
 						
 			stores : ['MovingDocs', 'MaterialDocTypes','ContractType', 'Contracts'],
-			models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType'],
+			models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType','master.stockLocation.StockLocation'],
 
 			init : function(options) {
 
@@ -83,6 +83,7 @@ Ext.define('AM.controller.MovingDocs', {
 				var grid = button.up("gridpanel");
 
 				grid.getStore().insert(0, record);
+				record.store = grid.getStore();
 
 				var view = Ext.widget('movingDocEdit', {
 							parentGrid : grid

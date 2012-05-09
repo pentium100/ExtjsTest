@@ -67,6 +67,7 @@ Ext.define('AM.controller.Contracts', {
 			addContract : function(button) {
 				var record = new AM.model.Contract();
 				this.getStore('Contracts').insert(0, record);
+				record.store = this.getStore('Contracts');
 				var view = Ext.widget('contractEdit');
 				view.down('form').loadRecord(record);
 				view.down('grid').reconfigure(record.items());

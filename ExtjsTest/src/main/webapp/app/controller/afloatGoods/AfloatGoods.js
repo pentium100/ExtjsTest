@@ -150,8 +150,9 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		var viewport = button.up('viewport');
 		var grid = viewport.down('afloatGoodsList');
 		var store = grid.getStore();
-
+        
 		store.insert(0, record);
+		record.store = store;
 		var view = Ext.widget('afloatGoodsEdit', {
 					parentGrid : grid
 			
