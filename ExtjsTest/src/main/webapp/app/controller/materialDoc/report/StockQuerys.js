@@ -112,7 +112,7 @@ Ext.define('AM.controller.materialDoc.report.StockQuerys', {
 
 		if (this.selected.getCount() > 0 && target == 'excel') {
 			filter.type = "list";
-			filter.field = ("(convert(varchar(40), stock.line_id_in)+'--'+stock.warehouse)");
+			filter.field = ("(convert(varchar(40), stock.line_id_in)+'--'+stock.stock_location)");
 			filter.comparison = 'list';
 			filter.value = "";
 			Ext.each(this.selected.keys, function(key) {

@@ -11,8 +11,10 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 	initComponent : function() {
 		var me = this;
 		var store = Ext.create('AM.store.contract.report.OpenOrder', {
-					autoLoad : false
+					autoLoad : false,
+					autoSync : true
 				});
+
 		Ext.applyIf(me, {
 
 					dockedItems : [{
@@ -59,6 +61,10 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 								store : store,
 								stateful : true,
 								stateId : 'openOrder',
+								plugins : [Ext.create(
+										'Ext.grid.plugin.CellEditing', {
+
+										})],
 								columns : [{
 											xtype : 'gridcolumn',
 											dataIndex : 'model',
@@ -82,6 +88,29 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 											text : '敞口数量',
 											sortable : false,
 											align : 'right'
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'memo',
+											text : '备注',
+											sortable : false,
+											editor : {
+												xtype : 'textfield'
+											}
+
+										}, {
+											xtype : 'gridcolumn',
+											dataIndex : 'update_user',
+											text : '更新用户',
+											sortable : false
+
+										}, {
+
+											dataIndex : 'update_time',
+											text : '更新时间',
+											sortable : false,
+											xtype : 'datecolumn',
+											format : 'Y-m-d H:i:s'
+
 										}
 
 								],

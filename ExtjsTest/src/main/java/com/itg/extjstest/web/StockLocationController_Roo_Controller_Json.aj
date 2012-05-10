@@ -5,7 +5,6 @@ package com.itg.extjstest.web;
 
 import com.itg.extjstest.domain.StockLocation;
 import com.itg.extjstest.web.StockLocationController;
-import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,6 @@ privileged aspect StockLocationController_Roo_Controller_Json {
         return new ResponseEntity<String>(stockLocation.toJson(), headers, HttpStatus.OK);
     }
     
-    
-    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> StockLocationController.createFromJsonArray(@RequestBody String json) {
         for (StockLocation stockLocation: StockLocation.fromJsonArrayToStockLocations(json)) {
@@ -40,7 +37,6 @@ privileged aspect StockLocationController_Roo_Controller_Json {
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
-    
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> StockLocationController.updateFromJsonArray(@RequestBody String json) {
@@ -53,6 +49,7 @@ privileged aspect StockLocationController_Roo_Controller_Json {
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
+    
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
     public ResponseEntity<String> StockLocationController.deleteFromJson(@PathVariable("id") Long id) {
         StockLocation stockLocation = StockLocation.findStockLocation(id);

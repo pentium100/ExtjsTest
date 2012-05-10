@@ -607,3 +607,25 @@ exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-08 10:28:37
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-08 11:21:16
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-08 11:21:42
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-10 21:42:06
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-10 21:44:41
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-10 21:45:12
+hint
+entity jpa --class ~.domain.OpenOrderMemo 
+field string --fieldName model --sizeMax 50
+field string --fieldName memo --sizeMax 5000
+field date --fieldName updateTime --type java.util.Date
+field string --fieldName updateUser --sizeMax 50
+json add --class ~.domain.OpenOrderMemo 
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-10 21:50:16
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-10 22:05:20
+focus --class ~.domain.OpenOrderMemo
+finder list
+finder add --class ~.domain.OpenOrderMemo --finderName findOpenOrderMemoByModelEquals
+finder add --class ~.domain.OpenOrderMemo --finderName findOpenOrderMemoesByModelEquals
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-10 22:07:01
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-10 22:43:11
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-10 22:43:28

@@ -2,7 +2,7 @@ Ext.define('AM.controller.MovingDocs', {
 	extend : 'Ext.app.Controller',
 
 	views : ['movingDoc.List', 'movingDoc.Edit', 'materialDoc.ItemSearch',
-			'contract.Search','master.stockLocation.Search'],
+			'contract.Search', 'master.stockLocation.Search'],
 
 	stores : ['MovingDocs', 'MaterialDocTypes', 'ContractType', 'Contracts'],
 	models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType',
@@ -69,9 +69,8 @@ Ext.define('AM.controller.MovingDocs', {
 				});
 
 	},
-	
-	
-		searchStockLocation : function(button) {
+
+	searchStockLocation : function(button) {
 		var win = button.up('window');
 		var grid = win.down('gridpanel');
 		var store = grid.getStore();
@@ -98,17 +97,18 @@ Ext.define('AM.controller.MovingDocs', {
 		win.close();
 
 		var view = win.parentWindow;
-		
+
 		var form = view.down('form');
 		var oldRecord = form.getRecord();
 		oldRecord.setStockLocation(record);
 		oldRecord.set('targetWarehouse', record.data.stockLocation);
 		form.loadRecord(oldRecord);
-		//var grid = view.down('gridpanel');
-		//var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
-		//itemRecord.setStockLocation(record);
+		// var grid = view.down('gridpanel');
+		// var itemRecord =
+		// grid.getView().getSelectionModel().getSelection()[0];
+		// itemRecord.setStockLocation(record);
 
-	},	
+	},
 	editMaterialDoc : function(grid, record) {
 		var view = Ext.widget('movingDocEdit', {
 					parentGrid : grid
@@ -133,7 +133,7 @@ Ext.define('AM.controller.MovingDocs', {
 		var grid = button.up("gridpanel");
 
 		grid.getStore().insert(0, record);
-		
+
 		record.join(grid.getStore());
 		record.getStockLocation();
 

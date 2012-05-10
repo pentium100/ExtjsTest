@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.beanutils.ResultSetDynaClass;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,7 +25,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +35,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDocItem;
 import com.itg.extjstest.domain.Message;
+import com.itg.extjstest.domain.OpenOrderMemo;
+import com.itg.extjstest.domain.StockLocation;
 import com.itg.extjstest.util.FilterItem;
 import com.itg.extjstest.util.ReportHeader;
 
@@ -46,7 +52,43 @@ public class ReportController {
 	@Qualifier("jdbcTemplate2")
 	protected NamedParameterJdbcTemplate jdbcTemplate;
 
-	@RequestMapping(value = "/openOrders")
+	@RequestMapping(value = "/openOrders/{model}", method = RequestMethod.PUT, headers = "Accept=application/json")
+	public ResponseEntity<String> updateOpenOrderMemo(@RequestBody String json,
+			HttpServletRequest request) {
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		OpenOrderMemo openOrderMemo = OpenOrderMemo
+				.fromJsonToOpenOrderMemo(json);
+		OpenOrderMemo o1 = null;
+		try {
+			o1 = OpenOrderMemo.findOpenOrderMemoesByModelEquals(
+					openOrderMemo.getModel()).getSingleResult();
+		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
+			o1 = new OpenOrderMemo();
+			o1.setModel(openOrderMemo.getModel());
+			o1.setId(null);
+		}
+		o1.setMemo(openOrderMemo.getMemo());
+		o1.setUpdateTime(new Date());
+		o1.setUpdateUser(request.getRemoteUser());
+
+
+		o1 = o1.merge();
+		o1.setUpdate_time(new Date());
+		o1.setUpdate_user(request.getRemoteUser());
+
+		List<OpenOrderMemo> openOrderMemos = new ArrayList<OpenOrderMemo>();
+		openOrderMemos.add(o1);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("success", true);
+		String resultJson = OpenOrderMemo.mapToJson(map, openOrderMemos);
+		
+		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
+
+	}
+
+	@RequestMapping(value = "/openOrders", method = RequestMethod.GET)
 	public String OpenOrders(
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "start", required = false) Integer start,
@@ -111,7 +153,9 @@ public class ReportController {
 		cte.append(" group by grouping sets(model,()) ");
 		cte.append(" )");
 
-		query.append(" select * from OpenOrder where rowNum>:start and rowNum<=:start+:limit");
+		query.append(" select OpenOrder.*, open_order_memo.memo, open_order_memo.update_user, open_order_memo.update_time from OpenOrder ");
+		query.append("          left join open_order_memo on open_order_memo.model = OpenOrder.model ");
+		query.append("   where rowNum>:start and rowNum<=:start+:limit");
 
 		// SqlParameterSource param = new MapSqlParameterSource();
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -152,6 +196,11 @@ public class ReportController {
 			header.setField("quantity_open");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setPosition(3);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("备注");
+			header.setField("memo");
 			headers.add(header);
 
 			map.put("headers", headers);
@@ -426,7 +475,7 @@ public class ReportController {
 			header.setField("contract_type");
 			header.setPosition(0);
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
@@ -595,7 +644,7 @@ public class ReportController {
 		cte.append("  select line_id_in, stock_location.stock_location, SUM(net_weight*direction) as net_weight, SUM(material_doc_item.gross_weight*direction) as gross_weight ");
 		cte.append("     from material_doc_item  ");
 		cte.append("     inner join material_doc_items on material_doc_items.items = material_doc_item.line_id ");
-		cte.append("     inner join stock_location on stock_location.id = material_doc_item.stock_location " );
+		cte.append("     inner join stock_location on stock_location.id = material_doc_item.stock_location ");
 		cte.append("     inner join material_doc on material_doc.doc_no = material_doc_items.material_doc and material_doc.doc_date <= :endDate ");
 		cte.append("     group by line_id_in,stock_location.stock_location ");
 		cte.append("     having SUM(net_weight*direction)<>0) stock ");
@@ -1246,7 +1295,7 @@ public class ReportController {
 		cte.append("       case when material_doc_type.id=2  ");
 		cte.append("                 then  material_doc.delivery_note  end ");
 		cte.append("       as delivery_note_out, ");
-        cte.append("       contract_in.contract_no as purchase_contract_no, ");
+		cte.append("       contract_in.contract_no as purchase_contract_no, ");
 		cte.append("       material_doc.doc_date, item_in_doc.plate_num, ");
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
@@ -1254,7 +1303,7 @@ public class ReportController {
 		cte.append("       contract_item.unit_price, item_in_doc.working_no ");
 		cte.append("	   from material_doc_item ");
 		cte.append("	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
-		cte.append("          left join stock_location on stock_location.id = material_doc_item.stock_location" );
+		cte.append("          left join stock_location on stock_location.id = material_doc_item.stock_location");
 		cte.append("	      left join contract on contract.id = material_doc_item.contract ");
 		cte.append("	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
 		cte.append("	      left join contract_item on contract_item.contract  = contract.id  ");
@@ -1288,7 +1337,7 @@ public class ReportController {
 			cte.append("    	       contract_item.unit_price, item_in_doc.working_no  ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
-			cte.append("              left join stock_location on stock_location.id = material_doc_item.stock_location" );			
+			cte.append("              left join stock_location on stock_location.id = material_doc_item.stock_location");
 
 			cte.append("    	      left join material_doc_type on material_doc_type.id = material_doc.doc_type ");
 			cte.append("    	      left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
@@ -1297,7 +1346,7 @@ public class ReportController {
 			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
 
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
-			cte.append("              left join contract contract_in on contract_in.id = item_in.contract    ");			
+			cte.append("              left join contract contract_in on contract_in.id = item_in.contract    ");
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
@@ -1310,7 +1359,6 @@ public class ReportController {
 			cte.append("    	      left join contract on contract.id = material_doc_item.contract ");
 			cte.append("    	      left join contract_item on contract_item.contract  = contract.id  ");
 			cte.append("    	            and contract_item.model = material_doc_item.model_contract ");
-			
 
 			if (!whereString.toString().equals("")) {
 				cte.append(" where " + whereString);
@@ -1349,13 +1397,12 @@ public class ReportController {
 			header.setHeader("单据类型");
 			header.setField("doc_type_txt");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("单据号");
 			header.setField("doc_no");
 			headers.add(header);
-			
-			
+
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
