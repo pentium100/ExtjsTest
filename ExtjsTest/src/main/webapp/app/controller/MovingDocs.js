@@ -1,305 +1,356 @@
 Ext.define('AM.controller.MovingDocs', {
-			extend : 'Ext.app.Controller',
+	extend : 'Ext.app.Controller',
 
-			views : ['movingDoc.List', 'movingDoc.Edit',
-					'materialDoc.ItemSearch','contract.Search'],
-						
-			stores : ['MovingDocs', 'MaterialDocTypes','ContractType', 'Contracts'],
-			models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType','master.stockLocation.StockLocation'],
+	views : ['movingDoc.List', 'movingDoc.Edit', 'materialDoc.ItemSearch',
+			'contract.Search','master.stockLocation.Search'],
 
-			init : function(options) {
+	stores : ['MovingDocs', 'MaterialDocTypes', 'ContractType', 'Contracts'],
+	models : ['MaterialDoc', 'MaterialDocItem', 'MaterialDocType',
+			'master.stockLocation.StockLocation'],
 
-				Ext.apply(this, options);
+	init : function(options) {
 
-				this.control({
+		Ext.apply(this, options);
 
-							'movingDocList' : {
-								itemdblclick : this.editMaterialDoc
-							},
-							'movingDocList button[action=add]' : {
-								click : this.addMaterialDoc
-							},
+		this.control({
 
-							'movingDocList button[action=delete]' : {
-								click : this.deleteMaterialDoc
-							},
+					'movingDocList' : {
+						itemdblclick : this.editMaterialDoc
+					},
+					'movingDocList button[action=add]' : {
+						click : this.addMaterialDoc
+					},
 
-							//'contractSearch gridpanel[by=movingDocEdit] > button[action=search]' : {
-							'contractSearch[by=movingDocEdit] button[text="Search"]' : {
-								click : this.searchContract
-							},
-							'contractSearch gridpanel[by=movingDocEdit]' : {
-								itemdblclick : this.selectContract
-							},
+					'movingDocList button[action=delete]' : {
+						click : this.deleteMaterialDoc
+					},
 
-							'materialDocItemSearch[by=movingDocEdit] button[action=search]' : {
-								click : this.searchMaterialDocItem
-							},
+					'stockLocationSearch[by=movingDocEdit] button[action=search]' : {
+						click : this.searchStockLocation
+					},
 
-							'materialDocItemSearch gridpanel[by=movingDocEdit]' : {
-								itemdblclick : this.selectMaterialDocItem
-							},
+					'stockLocationSearch[by=movingDocEdit] gridpanel' : {
+						itemdblclick : this.selectStockLocation
+					},
 
-							'movingDocEdit button[action=save]' : {
-								click : this.saveMaterialDoc
-							},
+					// 'contractSearch gridpanel[by=movingDocEdit] >
+					// button[action=search]' : {
+					'contractSearch[by=movingDocEdit] button[text="Search"]' : {
+						click : this.searchContract
+					},
+					'contractSearch gridpanel[by=movingDocEdit]' : {
+						itemdblclick : this.selectContract
+					},
 
-							'movingDocEdit button[action=cancel]' : {
-								click : this.cancelMaterialDoc
-							},
+					'materialDocItemSearch[by=movingDocEdit] button[action=search]' : {
+						click : this.searchMaterialDocItem
+					},
 
-							'movingDocEdit button[action=add]' : {
-								click : this.addMaterialDocItem
-							},
+					'materialDocItemSearch gridpanel[by=movingDocEdit]' : {
+						itemdblclick : this.selectMaterialDocItem
+					},
 
-							'movingDocEdit button[action=delete]' : {
-								click : this.deleteMaterialDocItem
-							}
+					'movingDocEdit button[action=save]' : {
+						click : this.saveMaterialDoc
+					},
 
-						});
+					'movingDocEdit button[action=cancel]' : {
+						click : this.cancelMaterialDoc
+					},
 
-			},
-			editMaterialDoc : function(grid, record) {
-				var view = Ext.widget('movingDocEdit', {
-							parentGrid : grid
-						});
+					'movingDocEdit button[action=add]' : {
+						click : this.addMaterialDocItem
+					},
 
-				view.down('form').loadRecord(record);
-				view.down('form').setTitle('凭证号:' + record.get('docNo'));
+					'movingDocEdit button[action=delete]' : {
+						click : this.deleteMaterialDocItem
+					}
 
-				view.down('grid').reconfigure(record.items());
+				});
 
-			},
+	},
+	
+	
+		searchStockLocation : function(button) {
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
 
-			addMaterialDoc : function(button) {
+		var tmp = [];
+		var filter = {};
+		var record = button.up('form').getValues();
+		if (record.stockLocation != "") {
+			filter.type = "string";
+			filter.field = "stockLocation";
+			filter.value = record.stockLocation;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-				var record = new AM.model.MaterialDoc();
-				record.setDocType({
-							id : this.docType
+		var p = store.getProxy();
+		p.extraParams.filter = Ext.JSON.encode(tmp);
 
-						});
+		store.load();
 
-				// record.set("contract",{});
-				var grid = button.up("gridpanel");
+	},
 
-				grid.getStore().insert(0, record);
-				record.store = grid.getStore();
+	selectStockLocation : function(grid, record) {
+		var win = grid.up('window');
+		win.close();
 
-				var view = Ext.widget('movingDocEdit', {
-							parentGrid : grid
-						});
+		var view = win.parentWindow;
+		
+		var form = view.down('form');
+		var oldRecord = form.getRecord();
+		oldRecord.setStockLocation(record);
+		oldRecord.set('targetWarehouse', record.data.stockLocation);
+		form.loadRecord(oldRecord);
+		//var grid = view.down('gridpanel');
+		//var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
+		//itemRecord.setStockLocation(record);
 
-				view.down('form').loadRecord(record);
-				view.down('form').setTitle('凭证号:' + record.get('docNo'));
-				view.down('grid').reconfigure(record.items());
+	},	
+	editMaterialDoc : function(grid, record) {
+		var view = Ext.widget('movingDocEdit', {
+					parentGrid : grid
+				});
 
-			},
+		view.down('form').loadRecord(record);
+		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 
-			addMaterialDocItem : function(button) {
-				var win = button.up('window');
-				var grid = win.down('gridpanel');
-				var store = grid.getStore();
-				var record = new AM.model.MaterialDocItem();
-				record.set('moveType', this.moveType1);
+		view.down('grid').reconfigure(record.items());
 
-				store.insert(0, record);
+	},
 
-			},
-			deleteMaterialDocItem : function(button) {
-				var win = button.up('window');
-				var grid = win.down('gridpanel');
-				var store = grid.getStore();
+	addMaterialDoc : function(button) {
 
-				var selection = grid.getView().getSelectionModel()
-						.getSelection()[0];
-				if (selection) {
-					store.remove(selection);
-				}
+		var record = new AM.model.MaterialDoc();
+		record.setDocType({
+					id : this.docType
 
-			},
+				});
 
-			deleteMaterialDoc : function(button) {
-				var viewport = button.up('viewport');
-				var grid = viewport.down('movingDocList');
-				var selection = grid.getView().getSelectionModel()
-						.getSelection()[0];
-				if (selection) {
-					grid.getStore().remove(selection);
-					grid.getStore().sync();
-				}
+		// record.set("contract",{});
+		var grid = button.up("gridpanel");
 
-			},
-			searchContract : function(button) {
-				var win = button.up('window');
-				var grid = win.down('gridpanel');
-				var store = grid.getStore();
+		grid.getStore().insert(0, record);
+		
+		record.join(grid.getStore());
+		record.getStockLocation();
 
-				var tmp = [];
-				var filter = {};
-				var record = button.up('form').getValues();
-				if (record.contractNo != "") {
-					filter.type = "string";
-					filter.field = "contractNo";
-					filter.value = record.contractNo;
-					tmp.push(Ext.apply({}, filter));
-				}
+		var view = Ext.widget('movingDocEdit', {
+					parentGrid : grid
+				});
 
-				if (record.supplier != "") {
-					filter.type = "string";
-					filter.field = "supplier";
-					filter.value = record.supplier;
-					tmp.push(Ext.apply({}, filter));
-				}
-				if (record.contractType != "") {
-					filter.type = "list";
-					filter.field = "contractType";
-					filter.value = record.contractType;
-					tmp.push(Ext.apply({}, filter));
-				}
+		view.down('form').loadRecord(record);
+		view.down('form').setTitle('凭证号:' + record.get('docNo'));
+		view.down('grid').reconfigure(record.items());
 
-				if (record.model != "") {
-					filter.type = "string";
-					filter.field = "items.model";
-					filter.value = record.model;
-					tmp.push(Ext.apply({}, filter));
-				}
+	},
 
-				var p = store.getProxy();
-				p.extraParams.filter = Ext.JSON.encode(tmp);
+	addMaterialDocItem : function(button) {
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
+		var record = new AM.model.MaterialDocItem();
+		record.set('moveType', this.moveType1);
 
-				store.load();
-			},
+		record.getStockLocation();
+		store.insert(0, record);
 
-			searchMaterialDocItem : function(button) {
-				var win = button.up('window');
-				var grid = win.down('gridpanel');
-				var store = grid.getStore();
+	},
+	deleteMaterialDocItem : function(button) {
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
 
-				var tmp = [];
-				var filter = {};
-				var record = button.up('form').getValues();
-				if (record.contractNo != "") {
-					filter.type = "string";
-					filter.field = "contract.contractNo";
-					filter.value = record.contractNo;
-					tmp.push(Ext.apply({}, filter));
-				}
+		var selection = grid.getView().getSelectionModel().getSelection()[0];
+		if (selection) {
+			store.remove(selection);
+		}
 
-				if (record.deliveryNote != "") {
-					filter.type = "string";
-					filter.field = "deliveryNote";
-					filter.value = record.deliveryNote;
-					tmp.push(Ext.apply({}, filter));
-				}
-				if (record.plateNum != "") {
-					filter.type = "list";
-					filter.field = "plateNum";
-					filter.value = record.plateNum;
-					tmp.push(Ext.apply({}, filter));
-				}
+	},
 
-				if (record.batchNo != "") {
-					filter.type = "string";
-					filter.field = "batchNo";
-					filter.value = record.batchNo;
-					tmp.push(Ext.apply({}, filter));
-				}
+	deleteMaterialDoc : function(button) {
+		var viewport = button.up('viewport');
+		var grid = viewport.down('movingDocList');
+		var selection = grid.getView().getSelectionModel().getSelection()[0];
+		if (selection) {
+			grid.getStore().remove(selection);
+			grid.getStore().sync();
+		}
 
-				if (record.workingNo != "") {
-					filter.type = "string";
-					filter.field = "workingNo";
-					filter.value = record.workingNo;
-					tmp.push(Ext.apply({}, filter));
-				}
+	},
+	searchContract : function(button) {
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
 
-				if (record.warehouse != "") {
-					filter.type = "string";
-					filter.field = "warehouse";
-					filter.value = record.warehouse;
-					tmp.push(Ext.apply({}, filter));
-				}
+		var tmp = [];
+		var filter = {};
+		var record = button.up('form').getValues();
+		if (record.contractNo != "") {
+			filter.type = "string";
+			filter.field = "contractNo";
+			filter.value = record.contractNo;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-				var p = store.getProxy();
-				p.extraParams.filter = Ext.JSON.encode(tmp);
+		if (record.supplier != "") {
+			filter.type = "string";
+			filter.field = "supplier";
+			filter.value = record.supplier;
+			tmp.push(Ext.apply({}, filter));
+		}
+		if (record.contractType != "") {
+			filter.type = "list";
+			filter.field = "contractType";
+			filter.value = record.contractType;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-				store.load();
-			},
+		if (record.model != "") {
+			filter.type = "string";
+			filter.field = "items.model";
+			filter.value = record.model;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-			selectMaterialDocItem : function(grid, record) {
-				var win = grid.up('window');
-				win.close();
-				var view = win.parentWindow;
-				var grid = view.down('gridpanel');
-				var itemRecord = grid.getView().getSelectionModel()
-						.getSelection()[0];
-				itemRecord.set('lineId_in', record.data);
-				itemRecord.set('contractNo', record.data.contractNo);
-				itemRecord.set('model_contract', record.data.model_contract);
-				itemRecord.set('model_tested', record.data.model_tested);
-				itemRecord.set('deliveryNote', record.data.deliveryNote);
-				itemRecord.set('batchNo', record.data.batchNo);
-				itemRecord.set('plateNum', record.data.plateNum);
-				itemRecord.set('warehouse', record.data.warehouse);
-				itemRecord.set('netWeight', record.data.netWeight);
-				itemRecord.set('direction', -1);
+		var p = store.getProxy();
+		p.extraParams.filter = Ext.JSON.encode(tmp);
 
-			},
-			selectContract : function(grid, record) {
-				var win = grid.up('window');
-				win.close();
-				var view = win.parentWindow;
-				var form = view.down('form');
-				var oldRecord = form.getRecord();
-				// oldRecord.set('contract_id', record.get('id'));
-				oldRecord.setContract(record.data);
-				oldRecord.set('contractNo', record.get('contractNo'));
-				form.loadRecord(oldRecord);
-				// oldRecord.get('contract').setDirty();
-			},
+		store.load();
+	},
 
-			// selectMaterialDocItem : function(grid, record) {
-			// var win = grid.up('window');
-			// win.close();
-			// var view = win.parentWindow;
-			// var form = view.down('form');
-			// var oldRecord = form.getRecord();
+	searchMaterialDocItem : function(button) {
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
 
-			// oldRecord.setLineid_in(record.data);
-			// oldRecord.set('model_contract', record.get('model_contract'));
-			// form.loadRecord(oldRecord);
+		var tmp = [];
+		var filter = {};
+		var record = button.up('form').getValues();
+		if (record.contractNo != "") {
+			filter.type = "string";
+			filter.field = "contract.contractNo";
+			filter.value = record.contractNo;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-			// },
+		if (record.deliveryNote != "") {
+			filter.type = "string";
+			filter.field = "deliveryNote";
+			filter.value = record.deliveryNote;
+			tmp.push(Ext.apply({}, filter));
+		}
+		if (record.plateNum != "") {
+			filter.type = "list";
+			filter.field = "plateNum";
+			filter.value = record.plateNum;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-			saveMaterialDoc : function(button) {
+		if (record.batchNo != "") {
+			filter.type = "string";
+			filter.field = "batchNo";
+			filter.value = record.batchNo;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-				var win = button.up('window');
-				form = win.down('form');
-				var record = form.getRecord();
-				
-				values = form.getValues();
-				if(values.targetWarehouse==""){
-					return;
-				}
-				
-				values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
-				record.set(values);
+		if (record.workingNo != "") {
+			filter.type = "string";
+			filter.field = "workingNo";
+			filter.value = record.workingNo;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-				// record.data.items = win.down('grid').getStore();
-				record.store.sync();
-				win.close();
+		if (record.stockLocation != "") {
+			filter.type = "string";
+			filter.field = "stockLocation.stockLocation";
+			filter.value = record.stockLocation;
+			tmp.push(Ext.apply({}, filter));
+		}
 
-			},
+		var p = store.getProxy();
+		p.extraParams.filter = Ext.JSON.encode(tmp);
 
-			cancelMaterialDoc : function(button) {
-				var win = button.up('window');
-				var form = win.down('form');
-				var grid = win.down('gridpanel')
+		store.load();
+	},
 
-				// this.getStore('OutgoingDocs').rejectChanges();
-				win.parentGrid.getStore().rejectChanges();
+	selectMaterialDocItem : function(grid, record) {
+		var win = grid.up('window');
+		win.close();
+		var view = win.parentWindow;
+		var grid = view.down('gridpanel');
+		var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
+		itemRecord.set('lineId_in', record.data);
+		itemRecord.set('contractNo', record.data.contractNo);
+		itemRecord.set('model_contract', record.data.model_contract);
+		itemRecord.set('model_tested', record.data.model_tested);
+		itemRecord.set('deliveryNote', record.data.deliveryNote);
+		itemRecord.set('batchNo', record.data.batchNo);
+		itemRecord.set('plateNum', record.data.plateNum);
+		itemRecord.set('warehouse', record.data.warehouse);
+		itemRecord.setStockLocation(record.getStockLocation());
+		itemRecord.set('netWeight', record.data.netWeight);
+		itemRecord.set('direction', -1);
 
-				grid.getStore().rejectChanges();
+	},
+	selectContract : function(grid, record) {
+		var win = grid.up('window');
+		win.close();
+		var view = win.parentWindow;
+		var form = view.down('form');
+		var oldRecord = form.getRecord();
+		// oldRecord.set('contract_id', record.get('id'));
+		oldRecord.setContract(record.data);
+		oldRecord.set('contractNo', record.get('contractNo'));
+		form.loadRecord(oldRecord);
+		// oldRecord.get('contract').setDirty();
+	},
 
-			}
+	// selectMaterialDocItem : function(grid, record) {
+	// var win = grid.up('window');
+	// win.close();
+	// var view = win.parentWindow;
+	// var form = view.down('form');
+	// var oldRecord = form.getRecord();
 
-		});
+	// oldRecord.setLineid_in(record.data);
+	// oldRecord.set('model_contract', record.get('model_contract'));
+	// form.loadRecord(oldRecord);
+
+	// },
+
+	saveMaterialDoc : function(button) {
+
+		var win = button.up('window');
+		form = win.down('form');
+		var record = form.getRecord();
+
+		values = form.getValues();
+		if (values.targetWarehouse == "") {
+			return;
+		}
+
+		values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
+		record.set(values);
+
+		// record.data.items = win.down('grid').getStore();
+		record.store.sync();
+		win.close();
+
+	},
+
+	cancelMaterialDoc : function(button) {
+		var win = button.up('window');
+		var form = win.down('form');
+		var grid = win.down('gridpanel')
+
+		// this.getStore('OutgoingDocs').rejectChanges();
+		win.parentGrid.getStore().rejectChanges();
+
+		grid.getStore().rejectChanges();
+
+	}
+
+});

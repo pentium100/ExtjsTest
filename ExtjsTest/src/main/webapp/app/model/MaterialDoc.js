@@ -50,7 +50,20 @@ Ext.define('AM.model.MaterialDoc', {
 				model : 'AM.model.MaterialDocItem',
 				name : 'items',
 				primaryKey : 'lineId',
-				storeConfig:{filterOnLoad:false}
+				storeConfig : {
+					filterOnLoad : false
+				}
+			}],
+
+	associations : [{
+				type : 'hasOne',
+
+				model : 'AM.model.master.stockLocation.StockLocation',
+				primaryKey : 'id',
+				foreignKey : 'stockLocation_id',
+				associationKey : 'targetStockLocation',
+				getterName : 'getStockLocation',
+				setterName : 'setStockLocation'
 			}],
 
 	belongsTo : [{

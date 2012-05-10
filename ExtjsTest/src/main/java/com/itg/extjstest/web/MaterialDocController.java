@@ -15,6 +15,7 @@ import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.MaterialDocItem;
 import com.itg.extjstest.domain.MaterialDocType;
 import com.itg.extjstest.domain.Message;
+import com.itg.extjstest.domain.StockLocation;
 import com.itg.extjstest.util.FilterItem;
 
 import flexjson.JSONDeserializer;
@@ -87,16 +88,19 @@ public class MaterialDocController {
 				// md.setContract(contract);
 
 				String targetWarehouse = "";
+				StockLocation targetStockLocation = null;
 				Iterator<MaterialDocItem> it = md.getItems().iterator();
 				while (it.hasNext()) {
 					MaterialDocItem mi = it.next();
 					if (mi.getMoveType().equals("101")) {
-						targetWarehouse = mi.getWarehouse();
+						targetWarehouse = mi.getStockLocation().getStockLocation();
+						targetStockLocation = mi.getStockLocation();
 						it.remove();
 
 					}
 				}
 				md.setTargetWarehouse(targetWarehouse);
+				md.setTargetStockLocation(targetStockLocation);
 
 			}
 		}
@@ -189,6 +193,7 @@ public class MaterialDocController {
 				newItem.setDirection((short) 1);
 				newItem.setNetWeight(item.getNetWeight());
 				newItem.setWarehouse(materialDoc.getTargetWarehouse());
+				newItem.setStockLocation(materialDoc.getTargetStockLocation());
 				newItem.setMaterialDoc(materialDoc);
 				newItem.setModel_contract(item.getModel_contract());
 				newItem.setModel_tested(item.getModel_tested());
@@ -214,16 +219,19 @@ public class MaterialDocController {
 			// materialDoc.setContract(contract);
 
 			String targetWarehouse = "";
+			StockLocation targetStockLocation = null;
 			Iterator<MaterialDocItem> it = materialDoc.getItems().iterator();
 			while (it.hasNext()) {
 				MaterialDocItem mi = it.next();
 				if (mi.getMoveType().equals("101")) {
 					targetWarehouse = mi.getWarehouse();
+					targetStockLocation = mi.getStockLocation();
 					it.remove();
 
 				}
 			}
 			materialDoc.setTargetWarehouse(targetWarehouse);
+			materialDoc.setTargetStockLocation(targetStockLocation);
 
 		}
 		
@@ -332,6 +340,7 @@ public class MaterialDocController {
 				newItem.setModel_tested(item.getModel_tested());
 
 				newItem.setWarehouse(materialDoc.getTargetWarehouse());
+				newItem.setStockLocation(materialDoc.getTargetStockLocation());
 				//items.add(newItem);
 				newItems.add(newItem);
 			}

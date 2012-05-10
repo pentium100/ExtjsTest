@@ -592,7 +592,7 @@ public class ReportController {
 		cte.append("      left join inspection on inspection.id = inspection_item.inspection, ");
 
 		cte.append(" ( ");
-		cte.append("  select line_id_in, stock_location.stock_location, SUM(net_weight*direction) as net_weight, SUM(gross_weight*direction) as gross_weight ");
+		cte.append("  select line_id_in, stock_location.stock_location, SUM(net_weight*direction) as net_weight, SUM(material_doc_item.gross_weight*direction) as gross_weight ");
 		cte.append("     from material_doc_item  ");
 		cte.append("     inner join material_doc_items on material_doc_items.items = material_doc_item.line_id ");
 		cte.append("     inner join stock_location on stock_location.id = material_doc_item.stock_location " );
