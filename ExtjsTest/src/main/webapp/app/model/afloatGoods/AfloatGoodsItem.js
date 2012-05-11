@@ -1,12 +1,13 @@
 Ext.define('AM.model.afloatGoods.AfloatGoodsItem', {
 			extend : 'Ext.data.Model',
-			idProperty: 'id',
+			idProperty : 'id',
 			fields : [{
 						name : 'model',
 						type : 'string'
 					}, {
 						name : 'quantity',
-						type : 'float'
+						type : 'float',
+						useNull : true
 					}, {
 						name : 'batchNo',
 						type : 'string'
@@ -17,5 +18,5 @@ Ext.define('AM.model.afloatGoods.AfloatGoodsItem', {
 						name : 'version',
 						type : 'int'
 					}]
-					
+
 		});

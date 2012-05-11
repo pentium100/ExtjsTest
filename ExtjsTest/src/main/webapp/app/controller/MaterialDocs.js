@@ -242,6 +242,7 @@ Ext.define('AM.controller.MaterialDocs', {
 							'lineId' : 0,
 							'version' : 0
 						};
+						record.set('remark', contractItem.get('remark'));
 						record.set('lineId_in', lineId_in);
 						materialDocItems.insert(0, record);
 

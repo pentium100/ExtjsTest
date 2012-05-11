@@ -134,7 +134,11 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 							dataIndex : 'netWeight',
 							width: 80,
 							text : '净重',
-							field : 'numberfield'
+							field : {
+								xtype : 'numberfield',
+								decimalPrecision : 3
+							},
+							format : '0,0000.000'
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'deliveryNote',

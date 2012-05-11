@@ -127,7 +127,8 @@ Ext.define('AM.view.afloatGoods.Edit', {
 										xtype : 'numbercolumn',
 										dataIndex : 'quantity',
 										text : '数量',
-										field : 'numberfield'
+										field : 'numberfield',
+										format: '0.00'
 									},{
 										xtype : 'gridcolumn',
 										dataIndex : 'batchNo',

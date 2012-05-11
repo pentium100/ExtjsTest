@@ -9,7 +9,7 @@ Ext.define('AM.view.inspection.Edit', {
 			height : 400,
 			width : 825,
 			modal : true,
-			views:['materialDoc.ItemSearch'],
+			views : ['materialDoc.ItemSearch'],
 
 			initComponent : function() {
 				var me = this;
@@ -82,8 +82,7 @@ Ext.define('AM.view.inspection.Edit', {
 										var view = Ext.widget(
 												'materialDocItemSearch', {
 													parentWindow : me,
-													by: me.xtype
-													
+													by : me.xtype
 
 												});
 
@@ -97,12 +96,12 @@ Ext.define('AM.view.inspection.Edit', {
 								xtype : 'gridcolumn',
 								dataIndex : 'model_contract',
 								text : '规格'
-								
-							},  {
+
+							}, {
 								xtype : 'gridcolumn',
 								dataIndex : 'plateNum',
 								text : '车号'
-								
+
 							}, {
 								xtype : 'gridcolumn',
 								dataIndex : 'batchNo',
@@ -112,66 +111,75 @@ Ext.define('AM.view.inspection.Edit', {
 								xtype : 'gridcolumn',
 								dataIndex : 'deliveryNote',
 								text : '进仓单号'
-								
+
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'netWeight',
 								text : '数量',
-								align: 'right',
-								field : 'numberfield'
+								align : 'right',
+								field : {
+									xtype : 'numberfield',
+									decimalPrecision : 3
+								},
+								format : '0,0000.000'
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'si',
-								width: 60,
-								align: 'right',
+								width : 60,
+								align : 'right',
 								text : 'si',
-								field : {xtype:'numberfield',
-									decimalPrecision:4
-									},
-								format:'0.0000'								
+								field : {
+									xtype : 'numberfield',
+									decimalPrecision : 4
+								},
+								format : '0.0000'
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'fe',
-								width: 51,
-								align: 'right',
+								width : 51,
+								align : 'right',
 								text : 'fe',
-								field : {xtype:'numberfield',
-									decimalPrecision:4
-									},
-								format:'0.0000'								
+								field : {
+									xtype : 'numberfield',
+									decimalPrecision : 4
+								},
+								format : '0.0000'
 
-							} , {
+							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'al',
-								width: 51,
-								align: 'right',
+								width : 51,
+								align : 'right',
 								text : 'al',
-								field : {xtype:'numberfield',
-									decimalPrecision:4
-									},
-								format:'0.0000'								
+								field : {
+									xtype : 'numberfield',
+									decimalPrecision : 4
+								},
+								format : '0.0000'
 
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'ca',
-								width: 51,
-								align: 'right',
+								width : 51,
+								align : 'right',
 								text : 'ca',
-								field : {xtype:'numberfield',
-									decimalPrecision:4
-									},
-								format:'0.0000'								
+								field : {
+									xtype : 'numberfield',
+									decimalPrecision : 4
+								},
+								format : '0.0000'
 
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'p',
-								width: 51,
-								align: 'right',
+								width : 51,
+								align : 'right',
 								text : 'p',
-								field : {xtype:'numberfield',
-									decimalPrecision:4
-									},
-								format:'0.0000'								
+								field : {
+									xtype : 'numberfield',
+									decimalPrecision : 4
+								},
+								format : '0.0000'
 
 							}, {
 								xtype : 'gridcolumn',
