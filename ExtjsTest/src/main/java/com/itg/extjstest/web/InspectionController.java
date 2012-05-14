@@ -1,5 +1,6 @@
 package com.itg.extjstest.web;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class InspectionController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "limit", required = false) Integer limit,
-			@RequestParam(value = "filter", required = false) String filter) {
+			@RequestParam(value = "filter", required = false) String filter) throws ParseException {
     	
 		List<Inspection> result;
 		List<FilterItem> filters = null;

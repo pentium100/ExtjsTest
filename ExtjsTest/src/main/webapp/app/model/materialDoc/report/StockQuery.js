@@ -47,6 +47,9 @@ Ext.define('AM.model.materialDoc.report.StockQuery', {
 						name : 'stock_location',
 						type : 'string'
 					},{
+						name : 'remark',
+						type : 'string'
+					},{
 						name : 'inspection_date',
 						type : 'date',
 						dateFormat : 'Y-m-d H:i:s'

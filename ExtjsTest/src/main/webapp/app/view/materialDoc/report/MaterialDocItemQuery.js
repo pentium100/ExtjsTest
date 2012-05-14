@@ -74,6 +74,10 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'textfield',
 									fieldLabel : '工作号',
 									name : 'working_no'
+								},  {
+									xtype : 'textfield',
+									fieldLabel : '出口发票号',
+									name : 'inv_no'
 								}, {
 									xtype : 'textfield',
 									fieldLabel : '规格(合同)',
@@ -141,6 +145,10 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'gridcolumn',
 									dataIndex : 'delivery_note_out',
 									text : '出仓单号'
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'inv_no',
+									text : '出口发票号'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'plate_num',

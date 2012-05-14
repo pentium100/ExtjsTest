@@ -5,6 +5,8 @@ import com.itg.extjstest.util.FilterItem;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -99,7 +101,7 @@ public class Contract {
 
 	public static List<com.itg.extjstest.domain.Contract> findContractsByFilter(
 			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit, boolean byItems) {
+			Integer page, Integer limit, boolean byItems) throws ParseException {
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<Contract> c = cb.createQuery(Contract.class);
 		Root<Contract> rootContract = c.from(Contract.class);

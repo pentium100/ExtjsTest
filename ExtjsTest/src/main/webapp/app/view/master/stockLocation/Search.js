@@ -14,7 +14,7 @@ Ext.define('AM.view.master.stockLocation.Search', {
 				var me = this;
 				var store = Ext.create(
 						'AM.store.master.stockLocation.StockLocations', {
-							autoLoad : false
+							autoLoad : true
 						});
 				Ext.applyIf(me, {
 

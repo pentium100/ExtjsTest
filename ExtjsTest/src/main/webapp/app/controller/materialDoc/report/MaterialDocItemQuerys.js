@@ -103,6 +103,13 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 					tmp.push(Ext.apply({}, filter));
 				}
 
+				if (record.inv_no != "") {
+					filter.type = "string";
+					filter.field = "material_doc.inv_no";
+					filter.value = record.inv_no;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
 				if (record.docDateFrom != "") {
 					filter.type = "date";
 					filter.comparison = 'ge';

@@ -1,15 +1,70 @@
- 
-#header { background: #7F99BE url(../images/layout-browser-hd-bg.gif) repeat-x center;}
-#header h1 {font-size: 16px;color: #fff;padding: 3px 10px; font-family:"微软雅黑","黑体"}
-.tabs{}
-.tabs{background-image: url(../images/menuPanel/bulletin_manager.gif) !important;}
-.manage{background-image: url(../images/menuPanel/admin.gif) !important;}
-.home{background-image: url(../images/icons/house.png) !important; line-height:30px;}
-.icon-menu{background-image: url(../images/icons/computer.png) !important;}
-.icon-contract{background-image: url(../images/icons/table_lightning.png) !important;}
-.icon-incoming{background-image: url(../images/icons/truck-icon.png) !important;}
-.icon-search{background-image: url(../images/icons/search-trigger.gif) !important;}
-.icon-moving{background-image: url(../images/icons/wire-transfer-icon.png) !important;}
-.icon-contract{background-image: url(../images/icons/contract-icon.png) !important;}
-.icon-outgoing{background-image: url(../images/icons/container-icon.png) !important;}
-.icon-report{background-image: url(../images/icons/report.png) !important;}
+#header {
+	background: #7F99BE url(../images/layout-browser-hd-bg.gif) repeat-x
+		center;
+}
+
+#header h1 {
+	font-size: 16px;
+	color: #fff;
+	padding: 3px 10px;
+	font-family: "微软雅黑", "黑体"
+}
+
+.tabs {
+	
+}
+
+.tabs {
+	background-image: url(../images/menuPanel/bulletin_manager.gif)
+		!important;
+}
+
+.manage {
+	background-image: url(../images/menuPanel/admin.gif) !important;
+}
+
+.home {
+	background-image: url(../images/icons/house.png) !important;
+	line-height: 30px;
+}
+
+.icon-menu {
+	background-image: url(../images/icons/computer.png) !important;
+}
+
+.icon-contract {
+	background-image: url(../images/icons/table_lightning.png) !important;
+}
+
+.icon-incoming {
+	background-image: url(../images/icons/truck-icon.png) !important;
+}
+
+.icon-search {
+	background-image: url(../images/icons/search-trigger.gif) !important;
+}
+
+.icon-moving {
+	background-image: url(../images/icons/wire-transfer-icon.png) !important;
+}
+
+.icon-contract {
+	background-image: url(../images/icons/contract-icon.png) !important;
+}
+
+.icon-outgoing {
+	background-image: url(../images/icons/container-icon.png) !important;
+}
+
+.icon-report {
+	background-image: url(../images/icons/report.png) !important;
+}
+
+.task .x-grid-cell-inner {
+	padding-left: 15px;
+}
+
+.x-grid-row-summary .x-grid-cell-inner {
+	font-weight: bold;
+	font-size: 11px;
+}

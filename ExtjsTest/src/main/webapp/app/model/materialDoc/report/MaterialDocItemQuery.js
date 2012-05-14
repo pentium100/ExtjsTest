@@ -20,6 +20,9 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 						name : 'delivery_note_in',
 						type : 'string'
 					},{
+						name : 'inv_no',
+						type : 'string'
+					},{
 						name : 'delivery_note_out',
 						type : 'string'
 					},{

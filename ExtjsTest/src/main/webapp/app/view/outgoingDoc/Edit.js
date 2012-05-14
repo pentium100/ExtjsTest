@@ -52,14 +52,14 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 									fieldLabel : '出仓单号'
 								}, {
 									xtype : 'textfield',
-									name : 'plateNum',
-									fieldLabel : '车号/卡号'
-									,hidden: true
-								}, {
+									name : 'invNo',
+									fieldLabel : '出口发票号'
+									// ,hidden: true
+							}	, {
 									xtype : 'textfield',
 									name : 'batchNo',
-									fieldLabel : '批次号'
-									,hidden: true
+									fieldLabel : '批次号',
+									hidden : true
 								}, {
 									xtype : 'datefield',
 									name : 'docDate',
@@ -69,8 +69,8 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 								}, {
 									xtype : 'textfield',
 									name : 'workingNo',
-									fieldLabel : '工作号'
-									,hidden: true
+									fieldLabel : '工作号',
+									hidden : true
 								}]
 					}],
 			items : [{
@@ -99,11 +99,19 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 
 				})],
 
+				features : [{
+							id : 'group',
+							ftype : 'groupingsummary',
+							groupHeaderTpl : '{name}',
+							hideGroupedHeader : true,
+							enableGroupingMenu : false
+						}],
+
 				columns : [{
 							xtype : 'gridcolumn',
 							dataIndex : 'model_contract',
 							text : '规格',
-							width: 80,
+							width : 80,
 							// field : 'trigger',
 							editor : {
 								xtype : 'trigger',
@@ -126,47 +134,58 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'model_tested',
-							width: 80,
+							width : 80,
 							text : '规格(检验后)'
 
 						}, {
 							xtype : 'numbercolumn',
 							dataIndex : 'netWeight',
-							width: 80,
+							width : 80,
 							text : '净重',
+							summaryType : 'sum',
 							field : {
 								xtype : 'numberfield',
-								decimalPrecision : 3
+								decimalPrecision : 3,
+								listeners : {
+									'blur' : function(comp) {
+										
+										var grid = comp.up('grid');
+										var view  = grid.getView();
+										view.refresh();
+
+									}
+
+								}
 							},
-							format : '0,0000.000'
+							format : '0,000.000'
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'deliveryNote',
 							text : '进仓单号',
-							width: 100
+							width : 100
 
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'workingNo',
 							text : '工作号',
-							width: 100
+							width : 100
 
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'plateNum',
-							width: 100,
+							width : 100,
 							text : '车号/卡号'
 
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'batchNo',
-							width: 200,
+							width : 200,
 							text : '批号'
 
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'warehouse',
-							width: 100,
+							width : 100,
 							text : '仓库'
 
 						}, {

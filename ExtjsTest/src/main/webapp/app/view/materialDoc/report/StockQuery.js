@@ -38,6 +38,10 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							text : '规格(合同)'
 						}, {
 							xtype : 'gridcolumn',
+							dataIndex : 'model_tested',
+							text : '规格(检验后)'
+						}, {
+							xtype : 'gridcolumn',
 							dataIndex : 'unit_price',
 							text : '单价',
 							sortable : false,
@@ -68,6 +72,11 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							xtype : 'gridcolumn',
 							dataIndex : 'stock_location',
 							text : '仓库'
+
+						}, {
+							xtype : 'gridcolumn',
+							dataIndex : 'remark',
+							text : '进仓备注'
 
 						}, {
 							xtype : 'datecolumn',

@@ -1,5 +1,13 @@
 package com.itg.extjstest.domain;
 
+import com.itg.extjstest.util.ContractObjectFactory;
+import com.itg.extjstest.util.ContractTypeObjectFactory;
+import com.itg.extjstest.util.FilterItem;
+import flexjson.JSONDeserializer;
+import flexjson.JSONSerializer;
+import flexjson.transformer.DateTransformer;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -26,14 +34,6 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
-
-import com.itg.extjstest.util.ContractObjectFactory;
-import com.itg.extjstest.util.ContractTypeObjectFactory;
-import com.itg.extjstest.util.FilterItem;
-
-import flexjson.JSONDeserializer;
-import flexjson.JSONSerializer;
-import flexjson.transformer.DateTransformer;
 
 @RooJavaBean
 @RooToString
@@ -67,89 +67,48 @@ public class MaterialDoc {
     @ManyToOne
     @NotNull
     private MaterialDocType docType;
-    
-    @Transient    
+
+    @Transient
     private String targetWarehouse;
 
-    @Transient    
+    @Transient
     private StockLocation targetStockLocation;
 
-    public static String toJsonArray(Collection<MaterialDoc> collection) {
-        return new JSONSerializer().exclude("*.class")
-        		.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class)
-        		.serialize(collection);
+    @Size(max = 50)
+    private String invNo;
+
+    public static String toJsonArray(Collection<com.itg.extjstest.domain.MaterialDoc> collection) {
+        return new JSONSerializer().exclude("*.class").transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class).serialize(collection);
     }
 
-    public static MaterialDoc fromJsonToMaterialDoc(String json) {
-        return new JSONDeserializer<MaterialDoc>()
-        		.use(null, MaterialDoc.class)
-        		.use(ContractType.class, new ContractTypeObjectFactory())
-        		.use("contract.contractType", new ContractTypeObjectFactory())
-        		.use(Contract.class, new ContractObjectFactory())
-        		.deserialize(json);
+    public static com.itg.extjstest.domain.MaterialDoc fromJsonToMaterialDoc(String json) {
+        return new JSONDeserializer<MaterialDoc>().use(null, MaterialDoc.class).use(ContractType.class, new ContractTypeObjectFactory()).use("contract.contractType", new ContractTypeObjectFactory()).use(Contract.class, new ContractObjectFactory()).deserialize(json);
     }
 
+    public static String mapToJson(HashMap<java.lang.String, java.lang.Object> map, List<com.itg.extjstest.domain.MaterialDoc> result) {
+        map.put("materialdocs", result);
+        String resultJson = new JSONSerializer().exclude("*.class").include("materialdocs").include("materialdocs.items").include("materialdocs.contract").include("materialdocs.docType").include("materialdocs.items.lineId_in").include("materialdocs.items.lineId_in.lineId").include("materialdocs.items.lineId_in.version").exclude("materialdocs.items.lineId_in.*.*").transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class).serialize(map);
+        return resultJson;
+    }
 
-
-	public static String mapToJson(HashMap<String, Object> map,
-			List<MaterialDoc> result) {
-		map.put("materialdocs", result);
-		String resultJson = new JSONSerializer()
-				.exclude("*.class")
-				//.exclude("materialdocs.items.lineId_in.materialDoc.contract")
-                //.exclude("materialdocs.items.lineId_in.materialDoc.items")				
-                //.exclude("materialdocs.items.lineId_in.materialDoc.docType")
-                .include("materialdocs")
-				.include("materialdocs.items")
-				.include("materialdocs.contract")
-				.include("materialdocs.docType")
-                .include("materialdocs.items.lineId_in")
-                .include("materialdocs.items.lineId_in.lineId")
-                .include("materialdocs.items.lineId_in.version")
-		        .exclude("materialdocs.items.lineId_in.*.*")				
-				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),Date.class)
-				.serialize(map);
-		
-		return resultJson;
-
-
-	}
-	
-	public static List<MaterialDoc> findMaterialDocsByFilter(
-			List<FilterItem> filters, Integer start, Integer page, Integer limit) {
-               
-               
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<MaterialDoc> c = cb.createQuery(MaterialDoc.class);
-		Root<MaterialDoc> root = c.from(MaterialDoc.class);
-		
-		//Join<MaterialDoc,MaterialDocItem> j = root.join("items");
-		
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		//paths.put("items", j);
-		
-		List<Predicate> criteria = new ArrayList<Predicate>();
-
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				if(f.getField().equals("contractNo")){
-					f.setField("contract.contractNo");
-					Join<MaterialDoc,Contract> fromContract = root.join("contract");
-					paths.put("contract", fromContract);
-					
-				}
-				
-				criteria.add(f.getPredicate(cb, paths));
-			}
-
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-
-		return entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
-
-	}
-	
-    
+    public static List<com.itg.extjstest.domain.MaterialDoc> findMaterialDocsByFilter(List<com.itg.extjstest.util.FilterItem> filters, Integer start, Integer page, Integer limit) throws ParseException {
+        CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+        CriteriaQuery<MaterialDoc> c = cb.createQuery(MaterialDoc.class);
+        Root<MaterialDoc> root = c.from(MaterialDoc.class);
+        HashMap<String, Path> paths = new HashMap<String, Path>();
+        paths.put("", root);
+        List<Predicate> criteria = new ArrayList<Predicate>();
+        if (filters != null) {
+            for (FilterItem f : filters) {
+                if (f.getField().equals("contractNo")) {
+                    f.setField("contract.contractNo");
+                    Join<MaterialDoc, Contract> fromContract = root.join("contract");
+                    paths.put("contract", fromContract);
+                }
+                criteria.add(f.getPredicate(cb, paths));
+            }
+            c.where(cb.and(criteria.toArray(new Predicate[0])));
+        }
+        return entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
+    }
 }

@@ -3,6 +3,8 @@ package com.itg.extjstest.domain;
 import com.itg.extjstest.util.FilterItem;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,7 +55,7 @@ public class Inspection {
 
 	public static List<com.itg.extjstest.domain.Inspection> findInspectionByFilter(
 			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit) {
+			Integer page, Integer limit) throws ParseException {
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<Inspection> c = cb.createQuery(Inspection.class);
 		Root<Inspection> inspection = c.from(Inspection.class);

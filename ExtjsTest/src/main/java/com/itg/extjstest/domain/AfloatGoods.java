@@ -5,6 +5,8 @@ import com.itg.extjstest.util.FilterItem;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,7 +72,7 @@ public class AfloatGoods {
 
 	public static List<com.itg.extjstest.domain.AfloatGoods> findAfloatGoodsByFilter(
 			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit) {
+			Integer page, Integer limit) throws ParseException {
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<AfloatGoods> c = cb.createQuery(AfloatGoods.class);
 		Root<AfloatGoods> afloatGoods = c.from(AfloatGoods.class);

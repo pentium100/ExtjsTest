@@ -135,7 +135,7 @@ Ext.define('AM.view.movingDoc.Edit', {
 										xtype : 'numberfield',
 										decimalPrecision : 3
 									},
-									format : '0,0000.000'
+									format : '0,000.000'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'deliveryNote',

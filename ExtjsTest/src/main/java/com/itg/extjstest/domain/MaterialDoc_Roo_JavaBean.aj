@@ -93,4 +93,12 @@ privileged aspect MaterialDoc_Roo_JavaBean {
         this.targetStockLocation = targetStockLocation;
     }
     
+    public String MaterialDoc.getInvNo() {
+        return this.invNo;
+    }
+    
+    public void MaterialDoc.setInvNo(String invNo) {
+        this.invNo = invNo;
+    }
+    
 }

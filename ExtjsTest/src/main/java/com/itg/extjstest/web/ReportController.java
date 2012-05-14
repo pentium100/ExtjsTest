@@ -38,6 +38,7 @@ import com.itg.extjstest.domain.Message;
 import com.itg.extjstest.domain.OpenOrderMemo;
 import com.itg.extjstest.domain.StockLocation;
 import com.itg.extjstest.util.FilterItem;
+import com.itg.extjstest.util.FilterObjectFactory;
 import com.itg.extjstest.util.ReportHeader;
 
 import flexjson.JSONDeserializer;
@@ -73,7 +74,6 @@ public class ReportController {
 		o1.setUpdateTime(new Date());
 		o1.setUpdateUser(request.getRemoteUser());
 
-
 		o1 = o1.merge();
 		o1.setUpdate_time(new Date());
 		o1.setUpdate_user(request.getRemoteUser());
@@ -83,7 +83,7 @@ public class ReportController {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("success", true);
 		String resultJson = OpenOrderMemo.mapToJson(map, openOrderMemos);
-		
+
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
 
 	}
@@ -261,33 +261,44 @@ public class ReportController {
 			sortString.append(",");
 		}
 
-		sortString.append(" c.contract_no asc ");
+		sortString.append(" contract_no asc ");
 
 		List<FilterItem> filters = null;
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					// .use("values.value", ArrayList.class)
-					.use("values.value", String.class).deserialize(filter);
+					.use("values.value", new FilterObjectFactory() ).deserialize(filter);
+					
 
 		}
 
 		StringBuffer whereString = new StringBuffer();
+		StringBuffer whereString2 = new StringBuffer();
 		for (FilterItem f : filters) {
-
-			whereString.append(" and " + f.getSqlWhere());
+			
+			if(f.getField().equals("quantity")||
+			   f.getField().equals("quantity_no_delivery")||
+			   f.getField().equals("quantity_in_receipt")){
+				
+				whereString2.append(" and " + f.getSqlWhere());
+			}else{
+				whereString.append(" and " + f.getSqlWhere());
+			}
 		}
 
 		StringBuffer query = new StringBuffer();
 		StringBuffer cte = new StringBuffer();
 
 		cte.append("with NoDelivery as (");
-		cte.append("select (ROW_NUMBER() over (order by "
-				+ sortString.toString()
-				+ " )) as rowNum, case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
+		cte.append("select " );
+		//cte.append("ROW_NUMBER() over (order by "
+		//		+ sortString.toString()
+		//		+ " )) as rowNum, ");
+		
+		cte.append("      case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
 
-		cte.append("		quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
-		cte.append("		                                            left join material_doc_item mi on mi.line_id = mds.items ");
+		cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
+		cte.append("                                           left join material_doc_item mi on mi.line_id = mds.items ");
 		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model),0))");
 		cte.append("      from contract c ");
 		cte.append("                   left join contract_item i on i.contract = c.id");
@@ -297,7 +308,10 @@ public class ReportController {
 		cte.append(whereString);
 		cte.append(" )");
 
-		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
+		//query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
+		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 ");		
+		query.append(whereString2);
+		query.append(" order by " + sortString.toString() +" ");
 
 		// SqlParameterSource param = new MapSqlParameterSource();
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -627,7 +641,7 @@ public class ReportController {
 
 		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, ");
 		cte.append("     stock.stock_location, stock.net_weight, material_doc_item.gross_weight, ");
-		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested, ");
+		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested,  material_doc_item.remark, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier, ");
 		cte.append("     convert(varchar(40),stock.line_id_in)+'--'+stock.stock_location as report_key, ");
 		cte.append("     inspection.inspection_date, inspection.authority,inspection.doc_no,inspection.original,inspection_item.remark as inspection_remark, ");
@@ -682,6 +696,11 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
+			header.setHeader("规格(检验后)");
+			header.setField("model_tested");
+			headers.add(header);
+
+			header = new ReportHeader();
 			header.setHeader("单价");
 			header.setField("unit_price");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
@@ -722,7 +741,11 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("仓库");
 			header.setField("stock_location");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("备注");
+			header.setField("remark");
 			headers.add(header);
 
 			header = new ReportHeader();

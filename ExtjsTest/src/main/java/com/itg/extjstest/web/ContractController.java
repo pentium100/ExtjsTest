@@ -1,5 +1,6 @@
 package com.itg.extjstest.web;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -47,7 +48,7 @@ public class ContractController {
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "filter", required = false) String filter,
-			@RequestParam(value = "byItems", required = false) Boolean byItems) {
+			@RequestParam(value = "byItems", required = false) Boolean byItems) throws ParseException {
 
 		List<Contract> result;
 		List<FilterItem> filters = null;

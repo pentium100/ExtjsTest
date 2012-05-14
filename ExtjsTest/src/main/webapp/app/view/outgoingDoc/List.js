@@ -34,6 +34,11 @@ Ext.define('AM.view.outgoingDoc.List', {
 							width: 100,
 							filterable : true
 						}, {
+							header : '出口发票号',
+							dataIndex : 'invNo',
+							width: 100,
+							filterable : true
+						}, {
 							header : '车号/卡号',
 							dataIndex : 'plateNum',
 							

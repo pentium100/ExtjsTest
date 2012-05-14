@@ -1,5 +1,6 @@
 package com.itg.extjstest.web;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -124,7 +125,7 @@ public class MessageController {
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "filter", required = false) String filter,
-			@RequestParam(value = "messageType", required = false) String messageType) {
+			@RequestParam(value = "messageType", required = false) String messageType) throws ParseException {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");

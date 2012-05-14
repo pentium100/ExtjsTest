@@ -1,5 +1,6 @@
 package com.itg.extjstest.web;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,7 +79,7 @@ public class StockLocationController {
 			@RequestParam(value = "limit") int limit,
 			@RequestParam(value = "filter", required = false) String filter
 
-	) {
+	) throws ParseException {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		

@@ -1,5 +1,6 @@
 package com.itg.extjstest.domain;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,13 +29,13 @@ import flexjson.transformer.DateTransformer;
 @RooJson
 public class StockLocation {
 
-    @Size(max = 50)
-    private String stockLocation;
+	@Size(max = 50)
+	private String stockLocation;
 
 	public static String mapToJson(HashMap<String, Object> map,
 			List<StockLocation> stockLocations) {
 		// TODO Auto-generated method stub
-	
+
 		map.put("stockLocations", stockLocations);
 		String resultJson = new JSONSerializer()
 				.exclude("*.class")
@@ -42,34 +43,31 @@ public class StockLocation {
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
 						Date.class).serialize(map);
 		return resultJson;
-		
-		
+
 	}
 
 	public static List<StockLocation> findStockLocationByFilter(
-			List<FilterItem> filters, int start, int page, int limit) {
-		
-		
-        CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-        CriteriaQuery<StockLocation> c = cb.createQuery(StockLocation.class);
-        Root<StockLocation> root = c.from(StockLocation.class);
-        HashMap<String, Path> paths = new HashMap<String, Path>();
-        paths.put("", root);
-        List<Predicate> criteria = new ArrayList<Predicate>();
-        if (filters != null) {
-            for (FilterItem f : filters) {
-                criteria.add(f.getPredicate(cb, paths));
-            }
-            c.where(cb.and(criteria.toArray(new Predicate[0])));
-        }
-        
-        List<StockLocation> list; 
-        list = entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
-        
-        return list;
+			List<FilterItem> filters, int start, int page, int limit)
+			throws ParseException {
 
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<StockLocation> c = cb.createQuery(StockLocation.class);
+		Root<StockLocation> root = c.from(StockLocation.class);
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", root);
+		List<Predicate> criteria = new ArrayList<Predicate>();
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				criteria.add(f.getPredicate(cb, paths));
+			}
+			c.where(cb.and(criteria.toArray(new Predicate[0])));
+		}
 
-		
-		
+		List<StockLocation> list;
+		list = entityManager().createQuery(c).setFirstResult(start)
+				.setMaxResults(limit).getResultList();
+
+		return list;
+
 	}
 }

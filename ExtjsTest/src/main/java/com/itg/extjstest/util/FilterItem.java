@@ -55,14 +55,15 @@ public class FilterItem {
 			return "=";
 		}
 
-		if (getType().equals("string") && (getValue()==null||(getValue().equals("null")))) {
+		if (getType().equals("string")
+				&& (getValue() == null || (getValue().equals("null")))) {
 			return "is";
 		}
 
 		if (getType().equals("string")) {
 			return "like";
 		}
-		
+
 		if (getType().equals("string")) {
 			return "like";
 		}
@@ -96,7 +97,6 @@ public class FilterItem {
 		this.comparison = comparison;
 	}
 
-	
 	public String getSqlValues() {
 
 		StringBuffer result = new StringBuffer();
@@ -124,7 +124,7 @@ public class FilterItem {
 
 		if (getType().equals("string")) {
 
-			if (getValue()==null||getValue().equals("null")) {
+			if (getValue() == null || getValue().equals("null")) {
 
 				result.append(" null ");
 			} else {
@@ -135,12 +135,12 @@ public class FilterItem {
 
 		if (getType().equals("list")) {
 			result.append("(");
-			result.append( getValue());
+			result.append(getValue());
 			result.append(")");
 
 		}
 
-		if (getType().equals("numeric")||getType().equals("int")) {
+		if (getType().equals("numeric") || getType().equals("int")) {
 			result.append(getValue());
 
 		}
@@ -152,9 +152,9 @@ public class FilterItem {
 
 		return result.toString();
 	}
-	
+
 	public Predicate getPredicate(CriteriaBuilder cb,
-			HashMap<String, Path> paths) {
+			HashMap<String, Path> paths) throws ParseException {
 		// TODO Auto-generated method stub
 		String[] fields = getField().split("\\.");
 		Path path;
@@ -169,11 +169,28 @@ public class FilterItem {
 
 		if (type.equals("list")) {
 			return path.get(fieldName).in(getStringListValue());
-			//return path.get(fieldName).in(getIntegerListValue());
+			// return path.get(fieldName).in(getIntegerListValue());
+		}
+
+		if (type.equals("date")) {
+
+			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+			if (getComparison().equals("<")) {
+				return cb.lessThan(path.get(fieldName).as(Date.class), sdf.parse(getValue()));
+			}
+
+			if (getComparison().equals(">")) {
+				return cb.greaterThan(path.get(fieldName).as(Date.class), sdf.parse(getValue()));
+			}
+
+			if (getComparison().equals("=")) {
+				return cb.equal(path.get(fieldName).as(Date.class), sdf.parse(getValue()));
+			}
+
 		}
 
 		if (type.equals("sList")) {
-			
+
 			return path.get(fieldName).in(getIntegerListValue());
 		}
 
@@ -183,9 +200,9 @@ public class FilterItem {
 		}
 		if (type.equals("int")) {
 			if (getComparison().equals("=")) {
-				
-				return cb.equal(path.get(fieldName).as(Integer.class), 
-						Integer.valueOf(getValue()) );
+
+				return cb.equal(path.get(fieldName).as(Integer.class),
+						Integer.valueOf(getValue()));
 
 			}
 
@@ -219,9 +236,8 @@ public class FilterItem {
 	}
 
 	public String getSqlWhere() {
-		
-		StringBuffer result = new StringBuffer();
 
+		StringBuffer result = new StringBuffer();
 
 		result.append(getField());
 		result.append(" ");
@@ -230,7 +246,7 @@ public class FilterItem {
 		result.append(getSqlValues());
 		result.append(" ");
 		return result.toString();
-		
+
 	}
 
 }

@@ -93,7 +93,8 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'supplier',
-									text : '供应商'
+									text : '供应商',
+									filterable : true
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'model',
@@ -102,25 +103,26 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity',
 									text : '签约数量',
-									align : 'right'
+									align : 'right',
+									filterable : true,
+									sortable : true
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity_in_receipt',
 									text : '执行数量',
-									sortable : false,
-									align : 'right'
+									sortable : true,
+									align : 'right',
+									filterable : true
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity_no_delivery',
 									text : '未执行数量',
-									sortable : false,
-									align : 'right'
+									sortable : true,
+									align : 'right',
+									filterable : true
 								}
 
 						],
-						viewConfig : {
-
-			}			,
 						dockedItems : [{
 									xtype : 'pagingtoolbar',
 									// width : 360,
@@ -132,6 +134,12 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 												text : '导出到excel',
 												action : 'exportToExcel'
 											}]
+								}],
+						features : [{
+									ftype : 'filters',
+									encode : true, // json encode the filter
+													// query
+									local : false
 								}]
 
 					}]

@@ -10,6 +10,10 @@ Ext.define('AM.controller.OutgoingDocs', {
 	init : function(options) {
 
 		Ext.apply(this, options);
+		Ext.require('Ext.grid.feature.GroupingSummary');
+		// var grid =
+		// var view = grid.getView();
+		// view.getFeature('group').toggleSummaryRow(showSummary);
 
 		this.control({
 
@@ -81,6 +85,8 @@ Ext.define('AM.controller.OutgoingDocs', {
 		// });
 
 		// }, this);
+		var store = record.items();
+		store.group('model_contract');
 
 		view.down('grid').reconfigure(record.items());
 
@@ -97,6 +103,9 @@ Ext.define('AM.controller.OutgoingDocs', {
 		var view = Ext.widget('outgoingDocEdit');
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
+		var store = record.items();
+		store.group('model_contract');
+
 		view.down('grid').reconfigure(record.items());
 
 	},
@@ -256,6 +265,9 @@ Ext.define('AM.controller.OutgoingDocs', {
 		itemRecord.setStockLocation(record.getStockLocation());
 		itemRecord.set('netWeight', record.data.netWeight);
 		itemRecord.set('direction', -1);
+
+		view = grid.getView();
+		view.refresh();
 
 	},
 	selectContract : function(grid, record) {

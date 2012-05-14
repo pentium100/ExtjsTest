@@ -13,6 +13,10 @@ Ext.define('AM.model.MaterialDoc', {
 				type : 'string'
 
 			}, {
+				name : 'invNo',
+				type : 'string'
+
+			}, {
 				name : 'batchNo',
 				type : 'string'
 

@@ -1,5 +1,6 @@
 package com.itg.extjstest.web;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +35,7 @@ public class MaterialDocItemController {
 			@RequestParam(value = "filter", required = false) String filter,
 			@PathVariable int queryMode
 
-	) {
+	) throws ParseException {
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");

@@ -5,6 +5,7 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -110,7 +111,7 @@ public class Message {
         return new JSONDeserializer<Message>().use(null, Message.class).deserialize(json);
     }
 
-    public static List<com.itg.extjstest.domain.Message> findMessagesByFilter(List<com.itg.extjstest.util.FilterItem> filters, Integer start, Integer page, Integer limit) {
+    public static List<com.itg.extjstest.domain.Message> findMessagesByFilter(List<com.itg.extjstest.util.FilterItem> filters, Integer start, Integer page, Integer limit) throws ParseException {
         CriteriaBuilder cb = entityManager().getCriteriaBuilder();
         CriteriaQuery<Message> c = cb.createQuery(Message.class);
         Root<Message> root = c.from(Message.class);
