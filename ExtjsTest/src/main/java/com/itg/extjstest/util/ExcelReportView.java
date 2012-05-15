@@ -13,6 +13,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.springframework.web.servlet.view.document.AbstractExcelView;
 
 public class ExcelReportView extends AbstractExcelView {
@@ -56,21 +57,24 @@ public class ExcelReportView extends AbstractExcelView {
 			for (ReportHeader colHeader : headers) {
 
 				HSSFCell cell = row.createCell(i++);
+				
 				if (dataSet.get(colHeader.getField().toString()) != null) {
 
 					String value;
+					
 
 					if (java.util.Date.class.isInstance(dataSet.get(colHeader
 							.getField().toString()))) {
 						value = sdf.format(dataSet.get(colHeader.getField()
 								.toString()));
 					} else {
-						value = dataSet.get(colHeader.getField().toString())
-								.toString();
+						value = dataSet.get(colHeader.getField().toString()).toString();
 					}
+
 					cell.setCellValue(value);
 
 				}
+				
 				cell.setCellStyle(colHeader.getStyle(workbook));
 
 			}

@@ -181,21 +181,22 @@ public class ReportController {
 			header.setHeader("采购数量");
 			header.setField("quantity_purchases");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(1);
+			header.setFormat("#,##0.000");
+			
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("销售数量");
 			header.setField("quantity_sales");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(2);
+			header.setFormat("#,##0.000");
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("敞口数量");
 			header.setField("quantity_open");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(3);
+			header.setFormat("#,##0.000");
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -267,7 +268,9 @@ public class ReportController {
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					.use("values.value", new FilterObjectFactory() ).deserialize(filter);
+					.use("values.value", new FilterObjectFactory() )
+					.deserialize(filter);
+					
 					
 
 		}
@@ -356,21 +359,21 @@ public class ReportController {
 			header.setHeader("签约数量");
 			header.setField("quantity");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(4);
+			header.setFormat("#,##0.000");
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("执行数量");
 			header.setField("quantity_in_receipt");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(5);
+			header.setFormat("#,##0.000");
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("未执行数量");
 			header.setField("quantity_no_delivery");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(6);
+			header.setFormat("#,##0.000");
 			headers.add(header);
 
 			map.put("headers", headers);

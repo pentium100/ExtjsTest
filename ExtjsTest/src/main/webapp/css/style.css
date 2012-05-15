@@ -68,3 +68,27 @@
 	font-weight: bold;
 	font-size: 11px;
 }
+
+.ux-filtered-column.sort-asc .x-grid3-sort-icon {
+	background-image: url(../images/sort_filtered_asc.gif) !important;
+}
+
+.ux-filtered-column.sort-desc .x-grid3-sort-icon {
+	background-image: url(../images/sort_filtered_desc.gif) !important;
+}
+
+.ux-gridfilter-text-icon {
+	background-image: url(../images/find.png) !important;
+}
+
+.ux-rangemenu-gt {
+	background-image: url(../images/greater_than.png) !important;
+}
+
+.ux-rangemenu-lt {
+	background-image: url(../images/less_than.png) !important;
+}
+
+.ux-rangemenu-eq {
+	background-image: url(../images/equals.png) !important;
+}

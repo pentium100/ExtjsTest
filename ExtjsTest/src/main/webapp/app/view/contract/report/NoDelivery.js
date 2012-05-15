@@ -105,21 +105,24 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 									text : '签约数量',
 									align : 'right',
 									filterable : true,
-									sortable : true
+									sortable : true,
+									format : '0,000.000'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity_in_receipt',
 									text : '执行数量',
 									sortable : true,
 									align : 'right',
-									filterable : true
+									filterable : true,
+									format : '0,000.000'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'quantity_no_delivery',
 									text : '未执行数量',
 									sortable : true,
 									align : 'right',
-									filterable : true
+									filterable : true,
+									format : '0,000.000'
 								}
 
 						],
