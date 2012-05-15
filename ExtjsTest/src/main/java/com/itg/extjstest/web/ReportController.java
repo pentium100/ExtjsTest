@@ -527,14 +527,14 @@ public class ReportController {
 			header.setHeader("签约数量");
 			header.setField("quantity");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(3);
+			header.setFormat("#,##0.000");
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("单价");
 			header.setField("unit_price");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(3);
+			header.setFormat("#,##0.00");
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -706,18 +706,21 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("单价");
 			header.setField("unit_price");
+			header.setFormat("#,##0.00");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("毛重");
 			header.setField("gross_weight");
+			header.setFormat("#,##0.000");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("净重");
 			header.setField("net_weight");
+			header.setFormat("#,##0.000");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
@@ -1021,6 +1024,7 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("数量");
 			header.setField("net_weight");
+			header.setFormat("#,##0.000");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
@@ -1453,6 +1457,7 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("毛重");
 			header.setField("gross_weight");
+			header.setFormat("#,##0.000");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
@@ -1464,6 +1469,7 @@ public class ReportController {
 
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
+			header.setFormat("#,##0.000");
 			header.setField("delivery_note_in");
 			headers.add(header);
 
