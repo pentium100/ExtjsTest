@@ -98,6 +98,8 @@ public class MaterialDocController {
 						targetStockLocation = mi.getStockLocation();
 						it.remove();
 
+					}else{
+						mi.setWarehouse(mi.getStockLocation().getStockLocation());
 					}
 				}
 				md.setTargetWarehouse(targetWarehouse);

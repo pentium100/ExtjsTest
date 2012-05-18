@@ -588,7 +588,16 @@ public class ReportController {
 				sortString.append(",");
 			}
 
-			sortString.append(" " + s.get("property") + " "
+			String fieldName = s.get("property");
+			if(fieldName.equals("net_weight")){
+				fieldName = "stock."+fieldName;
+			}
+			
+			if(fieldName.equals("gross_weight")){
+				fieldName = "material_doc_item."+fieldName;
+			}
+			
+			sortString.append(" " + fieldName + " "
 					+ s.get("direction"));
 		}
 		if (!sortString.toString().equals("")) {

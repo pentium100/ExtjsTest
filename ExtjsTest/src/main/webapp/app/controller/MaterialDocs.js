@@ -24,6 +24,10 @@ Ext.define('AM.controller.MaterialDocs', {
 						click : this.deleteMaterialDoc
 					},
 
+					'materialDocList button[action=copy]' : {
+						click : this.copyMaterialDoc
+					},
+
 					'contractSearch[by=materialDocEdit] button[action=search]' : {
 						click : this.searchContract
 					},
@@ -105,6 +109,58 @@ Ext.define('AM.controller.MaterialDocs', {
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 
 		view.down('grid').reconfigure(record.items());
+
+	},
+
+	copyMaterialDoc : function(button) {
+		var viewport = button.up('viewport');
+		var grid = viewport.down('materialDocList');
+		var selection = grid.getView().getSelectionModel().getSelection()[0];
+		if (selection) {
+
+			var record = selection.copy();
+			Ext.data.Model.id(record);
+			this.getStore('MaterialDocs').insert(0, record);
+			
+
+			record.setDocType({
+						'id' : this.docType
+					});
+
+			record.set('docNo', 0);
+			var items = selection.items();
+
+			items.each(function(item) {
+
+						var item2 = item.copy();
+						Ext.data.Model.id(item2);
+
+						var lineId_in = {
+							'lineId' : 0,
+							'version' : 0
+						};
+						item2.set('lineId_in', lineId_in);
+						// item.lineId_in = lineId_in;
+						// item.dirty = false;
+						item2.set('lineId', 0);
+						//item2.set('lineId_test', 0);
+						//item2.set('lineId_up', 0)
+						item2.phantom = true;
+						// item.commit(true);
+						var itemStore = this.items();
+						itemStore.insert(0, item2);
+						item2.join(this.items());
+					}, record);
+			record.phantom = true;
+			record.join(this.getStore('MaterialDocs'));
+			var view = Ext.widget('materialDocEdit');
+			view.down('form').loadRecord(record);
+			view.down('form').setTitle('凭证号:' + record.get('docNo'));
+			view.down('grid').reconfigure(record.items());
+
+			// grid.getStore().remove(selection);
+			// grid.getStore().sync();
+		}
 
 	},
 
@@ -270,27 +326,27 @@ Ext.define('AM.controller.MaterialDocs', {
 
 		items.each(function(item) {
 
-			var stockLocation = item.getStockLocation();
-			if (stockLocation.get('id') == 0) {
-				Ext.MessageBox.show({
-							title : '错误信息',
-							msg : '行项目上的仓库必输!',
-							buttons : Ext.Msg.OK,
-							icon : Ext.MessageBox.ERROR,
-							closable : false,
-							modal : true
-						});
-				canUpdate = false;
+					var stockLocation = item.getStockLocation();
+					if (stockLocation.get('id') == 0) {
+						Ext.MessageBox.show({
+									title : '错误信息',
+									msg : '行项目上的仓库必输!',
+									buttons : Ext.Msg.OK,
+									icon : Ext.MessageBox.ERROR,
+									closable : false,
+									modal : true
+								});
+						canUpdate = false;
 
-			}
+					}
 
-		}, this);
+				}, this);
 
 		if (canUpdate) {
 			record.store.sync();
 			win.close();
 		}
-		
+
 		delete canUpdate;
 
 	},

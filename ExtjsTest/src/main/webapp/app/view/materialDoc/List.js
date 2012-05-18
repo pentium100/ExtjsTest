@@ -104,6 +104,11 @@ Ext.define('AM.view.materialDoc.List', {
 										action : 'add'
 
 									}, {
+										iconCls : 'icon-copy',
+										text : 'Copy',
+										action : 'copy'
+
+									}, {
 										iconCls : 'icon-delete',
 										text : 'Delete',
 										action : 'delete'

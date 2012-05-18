@@ -88,12 +88,15 @@ Ext.define('AM.view.movingDoc.Edit', {
 
 						})],
 
-						columns : [{
-									xtype : 'gridcolumn',
-									dataIndex : 'contractNo',
-									text : '合同号'
+						features : [{
+									id : 'group',
+									ftype : 'groupingsummary',
+									groupHeaderTpl : '{name}',
+									hideGroupedHeader : true,
+									enableGroupingMenu : false
+								}],
 
-								}, {
+						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'model_contract',
 									text : '规格',
@@ -112,8 +115,8 @@ Ext.define('AM.view.movingDoc.Edit', {
 															'AM.view.materialDoc.ItemSearch',
 															{
 																parentWindow : me,
-																by : me.xtype
-
+																by : me.xtype,
+																selMode : 'MULTI'
 															});
 
 											view.show();
@@ -121,6 +124,11 @@ Ext.define('AM.view.movingDoc.Edit', {
 										}
 
 									}
+
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'contractNo',
+									text : '合同号'
 
 								}, {
 									xtype : 'gridcolumn',

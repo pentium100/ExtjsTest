@@ -122,7 +122,8 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 									var view = Ext.widget(
 											'materialDocItemSearch', {
 												parentWindow : me,
-												by : me.xtype
+												by : me.xtype, 
+												selMode: 'SINGLE'
 											});
 
 									view.show();

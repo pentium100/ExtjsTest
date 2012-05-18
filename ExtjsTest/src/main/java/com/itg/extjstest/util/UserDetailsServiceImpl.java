@@ -26,8 +26,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 			throw new UsernameNotFoundException("user not found");
 
 		
-        Md5PasswordEncoder md5 = new Md5PasswordEncoder();  
-        String md5Password = md5.encodePassword("123", null);
+        //Md5PasswordEncoder md5 = new Md5PasswordEncoder();  
+        //String md5Password = md5.encodePassword("123", null);
         //userDetail.setPassword(md5Password);
 
 		return assembler.buildUserFromUserEntity(userDetail);

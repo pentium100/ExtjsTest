@@ -32,6 +32,10 @@ Ext.define('AM.controller.OutgoingDocs', {
 				click : this.searchMaterialDocItem
 			},
 
+			'materialDocItemSearch[by=outgoingDocEdit] button[action=add]' : {
+				click : this.addMaterialDocItems
+			},
+
 			'materialDocItemSearch[by=outgoingDocEdit] gridpanel' : {
 				itemdblclick : this.selectMaterialDocItem
 			},
@@ -111,21 +115,69 @@ Ext.define('AM.controller.OutgoingDocs', {
 	},
 	addMaterialDocItem : function(button) {
 		var win = button.up('window');
-		var grid = win.down('gridpanel');
+		// var grid = win.down('gridpanel');
+		// var store = grid.getStore();
+
+		var view = Ext.widget('materialDocItemSearch', {
+					parentWindow : win,
+					by : win.xtype,
+					selMode : 'MULTI'
+				});
+
+		view.show();
+
+		// var record = new AM.model.MaterialDocItem();
+		// record.getStockLocation();
+		// record.set('moveType', this.moveType);
+
+		// store.insert(0, record);
+		// record.join(store);
+
+	},
+
+	addMaterialDocItems : function(button) {
+		var win = button.up('window');
+
+		var searchGrid = win.down('gridpanel');
+
+		var selModel = searchGrid.getView().getSelectionModel();
+		var items = selModel.getSelection();
+		if (selModel.mode == "SINGLE" && items.length == 1) {
+
+			return this.selectMaterialDocItem(searchGrid, items[0]);
+		}
+
+		win.close();
+		var view = win.parentWindow;
+		var grid = view.down('gridpanel');
 		var store = grid.getStore();
-		var record = new AM.model.MaterialDocItem();
-		// new AM.model.MaterialDocItem(null, null,
-		// {stockLocation:{id:0,stockLocation:'',version:0}});
-		record.getStockLocation();
-		record.set('moveType', this.moveType);
+		var i;
+		for (i = 0; i < items.length; i++) {
+			var itemRecord = new AM.model.MaterialDocItem();
+			itemRecord.getStockLocation();
+			itemRecord.set('moveType', this.moveType);
 
-		// var edit = grid.editing;
+			var record = items[i];
+			itemRecord.set('lineId_in', record.data);
+			itemRecord.set('model_contract', record.data.model_contract);
+			itemRecord.set('model_tested', record.data.model_tested);
+			itemRecord.set('deliveryNote', record.data.deliveryNote);
+			itemRecord.set('workingNo', record.data.workingNo);
+			itemRecord.set('batchNo', record.data.batchNo);
 
-		// edit.cancelEdit();
-		store.insert(0, record);
-		record.join(store);
-		// record.store = store;
-		// edit.startEditByPosition({
+			itemRecord.set('plateNum', record.data.plateNum);
+			itemRecord.set('warehouse', record.data.warehouse);
+			// itemRecord.set('stockLocation', record.getStockLocation().data);
+			itemRecord.setStockLocation(record.getStockLocation());
+			itemRecord.set('netWeight', record.data.netWeight);
+			itemRecord.set('direction', -1);
+			store.insert(0, itemRecord);
+			itemRecord.join(store);
+
+		}
+
+		view = grid.getView();
+		view.refresh();
 
 	},
 	deleteMaterialDocItem : function(button) {

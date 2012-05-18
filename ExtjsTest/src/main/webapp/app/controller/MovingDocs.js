@@ -46,6 +46,10 @@ Ext.define('AM.controller.MovingDocs', {
 						click : this.searchMaterialDocItem
 					},
 
+					'materialDocItemSearch[by=movingDocEdit] button[action=add]' : {
+						click : this.addMaterialDocItems
+					},
+
 					'materialDocItemSearch gridpanel[by=movingDocEdit]' : {
 						itemdblclick : this.selectMaterialDocItem
 					},
@@ -118,7 +122,8 @@ Ext.define('AM.controller.MovingDocs', {
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 
 		view.down('grid').reconfigure(record.items());
-
+		var store = record.items();
+		store.group('model_contract');
 	},
 
 	addMaterialDoc : function(button) {
@@ -144,18 +149,64 @@ Ext.define('AM.controller.MovingDocs', {
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 		view.down('grid').reconfigure(record.items());
+		var store = record.items();
+		store.group('model_contract');
+	},
+
+	addMaterialDocItems : function(button) {
+		var win = button.up('window');
+
+		var searchGrid = win.down('gridpanel');
+
+		var selModel = searchGrid.getView().getSelectionModel();
+		var items = selModel.getSelection();
+		if (selModel.mode == "SINGLE" && items.length == 1) {
+
+			return this.selectMaterialDocItem(searchGrid, items[0]);
+		}
+
+		win.close();
+		var view = win.parentWindow;
+		var grid = view.down('gridpanel');
+		var store = grid.getStore();
+		var i;
+		for (i = 0; i < items.length; i++) {
+			var itemRecord = new AM.model.MaterialDocItem();
+			itemRecord.getStockLocation();
+			itemRecord.set('moveType', this.moveType1);
+
+			var record = items[i];
+			itemRecord.set('lineId_in', record.data);
+			itemRecord.set('contractNo', record.data.contractNo);
+			itemRecord.set('model_contract', record.data.model_contract);
+			itemRecord.set('model_tested', record.data.model_tested);
+			itemRecord.set('deliveryNote', record.data.deliveryNote);
+			itemRecord.set('batchNo', record.data.batchNo);
+			itemRecord.set('plateNum', record.data.plateNum);
+			itemRecord.set('warehouse', record.data.warehouse);
+			itemRecord.setStockLocation(record.getStockLocation());
+			itemRecord.set('netWeight', record.data.netWeight);
+			itemRecord.set('direction', -1);
+			store.insert(0, itemRecord);
+			itemRecord.join(store);
+
+		}
+
+		view = grid.getView();
+		view.refresh();
 
 	},
 
 	addMaterialDocItem : function(button) {
-		var win = button.up('window');
-		var grid = win.down('gridpanel');
-		var store = grid.getStore();
-		var record = new AM.model.MaterialDocItem();
-		record.set('moveType', this.moveType1);
 
-		record.getStockLocation();
-		store.insert(0, record);
+		var win = button.up('window');
+		var view = Ext.widget('materialDocItemSearch', {
+					parentWindow : win,
+					by : win.xtype,
+					selMode : 'MULTI'
+				});
+
+		view.show();
 
 	},
 	deleteMaterialDocItem : function(button) {
@@ -282,18 +333,19 @@ Ext.define('AM.controller.MovingDocs', {
 		var view = win.parentWindow;
 		var grid = view.down('gridpanel');
 		var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
-		itemRecord.set('lineId_in', record.data);
-		itemRecord.set('contractNo', record.data.contractNo);
-		itemRecord.set('model_contract', record.data.model_contract);
-		itemRecord.set('model_tested', record.data.model_tested);
-		itemRecord.set('deliveryNote', record.data.deliveryNote);
-		itemRecord.set('batchNo', record.data.batchNo);
-		itemRecord.set('plateNum', record.data.plateNum);
-		itemRecord.set('warehouse', record.data.warehouse);
-		itemRecord.setStockLocation(record.getStockLocation());
-		itemRecord.set('netWeight', record.data.netWeight);
-		itemRecord.set('direction', -1);
-
+		if (itemRecord != undefined) {
+			itemRecord.set('lineId_in', record.data);
+			itemRecord.set('contractNo', record.data.contractNo);
+			itemRecord.set('model_contract', record.data.model_contract);
+			itemRecord.set('model_tested', record.data.model_tested);
+			itemRecord.set('deliveryNote', record.data.deliveryNote);
+			itemRecord.set('batchNo', record.data.batchNo);
+			itemRecord.set('plateNum', record.data.plateNum);
+			itemRecord.set('warehouse', record.data.warehouse);
+			itemRecord.setStockLocation(record.getStockLocation());
+			itemRecord.set('netWeight', record.data.netWeight);
+			itemRecord.set('direction', -1);
+		}
 	},
 	selectContract : function(grid, record) {
 		var win = grid.up('window');
