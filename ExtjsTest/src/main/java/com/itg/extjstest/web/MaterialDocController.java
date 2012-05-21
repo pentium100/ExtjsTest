@@ -23,6 +23,7 @@ import flexjson.JSONDeserializer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
@@ -94,12 +95,14 @@ public class MaterialDocController {
 				while (it.hasNext()) {
 					MaterialDocItem mi = it.next();
 					if (mi.getMoveType().equals("101")) {
-						targetWarehouse = mi.getStockLocation().getStockLocation();
+						targetWarehouse = mi.getStockLocation()
+								.getStockLocation();
 						targetStockLocation = mi.getStockLocation();
 						it.remove();
 
-					}else{
-						mi.setWarehouse(mi.getStockLocation().getStockLocation());
+					} else {
+						mi.setWarehouse(mi.getStockLocation()
+								.getStockLocation());
 					}
 				}
 				md.setTargetWarehouse(targetWarehouse);
@@ -128,12 +131,12 @@ public class MaterialDocController {
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		MaterialDoc materialDoc = MaterialDoc.fromJsonToMaterialDoc(json);
 
-		
 		String res = "";
-		if (request.getParameter("focusUpdate")==null||!request.getParameter("focusUpdate").equals("true")) {
+		if (request.getParameter("focusUpdate") == null
+				|| !request.getParameter("focusUpdate").equals("true")) {
 			res = checkContractQuantity(materialDoc);
 		}
-		
+
 		if (!res.equals("")) {
 			map.put("success", false);
 			map.put("message", res);
@@ -143,7 +146,7 @@ public class MaterialDocController {
 			return new ResponseEntity<String>(resultJson, headers, status);
 
 		}
-		
+
 		Set<MaterialDocItem> items = materialDoc.getItems();
 		List<MaterialDocItem> newItems = new ArrayList<MaterialDocItem>();
 
@@ -154,12 +157,10 @@ public class MaterialDocController {
 				item.setLineId_in(item);
 				item.setLineId_test(item);
 				item.setContract(materialDoc.getContract());
-				
+
 			}
 
-
-			if (materialDoc.getDocType().getDocType_txt().equals("出仓")
-					) {
+			if (materialDoc.getDocType().getDocType_txt().equals("出仓")) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
@@ -168,24 +169,31 @@ public class MaterialDocController {
 				item.setContract(materialDoc.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 			}
-			
+
 			if (materialDoc.getDocType().getDocType_txt().equals("移仓")
 					&& item.getMoveType().equals("351")) {
 
 				// MaterialDocItem newItem = new MaterialDocItem();
-				
+
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
-				
-				MaterialDocItem itemIn = MaterialDocItem.findMaterialDocItem(item.getLineId_in().getLineId());
+
+				MaterialDocItem itemIn = MaterialDocItem
+						.findMaterialDocItem(item.getLineId_in().getLineId());
 				materialDoc.setContract(itemIn.getContract());
 				item.setContract(itemIn.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
-				MaterialDocItem newItem = MaterialDocItem
-						.findMaterialDocItemsByLineId_up(item)
-						.getSingleResult();
+				MaterialDocItem newItem = null;
+				try {
+					 newItem = MaterialDocItem
+							.findMaterialDocItemsByLineId_up(item)
+							.getSingleResult();
+				} catch (EmptyResultDataAccessException e) {
+					newItem = null;
+				}
+
 				if (newItem == null) {
 					newItem = new MaterialDocItem();
 				}
@@ -200,12 +208,11 @@ public class MaterialDocController {
 				newItem.setMaterialDoc(materialDoc);
 				newItem.setModel_contract(item.getModel_contract());
 				newItem.setModel_tested(item.getModel_tested());
-				
+
 				newItems.add(newItem);
 			}
-			
 
-		}   
+		}
 		items.addAll(newItems);
 		// if(materialDoc.getDocType().getDocType_txt().equals("移仓")){
 		// materialDoc.setContract(null);
@@ -216,7 +223,6 @@ public class MaterialDocController {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
 
-		
 		if (materialDoc.getDocType().getDocType_txt().equals("移仓")) {
 			// Contract contract = new Contract();
 			// materialDoc.setContract(contract);
@@ -237,7 +243,7 @@ public class MaterialDocController {
 			materialDoc.setTargetStockLocation(targetStockLocation);
 
 		}
-		
+
 		for (MaterialDocItem mi : materialDoc.getItems()) {
 
 			mi.fillLineInInfo();
@@ -276,7 +282,8 @@ public class MaterialDocController {
 		// }
 
 		String res = "";
-		if (request.getParameter("focusUpdate")==null||!request.getParameter("focusUpdate").equals("true")) {
+		if (request.getParameter("focusUpdate") == null
+				|| !request.getParameter("focusUpdate").equals("true")) {
 			res = checkContractQuantity(materialDoc);
 		}
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -301,13 +308,12 @@ public class MaterialDocController {
 					&& item.getMoveType().equals("101")) {
 				item.setLineId_in(item);
 				item.setLineId_test(item);
-				
+
 				item.setContract(materialDoc.getContract());
 
 			}
 
-			if (materialDoc.getDocType().getDocType_txt().equals("出仓")
-					) {
+			if (materialDoc.getDocType().getDocType_txt().equals("出仓")) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
@@ -316,7 +322,7 @@ public class MaterialDocController {
 				item.setContract(materialDoc.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 			}
-						
+
 			if (materialDoc.getDocType().getDocType_txt().equals("移仓")
 					&& item.getMoveType().equals("351")) {
 				if (item.getLineId_in().getLineId_test() == null) {
@@ -324,7 +330,8 @@ public class MaterialDocController {
 							.getLineId_in().getLineId()));
 				}
 
-				MaterialDocItem itemIn = MaterialDocItem.findMaterialDocItem(item.getLineId_in().getLineId());
+				MaterialDocItem itemIn = MaterialDocItem
+						.findMaterialDocItem(item.getLineId_in().getLineId());
 				item.setContract(itemIn.getContract());
 				materialDoc.setContract(itemIn.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
@@ -344,7 +351,7 @@ public class MaterialDocController {
 
 				newItem.setWarehouse(materialDoc.getTargetWarehouse());
 				newItem.setStockLocation(materialDoc.getTargetStockLocation());
-				//items.add(newItem);
+				// items.add(newItem);
 				newItems.add(newItem);
 			}
 
@@ -390,25 +397,20 @@ public class MaterialDocController {
 
 	private String checkContractQuantity(MaterialDoc m) {
 
-		
-		
-		
-		if(m.getDocType().getId()==3){
+		if (m.getDocType().getId() == 3) {
 			return "";
 		}
 		String query = "		select isnull(SUM(contract_item.quantity),0) as signed_net_weight , "
-				+ "	       (select isnull(SUM(material_doc_item.net_weight),0) " 
+				+ "	       (select isnull(SUM(material_doc_item.net_weight),0) "
 				+ "	                       from material_doc_item  "
 				+ "	                       inner join material_doc on material_doc.doc_no = material_doc_item.material_doc "
 				+ "	                                              and material_doc.contract = :contract and material_doc.doc_type <> 3 "
 				+ "	                                              and material_doc.doc_no <> :doc_no "
 				+ "	                       where  material_doc_item.model_contract = :model "
 
-				+ "	        ) as used_net_weight "                                              
+				+ "	        ) as used_net_weight "
 				+ "	from contract_item "
 				+ "	where contract_item.contract = :contract and contract_item.model =  :model ";
-	
-	
 
 		Map<String, Object> param = new HashMap<String, Object>();
 

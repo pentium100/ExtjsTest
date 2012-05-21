@@ -104,8 +104,16 @@ Ext.define('AM.controller.MovingDocs', {
 
 		var form = view.down('form');
 		var oldRecord = form.getRecord();
+		
 		oldRecord.setStockLocation(record);
-		oldRecord.set('targetWarehouse', record.data.stockLocation);
+		
+		
+		var values = form.getValues();
+		values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
+		values.targetWarehouse = record.get('stockLocation');
+		//oldRecord.set('targetWarehouse', record.data.stockLocation);
+		oldRecord.set(values);
+		
 		form.loadRecord(oldRecord);
 		// var grid = view.down('gridpanel');
 		// var itemRecord =

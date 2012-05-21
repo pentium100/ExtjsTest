@@ -143,6 +143,7 @@ Ext.define('AM.view.movingDoc.Edit', {
 										xtype : 'numberfield',
 										decimalPrecision : 3
 									},
+									summaryType : 'sum',
 									format : '0,000.000'
 								}, {
 									xtype : 'gridcolumn',
