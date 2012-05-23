@@ -46,7 +46,7 @@ Ext.define('AM.controller.Messages', {
 				if (selection) {
 					
 					
-					if(selection.get("owner")==_DEFAULT_USER_NAME){
+					if((selection.get("owner")==_DEFAULT_USER_NAME)||(_DEFAULT_USER_LEVEL >= 50)){
 					
 						grid.getStore().remove(selection);
 						grid.getStore().sync();
