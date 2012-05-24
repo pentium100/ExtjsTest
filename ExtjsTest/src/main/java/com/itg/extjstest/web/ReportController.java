@@ -138,6 +138,7 @@ public class ReportController {
 		cte.append("                  inner join contract_item ci on cis.items = ci.id ");
 		cte.append(whereString);
 		cte.append(" group by grouping sets(model,()) ");
+		cte.append(" having sum(case when c.contract_type=1 then -quantity else quantity end)  <> 0 "); 
 		cte.append(" )");
 
 		query.append(" select OpenOrder.*, open_order_memo.memo, open_order_memo.update_user, open_order_memo.update_time from OpenOrder ");
