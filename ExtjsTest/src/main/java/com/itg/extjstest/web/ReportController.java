@@ -138,7 +138,7 @@ public class ReportController {
 		cte.append("                  inner join contract_item ci on cis.items = ci.id ");
 		cte.append(whereString);
 		cte.append(" group by grouping sets(model,()) ");
-		cte.append(" having sum(case when c.contract_type=1 then -quantity else quantity end)  <> 0 "); 
+		cte.append(" having abs(sum(case when c.contract_type=1 then -quantity else quantity end))  > 0.0001 "); 
 		cte.append(" )");
 
 		query.append(" select OpenOrder.*, open_order_memo.memo, open_order_memo.update_user, open_order_memo.update_time from OpenOrder ");
@@ -293,9 +293,9 @@ public class ReportController {
 		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model),0))");
 		cte.append("      from contract c ");
 		cte.append("                   left join contract_item i on i.contract = c.id");
-		cte.append("   where (i.quantity-isNull((select SUM(net_weight) from material_doc md ");
+		cte.append("   where ((i.quantity-isNull((select SUM(net_weight) from material_doc md ");
 		cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
-		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model),0))>0 ");
+		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model),0)))>0.0001 ");
 		cte.append(whereString);
 		cte.append(" )");
 
