@@ -103,12 +103,17 @@ public class FilterItem {
 		if (getType().equals("date")) {
 
 			try {
-				SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
-				Date today = s.parse(getValue());
 
-				result.append("'"
-						+ new SimpleDateFormat("yyyy-MM-dd").format(today)
-						+ "'");
+				if (!getValue().equals("") && !getValue().equals("null") && !getValue().equals("not null")) {
+					SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
+					Date today = s.parse(getValue());
+
+					result.append("'"
+							+ new SimpleDateFormat("yyyy-MM-dd").format(today)
+							+ "'");
+				} else {
+					result.append(getValue());
+				}
 			} catch (ParseException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -176,15 +181,18 @@ public class FilterItem {
 
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			if (getComparison().equals("<")) {
-				return cb.lessThan(path.get(fieldName).as(Date.class), sdf.parse(getValue()));
+				return cb.lessThan(path.get(fieldName).as(Date.class),
+						sdf.parse(getValue()));
 			}
 
 			if (getComparison().equals(">")) {
-				return cb.greaterThan(path.get(fieldName).as(Date.class), sdf.parse(getValue()));
+				return cb.greaterThan(path.get(fieldName).as(Date.class),
+						sdf.parse(getValue()));
 			}
 
 			if (getComparison().equals("=")) {
-				return cb.equal(path.get(fieldName).as(Date.class), sdf.parse(getValue()));
+				return cb.equal(path.get(fieldName).as(Date.class),
+						sdf.parse(getValue()));
 			}
 
 		}

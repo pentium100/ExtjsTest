@@ -58,6 +58,7 @@ Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 											xtype : 'combo',
 											fieldLabel : '货物状态',
 											name : 'received',
+											value: 'null',
 
 											forceSelection : true,
 											store : Ext.create(

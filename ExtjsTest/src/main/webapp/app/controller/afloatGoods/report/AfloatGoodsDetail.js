@@ -156,7 +156,7 @@ Ext.define('AM.controller.afloatGoods.report.AfloatGoodsDetail', {
 				
 				if (record.received != "" && record.received != null) {
 					filter.type = "date";
-					filter.field = "afloat_goods.arrive_date";
+					filter.field = "afloat_goods.arrival_date";
 					
 					filter.comparison = 'is';
 					
