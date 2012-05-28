@@ -1,20 +1,23 @@
 Ext.define('AM.model.ContractItem', {
 			extend : 'Ext.data.Model',
-			idProperty: 'id',
+			idProperty : 'id',
 			fields : [{
 						name : 'model',
 						type : 'string'
 					}, {
 						name : 'quantity',
 						type : 'float',
-						useNull:true
+						useNull : true
 					}, {
 						name : 'unitPrice',
 						type : 'float',
-						useNull:true
+						useNull : true
 					}, {
 						name : 'remark',
 						type : 'string'
+					}, {
+						name : 'usedQuantity',
+						persist : false
 					}, {
 						name : 'id',
 						type : 'int'
@@ -22,5 +25,5 @@ Ext.define('AM.model.ContractItem', {
 						name : 'version',
 						type : 'int'
 					}]
-					
+
 		});

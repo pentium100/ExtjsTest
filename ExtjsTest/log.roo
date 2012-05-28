@@ -634,3 +634,8 @@ focus --class ~.domain.MaterialDoc
 field string --fieldName invNo --sizeMax  50
 exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-14 20:15:55
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-05-28 20:33:25
+focus --class ~.domain.MaterialDoc
+field string --fieldName cause --sizeMax 10
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-28 20:36:37

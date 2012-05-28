@@ -145,6 +145,11 @@ Ext.define('AM.view.materialDoc.Edit', {
 
 								}
 							}
+						},{
+							xtype : 'gridcolumn',
+							dataIndex : 'usedQuantity',
+							text : '已进仓数量',
+							format : '0,000.000'
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'remark',

@@ -26,19 +26,39 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						title : '凭证号:',
 						dock : 'top',
 						items : [{
+									xtype : 'combo',
+									name : 'cause',
+									fieldLabel : '单据类型',
+									store : Ext.create('AM.store.MaterialDocCause'),
+									queryMode : 'local',
+									displayField : 'text',
+									valueField : 'text'
+
+								}, {
 									xtype : 'trigger',
 									fieldLabel : '合同号',
 									name : 'contractNo',
 									triggerCls : 'icon-search',
 									editable : false,
 									anchor : '100%',
+									allowBlank: false,
 
 									onTriggerClick : function(e) {
+										
+										var cause = me.down('form').getValues().cause;
+										var defaultContractType = "1";
+										if(cause=="退货"){
+											defaultContractType = "0";
+										}
+										if(cause=="货损"){
+											defaultContractType = "0";
+										}
+
 										var view = Ext.widget('contractSearch',
 												{
 													parentWindow : me,
 													contractTypeReadonly : true,
-													contractTypeDefaultValue : "1",
+													contractTypeDefaultValue : defaultContractType,
 													by : me.xtype
 
 												});
@@ -122,8 +142,8 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 									var view = Ext.widget(
 											'materialDocItemSearch', {
 												parentWindow : me,
-												by : me.xtype, 
-												selMode: 'SINGLE'
+												by : me.xtype,
+												selMode : 'SINGLE'
 											});
 
 									view.show();
@@ -149,9 +169,9 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 								decimalPrecision : 3,
 								listeners : {
 									'blur' : function(comp) {
-										
+
 										var grid = comp.up('grid');
-										var view  = grid.getView();
+										var view = grid.getView();
 										view.refresh();
 
 									}

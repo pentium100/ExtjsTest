@@ -127,6 +127,7 @@ Ext.define('AM.controller.MaterialDocs', {
 						'id' : this.docType
 					});
 
+			record.set('cause', '采购');
 			record.set('docNo', 0);
 			var items = selection.items();
 
@@ -170,10 +171,11 @@ Ext.define('AM.controller.MaterialDocs', {
 		record.setDocType({
 					'id' : this.docType
 				});
+		record.set('cause', '采购');
 		this.getStore('MaterialDocs').insert(0, record);
 		record.store = this.getStore('MaterialDocs');
 		var view = Ext.widget('materialDocEdit');
-
+		
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 		view.down('grid').reconfigure(record.items());
@@ -298,6 +300,7 @@ Ext.define('AM.controller.MaterialDocs', {
 							'lineId' : 0,
 							'version' : 0
 						};
+						record.set('usedQuantity', contractItem.get('usedQuantity'));
 						record.set('remark', contractItem.get('remark'));
 						record.set('lineId_in', lineId_in);
 						materialDocItems.insert(0, record);

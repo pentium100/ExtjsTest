@@ -160,7 +160,7 @@ public class MaterialDocController {
 
 			}
 
-			if (materialDoc.getDocType().getDocType_txt().equals("出仓")) {
+			if ((materialDoc.getDocType().getDocType_txt().equals("出仓"))||(materialDoc.getDocType().getDocType_txt().equals("货损"))) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
@@ -297,6 +297,7 @@ public class MaterialDocController {
 
 		}
 
+
 		Set<MaterialDocItem> items = materialDoc.getItems();
 
 		List<MaterialDocItem> newItems = new ArrayList<MaterialDocItem>();
@@ -313,7 +314,7 @@ public class MaterialDocController {
 
 			}
 
-			if (materialDoc.getDocType().getDocType_txt().equals("出仓")) {
+			if ((materialDoc.getDocType().getDocType_txt().equals("出仓"))||(materialDoc.getDocType().getDocType_txt().equals("货损"))) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
@@ -397,7 +398,7 @@ public class MaterialDocController {
 
 	private String checkContractQuantity(MaterialDoc m) {
 
-		if (m.getDocType().getId() == 3) {
+		if ((m.getDocType().getId() == 3)||(m.getContract() == null)) {
 			return "";
 		}
 		String query = "		select isnull(SUM(contract_item.quantity),0) as signed_net_weight , "

@@ -40,6 +40,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/contracts")
 public class ContractController {
 
+	@Autowired
+	@Qualifier("jdbcTemplate2")
+	protected NamedParameterJdbcTemplate jdbcTemplate;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -48,7 +51,8 @@ public class ContractController {
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "limit", required = false) Integer limit,
 			@RequestParam(value = "filter", required = false) String filter,
-			@RequestParam(value = "byItems", required = false) Boolean byItems) throws ParseException {
+			@RequestParam(value = "byItems", required = false) Boolean byItems)
+			throws ParseException {
 
 		List<Contract> result;
 		List<FilterItem> filters = null;
@@ -59,11 +63,13 @@ public class ContractController {
 					.use("values.value", String.class).deserialize(filter);
 
 		}
-		if(byItems==null){
+		if (byItems == null) {
 			byItems = false;
 		}
-		result = Contract.findContractsByFilter(filters, start, page, limit,byItems);
+		result = Contract.findContractsByFilter(filters, start, page, limit,
+				byItems);
 
+		fillUsedQuantity(result);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -73,6 +79,33 @@ public class ContractController {
 		map.put("success", true);
 		String resultJson = mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
+	}
+
+	private void fillUsedQuantity(List<Contract> contracts) {
+		// TODO Auto-generated method stub
+
+		StringBuffer query = new StringBuffer();
+		query.append("select sum(net_weight) as used from material_doc_item mi, material_doc md ");
+		query.append("       where mi.material_doc = md.doc_no ");
+		query.append("          and (md.doc_type = 1 or md.doc_type = 2) ");
+		query.append("          and (md.cause ='采购' or md.cause = '销售') ");
+		query.append("          and md.contract = :contract ");
+		query.append("          and mi.model_contract = :model ");
+		Map<String, Object> param = new HashMap<String, Object>();
+
+		for (Contract contract : contracts) {
+
+			for (ContractItem item : contract.getItems()) {
+				param.put("contract", item.getContract().getId());
+				param.put("model", item.getModel());
+				List<Map<String, Object>> result = jdbcTemplate.queryForList(
+						query.toString(), param);
+				item.setUsedQuantity((Double) result.get(0).get("used"));
+
+			}
+
+		}
+
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}", headers = "Accept=application/json")

@@ -101,4 +101,12 @@ privileged aspect MaterialDoc_Roo_JavaBean {
         this.invNo = invNo;
     }
     
+    public String MaterialDoc.getCause() {
+        return this.cause;
+    }
+    
+    public void MaterialDoc.setCause(String cause) {
+        this.cause = cause;
+    }
+    
 }

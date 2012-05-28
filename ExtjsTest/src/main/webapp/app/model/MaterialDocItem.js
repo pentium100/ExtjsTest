@@ -66,6 +66,9 @@ Ext.define('AM.model.MaterialDocItem', {
 	}, {
 		name : 'workingNo',
 		persist : false
+	} , {
+		name : 'usedQuantity',
+		persist : false
 	} ],
 
 	associations : [ {

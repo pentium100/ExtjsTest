@@ -100,11 +100,13 @@ Ext.define('AM.controller.OutgoingDocs', {
 
 		var record = new AM.model.MaterialDoc();
 		record.setDocType({
-					id : this.docType
-				});
+		 id : this.docType
+		});
 		this.getStore('OutgoingDocs').insert(0, record);
-		record.store = this.getStore('OutgoingDocs');
+
+		record.join(this.getStore('OutgoingDocs'))
 		var view = Ext.widget('outgoingDocEdit');
+		record.set('cause', '销售');
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 		var store = record.items();
@@ -304,6 +306,18 @@ Ext.define('AM.controller.OutgoingDocs', {
 		var view = win.parentWindow;
 		var grid = view.down('gridpanel');
 		var itemRecord = grid.getView().getSelectionModel().getSelection()[0];
+		if (itemRecord == undefined) {
+			itemRecord = new AM.model.MaterialDocItem();
+			itemRecord.getStockLocation();
+			itemRecord.set('moveType', this.moveType);
+			var store = grid.getStore();
+			store.insert(0, itemRecord);
+			itemRecord.join(store);
+			
+			
+
+		}
+
 		itemRecord.set('lineId_in', record.data);
 		itemRecord.set('model_contract', record.data.model_contract);
 		itemRecord.set('model_tested', record.data.model_tested);
@@ -327,7 +341,13 @@ Ext.define('AM.controller.OutgoingDocs', {
 		win.close();
 		var view = win.parentWindow;
 		var form = view.down('form');
+		var values = form.getValues();
+		values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
 		var oldRecord = form.getRecord();
+		
+		oldRecord.set(values);
+		
+		
 		// oldRecord.set('contract_id', record.get('id'));
 		oldRecord.setContract(record.data);
 		oldRecord.set('contractNo', record.get('contractNo'));
@@ -358,9 +378,17 @@ Ext.define('AM.controller.OutgoingDocs', {
 		var record = form.getRecord();
 		values = form.getValues();
 		values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
+
 		record.set(values);
+				
 
 		// record.data.items = win.down('grid').getStore();
+		if (record.store == undefined) {
+			var view = win.parentWindow;
+			var store = view.down('gridpanel').getStore();
+
+			record.join(store)
+		}
 		record.store.sync();
 		win.close();
 

@@ -24,6 +24,9 @@ Ext.define('AM.model.MaterialDoc', {
 				name : 'workingNo',
 				type : 'string'
 			}, {
+				name : 'cause',
+				type : 'string'
+			}, {
 				name : 'contract'
 
 			}, {
