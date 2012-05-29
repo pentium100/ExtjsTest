@@ -114,6 +114,11 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									flex: 0
 								}, {
 									xtype : 'gridcolumn',
+									dataIndex : 'cause',
+									text : '移动原因',
+									flex: 0
+								}, {
+									xtype : 'gridcolumn',
 									dataIndex : 'contract_no',
 									text : '合同号'
 								}, {

@@ -28,7 +28,7 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 						items : [{
 									xtype : 'combo',
 									name : 'cause',
-									fieldLabel : '单据类型',
+									fieldLabel : '移动原因',
 									store : Ext.create('AM.store.MaterialDocCause'),
 									queryMode : 'local',
 									displayField : 'text',

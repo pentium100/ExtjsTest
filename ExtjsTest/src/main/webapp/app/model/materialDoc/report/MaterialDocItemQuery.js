@@ -7,6 +7,9 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 						name : 'doc_type_txt',
 						type : 'string'
 					}, {
+						name : 'cause',
+						type : 'string'
+					}, {
 						name : 'doc_no',
 						type : 'string'
 					}, {

@@ -1313,7 +1313,7 @@ public class ReportController {
 		StringBuffer cte = new StringBuffer();
 
 		cte.append("with MaterialDocItemQuery1 as (");
-		cte.append("  select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, ");
+		cte.append("  select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, material_doc.cause, material_doc.inv_no, ");
 		cte.append("       material_doc.delivery_note,  ");
 		cte.append("       case when material_doc_type.id=1  ");
 		cte.append("                 then  material_doc.delivery_note  else item_in_doc.delivery_note end ");
@@ -1347,7 +1347,7 @@ public class ReportController {
 
 			cte.append("    	   union ");
 
-			cte.append("    	   select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, ");
+			cte.append("    	   select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, material_doc.cause, material_doc.inv_no,   ");
 			cte.append("    	       material_doc.delivery_note,  ");
 			cte.append("    	       case when material_doc_type.id=1 ");
 			cte.append("    	                 then  material_doc.delivery_note else item_in_doc.delivery_note end ");
@@ -1425,6 +1425,10 @@ public class ReportController {
 			header.setField("doc_type_txt");
 			headers.add(header);
 
+			header.setHeader("移动原因");
+			header.setField("cause");
+			headers.add(header);
+
 			header = new ReportHeader();
 			header.setHeader("单据号");
 			header.setField("doc_no");
@@ -1434,7 +1438,14 @@ public class ReportController {
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			headers.add(header);
+			
 
+			header = new ReportHeader();
+			header.setHeader("采购合同号");
+			header.setField("purchase_contract_no");
+			headers.add(header);			
+			
+			
 			header = new ReportHeader();
 			header.setHeader("供应商");
 			header.setField("supplier");
@@ -1464,9 +1475,10 @@ public class ReportController {
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
+			
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
-			header.setFormat("#,##0.000");
+		
 			header.setField("delivery_note_in");
 			headers.add(header);
 
@@ -1474,6 +1486,12 @@ public class ReportController {
 			header.setHeader("出仓单号");
 			header.setField("delivery_note_out");
 			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("发票号");
+			header.setField("inv_no");
+			headers.add(header);
+			
 
 			header = new ReportHeader();
 			header.setHeader("车号/卡号");

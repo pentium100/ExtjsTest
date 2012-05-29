@@ -141,6 +141,7 @@ Ext.define('AM.controller.MovingDocs', {
 					id : this.docType
 
 				});
+		record.set('cause', '移仓');
 
 		// record.set("contract",{});
 		var grid = button.up("gridpanel");

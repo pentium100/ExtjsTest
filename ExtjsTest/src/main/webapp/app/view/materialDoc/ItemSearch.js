@@ -97,11 +97,6 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 										}, {
 											xtype : 'gridcolumn',
 
-											text : '工作号',
-											dataIndex : 'workingNo'
-										}, {
-											xtype : 'gridcolumn',
-
 											text : '车号/卡号',
 											dataIndex : 'plateNum'
 										}, {
@@ -129,6 +124,11 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 											format : 'Y-m-d',
 											text : '进仓日期',
 											dataIndex : 'docDate'
+										}, {
+											xtype : 'gridcolumn',
+
+											text : '工作号',
+											dataIndex : 'workingNo'
 										}],
 								viewConfig : {
 

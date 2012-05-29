@@ -18,6 +18,9 @@ Ext.define('AM.view.outgoingDoc.List', {
 							header : '单据类型',
 							dataIndex : 'docType_txt'							
 						}, {
+							header : '移动原因',
+							dataIndex : 'cause'							
+						}, {
 							header : '单据号',
 							dataIndex : 'docNo',
 							filterable : true
