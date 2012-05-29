@@ -15,9 +15,9 @@ Ext.define('AM.view.contract.Search', {
 		var value = "";
 		Ext.Array.each(items, function(rec, index) {
 					if (value == "") {
-						value = rec.model;
+						value = rec.model+'('+rec.usedQuantity+')';
 					} else {
-						value = value + "," + rec.model;
+						value = value + "," + rec.model+'('+rec.usedQuantity+')';
 					}
 				});
 

@@ -121,7 +121,6 @@ Ext.define('AM.controller.MaterialDocs', {
 			var record = selection.copy();
 			Ext.data.Model.id(record);
 			this.getStore('MaterialDocs').insert(0, record);
-			
 
 			record.setDocType({
 						'id' : this.docType
@@ -144,8 +143,8 @@ Ext.define('AM.controller.MaterialDocs', {
 						// item.lineId_in = lineId_in;
 						// item.dirty = false;
 						item2.set('lineId', 0);
-						//item2.set('lineId_test', 0);
-						//item2.set('lineId_up', 0)
+						// item2.set('lineId_test', 0);
+						// item2.set('lineId_up', 0)
 						item2.phantom = true;
 						// item.commit(true);
 						var itemStore = this.items();
@@ -175,7 +174,7 @@ Ext.define('AM.controller.MaterialDocs', {
 		this.getStore('MaterialDocs').insert(0, record);
 		record.store = this.getStore('MaterialDocs');
 		var view = Ext.widget('materialDocEdit');
-		
+
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('docNo'));
 		view.down('grid').reconfigure(record.items());
@@ -295,12 +294,15 @@ Ext.define('AM.controller.MaterialDocs', {
 						record.set('model_contract', contractItem.get("model"));
 						record.set('moveType', this.moveType1);
 						record.set('direction', 1);
-						record.set('netWeight', contractItem.get("quantity"));
+						var remainQuantity = contractItem.get("quantity")
+								- contractItem.get('usedQuantity');
+						record.set('netWeight', remainQuantity);
 						var lineId_in = {
 							'lineId' : 0,
 							'version' : 0
 						};
-						record.set('usedQuantity', contractItem.get('usedQuantity'));
+						record.set('usedQuantity', contractItem
+										.get('usedQuantity'));
 						record.set('remark', contractItem.get('remark'));
 						record.set('lineId_in', lineId_in);
 						materialDocItems.insert(0, record);

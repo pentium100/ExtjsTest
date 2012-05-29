@@ -17,7 +17,9 @@ Ext.define('AM.model.ContractItem', {
 						type : 'string'
 					}, {
 						name : 'usedQuantity',
-						persist : false
+						persist : false,
+						type: 'float',
+						defaultValue: 0
 					}, {
 						name : 'id',
 						type : 'int'
