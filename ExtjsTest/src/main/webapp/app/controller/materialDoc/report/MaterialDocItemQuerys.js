@@ -1,3 +1,4 @@
+Ext.require(['AM.ux.grid.feature.RemoteSummary']);
 Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 			extend : 'Ext.app.Controller',
 

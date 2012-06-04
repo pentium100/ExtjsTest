@@ -75,18 +75,21 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 											dataIndex : 'quantity_purchases',
 											text : '采购数量',
 											sortable : false,
+											format : '0,000.000',
 											align : 'right'
 										}, {
 											xtype : 'numbercolumn',
 											dataIndex : 'quantity_sales',
 											text : '销售数量',
 											sortable : false,
+											format : '0,000.000',
 											align : 'right'
 										}, {
 											xtype : 'numbercolumn',
 											dataIndex : 'quantity_open',
 											text : '敞口数量',
 											sortable : false,
+											format : '0,000.000',
 											align : 'right'
 										}, {
 											xtype : 'gridcolumn',

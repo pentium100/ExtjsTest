@@ -18,7 +18,7 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 
 			dockedItems : [{
 						xtype : 'form',
-						//tpl : Ext.create('Ext.XTemplate', ''),
+						// tpl : Ext.create('Ext.XTemplate', ''),
 						layout : {
 							type : 'column'
 						},
@@ -31,7 +31,8 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'combo',
 									name : 'doc_type_txt',
 									fieldLabel : '单据类型',
-									store : Ext.create('AM.store.MaterialDocTypes'),
+									store : Ext
+											.create('AM.store.MaterialDocTypes'),
 									queryMode : 'local',
 									displayField : 'docType_txt',
 									valueField : 'docType_txt'
@@ -74,7 +75,7 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'textfield',
 									fieldLabel : '工作号',
 									name : 'working_no'
-								},  {
+								}, {
 									xtype : 'textfield',
 									fieldLabel : '出口发票号',
 									name : 'inv_no'
@@ -105,18 +106,22 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 						region : 'center',
 						store : store,
 						stateful : true,
-						stateId : 'materialDocItemQuery',						
+						stateId : 'materialDocItemQuery',
+						features : [{
+									ftype : 'remotesummary',
+									remoteRoot : 'remoteSummary'
+								}],
 						// 合同号 进仓单号 进仓日期 车号/卡号 批次号 规格(合同) 规格(检验后) 净重 仓库
 						columns : [{
 									xtype : 'gridcolumn',
 									dataIndex : 'doc_type_txt',
 									text : '单据类型',
-									flex: 0
+									flex : 0
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'cause',
 									text : '移动原因',
-									flex: 0
+									flex : 0
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'contract_no',
@@ -141,7 +146,8 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'net_weight',
-									text : '净重'
+									text : '净重',
+									summaryType : 'sum'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'delivery_note_in',

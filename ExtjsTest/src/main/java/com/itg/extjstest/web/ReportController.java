@@ -1522,12 +1522,16 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-					+ "select count(*) from MaterialDocItemQuery", param);
+			//Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+			//		+ "select count(*), sum(net_weight) as net_weight from MaterialDocItemQuery", param);
+			
+			List<Map<String, Object>> summary = jdbcTemplate.queryForList(cte.toString()
+							+ "select count(*) as reccount, sum(net_weight) as net_weight from MaterialDocItemQuery", param);
 
-			map2.put("total", recordCount);
+			map2.put("total", summary.get(0).get("reccount"));
 			map2.put("success", true);
 			map2.put("materialDocItemQuerys", result);
+			map2.put("remoteSummary", summary.get(0));
 
 			// map2.put("dataRoot", "noDeliverys");
 
