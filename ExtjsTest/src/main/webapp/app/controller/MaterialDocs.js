@@ -348,6 +348,11 @@ Ext.define('AM.controller.MaterialDocs', {
 				}, this);
 
 		if (canUpdate) {
+			
+			if(record.store==undefined){
+				var store = this.getMaterialDocsStore();
+				record.join(store)
+			}
 			record.store.sync();
 			win.close();
 		}

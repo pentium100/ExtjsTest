@@ -384,9 +384,10 @@ Ext.define('AM.controller.OutgoingDocs', {
 
 		// record.data.items = win.down('grid').getStore();
 		if (record.store == undefined) {
-			var view = win.parentWindow;
-			var store = view.down('gridpanel').getStore();
-
+			//var view = win.parentWindow;
+			
+			//var store = view.down('gridpanel').getStore();
+			var store = this.getOutgoingDocsStore();
 			record.join(store)
 		}
 		record.store.sync();
