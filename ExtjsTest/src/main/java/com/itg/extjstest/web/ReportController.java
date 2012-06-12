@@ -372,12 +372,15 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-					+ "select count(*) from NoDelivery", param);
+			List<Map<String, Object>> recordCount = jdbcTemplate.queryForList(cte.toString()
+					                                      
+					+ "select count(*) as reccount , sum(quantity-quantity_no_delivery) as quantity_in_receipt , " +
+					"                  sum(quantity_no_delivery) as quantity_no_delivery, sum(quantity) as quantity from NoDelivery ", param);
 
-			map2.put("total", recordCount);
+			map2.put("total", recordCount.get(0).get("reccount"));
 			map2.put("success", true);
 			map2.put("noDeliverys", result);
+			map2.put("remoteSummary", recordCount.get(0));
 			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
@@ -969,7 +972,7 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("机构");
+			header.setHeader("检验机构");
 			header.setField("authority");
 			headers.add(header);
 

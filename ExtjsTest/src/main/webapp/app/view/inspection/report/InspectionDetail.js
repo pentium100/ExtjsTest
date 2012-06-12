@@ -148,6 +148,11 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 									format : 'Y-m-d'
 								}, {
 									xtype : 'gridcolumn',
+									dataIndex : 'authority',
+									text : '检验机构'
+
+								}, {
+									xtype : 'gridcolumn',
 									dataIndex : 'si',
 									text : 'si'
 								}, {

@@ -51,7 +51,6 @@ public class ExcelReportView extends AbstractExcelView {
 			HSSFCellStyle style = workbook.createCellStyle();
 			style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 			cell.setCellStyle(style);
-			
 
 		}
 		String dataRoot = (String) model.get("dataRoot");
@@ -65,31 +64,39 @@ public class ExcelReportView extends AbstractExcelView {
 			for (ReportHeader colHeader : headers) {
 
 				cell = row.createCell(i++);
-				
+
 				if (dataSet.get(colHeader.getField().toString()) != null) {
 
 					String value;
-					
 
 					if (java.util.Date.class.isInstance(dataSet.get(colHeader
 							.getField().toString()))) {
 						value = sdf.format(dataSet.get(colHeader.getField()
 								.toString()));
+						cell.setCellType(Cell.CELL_TYPE_STRING);
+						cell.setCellValue(value);
 					} else {
-						value = dataSet.get(colHeader.getField().toString()).toString();
-						if(colHeader.getFormat()!=null){
-						    DecimalFormat formatter = new DecimalFormat(colHeader.getFormat());
-						    value = formatter.format(Double.valueOf(value));
-						    //value = String.format(, value);
+						value = dataSet.get(colHeader.getField().toString())
+								.toString();
+						// cell.setCellType(Cell.CELL_TYPE_STRING);
+						if (colHeader.getFormat() != null) {
+							// DecimalFormat formatter = new
+							// DecimalFormat(colHeader.getFormat());
+							double d = Double.valueOf(value);
+							cell.setCellValue(d);
+							// value = formatter.format(Double.valueOf(value));
+							cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+							// value = String.format(, value);
+
+						} else {
+							cell.setCellValue(value);
+							cell.setCellType(Cell.CELL_TYPE_STRING);
 						}
-						
-						
+
 					}
 
-					cell.setCellValue(value);
-
 				}
-				
+
 				cell.setCellStyle(colHeader.getStyle(workbook));
 
 			}
