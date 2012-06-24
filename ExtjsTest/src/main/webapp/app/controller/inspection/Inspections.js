@@ -59,8 +59,9 @@ Ext.define('AM.controller.inspection.Inspections', {
 
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('id'));
-
-		view.down('grid').reconfigure(record.items());
+		var store = record.items();
+		store.group('model_contract');
+		view.down('grid').reconfigure(store);
 
 	},
 
