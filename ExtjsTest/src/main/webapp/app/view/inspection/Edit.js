@@ -50,6 +50,14 @@ Ext.define('AM.view.inspection.Edit', {
 							region : 'center',
 							xtype : 'gridpanel',
 							// selType : 'cellmodel',
+
+							features : [{
+										id : 'group',
+										ftype : 'groupingsummary',
+										groupHeaderTpl : '{name}',
+										hideGroupedHeader : true,
+										enableGroupingMenu : false
+									}],
 							dockedItems : [{
 										xtype : 'toolbar',
 										items : [{
@@ -117,11 +125,21 @@ Ext.define('AM.view.inspection.Edit', {
 								dataIndex : 'netWeight',
 								text : '数量',
 								align : 'right',
+								summaryType : 'sum',
 								field : {
 									xtype : 'numberfield',
-									decimalPrecision : 3
+									decimalPrecision : 3,
+									listeners : {
+										'blur' : function(comp) {
+
+											var grid = comp.up('grid');
+											var view = grid.getView();
+											view.refresh();
+
+										}
+									}
 								},
-								format : '0,0000.000'
+								format : '0,000.000'
 							}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'si',
