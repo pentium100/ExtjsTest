@@ -111,7 +111,17 @@ Ext.define('AM.controller.inspection.Inspections', {
 			itemRecord.set('batchNo', record.data.batchNo);
 			itemRecord.set('plateNum', record.data.plateNum);
 			itemRecord.set('netWeight', record.data.netWeight);
-			store.insert(0, itemRecord);
+			
+			var firstRecord = store.getAt(0);
+			if(firstRecord !=undefined){
+				itemRecord.set('si',firstRecord.get('si'));
+				itemRecord.set('fe',firstRecord.get('fe'));
+				itemRecord.set('al',firstRecord.get('al'));
+				itemRecord.set('ca',firstRecord.get('ca'));
+				itemRecord.set('p',firstRecord.get('p'));
+				itemRecord.set('remark',firstRecord.get('remark'));
+			}
+			store.add(itemRecord);
 			itemRecord.join(store);
 
 		}
@@ -224,7 +234,7 @@ Ext.define('AM.controller.inspection.Inspections', {
 		store.load();
 	},
 
-	selectMaterialDocItem : function(grid, record) {
+	selectInspectionItem : function(grid, record) {
 		var win = grid.up('window');
 		win.close();
 		var view = win.parentWindow;

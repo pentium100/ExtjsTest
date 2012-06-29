@@ -167,7 +167,10 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		var grid = win.down('gridpanel');
 		var store = grid.getStore();
 		var record = new AM.model.afloatGoods.AfloatGoodsItem();
-		store.insert(0, record);
+		
+		
+		
+		store.add(record);
 
 	},
 
