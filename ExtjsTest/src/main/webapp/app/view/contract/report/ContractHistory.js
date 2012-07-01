@@ -3,7 +3,7 @@
 Ext.define('AM.view.contract.report.ContractHistory', {
 	extend : 'Ext.panel.Panel',
 	layout : {
-		type : 'border'
+		type : 'fit'
 	},
 	frame : true,
 	alias : 'widget.ContractHistory',

@@ -3,7 +3,7 @@
 Ext.define('AM.view.contract.report.OpenOrder', {
 	extend : 'Ext.panel.Panel',
 	layout : {
-		type : 'border'
+		type : 'fit'
 	},
 	frame : true,
 	alias : 'widget.OpenOrder',

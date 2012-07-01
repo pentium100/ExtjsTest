@@ -28,6 +28,11 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 					'afloatGoodsList button[text=Add]' : {
 						click : this.addAfloatGoods
 					},
+
+					'afloatGoodsList button[action=copy]' : {
+						click : this.copyAfloatGoods
+					},
+
 					'afloatGoodsList button[text=Delete]' : {
 						click : this.deleteAfloatGoods
 					},
@@ -48,6 +53,44 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 	},
 	loadAfloatGoodsData : function() {
 		this.getStore('afloatGoods.AfloatGoods').load();
+	},
+
+	copyAfloatGoods : function(button) {
+		var viewport = button.up('viewport');
+		var grid = viewport.down('afloatGoodsList');
+		var selection = grid.getView().getSelectionModel().getSelection()[0];
+		if (selection) {
+
+			var record = selection.copy();
+			record.set('id', 0);
+			Ext.data.Model.id(record);
+			record.phantom = true;
+			this.getStore('afloatGoods.AfloatGoods').insert(0, record);
+
+			var items = selection.items();
+
+			items.each(function(item) {
+
+						var item2 = item.copy();
+						Ext.data.Model.id(item2);
+						item2.set('id', 0);
+
+						item2.phantom = true;
+
+						var itemStore = this.items();
+						itemStore.insert(0, item2);
+						item2.join(this.items());
+					}, record);
+			
+			record.join(this.getStore('afloatGoods.AfloatGoods'));
+			var view = Ext.widget('afloatGoodsEdit', {
+						parentGrid : grid
+					});
+			view.down('form').loadRecord(record);
+			view.down('grid').reconfigure(record.items());
+
+		}
+
 	},
 
 	searchContract : function(button) {
@@ -98,10 +141,10 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		var form = view.down('form');
 		var oldRecord = form.getRecord();
 		// oldRecord.set('contract_id', record.get('id'));
-		//oldRecord.setContract(record.data);
+		// oldRecord.setContract(record.data);
 		oldRecord.set('contract', record.data);
 		oldRecord.set('contractNo', record.get('contractNo'));
-		oldRecord.set('supplier', record.get('supplier'));		
+		oldRecord.set('supplier', record.get('supplier'));
 		form.loadRecord(oldRecord);
 
 		var grid = view.down('gridpanel');
@@ -125,7 +168,6 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		var viewport = button.up('viewport');
 		var grid = viewport.down('afloatGoodsList');
 
-		
 		var selection = grid.getView().getSelectionModel().getSelection()[0];
 		var store = grid.getStore();
 		if (selection) {
@@ -150,12 +192,12 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		var viewport = button.up('viewport');
 		var grid = viewport.down('afloatGoodsList');
 		var store = grid.getStore();
-        
+
 		store.insert(0, record);
 		record.store = store;
 		var view = Ext.widget('afloatGoodsEdit', {
 					parentGrid : grid
-			
+
 				});
 		view.down('form').loadRecord(record);
 		view.down('grid').reconfigure(record.items());
@@ -167,9 +209,7 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		var grid = win.down('gridpanel');
 		var store = grid.getStore();
 		var record = new AM.model.afloatGoods.AfloatGoodsItem();
-		
-		
-		
+
 		store.add(record);
 
 	},

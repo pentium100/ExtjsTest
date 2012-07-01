@@ -138,7 +138,7 @@ public class ReportController {
 		cte.append("                  inner join contract_item ci on cis.items = ci.id ");
 		cte.append(whereString);
 		cte.append(" group by grouping sets(model,()) ");
-		cte.append(" having abs(sum(case when c.contract_type=1 then -quantity else quantity end))  > 0.0001 "); 
+		cte.append(" having abs(sum(case when c.contract_type=1 then -quantity else quantity end))  > 0.0001 ");
 		cte.append(" )");
 
 		query.append(" select OpenOrder.*, open_order_memo.memo, open_order_memo.update_user, open_order_memo.update_time from OpenOrder ");
@@ -170,7 +170,7 @@ public class ReportController {
 			header.setField("quantity_purchases");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setFormat("#,##0.000");
-			
+
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -256,23 +256,21 @@ public class ReportController {
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					.use("values.value", new FilterObjectFactory() )
+					.use("values.value", new FilterObjectFactory())
 					.deserialize(filter);
-					
-					
 
 		}
 
 		StringBuffer whereString = new StringBuffer();
 		StringBuffer whereString2 = new StringBuffer();
 		for (FilterItem f : filters) {
-			
-			if(f.getField().equals("quantity")||
-			   f.getField().equals("quantity_no_delivery")||
-			   f.getField().equals("quantity_in_receipt")){
-				
+
+			if (f.getField().equals("quantity")
+					|| f.getField().equals("quantity_no_delivery")
+					|| f.getField().equals("quantity_in_receipt")) {
+
 				whereString2.append(" and " + f.getSqlWhere());
-			}else{
+			} else {
 				whereString.append(" and " + f.getSqlWhere());
 			}
 		}
@@ -281,11 +279,11 @@ public class ReportController {
 		StringBuffer cte = new StringBuffer();
 
 		cte.append("with NoDelivery as (");
-		cte.append("select " );
-		//cte.append("ROW_NUMBER() over (order by "
-		//		+ sortString.toString()
-		//		+ " )) as rowNum, ");
-		
+		cte.append("select ");
+		// cte.append("ROW_NUMBER() over (order by "
+		// + sortString.toString()
+		// + " )) as rowNum, ");
+
 		cte.append("      case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
 
 		cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
@@ -299,10 +297,10 @@ public class ReportController {
 		cte.append(whereString);
 		cte.append(" )");
 
-		//query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
-		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 ");		
+		// query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
+		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 ");
 		query.append(whereString2);
-		query.append(" order by " + sortString.toString() +" ");
+		query.append(" order by " + sortString.toString() + " ");
 
 		// SqlParameterSource param = new MapSqlParameterSource();
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -372,10 +370,13 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			List<Map<String, Object>> recordCount = jdbcTemplate.queryForList(cte.toString()
-					                                      
-					+ "select count(*) as reccount , sum(quantity-quantity_no_delivery) as quantity_in_receipt , " +
-					"                  sum(quantity_no_delivery) as quantity_no_delivery, sum(quantity) as quantity from NoDelivery ", param);
+			List<Map<String, Object>> recordCount = jdbcTemplate
+					.queryForList(
+							cte.toString()
+
+									+ "select count(*) as reccount , sum(quantity-quantity_no_delivery) as quantity_in_receipt , "
+									+ "                  sum(quantity_no_delivery) as quantity_no_delivery, sum(quantity) as quantity from NoDelivery ",
+							param);
 
 			map2.put("total", recordCount.get(0).get("reccount"));
 			map2.put("success", true);
@@ -593,16 +594,15 @@ public class ReportController {
 			}
 
 			String fieldName = s.get("property");
-			if(fieldName.equals("net_weight")){
-				fieldName = "stock."+fieldName;
+			if (fieldName.equals("net_weight")) {
+				fieldName = "stock." + fieldName;
 			}
-			
-			if(fieldName.equals("gross_weight")){
-				fieldName = "material_doc_item."+fieldName;
+
+			if (fieldName.equals("gross_weight")) {
+				fieldName = "material_doc_item." + fieldName;
 			}
-			
-			sortString.append(" " + fieldName + " "
-					+ s.get("direction"));
+
+			sortString.append(" " + fieldName + " " + s.get("direction"));
 		}
 		if (!sortString.toString().equals("")) {
 			sortString.append(",");
@@ -1330,7 +1330,8 @@ public class ReportController {
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
 		cte.append("       material_doc_item.gross_weight, stock_location.stock_location, ");
-		cte.append("       contract_item.unit_price, item_in_doc.working_no ");
+		cte.append("       contract_item.unit_price, item_in_doc.working_no, ");
+		cte.append("       insp.si, insp.fe, insp.al, insp.ca, insp.p, insp.remark ");
 		cte.append("	   from material_doc_item ");
 		cte.append("	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
 		cte.append("          left join stock_location on stock_location.id = material_doc_item.stock_location");
@@ -1341,7 +1342,7 @@ public class ReportController {
 		cte.append("  		  left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
 		cte.append("	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 		cte.append("          left join contract contract_in on contract_in.id = item_in.contract    ");
-
+		cte.append("          left join inspection_item insp on insp.material_doc_item = item_in.line_id_test ");
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
 		}
@@ -1365,6 +1366,7 @@ public class ReportController {
 			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
 			cte.append("    	       material_doc_item.gross_weight, stock_location.stock_location, ");
 			cte.append("    	       contract_item.unit_price, item_in_doc.working_no  ");
+			cte.append("               insp.si, insp.fe, insp.al, insp.ca, insp.p, insp.remark ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
 			cte.append("              left join stock_location on stock_location.id = material_doc_item.stock_location");
@@ -1377,6 +1379,7 @@ public class ReportController {
 
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 			cte.append("              left join contract contract_in on contract_in.id = item_in.contract    ");
+			cte.append("              left join inspection_item insp on insp.material_doc_item = item_in.line_id_test ");
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
@@ -1441,14 +1444,12 @@ public class ReportController {
 			header.setHeader("合同号");
 			header.setField("contract_no");
 			headers.add(header);
-			
 
 			header = new ReportHeader();
 			header.setHeader("采购合同号");
 			header.setField("purchase_contract_no");
-			headers.add(header);			
-			
-			
+			headers.add(header);
+
 			header = new ReportHeader();
 			header.setHeader("供应商");
 			header.setField("supplier");
@@ -1478,10 +1479,9 @@ public class ReportController {
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
-			
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
-		
+
 			header.setField("delivery_note_in");
 			headers.add(header);
 
@@ -1494,7 +1494,6 @@ public class ReportController {
 			header.setHeader("发票号");
 			header.setField("inv_no");
 			headers.add(header);
-			
 
 			header = new ReportHeader();
 			header.setHeader("车号/卡号");
@@ -1517,6 +1516,52 @@ public class ReportController {
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
+			
+
+			header = new ReportHeader();
+			header.setHeader("si");
+			header.setField("si");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setFormat("#,##0.0000");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("fe");
+			header.setField("fe");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setFormat("#,##0.0000");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("al");
+			header.setField("al");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setFormat("#,##0.0000");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("ca");
+			header.setField("ca");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setFormat("#,##0.0000");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("p");
+			header.setField("p");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setFormat("#,##0.0000");
+			headers.add(header);
+			
+			header = new ReportHeader();
+			header.setHeader("remark");
+			header.setField("检验备注");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+			
+			
+			
+			
 			map.put("headers", headers);
 			map.put("title", "进出仓明细查询");
 
@@ -1525,11 +1570,16 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			//Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-			//		+ "select count(*), sum(net_weight) as net_weight from MaterialDocItemQuery", param);
-			
-			List<Map<String, Object>> summary = jdbcTemplate.queryForList(cte.toString()
-							+ "select count(*) as reccount, sum(net_weight) as net_weight from MaterialDocItemQuery", param);
+			// Long recordCount = jdbcTemplate.queryForLong(cte.toString()
+			// +
+			// "select count(*), sum(net_weight) as net_weight from MaterialDocItemQuery",
+			// param);
+
+			List<Map<String, Object>> summary = jdbcTemplate
+					.queryForList(
+							cte.toString()
+									+ "select count(*) as reccount, sum(net_weight) as net_weight from MaterialDocItemQuery",
+							param);
 
 			map2.put("total", summary.get(0).get("reccount"));
 			map2.put("success", true);

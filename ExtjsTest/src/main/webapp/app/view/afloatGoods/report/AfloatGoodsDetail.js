@@ -3,7 +3,7 @@
 Ext.define('AM.view.afloatGoods.report.AfloatGoodsDetail', {
 	extend : 'Ext.panel.Panel',
 	layout : {
-		type : 'border'
+		type : 'fit'
 	},
 	frame : true,
 	alias : 'widget.AfloatGoodsDetail',

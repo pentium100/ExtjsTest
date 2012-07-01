@@ -10,9 +10,8 @@ Ext.define('AM.view.afloatGoods.List', {
 
 			iconCls : 'icon-grid',
 			frame : true,
-			stateful: true,
-   			stateId: 'afloatGoodsList',
-			
+			stateful : true,
+			stateId : 'afloatGoodsList',
 
 			initComponent : function() {
 				this.columns = [{
@@ -72,7 +71,7 @@ Ext.define('AM.view.afloatGoods.List', {
 							header : '正本单据',
 							dataIndex : 'original',
 							xtype : 'gridcolumn',
-							inputValue:'true',
+							inputValue : 'true',
 							filterable : true,
 							flex : 1
 						}, {
@@ -88,6 +87,11 @@ Ext.define('AM.view.afloatGoods.List', {
 										iconCls : 'icon-add',
 										text : 'Add',
 										action : 'add'
+
+									}, {
+										iconCls : 'icon-copy',
+										text : 'Copy',
+										action : 'copy'
 
 									}, {
 										iconCls : 'icon-delete',

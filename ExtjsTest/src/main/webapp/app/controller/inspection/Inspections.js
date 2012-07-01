@@ -100,8 +100,8 @@ Ext.define('AM.controller.inspection.Inspections', {
 		var i;
 		for (i = 0; i < items.length; i++) {
 			var itemRecord = new AM.model.inspection.InspectionItem();
-			//itemRecord.getStockLocation();
-			//itemRecord.set('moveType', this.moveType);
+			// itemRecord.getStockLocation();
+			// itemRecord.set('moveType', this.moveType);
 
 			var record = items[i];
 			itemRecord.set('materialDocItem', record.data);
@@ -112,16 +112,7 @@ Ext.define('AM.controller.inspection.Inspections', {
 			itemRecord.set('batchNo', record.data.batchNo);
 			itemRecord.set('plateNum', record.data.plateNum);
 			itemRecord.set('netWeight', record.data.netWeight);
-			
-			var firstRecord = store.getAt(0);
-			if(firstRecord !=undefined){
-				itemRecord.set('si',firstRecord.get('si'));
-				itemRecord.set('fe',firstRecord.get('fe'));
-				itemRecord.set('al',firstRecord.get('al'));
-				itemRecord.set('ca',firstRecord.get('ca'));
-				itemRecord.set('p',firstRecord.get('p'));
-				itemRecord.set('remark',firstRecord.get('remark'));
-			}
+
 			store.add(itemRecord);
 			itemRecord.join(store);
 
@@ -260,6 +251,21 @@ Ext.define('AM.controller.inspection.Inspections', {
 		values = form.getValues();
 		values.inspectionDate = Ext.Date.parse(values.inspectionDate, 'Y-m-d');
 		record.set(values);
+
+		var grid = win.down('grid');
+		var store = grid.getStore();
+		var firstRecord = store.getAt(0);
+		if (firstRecord != undefined) {
+			for (i = 1; i < store.getCount(); i++) {
+				var itemRecord = store.getAt(i);
+				itemRecord.set('si', firstRecord.get('si'));
+				itemRecord.set('fe', firstRecord.get('fe'));
+				itemRecord.set('al', firstRecord.get('al'));
+				itemRecord.set('ca', firstRecord.get('ca'));
+				itemRecord.set('p', firstRecord.get('p'));
+				itemRecord.set('remark', firstRecord.get('remark'));
+			}
+		}
 
 		// record.data.items = win.down('grid').getStore();
 		record.store.sync();

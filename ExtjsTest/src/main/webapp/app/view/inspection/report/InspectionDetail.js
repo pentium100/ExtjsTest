@@ -3,7 +3,7 @@
 Ext.define('AM.view.inspection.report.InspectionDetail', {
 	extend : 'Ext.panel.Panel',
 	layout : {
-		type : 'border'
+		type : 'fit'
 	},
 	frame : true,
 	alias : 'widget.InspectionDetail',

@@ -3,7 +3,7 @@
 Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 	extend : 'Ext.panel.Panel',
 	layout : {
-		type : 'border'
+		type : 'fit'
 	},
 	frame : true,
 	alias : 'widget.MaterialDocItemQuery',
@@ -107,6 +107,7 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 						store : store,
 						stateful : true,
 						stateId : 'materialDocItemQuery',
+						// autoHight: true,
 						features : [{
 									ftype : 'remotesummary',
 									remoteRoot : 'remoteSummary'
@@ -186,6 +187,55 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									format : 'Y-m-d',
 									dataIndex : 'doc_date',
 									text : '日期'
+								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'si',
+									width : 60,
+									align : 'right',
+									text : 'si',
+
+									format : '0.0000'
+								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'fe',
+									width : 51,
+									align : 'right',
+									text : 'fe',
+
+									format : '0.0000'
+
+								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'al',
+									width : 51,
+									align : 'right',
+									text : 'al',
+
+									format : '0.0000'
+
+								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'ca',
+									width : 51,
+									align : 'right',
+									text : 'ca',
+
+									format : '0.0000'
+
+								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'p',
+									width : 51,
+									align : 'right',
+									text : 'p',
+
+									format : '0.0000'
+
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'remark',
+									text : '检验备注',
+									field : 'textfield'
 								}],
 						viewConfig : {
 
