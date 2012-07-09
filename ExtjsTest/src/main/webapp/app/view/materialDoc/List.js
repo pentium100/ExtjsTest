@@ -19,6 +19,7 @@ Ext.define('AM.view.materialDoc.List', {
 							dataIndex : 'docType_txt'
 
 						}, {
+							//xtype:'numbercolumn',
 							header : '单据号',
 							dataIndex : 'docNo',
 							filterable : true

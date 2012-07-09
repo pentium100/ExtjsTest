@@ -1365,7 +1365,7 @@ public class ReportController {
 			cte.append("    	       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
 			cte.append("    	       material_doc_item.gross_weight, stock_location.stock_location, ");
-			cte.append("    	       contract_item.unit_price, item_in_doc.working_no  ");
+			cte.append("    	       contract_item.unit_price, item_in_doc.working_no,  ");
 			cte.append("               insp.si, insp.fe, insp.al, insp.ca, insp.p, insp.remark ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");

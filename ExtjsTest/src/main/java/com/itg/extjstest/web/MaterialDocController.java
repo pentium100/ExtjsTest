@@ -18,6 +18,7 @@ import com.itg.extjstest.domain.MaterialDocType;
 import com.itg.extjstest.domain.Message;
 import com.itg.extjstest.domain.StockLocation;
 import com.itg.extjstest.util.FilterItem;
+import com.itg.extjstest.util.FilterObjectFactory;
 
 import flexjson.JSONDeserializer;
 
@@ -65,7 +66,7 @@ public class MaterialDocController {
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					.use("values.value", String.class).deserialize(filter);
+					.use("values.value", new FilterObjectFactory()).deserialize(filter);
 
 		}
 		FilterItem f = new FilterItem();
@@ -160,7 +161,8 @@ public class MaterialDocController {
 
 			}
 
-			if ((materialDoc.getDocType().getDocType_txt().equals("出仓"))||(materialDoc.getDocType().getDocType_txt().equals("货损"))) {
+			if ((materialDoc.getDocType().getDocType_txt().equals("出仓"))
+					|| (materialDoc.getDocType().getDocType_txt().equals("货损"))) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
@@ -187,15 +189,18 @@ public class MaterialDocController {
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 				MaterialDocItem newItem = null;
 				try {
-					 newItem = MaterialDocItem
-							.findMaterialDocItemsByLineId_up(item)
-							.getSingleResult();
+					newItem = MaterialDocItem.findMaterialDocItemsByLineId_up(
+							item).getSingleResult();
 				} catch (EmptyResultDataAccessException e) {
 					newItem = null;
 				}
 
 				if (newItem == null) {
 					newItem = new MaterialDocItem();
+
+					newItem.setLineId_up(item);
+					newItem.setLineId(null);
+
 				}
 				newItem.setContract(itemIn.getContract());
 				newItem.setLineId_test(item.getLineId_in());
@@ -297,7 +302,6 @@ public class MaterialDocController {
 
 		}
 
-
 		Set<MaterialDocItem> items = materialDoc.getItems();
 
 		List<MaterialDocItem> newItems = new ArrayList<MaterialDocItem>();
@@ -314,7 +318,8 @@ public class MaterialDocController {
 
 			}
 
-			if ((materialDoc.getDocType().getDocType_txt().equals("出仓"))||(materialDoc.getDocType().getDocType_txt().equals("货损"))) {
+			if ((materialDoc.getDocType().getDocType_txt().equals("出仓"))
+					|| (materialDoc.getDocType().getDocType_txt().equals("货损"))) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
 					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
@@ -398,7 +403,7 @@ public class MaterialDocController {
 
 	private String checkContractQuantity(MaterialDoc m) {
 
-		if ((m.getDocType().getId() == 3)||(m.getContract() == null)) {
+		if ((m.getDocType().getId() == 3) || (m.getContract() == null)) {
 			return "";
 		}
 		String query = "		select isnull(SUM(contract_item.quantity),0) as signed_net_weight , "

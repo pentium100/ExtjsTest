@@ -206,7 +206,7 @@ public class FilterItem {
 			return cb.like(path.get(fieldName).as(String.class), "%"
 					+ getValue() + "%");
 		}
-		if (type.equals("int")) {
+		if (type.equals("int")||type.equals("numeric")) {
 			if (getComparison().equals("=")) {
 
 				return cb.equal(path.get(fieldName).as(Integer.class),
