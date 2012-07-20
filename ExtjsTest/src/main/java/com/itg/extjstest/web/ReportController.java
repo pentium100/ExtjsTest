@@ -1326,7 +1326,7 @@ public class ReportController {
 		cte.append("                 then  material_doc.delivery_note  end ");
 		cte.append("       as delivery_note_out, ");
 		cte.append("       contract_in.contract_no as purchase_contract_no, ");
-		cte.append("       material_doc.doc_date, item_in_doc.plate_num, ");
+		cte.append("       material_doc.doc_date, item_in_doc.plate_num, item_in_doc.doc_date as doc_date_in, ");
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
 		cte.append("       material_doc_item.gross_weight, stock_location.stock_location, ");
@@ -1361,7 +1361,7 @@ public class ReportController {
 			cte.append("    	                 then  material_doc.delivery_note end ");
 			cte.append("    	       as delivery_note_out,  ");
 			cte.append("      		   contract_in.contract_no as purchase_contract_no, ");
-			cte.append("    	       material_doc.doc_date, item_in_doc.plate_num, ");
+			cte.append("    	       material_doc.doc_date, item_in_doc.plate_num, item_in_doc.doc_date as doc_date_in, ");
 			cte.append("    	       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
 			cte.append("    	       material_doc_item.gross_weight, stock_location.stock_location, ");
@@ -1485,6 +1485,13 @@ public class ReportController {
 			header.setField("delivery_note_in");
 			headers.add(header);
 
+			header = new ReportHeader();
+			header.setHeader("进仓日期");
+
+			header.setField("doc_date_in");
+			headers.add(header);
+
+			
 			header = new ReportHeader();
 			header.setHeader("出仓单号");
 			header.setField("delivery_note_out");

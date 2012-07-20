@@ -22,6 +22,10 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 						name : 'delivery_note_in',
 						type : 'string'
 					}, {
+						name : 'doc_date_in',
+						type : 'date',
+						dateFormat : 'Y-m-d H:i:s'
+					}, {
 						name : 'inv_no',
 						type : 'string'
 					}, {

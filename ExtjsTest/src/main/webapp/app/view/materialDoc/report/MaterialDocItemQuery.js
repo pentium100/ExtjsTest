@@ -154,6 +154,11 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									dataIndex : 'delivery_note_in',
 									text : '进仓单号'
 								}, {
+									xtype : 'datecolumn',
+									dataIndex : 'doc_date_in',
+									format : 'Y-m-d',
+									text : '进仓日期'
+								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'delivery_note_out',
 									text : '出仓单号'

@@ -114,6 +114,12 @@ Ext.define('AM.controller.inspection.report.InspectionDetail', {
 					tmp.push(Ext.apply({}, filter));
 				}
 				
+				if (record.authority != "") {
+					filter.type = "string";
+					filter.field = "inspection.authority";
+					filter.value = record.authority;
+					tmp.push(Ext.apply({}, filter));
+				}
 				
 				if (record.plate_num != "") {
 					filter.type = "string";
