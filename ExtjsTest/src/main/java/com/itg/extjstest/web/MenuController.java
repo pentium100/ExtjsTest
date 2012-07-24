@@ -1,6 +1,7 @@
 package com.itg.extjstest.web;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -28,7 +29,8 @@ public class MenuController {
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> listJson(
-			@RequestParam(value = "node") String node) {
+			@RequestParam(value = "node") String node,
+			HttpServletRequest request) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<Menu> result;
@@ -40,28 +42,51 @@ public class MenuController {
 					Menu.class);
 
 			result = q.getResultList();
+
 		} else {
 			Menu parent = Menu.findMenu(Long.valueOf(node));
 			result = Menu.findMenusByParent(parent).getResultList();
+
+			boolean needFilter = false;
+			if (request.isUserInRole("ROLE_QUERY")) {
+				Iterator<Menu> iterator = result.iterator();
+				while (iterator.hasNext()) {
+					Menu m = iterator.next();
+					if (m.getText().equals("数据查询")) {
+						needFilter = true;
+
+					}
+				}
+
+				iterator = result.iterator();
+				while (needFilter && iterator.hasNext()) {
+					Menu m = iterator.next();
+					if (!m.getText().equals("数据查询")
+							&& (!m.getText().equals("用户管理"))) {
+						iterator.remove();
+
+					}
+				}
+
+			}
+
 		}
 
 		return new ResponseEntity<String>(Menu.toJsonArray(result), headers,
 				HttpStatus.OK);
 	}
-	
-	@RequestMapping(value="/getUserInfo", headers = "Accept=application/json")
+
+	@RequestMapping(value = "/getUserInfo", headers = "Accept=application/json")
 	@ResponseBody
-	public ResponseEntity<String> getUserInfo(HttpServletRequest request){
-		
-		
-		UserDetail user = UserDetail.findUserDetailsByUserNameEquals(request.getRemoteUser()).getSingleResult();
+	public ResponseEntity<String> getUserInfo(HttpServletRequest request) {
+
+		UserDetail user = UserDetail.findUserDetailsByUserNameEquals(
+				request.getRemoteUser()).getSingleResult();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
-		return new ResponseEntity<String>(user.toJson(), headers,
-				HttpStatus.OK);
-		
+		return new ResponseEntity<String>(user.toJson(), headers, HttpStatus.OK);
+
 	}
-	
 
 }
