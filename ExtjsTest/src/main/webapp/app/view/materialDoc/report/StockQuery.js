@@ -5,7 +5,6 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 			frame : true,
 			alias : 'widget.StockQuery',
 
-			
 			stateful : true,
 			stateId : 'stockQuery',
 			initComponent : function() {
@@ -20,7 +19,6 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							checkOnly : true
 
 						});
-
 
 				me.columns = [{
 							xtype : 'gridcolumn',
@@ -55,7 +53,9 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							xtype : 'gridcolumn',
 							dataIndex : 'net_weight',
 							text : '净重',
-							align : 'right'
+							align : 'right',
+							summaryRenderer : Ext.util.Format
+									.numberRenderer('0,000.000')
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'delivery_note',
@@ -137,11 +137,11 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							store : 'materialDoc.report.StockQuery',
 							selModel : checkBoxSelMod,
 
-							 features : [{
-							 ftype : 'remotesummary',
-							 remoteRoot : 'remoteSummary'
-							 }],
-							//dockedItems : [],
+							features : [{
+										ftype : 'remotesummary',
+										remoteRoot : 'remoteSummary'
+									}],
+							// dockedItems : [],
 
 							dockedItems : [{
 										xtype : 'pagingtoolbar',
@@ -154,7 +154,7 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 													text : '导出到excel',
 													action : 'exportToExcel'
 												}]
-									},{
+									}, {
 										xtype : 'form',
 										tpl : Ext.create('Ext.XTemplate', ''),
 										layout : {
