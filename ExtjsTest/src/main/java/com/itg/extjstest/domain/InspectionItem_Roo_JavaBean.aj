@@ -121,4 +121,12 @@ privileged aspect InspectionItem_Roo_JavaBean {
         this.model_contract = model_contract;
     }
     
+    public Boolean InspectionItem.getIsLast() {
+        return this.isLast;
+    }
+    
+    public void InspectionItem.setIsLast(Boolean isLast) {
+        this.isLast = isLast;
+    }
+    
 }

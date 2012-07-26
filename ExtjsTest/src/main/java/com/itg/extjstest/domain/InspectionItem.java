@@ -10,7 +10,7 @@ import org.springframework.roo.addon.tostring.RooToString;
 
 @RooJavaBean
 @RooToString
-@RooJpaActiveRecord
+@RooJpaActiveRecord(finders = { "findInspectionItemsByMaterialDocItem" })
 public class InspectionItem {
 
     @OneToOne
@@ -33,8 +33,7 @@ public class InspectionItem {
 
     @ManyToOne
     private Inspection inspection;
-    
-    
+
     @Transient
     private String contractNo;
 
@@ -49,6 +48,6 @@ public class InspectionItem {
 
     @Transient
     private String model_contract;
-    
-    
+
+    private Boolean isLast;
 }

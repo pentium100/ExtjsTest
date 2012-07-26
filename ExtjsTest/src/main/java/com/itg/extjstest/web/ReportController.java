@@ -654,7 +654,7 @@ public class ReportController {
 		cte.append("      inner join contract on contract.id =  material_doc_item.contract ");
 		cte.append("      left join contract_item on material_doc_item.contract = contract_item.contract ");
 		cte.append("                             and material_doc_item.model_contract = contract_item.model ");
-		cte.append("      left join inspection_item on inspection_item.material_doc_item = material_doc_item.line_id_test ");
+		cte.append("      left join inspection_item on inspection_item.material_doc_item = material_doc_item.line_id_test and is_last = 1 ");
 		cte.append("      left join inspection on inspection.id = inspection_item.inspection, ");
 
 		cte.append(" ( ");
@@ -726,7 +726,7 @@ public class ReportController {
 
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
-			header.setField("deliveryNote");
+			header.setField("delivery_note");
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -764,11 +764,11 @@ public class ReportController {
 			header.setField("authority");
 			headers.add(header);
 
-			header = new ReportHeader();
-			header.setHeader("si");
-			header.setField("si");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			headers.add(header);
+			//header = new ReportHeader();
+			//header.setHeader("si");
+			//header.setField("si");
+			//header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			//headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("fe");
@@ -976,11 +976,11 @@ public class ReportController {
 			header.setField("authority");
 			headers.add(header);
 
-			header = new ReportHeader();
-			header.setHeader("si");
-			header.setField("si");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			headers.add(header);
+			//header = new ReportHeader();
+			//header.setHeader("si");
+			//header.setField("si");
+			//header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			//headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("fe");

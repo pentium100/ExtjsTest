@@ -113,7 +113,7 @@ public class MaterialDocController {
 		}
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("total", MaterialDoc.countMaterialDocs());
+		map.put("total", MaterialDoc.countMaterialDocsByFilter(filters));
 		map.put("success", true);
 		String resultJson = MaterialDoc.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);

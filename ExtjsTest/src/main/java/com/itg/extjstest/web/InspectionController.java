@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -89,10 +90,10 @@ public class InspectionController {
         	}
         }
         inspection = inspection.merge();
-        
+        inspection.updateIsLast();
         
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
+        headers.add("Content-Type", "application/json; charset=utf-8");
         
         
 		for(InspectionItem item:inspection.getItems()){
@@ -111,11 +112,13 @@ public class InspectionController {
         
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
     }
+    
+    
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}", headers = "Accept=application/json")
     public ResponseEntity<String> updateFromJson(@RequestBody String json) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
+        headers.add("Content-Type", "application/json; charset=utf-8");
         Inspection inspection = Inspection.fromJsonToInspection(json);
         inspection.setContracts("");
         for(InspectionItem item : inspection.getItems()){
@@ -129,9 +132,10 @@ public class InspectionController {
         		
         		inspection.setContracts(inspection.getContracts()+contractNo);
         	}
+        	
         }
         inspection = inspection.merge();
-        
+        inspection.updateIsLast();
 		for(InspectionItem item:inspection.getItems()){
 			item.setContractNo(item.getMaterialDocItem().getMaterialDoc().getContract().getContractNo());
 			item.setModel_contract(item.getMaterialDocItem().getModel_contract());
@@ -152,6 +156,21 @@ public class InspectionController {
 		String resultJson = Inspection.mapToJson(map, inspections);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
         //return new ResponseEntity<String>(headers, HttpStatus.OK);
+    }
+    
+    
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+    public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
+        Inspection inspection = Inspection.findInspection(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json; charset=utf-8");
+        if (inspection == null) {
+            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+        }
+        inspection.remove();
+        inspection.updateIsLast();
+        
+        return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     
 }

@@ -20,8 +20,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
@@ -93,6 +95,38 @@ public class MaterialDoc {
         return resultJson;
     }
 
+    public static Long countMaterialDocsByFilter(List<com.itg.extjstest.util.FilterItem> filters) throws ParseException{
+    	
+    	
+        CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<Tuple> c = cb.createTupleQuery();
+
+        Root<MaterialDoc> root = c.from(MaterialDoc.class);
+        
+
+		Expression<Long> id = root.get("docNo");
+		Expression<Long> countId = (Expression<Long>) cb.count(id);
+		
+		c.select(cb.tuple(countId.alias("total")));
+        HashMap<String, Path> paths = new HashMap<String, Path>();
+        paths.put("", root);
+        List<Predicate> criteria = new ArrayList<Predicate>();
+        if (filters != null) {
+            for (FilterItem f : filters) {
+                if (f.getField().equals("contractNo")) {
+                    f.setField("contract.contractNo");
+                    Join<MaterialDoc, Contract> fromContract = root.join("contract");
+                    paths.put("contract", fromContract);
+                }
+                criteria.add(f.getPredicate(cb, paths));
+            }
+            c.where(cb.and(criteria.toArray(new Predicate[0])));
+        }
+		Tuple result = entityManager().createQuery(c).getSingleResult();
+		return (Long) result.get("total");
+    	
+    }
+    
     public static List<com.itg.extjstest.domain.MaterialDoc> findMaterialDocsByFilter(List<com.itg.extjstest.util.FilterItem> filters, Integer start, Integer page, Integer limit) throws ParseException {
         CriteriaBuilder cb = entityManager().getCriteriaBuilder();
         CriteriaQuery<MaterialDoc> c = cb.createQuery(MaterialDoc.class);

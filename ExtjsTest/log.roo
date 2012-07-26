@@ -639,3 +639,15 @@ focus --class ~.domain.MaterialDoc
 field string --fieldName cause --sizeMax 10
 exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-05-28 20:36:37
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-26 15:41:23
+focus --class ~.domain.InspectionItem
+field boolean --fieldName isLast 
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-26 15:43:34
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-26 15:50:23
+focus --class ~.domain.InspectionItem
+finder list --depth 1
+finder list --depth 1 --filter materialdocitem
+finder add --finderName findInspectionItemsByMaterialDocItem
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-26 15:52:28

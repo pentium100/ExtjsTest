@@ -219,6 +219,13 @@ Ext.define('AM.controller.inspection.Inspections', {
 			tmp.push(Ext.apply({}, filter));
 		}
 
+		if (record.model != "") {
+			filter.type = "string";
+			filter.field = "model_contract";
+			filter.value = record.model;
+			tmp.push(Ext.apply({}, filter));
+		}
+
 		var p = store.getProxy();
 		p.extraParams.filter = Ext.JSON.encode(tmp);
 		p.url = 'materialdocitems/2',

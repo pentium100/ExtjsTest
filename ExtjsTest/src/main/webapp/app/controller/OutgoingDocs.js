@@ -100,8 +100,8 @@ Ext.define('AM.controller.OutgoingDocs', {
 
 		var record = new AM.model.MaterialDoc();
 		record.setDocType({
-		 id : this.docType
-		});
+					id : this.docType
+				});
 		this.getStore('OutgoingDocs').insert(0, record);
 
 		record.join(this.getStore('OutgoingDocs'))
@@ -293,6 +293,12 @@ Ext.define('AM.controller.OutgoingDocs', {
 			filter.value = record.stockLocation;
 			tmp.push(Ext.apply({}, filter));
 		}
+		if (record.model != "") {
+			filter.type = "string";
+			filter.field = "model_contract";
+			filter.value = record.model;
+			tmp.push(Ext.apply({}, filter));
+		}
 
 		var p = store.getProxy();
 		p.extraParams.filter = Ext.JSON.encode(tmp);
@@ -313,8 +319,6 @@ Ext.define('AM.controller.OutgoingDocs', {
 			var store = grid.getStore();
 			store.insert(0, itemRecord);
 			itemRecord.join(store);
-			
-			
 
 		}
 
@@ -344,10 +348,9 @@ Ext.define('AM.controller.OutgoingDocs', {
 		var values = form.getValues();
 		values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
 		var oldRecord = form.getRecord();
-		
+
 		oldRecord.set(values);
-		
-		
+
 		// oldRecord.set('contract_id', record.get('id'));
 		oldRecord.setContract(record.data);
 		oldRecord.set('contractNo', record.get('contractNo'));
@@ -380,13 +383,12 @@ Ext.define('AM.controller.OutgoingDocs', {
 		values.docDate = Ext.Date.parse(values.docDate, 'Y-m-d');
 
 		record.set(values);
-				
 
 		// record.data.items = win.down('grid').getStore();
 		if (record.store == undefined) {
-			//var view = win.parentWindow;
-			
-			//var store = view.down('gridpanel').getStore();
+			// var view = win.parentWindow;
+
+			// var store = view.down('gridpanel').getStore();
 			var store = this.getOutgoingDocsStore();
 			record.join(store)
 		}

@@ -140,18 +140,20 @@ Ext.define('AM.view.inspection.Edit', {
 									}
 								},
 								format : '0,000.000'
-							}, {
-								xtype : 'numbercolumn',
-								dataIndex : 'si',
-								width : 60,
-								align : 'right',
-								text : 'si',
-								field : {
-									xtype : 'numberfield',
-									decimalPrecision : 4
-								},
-								format : '0.0000'
-							}, {
+							} ,{
+								
+							//
+							//	xtype : 'numbercolumn',
+							//	dataIndex : 'si',
+							//	width : 60,
+							//	align : 'right',
+							//	text : 'si',
+							//	field : {
+							//		xtype : 'numberfield',
+							//		decimalPrecision : 4
+							//	},
+							//	format : '0.0000'
+							//}, {
 								xtype : 'numbercolumn',
 								dataIndex : 'fe',
 								width : 51,

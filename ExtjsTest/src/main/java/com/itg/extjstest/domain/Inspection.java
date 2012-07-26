@@ -84,4 +84,35 @@ public class Inspection {
 						Date.class).serialize(map);
 		return resultJson;
 	}
+
+	public void updateIsLast() {
+		for (InspectionItem item : getItems()) {
+			List<InspectionItem> needToBeCheckItems = InspectionItem
+					.findInspectionItemsByMaterialDocItem(
+							item.getMaterialDocItem()).getResultList();
+			InspectionItem maxDate = null;
+			for (InspectionItem item2 : needToBeCheckItems) {
+				if (maxDate == null) {
+					maxDate = item2;
+				}
+				if (maxDate.getInspection().getInspectionDate()
+						.before(item2.getInspection().getInspectionDate())) {
+					maxDate = item2;
+				}
+			}
+			
+			for (InspectionItem item2 : needToBeCheckItems) {
+				if (maxDate == item2) {
+					item2.setIsLast(true);
+				}else{
+					item2.setIsLast(false);
+				}
+				
+				item2.persist();
+			
+			}
+			
+
+		}
+	}
 }

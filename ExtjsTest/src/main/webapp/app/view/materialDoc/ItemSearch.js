@@ -57,6 +57,10 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 											xtype : 'textfield',
 											fieldLabel : '仓库',
 											name : 'stockLocation'
+										}, {
+											xtype : 'textfield',
+											fieldLabel : '规格',
+											name : 'model'
 										}],
 								buttons : [{
 											text : 'Search',

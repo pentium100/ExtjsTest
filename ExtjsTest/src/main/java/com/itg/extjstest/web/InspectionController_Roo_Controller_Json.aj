@@ -32,6 +32,7 @@ privileged aspect InspectionController_Roo_Controller_Json {
     public ResponseEntity<String> InspectionController.createFromJsonArray(@RequestBody String json) {
         for (Inspection inspection: Inspection.fromJsonArrayToInspections(json)) {
             inspection.persist();
+            
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
@@ -46,20 +47,10 @@ privileged aspect InspectionController_Roo_Controller_Json {
             if (inspection.merge() == null) {
                 return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
             }
+            
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> InspectionController.deleteFromJson(@PathVariable("id") Long id) {
-        Inspection inspection = Inspection.findInspection(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        if (inspection == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        inspection.remove();
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
     
 }
