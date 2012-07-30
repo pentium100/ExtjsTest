@@ -651,3 +651,16 @@ finder list --depth 1 --filter materialdocitem
 finder add --finderName findInspectionItemsByMaterialDocItem
 exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-26 15:52:28
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-30 13:49:01
+focus --class ~.domain.AfloatGoods
+field number --fieldName sourceFee --type java.lang.Double
+field number --fieldName destinationFee --type java.lang.Double
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-30 13:58:11
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-07-30 14:19:56
+focus --class ~.domain.AfloatGoods
+// [failed] field boolean --fieldName sourceFee 
+field boolean --fieldName sourceFee
+field boolean --fieldName destinationFee
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-30 14:28:10

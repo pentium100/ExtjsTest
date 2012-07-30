@@ -32,7 +32,6 @@ privileged aspect InspectionController_Roo_Controller_Json {
     public ResponseEntity<String> InspectionController.createFromJsonArray(@RequestBody String json) {
         for (Inspection inspection: Inspection.fromJsonArrayToInspections(json)) {
             inspection.persist();
-            
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
@@ -47,10 +46,8 @@ privileged aspect InspectionController_Roo_Controller_Json {
             if (inspection.merge() == null) {
                 return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
             }
-            
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
-    
     
 }

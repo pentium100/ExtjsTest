@@ -47,6 +47,14 @@ Ext.define('AM.model.afloatGoods.AfloatGoods', {
 						type : 'boolean'
 
 					}, {
+						name : 'sourceFee',
+						type : 'boolean'
+						
+
+					}, {
+						name : 'destinationFee',
+						type : 'boolean'
+					}, {
 						name : 'remark',
 						type : 'string'
 					}, {

@@ -99,4 +99,20 @@ privileged aspect AfloatGoods_Roo_JavaBean {
         this.original = original;
     }
     
+    public Boolean AfloatGoods.getSourceFee() {
+        return this.sourceFee;
+    }
+    
+    public void AfloatGoods.setSourceFee(Boolean sourceFee) {
+        this.sourceFee = sourceFee;
+    }
+    
+    public Boolean AfloatGoods.getDestinationFee() {
+        return this.destinationFee;
+    }
+    
+    public void AfloatGoods.setDestinationFee(Boolean destinationFee) {
+        this.destinationFee = destinationFee;
+    }
+    
 }

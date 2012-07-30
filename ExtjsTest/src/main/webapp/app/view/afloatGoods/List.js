@@ -68,11 +68,51 @@ Ext.define('AM.view.afloatGoods.List', {
 							filterable : true,
 							flex : 1
 						}, {
+
+							header : '批次号',
+							dataIndex : 'destination',
+							xtype : 'gridcolumn',
+							filterable : false,
+							renderer : function(value, metaData, rec) {
+
+								var text = ',';
+
+								var items = rec.items();
+								for (var i = 0; i < items.getCount(); i++) {
+									var item = items.getAt(i);
+									var batch = item.get('batchNo');
+									if (text.indexOf(','+batch + ',') == -1) {
+										text = text + batch + ','
+									}
+								}
+
+								text = text.substr(1,1000);
+								return text;
+
+							}
+
+						}, {
 							header : '正本单据',
 							dataIndex : 'original',
 							xtype : 'gridcolumn',
 							inputValue : 'true',
 							filterable : true,
+							flex : 1
+						}, {
+							header : '发货费用',
+							dataIndex : 'sourceFee',
+							xtype : 'gridcolumn',
+							inputValue : 'true',
+							filterable : true,
+
+							flex : 1
+						}, {
+							header : '接卡费用',
+							dataIndex : 'destinationFee',
+							xtype : 'gridcolumn',
+							inputValue : 'true',
+							filterable : true,
+
 							flex : 1
 						}, {
 							header : '备注',

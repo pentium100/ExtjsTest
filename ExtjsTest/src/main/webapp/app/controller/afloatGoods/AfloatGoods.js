@@ -81,7 +81,7 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 						itemStore.insert(0, item2);
 						item2.join(this.items());
 					}, record);
-			
+
 			record.join(this.getStore('afloatGoods.AfloatGoods'));
 			var view = Ext.widget('afloatGoodsEdit', {
 						parentGrid : grid
@@ -238,6 +238,20 @@ Ext.define('AM.controller.afloatGoods.AfloatGoods', {
 		values.arrivalDate = Ext.Date.parse(values.arrivalDate, 'Y-m-d');
 
 		record.set(values);
+
+		if (values.original == undefined) {
+			record.set('original', false);
+		}
+		
+		if (values.sourceFee == undefined) {
+			record.set('sourceFee', false);
+		}
+		
+		if (values.destinationFee == undefined) {
+			record.set('destinationFee', false);
+		}
+		
+		
 
 		// record.data.items = win.down('grid').getStore();
 		// this.getStore('Contracts').sync();

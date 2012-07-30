@@ -1,7 +1,7 @@
 Ext.define('AM.view.afloatGoods.Edit', {
 			extend : 'Ext.window.Window',
 			alias : 'widget.afloatGoodsEdit',
-			xtype: 'afloatGoodsEdit',
+			xtype : 'afloatGoodsEdit',
 
 			title : '在途信息',
 			layout : 'border',
@@ -86,12 +86,24 @@ Ext.define('AM.view.afloatGoods.Edit', {
 										xtype : 'checkbox',
 										name : 'original',
 										fieldLabel : '正本单据',
-										inputValue: 'true'
+										inputValue : 'true'
+
+									}, {
+										xtype : 'checkbox',
+										name : 'sourceFee',
+										fieldLabel : '发货费用',
+										inputValue : 'true'
+
+									}, {
+										xtype : 'checkbox',
+										name : 'destinationFee',
+										fieldLabel : '接卡费用',
+										inputValue : 'true'
 
 									}, {
 										xtype : 'textfield',
 										name : 'remark',
-										 width: 764,
+										width : 764,
 										fieldLabel : '备注'
 									}]
 						}, {
@@ -128,8 +140,8 @@ Ext.define('AM.view.afloatGoods.Edit', {
 										dataIndex : 'quantity',
 										text : '数量',
 										field : 'numberfield',
-										format: '0.00'
-									},{
+										format : '0.00'
+									}, {
 										xtype : 'gridcolumn',
 										dataIndex : 'batchNo',
 										text : '批次号',

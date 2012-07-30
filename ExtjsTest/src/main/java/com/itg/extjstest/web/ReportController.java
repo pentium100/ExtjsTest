@@ -1476,6 +1476,7 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("净重");
 			header.setField("net_weight");
+			header.setFormat("#,##0.000");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
