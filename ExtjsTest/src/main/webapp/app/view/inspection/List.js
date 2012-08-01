@@ -37,6 +37,10 @@ Ext.define('AM.view.inspection.List', {
 							dataIndex : 'original',
 							filterable : true
 						}, {
+							header : '检验后规格',
+							dataIndex : 'model_tested',
+							filterable : true
+						}, {
 							header : '备注',
 							dataIndex : 'remark',
 							filterable : true,

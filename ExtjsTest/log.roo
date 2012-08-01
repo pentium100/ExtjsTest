@@ -664,3 +664,8 @@ field boolean --fieldName sourceFee
 field boolean --fieldName destinationFee
 exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-07-30 14:28:10
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-08-01 14:21:07
+focus --class ~.domain.Inspection
+field string --fieldName model_tested
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-08-01 14:26:51

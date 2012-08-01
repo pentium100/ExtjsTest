@@ -3,7 +3,7 @@
 Ext.define('AM.store.afloatGoods.AfloatGoods', {
 			extend : 'Ext.data.ux.Store',
 			model : 'AM.model.afloatGoods.AfloatGoods',
-
+			remoteSort : true,
 			autoLoad : true,
 			proxy : {
 				type : 'rest',

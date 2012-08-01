@@ -18,7 +18,10 @@ Ext.define('AM.view.afloatGoods.List', {
 							header : '合同号',
 							dataIndex : 'contractNo',
 							filterable : true,
-							flex : 1
+							flex : 1,
+							filter : {
+								filterField : 'contract.contractNo'
+							}
 						}, {
 							header : '供应商',
 							dataIndex : 'supplier',
@@ -81,12 +84,12 @@ Ext.define('AM.view.afloatGoods.List', {
 								for (var i = 0; i < items.getCount(); i++) {
 									var item = items.getAt(i);
 									var batch = item.get('batchNo');
-									if (text.indexOf(','+batch + ',') == -1) {
+									if (text.indexOf(',' + batch + ',') == -1) {
 										text = text + batch + ','
 									}
 								}
 
-								text = text.substr(1,1000);
+								text = text.substr(1, 1000);
 								return text;
 
 							}

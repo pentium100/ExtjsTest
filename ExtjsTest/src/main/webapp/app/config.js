@@ -682,4 +682,35 @@ Ext.require(['Ext.data.Model'], function() {
 
 		}
 	});
+
 });
+
+Ext.require(['Ext.ux.grid.FiltersFeature'], function() {
+
+			Ext.ux.grid.FiltersFeature.override({
+						getFilterData : function() {
+
+							var filters = [], i, len;
+
+							this.filters.each(function(f) {
+										if (f.active) {
+											var d = [].concat(f.serialize());
+											for (i = 0, len = d.length; i < len; i++) {
+
+												var filterField = f.dataIndex;
+												if (f.filterField) {
+													filterField = f.filterField;
+
+												}
+												filters.push({
+															field : filterField,
+															data : d[i]
+														});
+											}
+										}
+									});
+							return filters;
+
+						}
+					})
+		});

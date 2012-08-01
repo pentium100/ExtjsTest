@@ -23,6 +23,9 @@ Ext.define('AM.model.inspection.Inspection', {
 					}, {
 						name : 'contracts',
 						type : 'string'
+					},  {
+						name : 'model_tested',
+						type : 'string'
 					}, {
 						name : 'id',
 						type : 'int'

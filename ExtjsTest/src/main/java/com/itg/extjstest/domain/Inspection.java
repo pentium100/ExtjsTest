@@ -3,7 +3,6 @@ package com.itg.extjstest.domain;
 import com.itg.extjstest.util.FilterItem;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,86 +32,73 @@ import org.springframework.roo.addon.tostring.RooToString;
 @RooJson
 public class Inspection {
 
-	@DateTimeFormat(style = "M-")
-	private Date InspectionDate;
+    @DateTimeFormat(style = "M-")
+    private Date InspectionDate;
 
-	@Size(max = 50)
-	private String authority;
+    @Size(max = 50)
+    private String authority;
 
-	@Size(max = 50)
-	private String docNo;
+    @Size(max = 50)
+    private String docNo;
 
-	private Boolean original;
+    private Boolean original;
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<InspectionItem> items = new HashSet<InspectionItem>();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<InspectionItem> items = new HashSet<InspectionItem>();
 
-	@Size(max = 250)
-	private String remark;
+    @Size(max = 250)
+    private String remark;
 
-	@Size(max = 200)
-	private String contracts;
+    @Size(max = 200)
+    private String contracts;
 
-	public static List<com.itg.extjstest.domain.Inspection> findInspectionByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<Inspection> c = cb.createQuery(Inspection.class);
-		Root<Inspection> inspection = c.from(Inspection.class);
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", inspection);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-		return entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
-	}
+    private String model_tested;
 
-	public static String mapToJson(
-			HashMap<java.lang.String, java.lang.Object> map,
-			List<com.itg.extjstest.domain.Inspection> result) {
-		map.put("inspections", result);
-		String resultJson = new JSONSerializer()
-				.exclude("*.class")
-				.include("inspections")
-				.include("inspections.items")
-				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
-						Date.class).serialize(map);
-		return resultJson;
-	}
+    public static List<com.itg.extjstest.domain.Inspection> findInspectionByFilter(List<com.itg.extjstest.util.FilterItem> filters, Integer start, Integer page, Integer limit) throws ParseException {
+        CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+        CriteriaQuery<Inspection> c = cb.createQuery(Inspection.class);
+        Root<Inspection> inspection = c.from(Inspection.class);
+        HashMap<String, Path> paths = new HashMap<String, Path>();
+        paths.put("", inspection);
+        List<Predicate> criteria = new ArrayList<Predicate>();
+        if (filters != null) {
+            for (FilterItem f : filters) {
+                criteria.add(f.getPredicate(cb, paths));
+            }
+            c.where(cb.and(criteria.toArray(new Predicate[0])));
+        }
+        return entityManager().createQuery(c).setFirstResult(start).setMaxResults(limit).getResultList();
+    }
 
-	public void updateIsLast() {
-		for (InspectionItem item : getItems()) {
-			List<InspectionItem> needToBeCheckItems = InspectionItem
-					.findInspectionItemsByMaterialDocItem(
-							item.getMaterialDocItem()).getResultList();
-			InspectionItem maxDate = null;
-			for (InspectionItem item2 : needToBeCheckItems) {
-				if (maxDate == null) {
-					maxDate = item2;
-				}
-				if (maxDate.getInspection().getInspectionDate()
-						.before(item2.getInspection().getInspectionDate())) {
-					maxDate = item2;
-				}
-			}
-			
-			for (InspectionItem item2 : needToBeCheckItems) {
-				if (maxDate == item2) {
-					item2.setIsLast(true);
-				}else{
-					item2.setIsLast(false);
-				}
-				
-				item2.persist();
-			
-			}
-			
+    public static String mapToJson(HashMap<java.lang.String, java.lang.Object> map, List<com.itg.extjstest.domain.Inspection> result) {
+        map.put("inspections", result);
+        String resultJson = new JSONSerializer().exclude("*.class").include("inspections").include("inspections.items").transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"), Date.class).serialize(map);
+        return resultJson;
+    }
 
-		}
-	}
+    public void updateIsLast() {
+        for (InspectionItem item : getItems()) {
+            List<InspectionItem> needToBeCheckItems = InspectionItem.findInspectionItemsByMaterialDocItem(item.getMaterialDocItem()).getResultList();
+            InspectionItem maxDate = null;
+            for (InspectionItem item2 : needToBeCheckItems) {
+                if (maxDate == null) {
+                    maxDate = item2;
+                }
+                if (maxDate.getInspection().getInspectionDate().before(item2.getInspection().getInspectionDate())) {
+                    maxDate = item2;
+                }
+            }
+            for (InspectionItem item2 : needToBeCheckItems) {
+                if (maxDate == item2) {
+                    item2.setIsLast(true);
+                } else {
+                    item2.setIsLast(false);
+                }
+                item2.persist();
+            }
+            MaterialDocItem materialDocItem = item.getMaterialDocItem();
+            materialDocItem.setModel_tested(maxDate.getInspection().getModel_tested());
+            materialDocItem.persist();
+        }
+    }
 }

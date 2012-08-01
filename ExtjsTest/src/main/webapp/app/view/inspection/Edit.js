@@ -33,6 +33,10 @@ Ext.define('AM.view.inspection.Edit', {
 										fieldLabel : '检验机构'
 									}, {
 										xtype : 'textfield',
+										name : 'model_tested',
+										fieldLabel : '检验后规格'
+									}, {
+										xtype : 'textfield',
 										name : 'docNo',
 										fieldLabel : '编号'
 									}, {

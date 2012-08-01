@@ -8,6 +8,7 @@ import java.util.List;
 import com.itg.extjstest.domain.AfloatGoods;
 import com.itg.extjstest.domain.AfloatGoodsItem;
 import com.itg.extjstest.util.FilterItem;
+import com.itg.extjstest.util.SortItem;
 
 import flexjson.JSONDeserializer;
 
@@ -33,87 +34,85 @@ public class AfloatGoodsController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "start", required = false) Integer start,
 			@RequestParam(value = "limit", required = false) Integer limit,
-			@RequestParam(value = "filter", required = false) String filter) throws ParseException {
-		
-		
-		
+			@RequestParam(value = "filter", required = false) String filter,
+			@RequestParam(value = "sort", required = false) String sort)
+			throws ParseException {
+
 		List<AfloatGoods> result;
 		List<FilterItem> filters = null;
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					//.use("values.value", ArrayList.class)
-					.use("values.value", String.class)
-					.deserialize(filter);
+					// .use("values.value", ArrayList.class)
+					.use("values.value", String.class).deserialize(filter);
 
 		}
-		result = AfloatGoods.findAfloatGoodsByFilter(filters, start, page, limit);
 		
-		
+		List<SortItem> sorts = null;
+		if (sort !=null){
+			sorts =  new JSONDeserializer<List<SortItem>>()
+					.use(null, ArrayList.class).use("values", SortItem.class)
+					.deserialize(sort);
+		}
+		result = AfloatGoods.findAfloatGoodsByFilter(filters, start, page,
+				limit, sorts);
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		//List<AfloatGoods> result = AfloatGoods.findAllAfloatGoodses();
-		
+		// List<AfloatGoods> result = AfloatGoods.findAllAfloatGoodses();
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("total", AfloatGoods.countAfloatGoodses());
 		map.put("success", true);
 		String resultJson = AfloatGoods.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
-		
-		//return new ResponseEntity<String>(AfloatGoods.toJsonArray(result),
-		//		headers, HttpStatus.OK);
-		
-		
-		
+
+		// return new ResponseEntity<String>(AfloatGoods.toJsonArray(result),
+		// headers, HttpStatus.OK);
+
 	}
 
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
 		AfloatGoods afloatGoods = AfloatGoods.fromJsonToAfloatGoods(json);
-		
-		for(AfloatGoodsItem item : afloatGoods.getItems()){
+
+		for (AfloatGoodsItem item : afloatGoods.getItems()) {
 			item.setAfloatGoods(afloatGoods);
 		}
 		afloatGoods = afloatGoods.merge();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
-		
-		
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		List<AfloatGoods> afloatGoodses = new ArrayList<AfloatGoods>();
 		afloatGoodses.add(afloatGoods);
 		map.put("success", true);
 		String resultJson = AfloatGoods.mapToJson(map, afloatGoodses);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
-		
-		
+
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}", headers = "Accept=application/json")
 	public ResponseEntity<String> updateFromJson(@RequestBody String json) {
-		
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		AfloatGoods afloatGoods = AfloatGoods.fromJsonToAfloatGoods(json);
-		
-		for(AfloatGoodsItem item : afloatGoods.getItems()){
+
+		for (AfloatGoodsItem item : afloatGoods.getItems()) {
 			item.setAfloatGoods(afloatGoods);
 		}
 		afloatGoods = afloatGoods.merge();
-		if ( afloatGoods== null) {
+		if (afloatGoods == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		
-		
-		
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		List<AfloatGoods> afloatGoodses = new ArrayList<AfloatGoods>();
 		afloatGoodses.add(afloatGoods);
 		map.put("success", true);
 		String resultJson = AfloatGoods.mapToJson(map, afloatGoodses);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
-		
 
 	}
 

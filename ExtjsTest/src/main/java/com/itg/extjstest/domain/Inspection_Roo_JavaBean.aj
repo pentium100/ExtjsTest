@@ -66,4 +66,12 @@ privileged aspect Inspection_Roo_JavaBean {
         this.contracts = contracts;
     }
     
+    public String Inspection.getModel_tested() {
+        return this.model_tested;
+    }
+    
+    public void Inspection.setModel_tested(String model_tested) {
+        this.model_tested = model_tested;
+    }
+    
 }

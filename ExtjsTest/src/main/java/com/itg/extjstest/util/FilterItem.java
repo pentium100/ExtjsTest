@@ -104,7 +104,8 @@ public class FilterItem {
 
 			try {
 
-				if (!getValue().equals("") && !getValue().equals("null") && !getValue().equals("not null")) {
+				if (!getValue().equals("") && !getValue().equals("null")
+						&& !getValue().equals("not null")) {
 					SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
 					Date today = s.parse(getValue());
 
@@ -158,18 +159,46 @@ public class FilterItem {
 		return result.toString();
 	}
 
+	private Path getParentPath(Path path, String fieldName) {
+
+		String[] fields = fieldName.split("\\.");
+		Path path2 = path;
+
+		for (int i = 0; i < fields.length - 1; i++) {
+			path2 = path2.get(fields[i]);
+		}
+
+		return path2;
+	}
+
 	public Predicate getPredicate(CriteriaBuilder cb,
 			HashMap<String, Path> paths) throws ParseException {
 		// TODO Auto-generated method stub
 		String[] fields = getField().split("\\.");
-		Path path;
+		Path path = null;
 		String fieldName;
-		if (fields.length == 2) {
-			path = paths.get(fields[0]);
-			fieldName = fields[1];
-		} else {
+		if (fields.length >= 2) {
 			path = paths.get("");
-			fieldName = getField();
+			path = getParentPath(path, getField());
+
+			fieldName = fields[fields.length-1];
+		} else {
+			if (fields.length == 2) {
+				path = paths.get(fields[0]);
+				fieldName = fields[1];
+
+				if (path == null) {
+					path = paths.get("");
+					path = getParentPath(path, getField());
+					//
+					// path = path.get(fields[0]);
+
+				}
+
+			} else {
+				path = paths.get("");
+				fieldName = getField();
+			}
 		}
 
 		if (type.equals("list")) {
@@ -206,7 +235,7 @@ public class FilterItem {
 			return cb.like(path.get(fieldName).as(String.class), "%"
 					+ getValue() + "%");
 		}
-		if (type.equals("int")||type.equals("numeric")) {
+		if (type.equals("int") || type.equals("numeric")) {
 			if (getComparison().equals("=")) {
 
 				return cb.equal(path.get(fieldName).as(Integer.class),
