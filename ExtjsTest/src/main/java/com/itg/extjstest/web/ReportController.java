@@ -1342,7 +1342,7 @@ public class ReportController {
 		cte.append("  		  left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
 		cte.append("	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 		cte.append("          left join contract contract_in on contract_in.id = item_in.contract    ");
-		cte.append("          left join inspection_item insp on insp.material_doc_item = item_in.line_id_test ");
+		cte.append("          left join inspection_item insp on insp.material_doc_item = item_in.line_id_test  and is_last = 1  ");
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
 		}
@@ -1379,7 +1379,7 @@ public class ReportController {
 
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 			cte.append("              left join contract contract_in on contract_in.id = item_in.contract    ");
-			cte.append("              left join inspection_item insp on insp.material_doc_item = item_in.line_id_test ");
+			cte.append("              left join inspection_item insp on insp.material_doc_item = item_in.line_id_test  and is_last = 1 ");
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
 			cte.append("    	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
