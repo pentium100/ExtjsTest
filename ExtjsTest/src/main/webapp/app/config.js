@@ -714,3 +714,16 @@ Ext.require(['Ext.ux.grid.FiltersFeature'], function() {
 						}
 					})
 		});
+
+Ext.require(['Ext.grid.column.Column'], function() {
+			Ext.grid.column.Column.override({
+
+						getSortParam : function() {
+							if (this.sortFieldName) {
+								return this.sortFieldName;
+							} else {
+								return this.dataIndex;
+							}
+						}
+					})
+		});

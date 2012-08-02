@@ -151,11 +151,11 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 									dataIndex : 'authority',
 									text : '检验机构'
 
-								//}, {
-								//	xtype : 'gridcolumn',
-								//	dataIndex : 'si',
-								//	text : 'si'
-								}, {
+										// }, {
+										// xtype : 'gridcolumn',
+										// dataIndex : 'si',
+										// text : 'si'
+									}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'fe',
 									text : 'fe'
@@ -178,7 +178,8 @@ Ext.define('AM.view.inspection.report.InspectionDetail', {
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'doc_no',
-									text : '编号'
+									text : '编号',
+									sortFieldName : 'inspection.doc_no'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'original',
