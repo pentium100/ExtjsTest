@@ -128,29 +128,29 @@ Ext.define('AM.controller.MaterialDocs', {
 
 			record.set('cause', '采购');
 			record.set('docNo', 0);
-			var items = selection.items();
+			//var items = selection.items();
 
-			items.each(function(item) {
+			//items.each(function(item) {
 
-						var item2 = item.copy();
-						Ext.data.Model.id(item2);
+			//			var item2 = item.copy();
+			//			Ext.data.Model.id(item2);
 
-						var lineId_in = {
-							'lineId' : 0,
-							'version' : 0
-						};
-						item2.set('lineId_in', lineId_in);
+			//			var lineId_in = {
+			//				'lineId' : 0,
+			//				'version' : 0
+			//			};
+			//			item2.set('lineId_in', lineId_in);
 						// item.lineId_in = lineId_in;
 						// item.dirty = false;
-						item2.set('lineId', 0);
+			//			item2.set('lineId', 0);
 						// item2.set('lineId_test', 0);
 						// item2.set('lineId_up', 0)
-						item2.phantom = true;
+			//			item2.phantom = true;
 						// item.commit(true);
-						var itemStore = this.items();
-						itemStore.insert(0, item2);
-						item2.join(this.items());
-					}, record);
+			//			var itemStore = this.items();
+			//			itemStore.insert(0, item2);
+			//			item2.join(this.items());
+			//		}, record);
 			record.phantom = true;
 			record.join(this.getStore('MaterialDocs'));
 			var view = Ext.widget('materialDocEdit');

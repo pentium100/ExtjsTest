@@ -293,12 +293,12 @@ public class ReportController {
 		cte.append("                   left join contract_item i on i.contract = c.id");
 		cte.append("   where (abs(i.quantity-isNull((select SUM(net_weight) from material_doc md ");
 		cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
-		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model),0)))>0.00001 ");
+		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model),0)))>0.001 ");
 		cte.append(whereString);
 		cte.append(" )");
 
 		// query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
-		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 ");
+		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 and rowNum>:start and rowNum<=:start+:limit");
 		query.append(whereString2);
 		query.append(" order by " + sortString.toString() + " ");
 
