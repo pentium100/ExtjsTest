@@ -298,7 +298,7 @@ public class ReportController {
 		cte.append(" )");
 
 		// query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
-		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 and rowNum>:start and rowNum<=:start+:limit");
+		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 ");
 		query.append(whereString2);
 		query.append(" order by " + sortString.toString() + " ");
 
@@ -620,13 +620,15 @@ public class ReportController {
 		}
 
 		StringBuffer whereString = new StringBuffer();
-		for (FilterItem f : filters) {
+		if (filters != null) {
+			for (FilterItem f : filters) {
 
-			if (!whereString.toString().equals("")) {
-				whereString.append(" and ");
+				if (!whereString.toString().equals("")) {
+					whereString.append(" and ");
+				}
+
+				whereString.append(f.getSqlWhere());
 			}
-
-			whereString.append(f.getSqlWhere());
 		}
 
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -764,11 +766,11 @@ public class ReportController {
 			header.setField("authority");
 			headers.add(header);
 
-			//header = new ReportHeader();
-			//header.setHeader("si");
-			//header.setField("si");
-			//header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			//headers.add(header);
+			// header = new ReportHeader();
+			// header.setHeader("si");
+			// header.setField("si");
+			// header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			// headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("fe");
@@ -976,11 +978,11 @@ public class ReportController {
 			header.setField("authority");
 			headers.add(header);
 
-			//header = new ReportHeader();
-			//header.setHeader("si");
-			//header.setField("si");
-			//header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			//headers.add(header);
+			// header = new ReportHeader();
+			// header.setHeader("si");
+			// header.setField("si");
+			// header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			// headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("fe");
@@ -1492,7 +1494,6 @@ public class ReportController {
 			header.setField("doc_date_in");
 			headers.add(header);
 
-			
 			header = new ReportHeader();
 			header.setHeader("出仓单号");
 			header.setField("delivery_note_out");
@@ -1524,52 +1525,47 @@ public class ReportController {
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
-			
-
 			header = new ReportHeader();
 			header.setHeader("si");
 			header.setField("si");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setFormat("#,##0.0000");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("fe");
 			header.setField("fe");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setFormat("#,##0.0000");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("al");
 			header.setField("al");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setFormat("#,##0.0000");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("ca");
 			header.setField("ca");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setFormat("#,##0.0000");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("p");
 			header.setField("p");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			header.setFormat("#,##0.0000");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("remark");
 			header.setField("检验备注");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
-			
-			
-			
-			
+
 			map.put("headers", headers);
 			map.put("title", "进出仓明细查询");
 

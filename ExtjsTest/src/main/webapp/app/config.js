@@ -531,6 +531,11 @@ Ext.require(['Ext.data.writer.Json', 'Ext.data.Store', 'Ext.data.TreeStore',
 							errmsg = '系统错误，请与管理员联系。';
 						}
 
+						if (res.status == 200) {
+							window.location = '/ExtjsTest';
+							errmsg = '连接已断开，请重新登录！'
+						}
+
 						var icon = Ext.MessageBox.ERROR;
 						var buttons = Ext.MessageBox.OK;
 						if (res.status == 300) {

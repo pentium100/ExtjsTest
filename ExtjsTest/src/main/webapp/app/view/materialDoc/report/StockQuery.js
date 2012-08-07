@@ -37,7 +37,8 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'model_tested',
-							text : '规格(检验后)'
+							text : '规格(检验后)',
+							sortFieldName : 'material_doc_item.model_tested'
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'unit_price',
@@ -71,12 +72,14 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'stock_location',
-							text : '仓库'
+							text : '仓库',
+							sortFieldName : 'stock.stock_location'
 
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'remark',
-							text : '进仓备注'
+							text : '进仓备注',
+							sortFieldName : 'material_doc_item.remark'
 
 						}, {
 							xtype : 'datecolumn',
@@ -120,7 +123,9 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'inspection_remark',
-							text : '检验备注'
+							text : '检验备注',
+							sortFieldName : 'inspection_item.remark'
+
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'doc_no',
