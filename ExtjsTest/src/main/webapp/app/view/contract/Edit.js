@@ -48,6 +48,16 @@ Ext.define('AM.view.contract.Edit', {
 										name : 'payTerm',
 										fieldLabel : '付款方式'
 									}, {
+										xtype : 'combo',
+										name : 'employee',
+										fieldLabel : '业务员',
+										store : Ext
+												.create('AM.store.master.employee.Employees'),
+										queryMode : 'local',
+										displayField : 'name',
+										valueField : 'id'
+
+									}, {
 										xtype : 'textfield',
 										name : 'remark',
 										fieldLabel : '备注'

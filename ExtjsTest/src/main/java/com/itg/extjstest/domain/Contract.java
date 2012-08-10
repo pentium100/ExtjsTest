@@ -1,11 +1,11 @@
 package com.itg.extjstest.domain;
 
 import com.itg.extjstest.util.ContractTypeObjectFactory;
+import com.itg.extjstest.util.EmployeeObjectFactory;
 import com.itg.extjstest.util.FilterItem;
 import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +20,9 @@ import javax.persistence.Column;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -33,7 +35,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -77,6 +78,9 @@ public class Contract {
 	@DateTimeFormat(style = "M-")
 	private Date signDate;
 
+	@ManyToOne
+	private Employee employee;
+
 	public String toJson() {
 		return new JSONSerializer()
 				.exclude("*.class")
@@ -96,6 +100,7 @@ public class Contract {
 			String json) {
 		return new JSONDeserializer<Contract>().use(null, Contract.class)
 				.use(ContractType.class, new ContractTypeObjectFactory())
+				.use(Employee.class, new EmployeeObjectFactory())
 				.deserialize(json);
 	}
 
@@ -111,13 +116,9 @@ public class Contract {
 		if (byItems) {
 			Join<Contract, ContractItem> j = rootContract.join("items");
 			paths.put("items", j);
-
 		}
-		
-		
 		if (filters != null) {
 			for (FilterItem f : filters) {
-
 				if (f.getField().equals("contractType")) {
 					f.setType("sList");
 				}
@@ -125,11 +126,9 @@ public class Contract {
 			}
 			c.where(cb.and(criteria.toArray(new Predicate[0])));
 		}
-
 		List<com.itg.extjstest.domain.Contract> list;
 		list = entityManager().createQuery(c).setFirstResult(start)
 				.setMaxResults(limit).getResultList();
-
 		return list;
 	}
 }

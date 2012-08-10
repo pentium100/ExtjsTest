@@ -669,3 +669,18 @@ focus --class ~.domain.Inspection
 field string --fieldName model_tested
 exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-08-01 14:26:51
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-08-10 17:00:29
+entity jpa --class ~.domain.Employee 
+field string --fieldName name
+json add --class ~.domain.Employee
+web mvc json add --jsonObject ~.domain.Employee --class ~.web.EmployeeController
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-08-10 17:10:22
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-08-10 17:20:12
+focus --class ~.domain.Contract
+field reference --fieldName employee --type ~.domain.Employee --cardinality ONE_TO_ONE
+// [failed] field reference --fieldName employee --type ~.domain.Employee --cardinality ONE_TO_MANY
+// [failed] field reference --fieldName employee --type ~.domain.Employee --cardinality MANY_TO_ONE
+field reference --fieldName employee --type ~.domain.Employee --cardinality MANY_TO_ONE
+exit
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-08-10 17:23:48

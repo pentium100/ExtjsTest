@@ -1,9 +1,9 @@
-Ext.define('AM.view.master.stockLocation.StockLocationList', {
+Ext.define('AM.view.master.employee.EmployeeList', {
 			extend : 'Ext.grid.Panel',
-			alias : 'widget.stockLocationList',
+			alias : 'widget.employeeList',
 
 			// title : 'All Contract',
-			store : 'master.stockLocation.StockLocations',
+			store : 'master.employee.Employees',
 
 			requires : ['Ext.grid.plugin.CellEditing', 'Ext.form.field.Text',
 					'Ext.toolbar.TextItem'],
@@ -11,7 +11,7 @@ Ext.define('AM.view.master.stockLocation.StockLocationList', {
 			iconCls : 'icon-grid',
 			frame : true,
 			stateful: true,
-   			stateId: 'stockLocationList',		
+   			stateId: 'employeeList',		
 
 			initComponent : function() {
 				this.plugins = [Ext.create('Ext.grid.plugin.CellEditing', {
@@ -23,8 +23,8 @@ Ext.define('AM.view.master.stockLocation.StockLocationList', {
 							dataIndex : 'id'
 							
 						}, {
-							header : '仓库',
-							dataIndex : 'stockLocation'
+							header : '业务员',
+							dataIndex : 'name'
 							,filterable : true
 							,field: 'textfield'
 						}];
@@ -54,7 +54,7 @@ Ext.define('AM.view.master.stockLocation.StockLocationList', {
 						}, {
 							xtype : 'pagingtoolbar',
 							displayInfo : true,
-							store : 'master.stockLocation.StockLocations',
+							store : 'master.employee.Employees',
 							dock : 'bottom'
 						}
 

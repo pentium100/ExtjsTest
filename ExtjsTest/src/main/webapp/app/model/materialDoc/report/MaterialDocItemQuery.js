@@ -65,6 +65,12 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 					}, {
 						name : 'purchase_contract_no',
 						type : 'string'
+					},  {
+						name : 'purchase_contract_supplier',
+						type : 'string'
+					},  {
+						name : 'purchase_contract_unit_price',
+						type : 'float'
 					}, {
 						name : 'si',
 						type : 'float',

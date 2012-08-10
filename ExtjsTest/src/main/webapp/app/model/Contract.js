@@ -41,6 +41,17 @@ Ext.define('AM.model.Contract', {
 						storeConfig : {
 							filterOnLoad : false
 						}
+					}],
+
+			associations : [{
+						type : 'hasOne',
+
+						model : 'AM.model.master.employee.Employee',
+						primaryKey : 'id',
+						foreignKey : 'employee_id',
+						associationKey : 'employee',
+						getterName : 'getEmployee',
+						setterName : 'setEmployee'
 					}]
 
 		});

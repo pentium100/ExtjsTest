@@ -288,12 +288,12 @@ public class ReportController {
 
 		cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
 		cte.append("                                           left join material_doc_item mi on mi.line_id = mds.items ");
-		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model),0))");
+		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model and md.cause <> '退货' ),0))");
 		cte.append("      from contract c ");
 		cte.append("                   left join contract_item i on i.contract = c.id");
 		cte.append("   where (abs(i.quantity-isNull((select SUM(net_weight) from material_doc md ");
 		cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
-		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model),0)))>0.001 ");
+		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model and md.cause <> '退货' ),0)))>0.001 ");
 		cte.append(whereString);
 		cte.append(" )");
 
@@ -1328,6 +1328,9 @@ public class ReportController {
 		cte.append("                 then  material_doc.delivery_note  end ");
 		cte.append("       as delivery_note_out, ");
 		cte.append("       contract_in.contract_no as purchase_contract_no, ");
+		cte.append("       contract_in.supplier as purchase_contract_supplier, ");
+		cte.append("       contract_in_item.unit_price as purchase_contract_unit_price, ");
+		
 		cte.append("       material_doc.doc_date, item_in_doc.plate_num, item_in_doc.doc_date as doc_date_in, ");
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
@@ -1344,6 +1347,7 @@ public class ReportController {
 		cte.append("  		  left join material_doc_item item_in on item_in.line_id = material_doc_item.line_id_in ");
 		cte.append("	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 		cte.append("          left join contract contract_in on contract_in.id = item_in.contract    ");
+		cte.append("          left join contract_item contract_in_item on contract_in.id = contract_in_item.contract and contract_in_item.model = item_in.model_contract ");
 		cte.append("          left join inspection_item insp on insp.material_doc_item = item_in.line_id_test  and is_last = 1  ");
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
@@ -1363,6 +1367,8 @@ public class ReportController {
 			cte.append("    	                 then  material_doc.delivery_note end ");
 			cte.append("    	       as delivery_note_out,  ");
 			cte.append("      		   contract_in.contract_no as purchase_contract_no, ");
+			cte.append("               contract_in.supplier as purchase_contract_supplier, ");
+			cte.append("               contract_in_item.unit_price as purchase_contract_unit_price, ");
 			cte.append("    	       material_doc.doc_date, item_in_doc.plate_num, item_in_doc.doc_date as doc_date_in, ");
 			cte.append("    	       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
@@ -1381,6 +1387,8 @@ public class ReportController {
 
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 			cte.append("              left join contract contract_in on contract_in.id = item_in.contract    ");
+			cte.append("              left join contract_item contract_in_item on contract_in.id = contract_in_item.contract and contract_in_item.model = item_in.model_contract ");
+			
 			cte.append("              left join inspection_item insp on insp.material_doc_item = item_in.line_id_test  and is_last = 1 ");
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
@@ -1433,6 +1441,7 @@ public class ReportController {
 			header.setField("doc_type_txt");
 			headers.add(header);
 
+			header = new ReportHeader();
 			header.setHeader("移动原因");
 			header.setField("cause");
 			headers.add(header);
@@ -1448,13 +1457,8 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("采购合同号");
-			header.setField("purchase_contract_no");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("供应商");
-			header.setField("supplier");
+			header.setHeader("发票号");
+			header.setField("inv_no");
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -1469,19 +1473,34 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("毛重");
-			header.setField("gross_weight");
-			header.setFormat("#,##0.000");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			headers.add(header);
-
-			header = new ReportHeader();
 			header.setHeader("净重");
 			header.setField("net_weight");
 			header.setFormat("#,##0.000");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
+			header = new ReportHeader();
+			header.setHeader("出仓单号");
+			header.setField("delivery_note_out");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进仓日期");
+			header.setField("doc_date");
+			headers.add(header);
+
+			
+			header = new ReportHeader();
+			header.setHeader("采购合同号");
+			header.setField("purchase_contract_no");
+			headers.add(header);
+
+			
+			header = new ReportHeader();
+			header.setHeader("采购供应商");
+			header.setField("purchase_contract_supplier");
+			headers.add(header);
+			
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
 
@@ -1494,30 +1513,34 @@ public class ReportController {
 			header.setField("doc_date_in");
 			headers.add(header);
 
-			header = new ReportHeader();
-			header.setHeader("出仓单号");
-			header.setField("delivery_note_out");
-			headers.add(header);
-
-			header = new ReportHeader();
-			header.setHeader("发票号");
-			header.setField("inv_no");
-			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("车号/卡号");
 			header.setField("plate_num");
 			headers.add(header);
 
-			header = new ReportHeader();
-			header.setHeader("进仓日期");
-			header.setField("doc_date");
-			headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("批次号");
 			header.setField("batch_no");
 			headers.add(header);
+
+			
+			//header = new ReportHeader();
+			//header.setHeader("供应商");
+			//header.setField("supplier");
+			//headers.add(header);
+
+
+			//header = new ReportHeader();
+			//header.setHeader("毛重");
+			//header.setField("gross_weight");
+			//header.setFormat("#,##0.000");
+			//header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			//headers.add(header);
+
+
+
 
 			header = new ReportHeader();
 			header.setHeader("仓库");

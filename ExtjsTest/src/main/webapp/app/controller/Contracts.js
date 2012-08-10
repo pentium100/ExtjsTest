@@ -1,9 +1,9 @@
 Ext.define('AM.controller.Contracts', {
 			extend : 'Ext.app.Controller',
 
-			views : ['contract.List', 'contract.Edit'],
-			stores : ['Contracts', 'ContractType'],
-			models : ['Contract', 'ContractItem'],
+			views : ['contract.List', 'contract.Edit','master.employee.Search'],
+			stores : ['Contracts', 'ContractType', 'master.employee.Employees'],
+			models : ['Contract', 'ContractItem', 'master.employee.Employee'],
 
 			init : function() {
 				this.control({

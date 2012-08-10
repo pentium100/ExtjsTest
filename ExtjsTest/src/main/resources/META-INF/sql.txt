@@ -67,3 +67,6 @@ values ( '', '主数据管理', 0, 2, null, 0, null, null)
 insert into menu ( icon_cls, text, version, parent, controller, leaf, views, controller_param) 
 values ( '', '仓库管理', 0, 17, 'AM.controller.master.stockLocation.StockLocation', 1, 'stockLocationList', null)
   
+  
+insert into menu ( icon_cls, text, version, parent, controller, leaf, views, controller_param) 
+values ( '', '业务员管理', 0, 17, 'AM.controller.master.employee.Employee', 1, 'employeeList', null)  

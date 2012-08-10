@@ -139,16 +139,23 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'gridcolumn',
 									dataIndex : 'unit_price',
 									text : '单价',
-									sortable : false
+									sortable : false,
+									align : 'right',
+									format : '0.00'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'gross_weight',
-									text : '毛重'
+									text : '毛重',
+									align : 'right',
+									format : '0.00'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'net_weight',
 									text : '净重',
-									summaryType : 'sum'
+									summaryType : 'sum',
+									align : 'right',
+									format : '0.00'
+
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'delivery_note_in',
@@ -182,6 +189,16 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'gridcolumn',
 									dataIndex : 'purchase_contract_no',
 									text : '采购合同号'
+								}, {
+									xtype : 'gridcolumn',
+									dataIndex : 'purchase_contract_supplier',
+									text : '采购供应商'
+								}, {
+									xtype : 'numbercolumn',
+									dataIndex : 'purchase_contract_unit_price',
+									text : '采购价格',
+									align : 'right',
+									format : '0.00'
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'stock_location',

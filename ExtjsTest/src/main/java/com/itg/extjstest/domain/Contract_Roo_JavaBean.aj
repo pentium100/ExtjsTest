@@ -6,6 +6,7 @@ package com.itg.extjstest.domain;
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.ContractType;
+import com.itg.extjstest.domain.Employee;
 import java.util.Date;
 import java.util.Set;
 
@@ -73,6 +74,14 @@ privileged aspect Contract_Roo_JavaBean {
     
     public void Contract.setSignDate(Date signDate) {
         this.signDate = signDate;
+    }
+    
+    public Employee Contract.getEmployee() {
+        return this.employee;
+    }
+    
+    public void Contract.setEmployee(Employee employee) {
+        this.employee = employee;
     }
     
 }
