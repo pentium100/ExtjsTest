@@ -12,7 +12,7 @@ Ext.define('AM.view.master.employee.Search', {
 
 			initComponent : function() {
 				var me = this;
-				var store = Ext.create('AM.store.master.employee.Employee', {
+				var store = Ext.create('AM.store.master.employee.Employees', {
 							autoLoad : true
 						});
 				Ext.applyIf(me, {

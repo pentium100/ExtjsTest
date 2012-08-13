@@ -100,7 +100,7 @@ public class Contract {
 			String json) {
 		return new JSONDeserializer<Contract>().use(null, Contract.class)
 				.use(ContractType.class, new ContractTypeObjectFactory())
-				.use(Employee.class, new EmployeeObjectFactory())
+				// .use(Employee.class, new EmployeeObjectFactory())
 				.deserialize(json);
 	}
 

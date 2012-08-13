@@ -35,6 +35,9 @@ Ext.define('AM.model.contract.report.ContractHistory', {
 					},{
 						name : 'item_remark',
 						type : 'string'
+					},{
+						name : 'name',
+						type : 'string'
 					}]
 
 

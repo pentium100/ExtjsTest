@@ -297,27 +297,27 @@ Ext.define('AM.controller.MovingDocs', {
 
 		if (record.deliveryNote != "") {
 			filter.type = "string";
-			filter.field = "deliveryNote";
+			filter.field = "materialDoc.deliveryNote";
 			filter.value = record.deliveryNote;
 			tmp.push(Ext.apply({}, filter));
 		}
 		if (record.plateNum != "") {
 			filter.type = "list";
-			filter.field = "plateNum";
+			filter.field = "materialDoc.plateNum";
 			filter.value = record.plateNum;
 			tmp.push(Ext.apply({}, filter));
 		}
 
 		if (record.batchNo != "") {
 			filter.type = "string";
-			filter.field = "batchNo";
+			filter.field = "materialDoc.batchNo";
 			filter.value = record.batchNo;
 			tmp.push(Ext.apply({}, filter));
 		}
 
 		if (record.workingNo != "") {
 			filter.type = "string";
-			filter.field = "workingNo";
+			filter.field = "materialDoc.workingNo";
 			filter.value = record.workingNo;
 			tmp.push(Ext.apply({}, filter));
 		}

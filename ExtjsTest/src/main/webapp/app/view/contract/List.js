@@ -49,6 +49,22 @@ Ext.define('AM.view.contract.List', {
 							dataIndex : 'payTerm',
 							filterable : true
 						}, {
+							header : '业务员',
+							dataIndex : 'payTerm',
+							renderer : function(value, metaData, rec) {
+
+								var emp = rec.getEmployee();
+								return emp.get('name');
+
+							},
+							filter:{
+							
+								filterField:'employee.name'
+							},
+							filterable : true
+							
+							
+						}, {
 							header : '备注',
 							dataIndex : 'remark',
 							filterable : true,

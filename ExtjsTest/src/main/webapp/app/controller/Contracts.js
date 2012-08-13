@@ -1,18 +1,18 @@
 Ext.define('AM.controller.Contracts', {
 			extend : 'Ext.app.Controller',
 
-			views : ['contract.List', 'contract.Edit','master.employee.Search'],
+			views : ['contract.List', 'contract.Edit', 'master.employee.Search'],
 			stores : ['Contracts', 'ContractType', 'master.employee.Employees'],
 			models : ['Contract', 'ContractItem', 'master.employee.Employee'],
 
 			init : function() {
 				this.control({
 							'contractList' : {
-								itemdblclick : this.editContract
-								,activate:this.loadContractData
-								,destroy: this.freeUpStore
+								itemdblclick : this.editContract,
+								activate : this.loadContractData,
+								destroy : this.freeUpStore
 							},
-							
+
 							'contractEdit button[action=save]' : {
 								click : this.updateContract
 							},
@@ -37,13 +37,13 @@ Ext.define('AM.controller.Contracts', {
 						});
 
 			},
-            loadContractData:function(){
-            	this.getStore('Contracts').load();
-            },
-            freeUpStore: function(){
-            	//var store = this.getStore('Contracts');
-            	//Ext.data.StoreManager.remove(store);
-            },
+			loadContractData : function() {
+				this.getStore('Contracts').load();
+			},
+			freeUpStore : function() {
+				// var store = this.getStore('Contracts');
+				// Ext.data.StoreManager.remove(store);
+			},
 			deleteContract : function(button) {
 				var viewport = button.up('viewport');
 				var grid = viewport.down('contractList');
@@ -56,10 +56,16 @@ Ext.define('AM.controller.Contracts', {
 			},
 
 			editContract : function(grid, record) {
-				//console.log('Double clicked on ' + record.get('contractNo'));
+				// console.log('Double clicked on ' + record.get('contractNo'));
 				var view = Ext.widget('contractEdit');
 
-				view.down('form').loadRecord(record);
+				var form = view.down('form');
+				form.loadRecord(record);
+
+				// form.getForm().setValues('employee',record.getEmployee().getId());
+				var emp = form.down('combobox[name=employee]');
+
+				emp.setValue(record.getEmployee().getId());
 
 				view.down('grid').reconfigure(record.items());
 
@@ -67,7 +73,7 @@ Ext.define('AM.controller.Contracts', {
 			addContract : function(button) {
 				var record = new AM.model.Contract();
 				this.getStore('Contracts').insert(0, record);
-				//record.store = this.getStore('Contracts');
+				// record.store = this.getStore('Contracts');
 				record.join(this.getStore('Contracts'));
 				var view = Ext.widget('contractEdit');
 				view.down('form').loadRecord(record);
@@ -108,9 +114,13 @@ Ext.define('AM.controller.Contracts', {
 				var win = button.up('window');
 				form = win.down('form');
 				var record = form.getRecord();
-				values = form.getValues();
+				var values = form.getValues();
 				values.signDate = Ext.Date.parse(values.signDate, 'Y-m-d');
 				record.set(values);
+				var emp = form.down('combobox[name=employee]');
+				var store = emp.getStore();
+
+				record.setEmployee(store.getById(values.employee));
 
 				// record.data.items = win.down('grid').getStore();
 				this.getStore('Contracts').sync();
@@ -119,16 +129,16 @@ Ext.define('AM.controller.Contracts', {
 			cancelUpdate : function(button) {
 				var win = button.up('window');
 				var grid = win.down('gridpanel');
-				
+
 				grid.getStore().rejectChanges();
 				this.getStore('Contracts').rejectChanges();
 
-				//grid.getStore().each(function(record) {
-				//			record.reject();
-				//		})
+				// grid.getStore().each(function(record) {
+				// record.reject();
+				// })
 				win.close();
 			},
 			onPanelRendered : function() {
-				//console.log('The panel was rendered');
+				// console.log('The panel was rendered');
 			}
 		});

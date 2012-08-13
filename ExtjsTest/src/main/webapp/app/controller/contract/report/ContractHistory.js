@@ -5,7 +5,7 @@ Ext.define('AM.controller.contract.report.ContractHistory', {
 			extend : 'Ext.app.Controller',
 
 			views :  ['contract.report.ContractHistory'],
-			stores : ['contract.report.ContractHistory'],
+			stores : ['contract.report.ContractHistory', 'master.employee.Employees'],
 			models : ['contract.report.ContractHistory'],
 
 			init : function(options) {
@@ -117,6 +117,12 @@ Ext.define('AM.controller.contract.report.ContractHistory', {
 					tmp.push(Ext.apply({}, filter));
 				}
 				
+				if (record.employee != "") {
+					filter.type = "string";
+					filter.field = "employee.id";
+					filter.value = record.employee;
+					tmp.push(Ext.apply({}, filter));
+				}
 				return tmp;
                 
 				

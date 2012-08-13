@@ -431,9 +431,12 @@ public class ReportController {
 		List<FilterItem> filters = null;
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
-					.use(null, ArrayList.class).use("values", FilterItem.class)
+					.use(null, ArrayList.class)
+					.use("values", FilterItem.class)
 					// .use("values.value", ArrayList.class)
-					.use("values.value", String.class).deserialize(filter);
+					// .use("values.value", String.class)
+					.use("values.value", new FilterObjectFactory())
+					.deserialize(filter);
 
 		}
 
@@ -458,10 +461,11 @@ public class ReportController {
 		cte.append("select (ROW_NUMBER() over (order by "
 				+ sortString.toString() + " )) as rowNum, ");
 
-		cte.append(" case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, contract_no,supplier, pay_term, contract.remark, model, quantity,unit_price,contract_item.remark as item_remark, contract.sign_date  ");
+		cte.append(" case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, contract_no,supplier, pay_term, contract.remark, model, quantity,unit_price,contract_item.remark as item_remark, contract.sign_date, employee.name  ");
 		cte.append(" from contract");
 		cte.append(" inner join contract_items on contract.id = contract_items.contract    ");
 		cte.append(" inner join contract_item on contract_item.id = contract_items.items   ");
+		cte.append("  left join employee on employee.id = contract.employee  ");
 
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
@@ -530,10 +534,15 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
+			header.setHeader("业务员");
+			header.setField("name");
+			// header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
 			header.setHeader("备注");
 			header.setField("item_remark");
-			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			header.setPosition(3);
+			// header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);
 
 			map.put("headers", headers);
@@ -1287,9 +1296,12 @@ public class ReportController {
 		List<FilterItem> filters = null;
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
-					.use(null, ArrayList.class).use("values", FilterItem.class)
+					.use(null, ArrayList.class)
+					.use("values", FilterItem.class)
 					// .use("values.value", ArrayList.class)
-					.use("values.value", String.class).deserialize(filter);
+					// .use("values.value", String.class)
+					.use("values.value", new FilterObjectFactory())
+					.deserialize(filter);
 
 		}
 
@@ -1330,7 +1342,7 @@ public class ReportController {
 		cte.append("       contract_in.contract_no as purchase_contract_no, ");
 		cte.append("       contract_in.supplier as purchase_contract_supplier, ");
 		cte.append("       contract_in_item.unit_price as purchase_contract_unit_price, ");
-		
+
 		cte.append("       material_doc.doc_date, item_in_doc.plate_num, item_in_doc.doc_date as doc_date_in, ");
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
@@ -1388,7 +1400,7 @@ public class ReportController {
 			cte.append("    	      left join material_doc item_in_doc on item_in_doc.doc_no = item_in.material_doc ");
 			cte.append("              left join contract contract_in on contract_in.id = item_in.contract    ");
 			cte.append("              left join contract_item contract_in_item on contract_in.id = contract_in_item.contract and contract_in_item.model = item_in.model_contract ");
-			
+
 			cte.append("              left join inspection_item insp on insp.material_doc_item = item_in.line_id_test  and is_last = 1 ");
 			cte.append("    	    where material_doc_item.line_id_in in ( select  material_doc_item.line_id ");
 			cte.append("    	   from material_doc_item ");
@@ -1489,18 +1501,16 @@ public class ReportController {
 			header.setField("doc_date");
 			headers.add(header);
 
-			
 			header = new ReportHeader();
 			header.setHeader("采购合同号");
 			header.setField("purchase_contract_no");
 			headers.add(header);
 
-			
 			header = new ReportHeader();
 			header.setHeader("采购供应商");
 			header.setField("purchase_contract_supplier");
 			headers.add(header);
-			
+
 			header = new ReportHeader();
 			header.setHeader("进仓单号");
 
@@ -1513,34 +1523,27 @@ public class ReportController {
 			header.setField("doc_date_in");
 			headers.add(header);
 
-
 			header = new ReportHeader();
 			header.setHeader("车号/卡号");
 			header.setField("plate_num");
 			headers.add(header);
-
 
 			header = new ReportHeader();
 			header.setHeader("批次号");
 			header.setField("batch_no");
 			headers.add(header);
 
-			
-			//header = new ReportHeader();
-			//header.setHeader("供应商");
-			//header.setField("supplier");
-			//headers.add(header);
+			// header = new ReportHeader();
+			// header.setHeader("供应商");
+			// header.setField("supplier");
+			// headers.add(header);
 
-
-			//header = new ReportHeader();
-			//header.setHeader("毛重");
-			//header.setField("gross_weight");
-			//header.setFormat("#,##0.000");
-			//header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
-			//headers.add(header);
-
-
-
+			// header = new ReportHeader();
+			// header.setHeader("毛重");
+			// header.setField("gross_weight");
+			// header.setFormat("#,##0.000");
+			// header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			// headers.add(header);
 
 			header = new ReportHeader();
 			header.setHeader("仓库");
