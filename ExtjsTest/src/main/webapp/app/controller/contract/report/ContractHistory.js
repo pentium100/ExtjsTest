@@ -117,7 +117,7 @@ Ext.define('AM.controller.contract.report.ContractHistory', {
 					tmp.push(Ext.apply({}, filter));
 				}
 				
-				if (record.employee != "") {
+				if (record.employee != undefined && record.employee != '') {
 					filter.type = "string";
 					filter.field = "employee.id";
 					filter.value = record.employee;
