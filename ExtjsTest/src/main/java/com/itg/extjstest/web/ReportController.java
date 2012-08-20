@@ -1497,7 +1497,7 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
-			header.setHeader("进仓日期");
+			header.setHeader("出仓日期");
 			header.setField("doc_date");
 			headers.add(header);
 
