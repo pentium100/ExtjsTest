@@ -1512,6 +1512,14 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
+			header.setHeader("采购价格");
+			header.setField("purchase_contract_unit_price");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			header.setFormat("#,##0.00");
+
+			headers.add(header);
+
+			header = new ReportHeader();
 			header.setHeader("进仓单号");
 
 			header.setField("delivery_note_in");
