@@ -3,8 +3,10 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 			extend : 'Ext.app.Controller',
 
 			views : ['materialDoc.report.MaterialDocItemQuery'],
-			stores : ['materialDoc.report.MaterialDocItemQuery'],
-			models : ['materialDoc.report.MaterialDocItemQuery'],
+			stores : ['materialDoc.report.MaterialDocItemQuery',
+					'master.employee.Employees'],
+			models : ['materialDoc.report.MaterialDocItemQuery',
+					'master.employee.Employee'],
 
 			init : function(options) {
 
@@ -78,8 +80,17 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.doc_type_txt != undefined
 						&& record.doc_type_txt != "") {
 					filter.type = "string";
+				
 					filter.field = "doc_type_txt";
 					filter.value = record.doc_type_txt;
+					tmp.push(Ext.apply({}, filter));
+				}
+
+				if (record.employee != undefined && record.employee != "") {
+					filter.type = "int";
+					filter.field = "contract.employee";
+					filter.comparison = 'eq';
+					filter.value = record.employee;
 					tmp.push(Ext.apply({}, filter));
 				}
 
@@ -110,7 +121,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 					filter.value = record.inv_no;
 					tmp.push(Ext.apply({}, filter));
 				}
-				
+
 				if (record.docDateFrom != "") {
 					filter.type = "date";
 					filter.comparison = 'ge';

@@ -74,17 +74,23 @@ Ext.extend(XQH.ExtJs.Frame.app, Ext.util.Observable, {
 						},
 						buttonAlign : 'center',
 						buttons : [{
-									text : '登陆',
-									handler : function() {
-										var form = Ext.getCmp("loginForm")
-												.getForm();
-										form.action = 'j_spring_security_check';
-										form.method = 'POST';
+							text : '登陆',
+							handler : function() {
+								var form = Ext.getCmp("loginForm").getForm();
+								form.action = 'j_spring_security_check';
+								form.method = 'POST';
 
-										form.submit();
+								localStorage.setItem('lastUserName', Ext
+												.getCmp("j_username")
+												.getValue()); // saves to the
+																// database,
+																// “key”,
+																// “value”
 
-									}
-								}],
+								form.submit();
+
+							}
+						}],
 						layout : 'column',
 						items : [{
 									columnWidth : 1,
@@ -96,6 +102,8 @@ Ext.extend(XQH.ExtJs.Frame.app, Ext.util.Observable, {
 					}),
 			// 初始化
 			init : function() {
+				var lastUserName = localStorage.getItem('lastUserName');
+				Ext.getCmp("j_username").setValue(lastUserName);
 				this.LoginWin.show();
 			}
 		});

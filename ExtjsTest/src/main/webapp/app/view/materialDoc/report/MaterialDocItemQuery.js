@@ -88,6 +88,18 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									fieldLabel : '显示出仓记录',
 									name : 'showIncoming',
 									inputValue : 'true'
+								}, {
+									xtype : 'combo',
+									name : 'employee',
+									fieldLabel : '业务员',
+									// store : Ext
+									// .create('AM.store.master.employee.Employees'),
+									store : 'master.employee.Employees',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									triggerAction : 'all'
+
 								}], // 合同类型 合同号 供应商 付款方式 备注 规格 数量 单价 备注
 						buttons : [{
 									text : '提交',

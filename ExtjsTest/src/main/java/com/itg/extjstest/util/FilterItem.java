@@ -231,6 +231,11 @@ public class FilterItem {
 			return path.get(fieldName).in(getIntegerListValue());
 		}
 
+		if (type.equals("boolean")) {
+			return cb.equal(path.get(fieldName).as(Boolean.class), 
+					 getValue().equals("true") );
+		}
+		
 		if (type.equals("string")) {
 			return cb.like(path.get(fieldName).as(String.class), "%"
 					+ getValue() + "%");

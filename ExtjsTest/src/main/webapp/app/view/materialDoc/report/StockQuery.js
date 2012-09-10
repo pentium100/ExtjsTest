@@ -77,6 +77,12 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 
 						}, {
 							xtype : 'gridcolumn',
+							dataIndex : 'working_no',
+							text : '工作号',
+							sortFieldName : 'material_doc.working_no'
+
+						}, {
+							xtype : 'gridcolumn',
 							dataIndex : 'remark',
 							text : '进仓备注',
 							sortFieldName : 'material_doc_item.remark'

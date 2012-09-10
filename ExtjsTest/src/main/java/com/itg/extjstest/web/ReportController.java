@@ -761,6 +761,11 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
+			header.setHeader("工作号");
+			header.setField("working_no");
+			headers.add(header);
+
+			header = new ReportHeader();
 			header.setHeader("备注");
 			header.setField("remark");
 			headers.add(header);

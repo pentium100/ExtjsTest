@@ -80,6 +80,9 @@ Ext.define('AM.model.materialDoc.report.StockQuery', {
 					},{
 						name : 'original',
 						type : 'boolean'
+					},{
+						name : 'working_no',
+						type : 'string'
 					}]
 
 
