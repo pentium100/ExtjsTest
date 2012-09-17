@@ -23,9 +23,9 @@ Ext.define('AM.controller.inspection.Inspections', {
 				click : this.deleteInspection
 			},
 
-			'materialDocItemSearch[by=inspectionEdit] button[action=search]' : {
-				click : this.searchMaterialDocItem
-			},
+			//'materialDocItemSearch[by=inspectionEdit] button[action=search]' : {
+			//	click : this.searchMaterialDocItem
+			//},
 
 			'materialDocItemSearch gridpanel[by=inspectionEdit]' : {
 				itemdblclick : this.selectMaterialDocItem
@@ -74,7 +74,6 @@ Ext.define('AM.controller.inspection.Inspections', {
 		// this.getStore('OutgoingDocs').insert(0, record);
 		record.store = store;
 
-		
 		var view = Ext.widget('inspectionEdit');
 		view.down('form').loadRecord(record);
 		view.down('form').setTitle('凭证号:' + record.get('id'));
@@ -226,6 +225,13 @@ Ext.define('AM.controller.inspection.Inspections', {
 			filter.type = "string";
 			filter.field = "model_contract";
 			filter.value = record.model;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		if (record.model != "") {
+			filter.type = "string";
+			filter.field = "supplier";
+			filter.value = record.supplier;
 			tmp.push(Ext.apply({}, filter));
 		}
 

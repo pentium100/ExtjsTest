@@ -17,54 +17,55 @@ Ext.define('AM.controller.OutgoingDocs', {
 
 		this.control({
 
-			'outgoingDocList' : {
-				itemdblclick : this.editMaterialDoc
-			},
-			'outgoingDocList button[action=add]' : {
-				click : this.addMaterialDoc
-			},
+					'outgoingDocList' : {
+						itemdblclick : this.editMaterialDoc
+					},
+					'outgoingDocList button[action=add]' : {
+						click : this.addMaterialDoc
+					},
 
-			'outgoingDocList button[action=delete]' : {
-				click : this.deleteMaterialDoc
-			},
+					'outgoingDocList button[action=delete]' : {
+						click : this.deleteMaterialDoc
+					},
 
-			'materialDocItemSearch[by=outgoingDocEdit] button[action=search]' : {
-				click : this.searchMaterialDocItem
-			},
+					// 'materialDocItemSearch[by=outgoingDocEdit]
+					// button[action=search]' : {
+					// click : this.searchMaterialDocItem
+					// },
 
-			'materialDocItemSearch[by=outgoingDocEdit] button[action=add]' : {
-				click : this.addMaterialDocItems
-			},
+					'materialDocItemSearch[by=outgoingDocEdit] button[action=add]' : {
+						click : this.addMaterialDocItems
+					},
 
-			'materialDocItemSearch[by=outgoingDocEdit] gridpanel' : {
-				itemdblclick : this.selectMaterialDocItem
-			},
+					'materialDocItemSearch[by=outgoingDocEdit] gridpanel' : {
+						itemdblclick : this.selectMaterialDocItem
+					},
 
-			'contractSearch[by=outgoingDocEdit] button[action=search]' : {
-				click : this.searchContract
-			},
+					'contractSearch[by=outgoingDocEdit] button[action=search]' : {
+						click : this.searchContract
+					},
 
-			'contractSearch gridpanel[by=outgoingDocEdit]' : {
-				itemdblclick : this.selectContract
-			},
+					'contractSearch gridpanel[by=outgoingDocEdit]' : {
+						itemdblclick : this.selectContract
+					},
 
-			'outgoingDocEdit button[action=save]' : {
-				click : this.saveMaterialDoc
-			},
+					'outgoingDocEdit button[action=save]' : {
+						click : this.saveMaterialDoc
+					},
 
-			'outgoingDocEdit button[action=cancel]' : {
-				click : this.cancelMaterialDoc
-			},
+					'outgoingDocEdit button[action=cancel]' : {
+						click : this.cancelMaterialDoc
+					},
 
-			'outgoingDocEdit button[action=add]' : {
-				click : this.addMaterialDocItem
-			},
+					'outgoingDocEdit button[action=add]' : {
+						click : this.addMaterialDocItem
+					},
 
-			'outgoingDocEdit button[action=delete]' : {
-				click : this.deleteMaterialDocItem
-			}
+					'outgoingDocEdit button[action=delete]' : {
+						click : this.deleteMaterialDocItem
+					}
 
-		});
+				});
 
 	},
 	editMaterialDoc : function(grid, record) {

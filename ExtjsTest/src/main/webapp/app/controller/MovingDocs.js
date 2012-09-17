@@ -42,9 +42,9 @@ Ext.define('AM.controller.MovingDocs', {
 						itemdblclick : this.selectContract
 					},
 
-					'materialDocItemSearch[by=movingDocEdit] button[action=search]' : {
-						click : this.searchMaterialDocItem
-					},
+					//'materialDocItemSearch[by=movingDocEdit] button[action=search]' : {
+					//	click : this.searchMaterialDocItem
+					//},
 
 					'materialDocItemSearch[by=movingDocEdit] button[action=add]' : {
 						click : this.addMaterialDocItems
