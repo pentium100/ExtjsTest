@@ -131,7 +131,8 @@ Ext.define('AM.controller.inspection.Inspections', {
 		var view = Ext.widget('materialDocItemSearch', {
 					parentWindow : win,
 					by : win.xtype,
-					selMode : 'MULTI'
+					selMode : 'MULTI', 
+					proxyUrl: 'materialdocitems/2'
 				});
 
 		view.show();

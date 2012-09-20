@@ -85,10 +85,10 @@ public class ContractController {
 		// TODO Auto-generated method stub
 
 		StringBuffer query = new StringBuffer();
-		query.append("select sum(net_weight) as used from material_doc_item mi, material_doc md ");
+		query.append("select sum(case when md.cause = '退货' then -1*net_weight else net_weight end ) as used from material_doc_item mi, material_doc md ");
 		query.append("       where mi.material_doc = md.doc_no ");
 		query.append("          and (md.doc_type = 1 or md.doc_type = 2) ");
-		query.append("          and (md.cause ='采购' or md.cause = '销售') ");
+		query.append("          and (md.cause ='采购' or md.cause = '销售' or md.cause = '退货') ");
 		query.append("          and md.contract = :contract ");
 		query.append("          and mi.model_contract = :model ");
 		Map<String, Object> param = new HashMap<String, Object>();

@@ -286,9 +286,9 @@ public class ReportController {
 
 		cte.append("      case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
 
-		cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(net_weight) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
+		cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end ) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
 		cte.append("                                           left join material_doc_item mi on mi.line_id = mds.items ");
-		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model and md.cause <> '退货' ),0)), " );
+		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model  ),0)), " );
 		
 		cte.append("      quantity_afloat=(select sum(quantity) from afloat_goods_item ags inner join afloat_goods ag on ags.afloat_goods=ag.id where ag.contract=c.id and ags.model=i.model and ag.arrival_date is null ) "   );
 		
@@ -297,9 +297,9 @@ public class ReportController {
 		cte.append("                   left join contract_item i on i.contract = c.id");
 		
 		
-		cte.append("   where (abs(i.quantity-isNull((select SUM(net_weight) from material_doc md ");
+		cte.append("   where (abs(i.quantity-isNull((select SUM(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end  ) from material_doc md ");
 		cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
-		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model and md.cause <> '退货' ),0)))>0.001 ");
+		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model  ),0)))>0.001 ");
 		cte.append(whereString);
 		cte.append(" )");
 

@@ -211,7 +211,8 @@ Ext.define('AM.controller.MovingDocs', {
 		var view = Ext.widget('materialDocItemSearch', {
 					parentWindow : win,
 					by : win.xtype,
-					selMode : 'MULTI'
+					selMode : 'MULTI', 
+					proxyUrl: 'materialdocitems/1'
 				});
 
 		view.show();

@@ -13,7 +13,11 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 
 	initComponent : function() {
 		var me = this;
-		var store = Ext.create('AM.store.MaterialDocItems');
+
+		var store = Ext.create('AM.store.MaterialDocItems', {
+					proxyUrl : me.proxyUrl
+				});
+
 		var selModel = Ext.create('Ext.selection.CheckboxModel', {
 					mode : this.selMode,
 					checkOnly : true
@@ -227,7 +231,8 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 
 		var p = store.getProxy();
 		p.extraParams.filter = Ext.JSON.encode(tmp);
-		p.url = 'materialdocitems/2',
+		// p.url = 'materialdocitems/2',
+		p.url = store.proxyUrl;
 
 		store.load();
 	}
