@@ -195,10 +195,12 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 												}, {
 													xtype : 'datefield',
 													fieldLabel : '进仓日期从',
+													format : 'Y-m-d',
 													name : 'docDateFrom'
 												}, {
 													xtype : 'datefield',
 													fieldLabel : '进仓日期到',
+													format : 'Y-m-d',
 													name : 'docDateTo'
 												}, {
 													xtype : 'textfield',
