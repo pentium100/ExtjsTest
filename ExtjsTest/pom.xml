@@ -57,7 +57,7 @@
 			<id>prd-wk109</id>
 			<properties>
 				<db.driver>net.sourceforge.jtds.jdbc.Driver</db.driver>
-				<db.url>jdbc\:jtds\:sqlserver\://localhost\:1433/WKB</db.url>
+				<db.url>jdbc\:jtds\:sqlserver\://172.16.109.178\:1433/WKB</db.url>
 				<db.username>sa</db.username>
 				<db.password>36987</db.password>
 

@@ -168,12 +168,13 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 		var filter = {};
 		var record = button.up('form').getValues();
 
-		filter.type = "int";
-		filter.field = "materialDoc.docType";
+		filter.type = "list";
+		filter.field = "materialDoc.docType.id";
 		filter.comparison = 'eq';
-		filter.value = '1';
+		filter.value = '1,3';
 		tmp.push(Ext.apply({}, filter));
 
+		
 		if (record.contractNo != "") {
 			filter.type = "string";
 			filter.field = "contract.contractNo";
@@ -203,7 +204,7 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 
 		if (record.workingNo != "") {
 			filter.type = "string";
-			filter.field = "workingNo";
+			filter.field = "materialDoc.workingNo";
 			filter.value = record.workingNo;
 			tmp.push(Ext.apply({}, filter));
 		}

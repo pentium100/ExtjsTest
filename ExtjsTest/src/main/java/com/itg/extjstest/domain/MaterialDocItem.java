@@ -242,6 +242,7 @@ public class MaterialDocItem {
 				.include("materialdocitems")
 				.include("materialdocitems.materialDoc")
 				.include("materialdocitems.materialDoc.docType")
+				.exclude("*.implementation")
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
 						Date.class).serialize(map);
 		return resultJson;
