@@ -243,6 +243,9 @@ public class MaterialDocItem {
 				.include("materialdocitems.materialDoc")
 				.include("materialdocitems.materialDoc.docType")
 				.exclude("*.implementation")
+				.exclude("*.entityManager")
+				.exclude("*.handler")
+				.exclude("*.hibernateLazyInitializer")
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
 						Date.class).serialize(map);
 		return resultJson;

@@ -504,6 +504,13 @@ public class ReportController {
 			header.setPosition(0);
 			headers.add(header);
 
+
+			header = new ReportHeader();
+			header.setHeader("签约日期");
+			header.setField("sign_date");
+			headers.add(header);
+
+			
 			header = new ReportHeader();
 			header.setHeader("合同号");
 			header.setField("contract_no");
