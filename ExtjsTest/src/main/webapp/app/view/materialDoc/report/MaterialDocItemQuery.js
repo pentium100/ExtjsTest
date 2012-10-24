@@ -83,6 +83,10 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'textfield',
 									fieldLabel : '规格(合同)',
 									name : 'model_contract'
+								},  {
+									xtype : 'textfield',
+									fieldLabel : '移动原因',
+									name : 'cause'
 								}, {
 									xtype : 'checkbox',
 									fieldLabel : '显示出仓记录',

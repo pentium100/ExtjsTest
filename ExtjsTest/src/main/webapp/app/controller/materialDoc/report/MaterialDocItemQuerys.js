@@ -101,6 +101,14 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 					tmp.push(Ext.apply({}, filter));
 				}
 
+				
+				if (record.cause != "") {
+					filter.type = "string";
+					filter.field = "material_doc.cause";
+					filter.value = record.cause;
+					tmp.push(Ext.apply({}, filter));
+				}
+				
 				if (record.working_no != "") {
 					filter.type = "string";
 					filter.field = "material_doc.working_no";
