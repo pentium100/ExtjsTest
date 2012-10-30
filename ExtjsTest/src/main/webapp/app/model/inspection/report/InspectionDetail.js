@@ -30,6 +30,9 @@ Ext.define('AM.model.inspection.report.InspectionDetail', {
 						name : 'model_contract',
 						type : 'string'
 					},{
+						name : 'model_tested',
+						type : 'string'
+					},{
 						name : 'plate_num',
 						type : 'string'
 					},{

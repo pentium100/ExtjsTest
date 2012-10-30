@@ -28,6 +28,30 @@ Ext.define('AM.view.afloatGoods.List', {
 							filterable : true,
 							flex : 1
 						}, {
+
+							header : '规格',
+							dataIndex : 'destination',
+							xtype : 'gridcolumn',
+							filterable : false,
+							renderer : function(value, metaData, rec) {
+
+								var text = ',';
+
+								var items = rec.items();
+								for (var i = 0; i < items.getCount(); i++) {
+									var item = items.getAt(i);
+									var model = item.get('model');
+									if (text.indexOf(',' + model + ',') == -1) {
+										text = text + model + ','
+									}
+								}
+
+								text = text.substr(1, 1000);
+								return text;
+
+							}
+
+						}, {
 							header : '车号',
 							dataIndex : 'plateNum',
 							filterable : true,

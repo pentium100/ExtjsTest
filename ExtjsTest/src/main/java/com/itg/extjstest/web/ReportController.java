@@ -397,6 +397,7 @@ public class ReportController {
 			map2.put("success", true);
 			map2.put("noDeliverys", result);
 			map2.put("remoteSummary", recordCount.get(0));
+			
 			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
@@ -944,7 +945,7 @@ public class ReportController {
 
 		cte.append("  inspection_date, authority, inspection.doc_no, original,   ");
 		cte.append("   al, ca, fe, inspection_item.net_weight, p, inspection_item.remark, si, ");
-		cte.append("   material_doc_item.model_contract, material_doc.doc_date, ");
+		cte.append("   material_doc_item.model_contract, material_doc_item.model_tested, material_doc.doc_date, ");
 		cte.append("   contract.contract_no, contract.supplier, material_doc.batch_no, material_doc.plate_num, material_doc.delivery_note ");
 
 		cte.append(" FROM inspection join inspection_item on inspection.id = inspection_item.inspection ");
@@ -1202,6 +1203,8 @@ public class ReportController {
 			header.setHeader("数量");
 			header.setField("quantity");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+		
+			header.setFormat("#,##0.000");
 			headers.add(header);
 
 			header = new ReportHeader();
@@ -1267,13 +1270,17 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-					+ "select count(*) from AfloatGoodsDetail", param);
+			List<Map<String, Object>> sum = jdbcTemplate.queryForList(cte.toString()
+					+ "select count(*) as reccount, sum(quantity) as quantity from AfloatGoodsDetail", param);
+			
+			
+			
 
-			map2.put("total", recordCount);
+			map2.put("total", sum.get(0).get("reccount"));
+			
 			map2.put("success", true);
 			map2.put("afloatGoodsDetails", result);
-
+			map2.put("remoteSummary", sum.get(0));
 			// map2.put("dataRoot", "noDeliverys");
 
 			String resultJson = new JSONSerializer()
