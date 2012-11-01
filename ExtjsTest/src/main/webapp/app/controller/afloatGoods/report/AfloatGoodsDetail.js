@@ -1,3 +1,5 @@
+
+Ext.require(['AM.ux.grid.feature.RemoteSummary']);
 Ext.define('AM.controller.afloatGoods.report.AfloatGoodsDetail', {
 			extend : 'Ext.app.Controller',
 
