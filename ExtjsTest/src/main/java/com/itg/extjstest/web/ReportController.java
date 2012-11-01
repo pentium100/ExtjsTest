@@ -1373,6 +1373,7 @@ public class ReportController {
 		cte.append("       case when material_doc_type.id=2  ");
 		cte.append("                 then  material_doc.delivery_note  end ");
 		cte.append("       as delivery_note_out, ");
+		cte.append("       material_doc_item.remark as materialItemRemark, ");
 		cte.append("       contract_in.contract_no as purchase_contract_no, ");
 		cte.append("       contract_in.supplier as purchase_contract_supplier, ");
 		cte.append("       contract_in_item.unit_price as purchase_contract_unit_price, ");
@@ -1412,6 +1413,7 @@ public class ReportController {
 			cte.append("    	       case when material_doc_type.id=2 ");
 			cte.append("    	                 then  material_doc.delivery_note end ");
 			cte.append("    	       as delivery_note_out,  ");
+			cte.append("               material_doc_item.remark as materialItemRemark, ");
 			cte.append("      		   contract_in.contract_no as purchase_contract_no, ");
 			cte.append("               contract_in.supplier as purchase_contract_supplier, ");
 			cte.append("               contract_in_item.unit_price as purchase_contract_unit_price, ");
@@ -1573,6 +1575,11 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("批次号");
 			header.setField("batch_no");
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("进出仓备注");
+			header.setField("materialItemRemark");
 			headers.add(header);
 
 			// header = new ReportHeader();

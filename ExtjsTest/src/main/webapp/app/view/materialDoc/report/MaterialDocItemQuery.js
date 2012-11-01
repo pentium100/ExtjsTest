@@ -197,6 +197,11 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'gridcolumn',
 									dataIndex : 'batch_no',
 									text : '批次号'
+								},  {
+									xtype : 'gridcolumn',
+									dataIndex : 'materialItemRemark',
+									text : '进出仓备注'
+
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'working_no',
@@ -220,7 +225,7 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									dataIndex : 'stock_location',
 									text : '仓库'
 
-								}, {
+								},{
 									xtype : 'datecolumn',
 									format : 'Y-m-d',
 									dataIndex : 'doc_date',
