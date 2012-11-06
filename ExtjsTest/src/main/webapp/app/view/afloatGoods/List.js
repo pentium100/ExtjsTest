@@ -26,6 +26,10 @@ Ext.define('AM.view.afloatGoods.List', {
 							header : '供应商',
 							dataIndex : 'supplier',
 							filterable : true,
+							filter : {
+								filterField : 'contract.supplier'
+							},
+							
 							flex : 1
 						}, {
 
