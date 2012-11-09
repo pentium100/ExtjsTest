@@ -985,6 +985,12 @@ public class ReportController {
 			headers.add(header);
 
 			header = new ReportHeader();
+			header.setHeader("规格(合同)");
+			header.setField("model_tested");
+			headers.add(header);
+
+			
+			header = new ReportHeader();
 			header.setHeader("车号/卡号");
 			header.setField("plate_num");
 			headers.add(header);
