@@ -29,7 +29,7 @@ Ext.define('AM.view.afloatGoods.List', {
 							filter : {
 								filterField : 'contract.supplier'
 							},
-							
+
 							flex : 1
 						}, {
 
@@ -103,7 +103,11 @@ Ext.define('AM.view.afloatGoods.List', {
 							header : '批次号',
 							dataIndex : 'destination',
 							xtype : 'gridcolumn',
-							filterable : false,
+							filterable : true,
+							filter : {
+
+								filterField : 'items.batchNo'
+							},
 							renderer : function(value, metaData, rec) {
 
 								var text = ',';

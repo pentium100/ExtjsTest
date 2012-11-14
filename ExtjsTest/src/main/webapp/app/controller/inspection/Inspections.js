@@ -203,7 +203,7 @@ Ext.define('AM.controller.inspection.Inspections', {
 
 		if (record.batchNo != "") {
 			filter.type = "string";
-			filter.field = "batchNo";
+			filter.field = "materialDoc.batchNo";
 			filter.value = record.batchNo;
 			tmp.push(Ext.apply({}, filter));
 		}

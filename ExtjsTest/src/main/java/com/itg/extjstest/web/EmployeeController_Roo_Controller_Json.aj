@@ -5,7 +5,6 @@ package com.itg.extjstest.web;
 
 import com.itg.extjstest.domain.Employee;
 import com.itg.extjstest.web.EmployeeController;
-import java.util.List;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,6 @@ privileged aspect EmployeeController_Roo_Controller_Json {
         return new ResponseEntity<String>(employee.toJson(), headers, HttpStatus.OK);
     }
     
-
-    
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
     public ResponseEntity<String> EmployeeController.createFromJsonArray(@RequestBody String json) {
         for (Employee employee: Employee.fromJsonArrayToEmployees(json)) {
@@ -40,7 +37,6 @@ privileged aspect EmployeeController_Roo_Controller_Json {
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
-    
     
     @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
     public ResponseEntity<String> EmployeeController.updateFromJsonArray(@RequestBody String json) {

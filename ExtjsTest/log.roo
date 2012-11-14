@@ -684,3 +684,15 @@ field reference --fieldName employee --type ~.domain.Employee --cardinality ONE_
 field reference --fieldName employee --type ~.domain.Employee --cardinality MANY_TO_ONE
 exit
 // Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-08-10 17:23:48
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log opened at 2012-11-13 12:28:56
+// Spring Roo 1.2.1.RELEASE [rev 6eae723] log closed at 2012-11-13 12:30:13
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-13 12:51:40
+exit
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-11-13 12:52:51
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-13 12:52:57
+hint
+exit
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-11-13 12:53:56
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log opened at 2012-11-13 12:59:51
+exit
+// Spring Roo 1.2.2.RELEASE [rev 7d75659] log closed at 2012-11-13 14:26:05
