@@ -33,6 +33,9 @@ Ext.define('AM.model.contract.report.NoDelivery', {
 						name : 'quantity_no_delivery',
 						type : 'float'
 					},{
+						name : 'quantity_afloat',
+						type : 'float'
+					},{
 						name : 'unitPrice',
 						type : 'float'
 					},{

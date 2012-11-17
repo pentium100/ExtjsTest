@@ -129,6 +129,16 @@ Ext.define('AM.view.contract.report.NoDelivery', {
 							format : '0,000.000',
 							summaryType : 'sum',
 							summaryRenderer : Ext.util.Format.numberRenderer('0,000.000')
+						}, {
+							xtype : 'numbercolumn',
+							dataIndex : 'quantity_afloat',
+							text : '在途数量',
+							sortable : true,
+							align : 'right',
+							filterable : true,
+							format : '0,000.000',
+							summaryType : 'sum',
+							summaryRenderer : Ext.util.Format.numberRenderer('0,000.000')
 						}
 
 				],

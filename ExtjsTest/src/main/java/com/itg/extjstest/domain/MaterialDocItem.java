@@ -99,6 +99,65 @@ public class MaterialDocItem {
 	@NotNull
 	private StockLocation stockLocation;
 
+	public static int countMaterialDocItemsByFilter(
+			List<com.itg.extjstest.util.FilterItem> filters, int start,
+			int page, int limit) throws ParseException {
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		List<Predicate> criteria = new ArrayList<Predicate>();
+		CriteriaQuery<Tuple> c = cb.createTupleQuery();
+		Root<MaterialDocItem> fromMaterialDocItem = c
+				.from(MaterialDocItem.class);
+		Expression<Double> weight = fromMaterialDocItem.get("netWeight");
+		Expression<Double> direction = fromMaterialDocItem.get("direction");
+		Expression<Double> directionWeight = (Expression<Double>) cb.prod(
+				weight, direction);
+		Expression<Double> sumOfDirectionWeight = cb.sum(directionWeight);
+		c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId")
+				.alias("lineId_in"), fromMaterialDocItem.get("stockLocation")
+				.get("id").alias("stockLocation"),
+				sumOfDirectionWeight.alias("stockWeight")));
+		c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"),
+				fromMaterialDocItem.get("stockLocation"));
+		c.having(cb.gt(sumOfDirectionWeight, 0));
+		Subquery<MaterialDocItem> subq = c.subquery(MaterialDocItem.class);
+		Root<MaterialDocItem> subFromMaterialDocItem = subq
+				.from(MaterialDocItem.class);
+		Root<MaterialDoc> subFromMaterialDoc = subq.from(MaterialDoc.class);
+		Root<Contract> subFromContract = subq.from(Contract.class);
+		Root<StockLocation> subFromStockLocation = subq
+				.from(StockLocation.class);
+		subq.select(subFromMaterialDocItem);
+		List<Predicate> subCriteria = new ArrayList<Predicate>();
+		subCriteria.add(cb.equal(subFromMaterialDocItem.get("lineId"),
+				subFromMaterialDocItem.get("lineId_in")));
+		subCriteria.add(cb.equal(subFromMaterialDocItem.get("materialDoc"),
+				subFromMaterialDoc.get("docNo")));
+		subCriteria.add(cb.equal(subFromMaterialDocItem.get("contract"),
+				subFromContract.get("id")));
+		subCriteria.add(cb.equal(subFromMaterialDocItem.get("stockLocation"),
+				subFromStockLocation.get("id")));
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", fromMaterialDocItem);
+		HashMap<String, Path> subPaths = new HashMap<String, Path>();
+		subPaths.put("", subFromMaterialDocItem);
+		subPaths.put("materialDoc", subFromMaterialDoc);
+		subPaths.put("contract", subFromContract);
+		subPaths.put("stockLocation", subFromStockLocation);
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				// if (!f.getField().equals("stockLocation.stockLocation")) {
+				subCriteria.add(f.getPredicate(cb, subPaths));
+				// } else {
+				// criteria.add(f.getPredicate(cb, paths));
+				// }
+			}
+			subq.where(cb.and(subCriteria.toArray(new Predicate[0])));
+		}
+		c.where(cb.in(fromMaterialDocItem.get("lineId_in")).value(subq));
+		return entityManager().createQuery(c).getResultList().size();
+
+	}
+
 	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(
 			List<com.itg.extjstest.util.FilterItem> filters, int start,
 			int page, int limit) throws ParseException {
@@ -170,6 +229,7 @@ public class MaterialDocItem {
 			entityManager().detach(item);
 			l.add(item);
 		}
+
 		return l;
 	}
 
@@ -182,6 +242,10 @@ public class MaterialDocItem {
 				.include("materialdocitems")
 				.include("materialdocitems.materialDoc")
 				.include("materialdocitems.materialDoc.docType")
+				.exclude("*.implementation")
+				.exclude("*.entityManager")
+				.exclude("*.handler")
+				.exclude("*.hibernateLazyInitializer")
 				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
 						Date.class).serialize(map);
 		return resultJson;
@@ -197,6 +261,34 @@ public class MaterialDocItem {
 			setWorkingNo(i.getMaterialDoc().getWorkingNo());
 			setContractNo(i.getMaterialDoc().getContract().getContractNo());
 		}
+	}
+
+	public static int countIncomingMaterialDocItemsByFilter(
+			List<com.itg.extjstest.util.FilterItem> filters, int start,
+			int page, int limit) throws ParseException {
+		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
+		CriteriaQuery<MaterialDocItem> c = cb
+				.createQuery(MaterialDocItem.class);
+		Root<MaterialDocItem> root = c.from(MaterialDocItem.class);
+		Join<MaterialDocItem, MaterialDoc> materialDoc = root
+				.join("materialDoc");
+		Join<MaterialDoc, Contract> contract = materialDoc.join("contract");
+		HashMap<String, Path> paths = new HashMap<String, Path>();
+		paths.put("", root);
+		paths.put("materialDoc", materialDoc);
+		paths.put("contract", contract);
+		List<Predicate> criteria = new ArrayList<Predicate>();
+		if (filters != null) {
+			for (FilterItem f : filters) {
+				if (f.getField().equals("contractNo")) {
+					f.setField("contract.contractNo");
+				}
+				criteria.add(f.getPredicate(cb, paths));
+			}
+			c.where(cb.and(criteria.toArray(new Predicate[0])));
+		}
+
+		return entityManager().createQuery(c).getResultList().size();
 	}
 
 	public static List<com.itg.extjstest.domain.MaterialDocItem> findIncomingMaterialDocItemsByFilter(
@@ -223,6 +315,7 @@ public class MaterialDocItem {
 			}
 			c.where(cb.and(criteria.toArray(new Predicate[0])));
 		}
+
 		return entityManager().createQuery(c).setFirstResult(start)
 				.setMaxResults(limit).getResultList();
 	}

@@ -83,11 +83,27 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'textfield',
 									fieldLabel : '规格(合同)',
 									name : 'model_contract'
+								},  {
+									xtype : 'textfield',
+									fieldLabel : '移动原因',
+									name : 'cause'
 								}, {
 									xtype : 'checkbox',
 									fieldLabel : '显示出仓记录',
 									name : 'showIncoming',
 									inputValue : 'true'
+								}, {
+									xtype : 'combo',
+									name : 'employee',
+									fieldLabel : '业务员',
+									// store : Ext
+									// .create('AM.store.master.employee.Employees'),
+									store : 'master.employee.Employees',
+									queryMode : 'local',
+									displayField : 'name',
+									valueField : 'id',
+									triggerAction : 'all'
+
 								}], // 合同类型 合同号 供应商 付款方式 备注 规格 数量 单价 备注
 						buttons : [{
 									text : '提交',
@@ -181,6 +197,11 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									xtype : 'gridcolumn',
 									dataIndex : 'batch_no',
 									text : '批次号'
+								},  {
+									xtype : 'gridcolumn',
+									dataIndex : 'materialItemRemark',
+									text : '进出仓备注'
+
 								}, {
 									xtype : 'gridcolumn',
 									dataIndex : 'working_no',
@@ -204,7 +225,7 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									dataIndex : 'stock_location',
 									text : '仓库'
 
-								}, {
+								},{
 									xtype : 'datecolumn',
 									format : 'Y-m-d',
 									dataIndex : 'doc_date',

@@ -26,7 +26,35 @@ Ext.define('AM.view.afloatGoods.List', {
 							header : '供应商',
 							dataIndex : 'supplier',
 							filterable : true,
+							filter : {
+								filterField : 'contract.supplier'
+							},
+
 							flex : 1
+						}, {
+
+							header : '规格',
+							dataIndex : 'destination',
+							xtype : 'gridcolumn',
+							filterable : false,
+							renderer : function(value, metaData, rec) {
+
+								var text = ',';
+
+								var items = rec.items();
+								for (var i = 0; i < items.getCount(); i++) {
+									var item = items.getAt(i);
+									var model = item.get('model');
+									if (text.indexOf(',' + model + ',') == -1) {
+										text = text + model + ','
+									}
+								}
+
+								text = text.substr(1, 1000);
+								return text;
+
+							}
+
 						}, {
 							header : '车号',
 							dataIndex : 'plateNum',
@@ -75,7 +103,11 @@ Ext.define('AM.view.afloatGoods.List', {
 							header : '批次号',
 							dataIndex : 'destination',
 							xtype : 'gridcolumn',
-							filterable : false,
+							filterable : true,
+							filter : {
+
+								filterField : 'items.batchNo'
+							},
 							renderer : function(value, metaData, rec) {
 
 								var text = ',';

@@ -13,7 +13,11 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 
 	initComponent : function() {
 		var me = this;
-		var store = Ext.create('AM.store.MaterialDocItems');
+
+		var store = Ext.create('AM.store.MaterialDocItems', {
+					proxyUrl : me.proxyUrl
+				});
+
 		var selModel = Ext.create('Ext.selection.CheckboxModel', {
 					mode : this.selMode,
 					checkOnly : true
@@ -61,10 +65,15 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 											xtype : 'textfield',
 											fieldLabel : '规格',
 											name : 'model'
+										}, {
+											xtype : 'textfield',
+											fieldLabel : '供应商',
+											name : 'supplier'
 										}],
 								buttons : [{
 											text : 'Search',
-											action : 'search'
+											action : 'search',
+											handler : this.searchMaterialDocItem
 										}, {
 											text : 'Add',
 											action : 'add'
@@ -148,5 +157,84 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 				});
 
 		me.callParent(arguments);
+	},
+
+	searchMaterialDocItem : function(button) {
+		var win = button.up('window');
+		var grid = win.down('gridpanel');
+		var store = grid.getStore();
+
+		var tmp = [];
+		var filter = {};
+		var record = button.up('form').getValues();
+
+		filter.type = "list";
+		filter.field = "materialDoc.docType.id";
+		filter.comparison = 'eq';
+		filter.value = '1,3';
+		tmp.push(Ext.apply({}, filter));
+
+		
+		if (record.contractNo != "") {
+			filter.type = "string";
+			filter.field = "contract.contractNo";
+			filter.value = record.contractNo;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		if (record.deliveryNote != "") {
+			filter.type = "string";
+			filter.field = "deliveryNote";
+			filter.value = record.deliveryNote;
+			tmp.push(Ext.apply({}, filter));
+		}
+		if (record.plateNum != "") {
+			filter.type = "list";
+			filter.field = "plateNum";
+			filter.value = record.plateNum;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		if (record.batchNo != "") {
+			filter.type = "string";
+			filter.field = "materialDoc.batchNo";
+			filter.value = record.batchNo;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		if (record.workingNo != "") {
+			filter.type = "string";
+			filter.field = "materialDoc.workingNo";
+			filter.value = record.workingNo;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		if (record.stockLocation != "") {
+			filter.type = "string";
+			filter.field = "stockLocation.stockLocation";
+			filter.value = record.stockLocation;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		if (record.model != "") {
+			filter.type = "string";
+			filter.field = "model_contract";
+			filter.value = record.model;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		if (record.supplier != "") {
+			filter.type = "string";
+			filter.field = "contract.supplier";
+			filter.value = record.supplier;
+			tmp.push(Ext.apply({}, filter));
+		}
+
+		var p = store.getProxy();
+		p.extraParams.filter = Ext.JSON.encode(tmp);
+		// p.url = 'materialdocitems/2',
+		p.url = store.proxyUrl;
+
+		store.load();
 	}
 });

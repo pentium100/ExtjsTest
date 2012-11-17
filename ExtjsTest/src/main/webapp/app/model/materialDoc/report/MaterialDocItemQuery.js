@@ -94,6 +94,9 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 					}, {
 						name : 'remark',
 						type : 'string'
+					}, {
+						name : 'materialItemRemark',
+						type : 'string'
 					}
 
 			]

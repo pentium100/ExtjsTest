@@ -42,9 +42,9 @@ Ext.define('AM.controller.MovingDocs', {
 						itemdblclick : this.selectContract
 					},
 
-					'materialDocItemSearch[by=movingDocEdit] button[action=search]' : {
-						click : this.searchMaterialDocItem
-					},
+					//'materialDocItemSearch[by=movingDocEdit] button[action=search]' : {
+					//	click : this.searchMaterialDocItem
+					//},
 
 					'materialDocItemSearch[by=movingDocEdit] button[action=add]' : {
 						click : this.addMaterialDocItems
@@ -211,7 +211,8 @@ Ext.define('AM.controller.MovingDocs', {
 		var view = Ext.widget('materialDocItemSearch', {
 					parentWindow : win,
 					by : win.xtype,
-					selMode : 'MULTI'
+					selMode : 'MULTI', 
+					proxyUrl: 'materialdocitems/1'
 				});
 
 		view.show();

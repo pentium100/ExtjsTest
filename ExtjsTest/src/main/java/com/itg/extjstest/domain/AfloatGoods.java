@@ -29,7 +29,6 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.Size;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
@@ -85,8 +84,10 @@ public class AfloatGoods {
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
 		CriteriaQuery<AfloatGoods> c = cb.createQuery(AfloatGoods.class);
 		Root<AfloatGoods> afloatGoods = c.from(AfloatGoods.class);
+		Join<AfloatGoods, AfloatGoodsItem> j = afloatGoods.join("items");
 		HashMap<String, Path> paths = new HashMap<String, Path>();
 		paths.put("", afloatGoods);
+		paths.put("items", j);
 		List<Predicate> criteria = new ArrayList<Predicate>();
 		if (filters != null) {
 			for (FilterItem f : filters) {
@@ -103,9 +104,9 @@ public class AfloatGoods {
 
 			}
 		}
-		
+
 		c.orderBy(orders);
-		
+
 		return entityManager().createQuery(c).setFirstResult(start)
 				.setMaxResults(limit).getResultList();
 	}

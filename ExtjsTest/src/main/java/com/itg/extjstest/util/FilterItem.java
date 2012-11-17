@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,6 +14,10 @@ import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SetAttribute;
+import javax.persistence.metamodel.SingularAttribute;
+
+import com.itg.extjstest.domain.AfloatGoodsItem;
 
 public class FilterItem {
 
@@ -171,9 +176,8 @@ public class FilterItem {
 		return path2;
 	}
 
-	public Predicate getPredicate(CriteriaBuilder cb,
-			HashMap<String, Path> paths) throws ParseException {
-		// TODO Auto-generated method stub
+	private Path getPathByFieldName(HashMap<String, Path> paths) {
+
 		String[] fields = getField().split("\\.");
 		Path path = null;
 		String fieldName;
@@ -181,26 +185,35 @@ public class FilterItem {
 			path = paths.get("");
 			path = getParentPath(path, getField());
 
-			fieldName = fields[fields.length-1];
+			fieldName = fields[fields.length - 1];
+
 		} else {
-			if (fields.length == 2) {
+
+			path = paths.get("");
+			fieldName = getField();
+
+		}
+
+		if (fields.length >= 2) {
+			try {
+				path.get(fieldName);
+			} catch (IllegalArgumentException e) {
+
 				path = paths.get(fields[0]);
 				fieldName = fields[1];
 
-				if (path == null) {
-					path = paths.get("");
-					path = getParentPath(path, getField());
-					//
-					// path = path.get(fields[0]);
-
-				}
-
-			} else {
-				path = paths.get("");
-				fieldName = getField();
 			}
 		}
+		return path;
+	}
 
+	public Predicate getPredicate(CriteriaBuilder cb,
+			HashMap<String, Path> paths) throws ParseException {
+
+		Path path = getPathByFieldName(paths);
+		String[] fields = getField().split("\\.");
+
+		String fieldName = fields[fields.length - 1];
 		if (type.equals("list")) {
 			return path.get(fieldName).in(getStringListValue());
 			// return path.get(fieldName).in(getIntegerListValue());
@@ -231,7 +244,13 @@ public class FilterItem {
 			return path.get(fieldName).in(getIntegerListValue());
 		}
 
+		if (type.equals("boolean")) {
+			return cb.equal(path.get(fieldName).as(Boolean.class), getValue()
+					.equals("true"));
+		}
+
 		if (type.equals("string")) {
+
 			return cb.like(path.get(fieldName).as(String.class), "%"
 					+ getValue() + "%");
 		}

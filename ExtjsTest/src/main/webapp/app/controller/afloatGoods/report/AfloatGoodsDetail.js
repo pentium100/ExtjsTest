@@ -1,3 +1,5 @@
+
+Ext.require(['AM.ux.grid.feature.RemoteSummary']);
 Ext.define('AM.controller.afloatGoods.report.AfloatGoodsDetail', {
 			extend : 'Ext.app.Controller',
 
@@ -79,7 +81,7 @@ Ext.define('AM.controller.afloatGoods.report.AfloatGoodsDetail', {
 				if (record.model != "") {
 					filter.type = "string";
 					filter.field = "afloat_goods_item.model";
-					filter.value = record.model_contract;
+					filter.value = record.model;
 					tmp.push(Ext.apply({}, filter));
 				}
 				

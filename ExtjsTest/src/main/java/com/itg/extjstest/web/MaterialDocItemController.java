@@ -45,11 +45,11 @@ public class MaterialDocItemController {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
 					// .use("values.value", ArrayList.class)
-					.use("values.value", String.class)
-					.deserialize(filter);
+					.use("values.value", String.class).deserialize(filter);
 
 		}
-		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		Integer reccount = 0;
 		List<MaterialDocItem> result = null;
 		if (queryMode == 1) {
 			FilterItem f = new FilterItem();
@@ -57,18 +57,24 @@ public class MaterialDocItemController {
 			f.setField("quantity");
 			f.setType("int");
 			f.setValue(String.valueOf(0));
-			result = MaterialDocItem.findMaterialDocItemsByFilter(filters, start, page, limit);			
+
+			result = MaterialDocItem.findMaterialDocItemsByFilter(filters,
+					start, page, limit);
+			map.put("total", MaterialDocItem.countMaterialDocItemsByFilter(
+					filters, start, page, limit));
 		}
-		
-		if (queryMode ==2 ){
-			
-			result = MaterialDocItem.findIncomingMaterialDocItemsByFilter(filters, start, page, limit);
+
+		if (queryMode == 2) {
+
+			result = MaterialDocItem.findIncomingMaterialDocItemsByFilter(
+					filters, start, page, limit);
+			map.put("total", MaterialDocItem
+					.countIncomingMaterialDocItemsByFilter(filters, start,
+							page, limit));
+
 		}
-		
-		 
-		
-		
-		for(MaterialDocItem i:result){
+
+		for (MaterialDocItem i : result) {
 			i.setBatchNo(i.getMaterialDoc().getBatchNo());
 			i.setPlateNum(i.getMaterialDoc().getPlateNum());
 			i.setDeliveryNote(i.getMaterialDoc().getDeliveryNote());
@@ -77,44 +83,38 @@ public class MaterialDocItemController {
 			i.setContractNo(i.getMaterialDoc().getContract().getContractNo());
 			i.setWarehouse(i.getStockLocation().getStockLocation());
 		}
-		
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		
-		map.put("total", MaterialDocItem.countMaterialDocItems());
-		
+
 		map.put("success", true);
 		String resultJson = MaterialDocItem.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
-		
-		//return new ResponseEntity<String>(MaterialDocItem.toJsonArray(result),
-		//		headers, HttpStatus.OK);
+
+		// return new
+		// ResponseEntity<String>(MaterialDocItem.toJsonArray(result),
+		// headers, HttpStatus.OK);
 
 	}
-	
-	
-    @RequestMapping(value = "/{lineId}", headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> showJson(@PathVariable("lineId") Long lineId) {
-        MaterialDocItem materialdocitem = MaterialDocItem.
-        		findMaterialDocItem(lineId);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        if (materialdocitem == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        
-        List<MaterialDocItem> result = new ArrayList<MaterialDocItem>();
-        result.add(materialdocitem);
+
+	@RequestMapping(value = "/{lineId}", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("lineId") Long lineId) {
+		MaterialDocItem materialdocitem = MaterialDocItem
+				.findMaterialDocItem(lineId);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (materialdocitem == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+
+		List<MaterialDocItem> result = new ArrayList<MaterialDocItem>();
+		result.add(materialdocitem);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("total", 1);
 		map.put("success", true);
 		String resultJson = MaterialDocItem.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
-        
-        
-        //return new ResponseEntity<String>(materialdocitem.toJson(), headers, HttpStatus.OK);
-    }
 
+		// return new ResponseEntity<String>(materialdocitem.toJson(), headers,
+		// HttpStatus.OK);
+	}
 
 }
