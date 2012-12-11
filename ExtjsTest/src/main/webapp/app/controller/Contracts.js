@@ -112,7 +112,7 @@ Ext.define('AM.controller.Contracts', {
 
 			updateContract : function(button) {
 				var win = button.up('window');
-				form = win.down('form');
+				var form = win.down('form');
 				var record = form.getRecord();
 				var values = form.getValues();
 				values.signDate = Ext.Date.parse(values.signDate, 'Y-m-d');
