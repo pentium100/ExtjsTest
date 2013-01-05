@@ -184,13 +184,13 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 
 		if (record.deliveryNote != "") {
 			filter.type = "string";
-			filter.field = "deliveryNote";
+			filter.field = "materialDoc.deliveryNote";
 			filter.value = record.deliveryNote;
 			tmp.push(Ext.apply({}, filter));
 		}
 		if (record.plateNum != "") {
 			filter.type = "list";
-			filter.field = "plateNum";
+			filter.field = "materialDoc.plateNum";
 			filter.value = record.plateNum;
 			tmp.push(Ext.apply({}, filter));
 		}
