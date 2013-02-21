@@ -142,6 +142,10 @@ Ext.define('AM.view.materialDoc.ItemSearch', {
 
 											text : '工作号',
 											dataIndex : 'workingNo'
+										}, {
+											xtype : 'gridcolumn',
+											text : '备注',
+											dataIndex : 'remark'
 										}],
 								viewConfig : {
 

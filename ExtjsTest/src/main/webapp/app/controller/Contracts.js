@@ -67,6 +67,9 @@ Ext.define('AM.controller.Contracts', {
 
 				emp.setValue(record.getEmployee().getId());
 
+				//var store = record.items();
+				//store.group('model');
+
 				view.down('grid').reconfigure(record.items());
 
 			},

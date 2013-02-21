@@ -86,6 +86,14 @@ Ext.define('AM.view.contract.Edit', {
 					plugins : [Ext.create('Ext.grid.plugin.CellEditing', {
 
 					})],
+
+					features : [{
+								//id : 'group',
+								ftype: 'summary'
+								//groupHeaderTpl : '{name}',
+								//hideGroupedHeader : true,
+								//enableGroupingMenu : false
+							}],
 					columns : [{
 								xtype : 'gridcolumn',
 								id : 'model',
@@ -100,7 +108,7 @@ Ext.define('AM.view.contract.Edit', {
 								dataIndex : 'quantity',
 								text : '数量',
 								width : 80,
-
+								summaryType : 'sum',
 								field : {
 									xtype : 'numberfield',
 									decimalPrecision : 3

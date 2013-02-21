@@ -284,7 +284,7 @@ public class ReportController {
 		// + sortString.toString()
 		// + " )) as rowNum, ");
 
-		cte.append("      case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, ");
+		cte.append("      case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, i.remark, ");
 
 		cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end ) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
 		cte.append("                                           left join material_doc_item mi on mi.line_id = mds.items ");
@@ -375,7 +375,11 @@ public class ReportController {
 			header.setFormat("#,##0.000");
 			headers.add(header);
 			
-			
+			header = new ReportHeader();
+			header.setHeader("备注");
+			header.setField("remark");
+			headers.add(header);
+
 
 			map.put("headers", headers);
 			map.put("title", "合同执行情况表");

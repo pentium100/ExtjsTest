@@ -6,6 +6,10 @@ Ext.define('AM.model.contract.report.NoDelivery', {
 						type : 'string'
 						
 					},{
+						name : 'remark',
+						type : 'string'
+						
+					},{
 						name : 'contract_no',
 						type : 'string'
 					}, {
