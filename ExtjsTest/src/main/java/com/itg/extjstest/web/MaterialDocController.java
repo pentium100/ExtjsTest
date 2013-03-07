@@ -33,6 +33,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,8 @@ public class MaterialDocController {
 		if (filter != null) {
 			filters = new JSONDeserializer<List<FilterItem>>()
 					.use(null, ArrayList.class).use("values", FilterItem.class)
-					.use("values.value", new FilterObjectFactory()).deserialize(filter);
+					.use("values.value", new FilterObjectFactory())
+					.deserialize(filter);
 
 		}
 		FilterItem f = new FilterItem();
@@ -398,6 +400,25 @@ public class MaterialDocController {
 
 		return new ResponseEntity<String>(resultJson, headers,
 				HttpStatus.CREATED);
+
+	}
+
+	@ExceptionHandler({org.springframework.orm.jpa.JpaSystemException.class})
+	public ResponseEntity<String> exception(org.springframework.orm.jpa.JpaSystemException e) {
+		System.out.println(e.getMessage());
+		e.printStackTrace();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("success", false);
+		map.put("message", e.getRootCause().getMessage());
+		
+		HttpStatus status = HttpStatus.CONFLICT;
+		String resultJson = MaterialDocItem.mapToJson(map, null);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+
+		return new ResponseEntity<String>(resultJson, headers, status);
 
 	}
 

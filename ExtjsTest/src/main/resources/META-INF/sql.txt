@@ -70,3 +70,66 @@ values ( '', '仓库管理', 0, 17, 'AM.controller.master.stockLocation.StockLoc
   
 insert into menu ( icon_cls, text, version, parent, controller, leaf, views, controller_param) 
 values ( '', '业务员管理', 0, 17, 'AM.controller.master.employee.Employee', 1, 'employeeList', null)  
+
+
+
+
+===============================================================================================
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		chenliwei
+-- Create date: 2013/3/7
+-- Description:	检查所修改的库存数据是否使库存余额大于0
+-- =============================================
+alter TRIGGER checkStockIsNegative
+   ON  material_doc_item
+   AFTER INSERT,DELETE,UPDATE
+AS 
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+
+	if  EXISTS( select mi.line_id_in, mi.stock_location, sum(mi.net_weight*mi.direction) 
+	from material_doc_item mi , inserted i
+	where mi.line_id_in = i.line_id_in
+	group by mi.line_id_in, mi.stock_location 
+	having sum(mi.net_weight*mi.direction)<0 )
+
+
+	begin
+	    --ROLLBACK TRANSACTION
+        RAISERROR('数据保存后产生了负数库存！', 16, 1)
+        RETURN
+	end
+
+
+	
+
+
+
+
+	if  EXISTS(select mi.line_id_in, mi.stock_location, sum(mi.net_weight*mi.direction) 
+	from material_doc_item mi , deleted d
+	where mi.line_id_in = d.line_id_in
+	group by mi.line_id_in, mi.stock_location 
+	having sum(mi.net_weight*mi.direction)<0 )
+
+	
+	begin
+	    --ROLLBACK TRANSACTION
+        RAISERROR('数据保存后产生了负数库存！', 16, 1)
+        RETURN
+	end
+
+
+ 
+
+END
+GO
+
+=================================================================================================================

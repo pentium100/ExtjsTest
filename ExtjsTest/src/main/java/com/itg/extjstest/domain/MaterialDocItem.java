@@ -11,7 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
+import javax.persistence.LockModeType;
 import javax.persistence.ManyToOne;
+import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
+import javax.persistence.PostUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -162,7 +166,7 @@ public class MaterialDocItem {
 			List<com.itg.extjstest.util.FilterItem> filters, int start,
 			int page, int limit) throws ParseException {
 		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		List<Predicate> criteria = new ArrayList<Predicate>();
+		// List<Predicate> criteria = new ArrayList<Predicate>();
 		CriteriaQuery<Tuple> c = cb.createTupleQuery();
 		Root<MaterialDocItem> fromMaterialDocItem = c
 				.from(MaterialDocItem.class);
@@ -319,4 +323,6 @@ public class MaterialDocItem {
 		return entityManager().createQuery(c).setFirstResult(start)
 				.setMaxResults(limit).getResultList();
 	}
+
+
 }
