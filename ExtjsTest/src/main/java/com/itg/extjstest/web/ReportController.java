@@ -238,6 +238,7 @@ public class ReportController {
 
 		StringBuffer sortString = new StringBuffer();
 
+		String trailString = " contract_no asc ";
 		for (Map<String, String> s : sorts) {
 			if (!sortString.toString().equals("")) {
 				sortString.append(",");
@@ -245,12 +246,18 @@ public class ReportController {
 
 			sortString.append(" " + s.get("property") + " "
 					+ s.get("direction"));
+			
+			
+			if(s.get("property").equals("contract_no")){
+				trailString = " ";
+			}
 		}
-		if (!sortString.toString().equals("")) {
+		if ((!sortString.toString().equals(""))&&(!trailString.equals(" "))) {
 			sortString.append(",");
 		}
 
-		sortString.append(" contract_no asc ");
+		
+		sortString.append(trailString);
 
 		List<FilterItem> filters = null;
 		if (filter != null) {
