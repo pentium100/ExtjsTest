@@ -291,27 +291,55 @@ public class ReportController {
 		// + sortString.toString()
 		// + " )) as rowNum, ");
 
-		cte.append("      case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, i.remark, ");
+		//cte.append("      case when contract_type = 0 then '采购合同' else '销售合同' end as contract_type, c.contract_no, c.supplier, i.model , i.quantity , i.unit_price, c.sign_date, i.remark, ");
 
-		cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end ) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
-		cte.append("                                           left join material_doc_item mi on mi.line_id = mds.items ");
-		cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model  ),0)), " );
+		//cte.append("      quantity_no_delivery=(i.quantity-isNull((select SUM(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end ) from material_doc md left join material_doc_items mds on md.doc_no = mds.material_doc");
+		//cte.append("                                           left join material_doc_item mi on mi.line_id = mds.items ");
+		//cte.append("                       where (md.doc_type = 1 or md.doc_type=2) and mi.contract = c.id and mi.model_contract = i.model  ),0)), " );
 		
-		cte.append("      quantity_afloat=(select sum(quantity) from afloat_goods_item ags inner join afloat_goods ag on ags.afloat_goods=ag.id where ag.contract=c.id and ags.model=i.model and ag.arrival_date is null ) "   );
-		
-		
-		cte.append("      from contract c ");
-		cte.append("                   left join contract_item i on i.contract = c.id");
+		//cte.append("      quantity_afloat=(select sum(quantity) from afloat_goods_item ags inner join afloat_goods ag on ags.afloat_goods=ag.id where ag.contract=c.id and ags.model=i.model and ag.arrival_date is null ) "   );
 		
 		
-		cte.append("   where (abs(i.quantity-isNull((select SUM(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end  ) from material_doc md ");
-		cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
-		cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model  ),0)))>0.001 ");
+		//cte.append("      from contract c ");
+		//cte.append("                   left join contract_item i on i.contract = c.id");
+		
+		
+		//cte.append("   where (abs(i.quantity-isNull((select SUM(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end  ) from material_doc md ");
+		//cte.append("                                            left join material_doc_item mi on mi.material_doc = md.doc_no ");
+		//cte.append("                       where ( md.doc_type = 1 or md.doc_type = 2 ) and mi.contract = c.id and mi.model_contract = i.model  ),0)))>0.001 ");
+	
+		
+		
+	    cte.append("	case when c.contract_type ='0' then '采购合同' else '销售合同' end as contract_type,  ");
+	    cte.append("	  c.contract_no, c.supplier, a.model ,  c.sign_date,   ");
+	    cte.append("	 sum(a.signed) as quantity, sum(a.executed) as quantity_in_receipt, "); 
+	    cte.append("	 sum(quantity_afloat) as quantity_afloat,  ");
+	    cte.append("	 max(unit_price) as unit_price, max(a.remark) as remark from ( ");
+
+	    cte.append("	select contract, model, quantity as signed, 0 as executed, 0 as quantity_afloat , c.unit_price, c.remark  from contract_item as c "); 
+
+	    cte.append("	union  ");
+	    cte.append("	select md.contract, model_contract as model, 0 as signed , sum(case when md.cause = '退货' then -1*net_weight when md.cause ='货损' then 0 else net_weight end ) as executed, 0 as quantity_afloat , 0 as unit_price , '' as remark "); 
+	    cte.append("	from material_doc_item inner join material_doc as md on md.doc_no = material_doc_item.material_doc ");
+	    cte.append("	where md.doc_type = 1 or md.doc_type=2 ");
+	    cte.append("	group by md.contract, model_contract ");
+
+	    cte.append("	union ");
+	    cte.append("	select af.contract, afi.model, 0 as signed, 0 as executed, isnull(sum(quantity),0) as quantity_afloat, 0 as unit_price, '' as remark "); 
+	    cte.append("	from afloat_goods af inner join afloat_goods_item afi on af.id = afi.afloat_goods ");
+	    cte.append("	where af.arrival_date is null ");
+	    cte.append("	group by af.contract, afi.model ");
+		cte.append("	 ) as a  left join contract as c on c.id = a.contract ");
+		cte.append("	 group by a.contract, a.model , c.contract_type, c.contract_no, c.supplier,  c.sign_date ");
+		cte.append("	 having abs(sum(a.signed)-sum(a.executed)) > 0.001 ");
+		
+		
+		
 		cte.append(whereString);
 		cte.append(" )");
 
 		// query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where rowNum>:start and rowNum<=:start+:limit");
-		query.append(" select *, quantity_in_receipt=quantity-quantity_no_delivery from NoDelivery where 1 = 1 ");
+		query.append(" select *, quantity_no_delivery=quantity-quantity_in_receipt from NoDelivery where 1 = 1 ");
 		query.append(whereString2);
 		query.append(" order by " + sortString.toString() + " ");
 
@@ -400,8 +428,8 @@ public class ReportController {
 					.queryForList(
 							cte.toString()
 
-									+ "select count(*) as reccount , sum(quantity-quantity_no_delivery) as quantity_in_receipt , "
-									+ "                  sum(quantity_no_delivery) as quantity_no_delivery, sum(quantity) as quantity, sum(quantity_afloat) as quantity_afloat from NoDelivery ",
+									+ "select count(*) as reccount , sum(quantity_in_receipt) as quantity_in_receipt , "
+									+ "                  sum(quantity-quantity_in_receipt) as quantity_no_delivery, sum(quantity) as quantity, sum(quantity_afloat) as quantity_afloat from NoDelivery ",
 							param);
 
 			map2.put("total", recordCount.get(0).get("reccount"));
