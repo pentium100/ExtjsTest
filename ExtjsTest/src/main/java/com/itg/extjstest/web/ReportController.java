@@ -1409,7 +1409,7 @@ public class ReportController {
 		StringBuffer cte = new StringBuffer();
 
 		cte.append("with MaterialDocItemQuery1 as (");
-		cte.append("  select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, material_doc.cause, material_doc.inv_no, ");
+		cte.append("  select material_doc_item.line_id, doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, material_doc.cause, material_doc.inv_no, ");
 		cte.append("       material_doc.delivery_note,  ");
 		cte.append("       case when material_doc_type.id=1  ");
 		cte.append("                 then  material_doc.delivery_note  else item_in_doc.delivery_note end ");
@@ -1449,7 +1449,7 @@ public class ReportController {
 
 			cte.append("    	   union ");
 
-			cte.append("    	   select doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, material_doc.cause, material_doc.inv_no,   ");
+			cte.append("    	   select material_doc_item.line_id, doc_type_txt, material_doc.doc_no, contract.contract_no, contract.supplier, material_doc.cause, material_doc.inv_no,   ");
 			cte.append("    	       material_doc.delivery_note,  ");
 			cte.append("    	       case when material_doc_type.id=1 ");
 			cte.append("    	                 then  material_doc.delivery_note else item_in_doc.delivery_note end ");
