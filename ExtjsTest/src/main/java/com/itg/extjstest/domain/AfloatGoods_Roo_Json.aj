@@ -16,8 +16,16 @@ privileged aspect AfloatGoods_Roo_Json {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }
     
+    public String AfloatGoods.toJson(String[] fields) {
+        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+    }
+    
     public static String AfloatGoods.toJsonArray(Collection<AfloatGoods> collection) {
         return new JSONSerializer().exclude("*.class").serialize(collection);
+    }
+    
+    public static String AfloatGoods.toJsonArray(Collection<AfloatGoods> collection, String[] fields) {
+        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
     }
     
     public static Collection<AfloatGoods> AfloatGoods.fromJsonArrayToAfloatGoodses(String json) {

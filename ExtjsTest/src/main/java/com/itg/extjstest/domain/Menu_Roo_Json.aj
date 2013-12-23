@@ -16,12 +16,20 @@ privileged aspect Menu_Roo_Json {
         return new JSONSerializer().exclude("*.class").serialize(this);
     }
     
+    public String Menu.toJson(String[] fields) {
+        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+    }
+    
     public static Menu Menu.fromJsonToMenu(String json) {
         return new JSONDeserializer<Menu>().use(null, Menu.class).deserialize(json);
     }
     
     public static String Menu.toJsonArray(Collection<Menu> collection) {
         return new JSONSerializer().exclude("*.class").serialize(collection);
+    }
+    
+    public static String Menu.toJsonArray(Collection<Menu> collection, String[] fields) {
+        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
     }
     
     public static Collection<Menu> Menu.fromJsonArrayToMenus(String json) {

@@ -36,25 +36,13 @@ privileged aspect MaterialDocItemController_Roo_Controller_Json {
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
     
-    @RequestMapping(method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocItemController.updateFromJson(@RequestBody String json) {
+    @RequestMapping(value = "/{lineId}", method = RequestMethod.PUT, headers = "Accept=application/json")
+    public ResponseEntity<String> MaterialDocItemController.updateFromJson(@RequestBody String json, @PathVariable("lineId") Long lineId) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         MaterialDocItem materialDocItem = MaterialDocItem.fromJsonToMaterialDocItem(json);
         if (materialDocItem.merge() == null) {
             return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocItemController.updateFromJsonArray(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        for (MaterialDocItem materialDocItem: MaterialDocItem.fromJsonArrayToMaterialDocItems(json)) {
-            if (materialDocItem.merge() == null) {
-                return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-            }
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }

@@ -65,6 +65,12 @@ Ext.define('AM.view.contract.List', {
 							
 							
 						}, {
+							header : '关闭',
+							dataIndex : 'closed',
+							filterable : true,
+							flex : 1
+
+						}, {
 							header : '备注',
 							dataIndex : 'remark',
 							filterable : true,

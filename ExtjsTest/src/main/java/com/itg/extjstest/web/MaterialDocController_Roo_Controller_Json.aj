@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect MaterialDocController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{docNo}", headers = "Accept=application/json")
+    @RequestMapping(value = "/{docNo}", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> MaterialDocController.showJson(@PathVariable("docNo") Long docNo) {
         MaterialDoc materialDoc = MaterialDoc.findMaterialDoc(docNo);
@@ -36,18 +36,6 @@ privileged aspect MaterialDocController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocController.updateFromJsonArray(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        for (MaterialDoc materialDoc: MaterialDoc.fromJsonArrayToMaterialDocs(json)) {
-            if (materialDoc.merge() == null) {
-                return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-            }
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     
     @RequestMapping(value = "/{docNo}", method = RequestMethod.DELETE, headers = "Accept=application/json")

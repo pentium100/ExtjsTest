@@ -68,6 +68,14 @@ privileged aspect Contract_Roo_JavaBean {
         this.remark = remark;
     }
     
+    public boolean Contract.isClosed() {
+        return this.closed;
+    }
+    
+    public void Contract.setClosed(boolean closed) {
+        this.closed = closed;
+    }
+    
     public Date Contract.getSignDate() {
         return this.signDate;
     }

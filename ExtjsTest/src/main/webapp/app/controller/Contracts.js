@@ -120,6 +120,12 @@ Ext.define('AM.controller.Contracts', {
 				var values = form.getValues();
 				values.signDate = Ext.Date.parse(values.signDate, 'Y-m-d');
 				record.set(values);
+				
+				if (values.closed == undefined) {
+					record.set('closed', false);
+				}
+
+				
 				var emp = form.down('combobox[name=employee]');
 				var store = emp.getStore();
 

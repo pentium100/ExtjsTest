@@ -42,6 +42,10 @@ Ext.define('AM.view.contract.report.OpenOrder', {
 											xtype : 'textfield',
 											fieldLabel : '规格',
 											name : 'model'
+										}, {
+											xtype : 'checkbox',
+											fieldLabel : '含已关闭',
+											name : 'closed'
 										}],
 								buttons : [{
 											text : '提交',

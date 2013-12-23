@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect InspectionController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{id}", headers = "Accept=application/json")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
     public ResponseEntity<String> InspectionController.showJson(@PathVariable("id") Long id) {
         Inspection inspection = Inspection.findInspection(id);
@@ -36,18 +36,6 @@ privileged aspect InspectionController_Roo_Controller_Json {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(value = "/jsonArray", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> InspectionController.updateFromJsonArray(@RequestBody String json) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        for (Inspection inspection: Inspection.fromJsonArrayToInspections(json)) {
-            if (inspection.merge() == null) {
-                return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-            }
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
     
 }

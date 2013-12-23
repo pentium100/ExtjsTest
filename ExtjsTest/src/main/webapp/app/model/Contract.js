@@ -27,6 +27,10 @@ Ext.define('AM.model.Contract', {
 						name : 'remark',
 						type : 'string'
 
+					},  {
+						name : 'closed',
+						type : 'boolean'
+
 					}, {
 						name : 'id',
 						type : 'int'

@@ -74,6 +74,9 @@ public class Contract {
 	@Size(max = 500)
 	private String remark;
 
+	@Column
+	private boolean closed;
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(style = "M-")
 	private Date signDate;
