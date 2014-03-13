@@ -26,9 +26,15 @@
 		<security:intercept-url pattern="/css/.*" access="permitAll" />
 		<security:intercept-url pattern="\A/reports/.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_QUERY') or hasRole('ROLE_INSPECTOR')" />
 		<security:intercept-url pattern="\A/userdetails/.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_QUERY') or hasRole('ROLE_INSPECTOR') or hasRole('ROLE_USER')" />		
-		<security:intercept-url pattern="\A/.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_QUERY') or hasRole('ROLE_INSPECTOR') or hasRole('ROLE_USER')"  method="GET"/>
+		<security:intercept-url pattern="\A/.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_QUERY') or hasRole('ROLE_INSPECTOR') or hasRole('ROLE_USER') or hasRole('ROLE_CONTRACT')  or hasRole('ROLE_INCOMING') or hasRole('ROLE_OUTGOING') or hasRole('ROLE_MOVING')"  method="GET"/>
 		<security:intercept-url pattern="\A/inspections.*\Z" access="hasRole('ROLE_INSPECTOR')"/>
 		<security:intercept-url pattern="\A/afloatgoodses.*\Z" access="hasRole('ROLE_INSPECTOR') or hasRole('ROLE_ADMIN')"/>
+		
+		<security:intercept-url pattern="\A/contracts.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_CONTRACT')"/>
+		<security:intercept-url pattern="\A/materialdocs/2.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_OUTGOING')"/>
+		<security:intercept-url pattern="\A/materialdocs/1.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_INCOMING')"/>
+		<security:intercept-url pattern="\A/materialdocs/3.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_MOVING')"/>
+		
 		<security:intercept-url pattern="\A/.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" method="DELETE"/>
 		<security:intercept-url pattern="\A/.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" method="POST"/>
 		<security:intercept-url pattern="\A/.*\Z" access="hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')" method="PUT"/>
