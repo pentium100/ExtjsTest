@@ -210,6 +210,8 @@ public class MaterialDocController {
 				newItem.setMoveType("101");
 				newItem.setDirection((short) 1);
 				newItem.setNetWeight(item.getNetWeight());
+				newItem.setGrossWeight(item.getGrossWeight());
+				newItem.setRemark(item.getRemark());
 				newItem.setWarehouse(materialDoc.getTargetWarehouse());
 				newItem.setStockLocation(materialDoc.getTargetStockLocation());
 				newItem.setMaterialDoc(materialDoc);
@@ -353,6 +355,8 @@ public class MaterialDocController {
 				newItem.setMoveType("101");
 				newItem.setDirection((short) 1);
 				newItem.setNetWeight(item.getNetWeight());
+				newItem.setGrossWeight(item.getGrossWeight());
+				newItem.setRemark(item.getRemark());
 				newItem.setMaterialDoc(materialDoc);
 				newItem.setModel_contract(item.getModel_contract());
 				newItem.setModel_tested(item.getModel_tested());

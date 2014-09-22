@@ -194,6 +194,7 @@ Ext.define('AM.controller.MovingDocs', {
 			itemRecord.set('warehouse', record.data.warehouse);
 			itemRecord.setStockLocation(record.getStockLocation());
 			itemRecord.set('netWeight', record.data.netWeight);
+			itemRecord.set('grossWeight', record.data.grossWeight);
 			itemRecord.set('direction', -1);
 			store.insert(0, itemRecord);
 			itemRecord.join(store);
@@ -359,6 +360,7 @@ Ext.define('AM.controller.MovingDocs', {
 			itemRecord.set('warehouse', record.data.warehouse);
 			itemRecord.setStockLocation(record.getStockLocation());
 			itemRecord.set('netWeight', record.data.netWeight);
+			itemRecord.set('grossWeight', record.data.grossWeight);
 			itemRecord.set('direction', -1);
 		}
 	},
