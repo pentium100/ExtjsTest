@@ -5,7 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/webapp"/>
-        <property name="context-root" value="ExtjsTest"/>
         <property name="java-output-path" value="/ExtjsTest/target/classes"/>
+        <property name="context-root" value="${build.warname}"/>
     </wb-module>
 </project-modules>
