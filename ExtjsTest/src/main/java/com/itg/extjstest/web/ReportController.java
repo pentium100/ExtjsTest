@@ -1418,7 +1418,7 @@ public class ReportController {
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
 		cte.append("       material_doc_item.gross_weight, stock_location.stock_location, ");
 		cte.append("       contract_item.unit_price, item_in_doc.working_no, ");
-		cte.append("       insp.si, insp.fe, insp.al, insp.ca, insp.p, insp.remark ");
+		cte.append("       insp.si, insp.fe, insp.al, insp.ca, insp.p, insp.remark, inspHead.doc_no as inspec_no ");
 		cte.append("	   from material_doc_item ");
 		cte.append("	      left join material_doc on material_doc.doc_no = material_doc_item.material_doc ");
 		cte.append("          left join stock_location on stock_location.id = material_doc_item.stock_location");
@@ -1431,6 +1431,7 @@ public class ReportController {
 		cte.append("          left join contract contract_in on contract_in.id = item_in.contract    ");
 		cte.append("          left join contract_item contract_in_item on contract_in.id = contract_in_item.contract and contract_in_item.model = item_in.model_contract ");
 		cte.append("          left join inspection_item insp on insp.material_doc_item = item_in.line_id_test  and is_last = 1  ");
+		cte.append("          left join inspection inspHead on inspHead.id = insp.inspection  ");
 		if (!whereString.toString().equals("")) {
 			cte.append(" where " + whereString);
 		}

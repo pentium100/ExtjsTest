@@ -276,6 +276,11 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 
 								}, {
 									xtype : 'gridcolumn',
+									dataIndex : 'inspec_no',
+									text : '检验报告编号',
+									field : 'textfield'
+								}, {
+									xtype : 'gridcolumn',
 									dataIndex : 'remark',
 									text : '检验备注',
 									field : 'textfield'

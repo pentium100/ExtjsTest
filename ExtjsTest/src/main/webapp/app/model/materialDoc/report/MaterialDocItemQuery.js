@@ -92,6 +92,10 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 						type : 'float',
 						useNull : true
 					}, {
+						name : 'inspec_no',
+						type : 'string',
+						useNull : true
+					}, {
 						name : 'remark',
 						type : 'string'
 					}, {
