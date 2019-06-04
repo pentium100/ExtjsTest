@@ -125,7 +125,8 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'remark',
-							text : '备注'
+							text : '备注',
+							sortFieldName : 'contract.remark'
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'model',
@@ -151,6 +152,7 @@ Ext.define('AM.view.contract.report.ContractHistory', {
 							xtype : 'gridcolumn',
 							dataIndex : 'item_remark',
 							text : '备注',
+							sortFieldName : 'contract_item.remark',
 							sortable : false
 						}
 
