@@ -196,7 +196,18 @@ Ext
 							filter.value = record.batch_no;
 							tmp.push(Ext.apply({}, filter));
 						}
-
+						if (record.remark != "") {
+							filter.type = "string";
+							filter.field = "material_doc_item.remark";
+							filter.value = record.remark;
+							tmp.push(Ext.apply({}, filter));
+						}
+						if (record.inspection_remark != "") {
+							filter.type = "string";
+							filter.field = "inspection_item.remark";
+							filter.value = record.inspection_remark;
+							tmp.push(Ext.apply({}, filter));
+						}
 						return tmp;
 
 					}

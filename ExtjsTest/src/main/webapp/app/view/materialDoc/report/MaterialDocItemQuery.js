@@ -104,6 +104,14 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									valueField : 'id',
 									triggerAction : 'all'
 
+								},{
+									xtype : 'textfield',
+									fieldLabel : '进出仓备注',
+									name : 'materialItemRemark'
+								},{
+									xtype : 'textfield',
+									fieldLabel : '检验备注',
+									name : 'inspection_remark'
 								}], // 合同类型 合同号 供应商 付款方式 备注 规格 数量 单价 备注
 						buttons : [{
 									text : '提交',

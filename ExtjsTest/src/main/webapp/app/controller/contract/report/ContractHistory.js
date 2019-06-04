@@ -116,7 +116,18 @@ Ext.define('AM.controller.contract.report.ContractHistory', {
 					filter.value = record.model;
 					tmp.push(Ext.apply({}, filter));
 				}
-				
+				if (record.remark != "") {
+					filter.type = "string";
+					filter.field = "contract.remark";
+					filter.value = record.remark;
+					tmp.push(Ext.apply({}, filter));
+				}
+				if (record.item_remark != "") {
+					filter.type = "string";
+					filter.field = "contract_item.remark";
+					filter.value = record.item_remark;
+					tmp.push(Ext.apply({}, filter));
+				}				
 				if (record.employee != undefined && record.employee != '') {
 					filter.type = "string";
 					filter.field = "employee.id";

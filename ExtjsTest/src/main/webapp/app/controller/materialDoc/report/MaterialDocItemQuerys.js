@@ -174,6 +174,19 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 					filter.value = record.batch_no;
 					tmp.push(Ext.apply({}, filter));
 				}
+				
+				if (record.materialItemRemark != "") {
+					filter.type = "string";
+					filter.field = "material_doc_item.remark";
+					filter.value = record.materialItemRemark;
+					tmp.push(Ext.apply({}, filter));
+				}
+				if (record.inspection_remark != "") {
+					filter.type = "string";
+					filter.field = "insp.remark";
+					filter.value = record.inspection_remark;
+					tmp.push(Ext.apply({}, filter));
+				}
 
 				return tmp;
 
