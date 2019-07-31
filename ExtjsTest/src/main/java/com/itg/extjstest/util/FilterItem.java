@@ -17,7 +17,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-import com.itg.extjstest.domain.AfloatGoodsItem;
 
 public class FilterItem {
 
@@ -65,12 +64,13 @@ public class FilterItem {
 			return "is";
 		}
 
-		if (getType().equals("string")) {
+		if (getType().equals("string") && comparison==null || comparison.equals("")) {
 			return "like";
 		}
+		
 
-		if (getType().equals("string")) {
-			return "like";
+		if (getType().equals("string") && comparison!=null && comparison.equals("not")) {
+			return "not like";
 		}
 
 		if (comparison.equals("gt") || comparison.equals("greaterThan")) {

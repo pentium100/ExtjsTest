@@ -230,6 +230,10 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 													xtype : 'textfield',
 													fieldLabel : '检验备注',
 													name : 'inspection_remark'
+												},{
+													xtype : 'checkbox',
+													fieldLabel : '包含怒江自产',
+													name : 'include_nujiang'
 												} ], // 合同类型 合同号 供应商 付款方式 备注 规格
 										// 数量 单价 备注
 										buttons : [{

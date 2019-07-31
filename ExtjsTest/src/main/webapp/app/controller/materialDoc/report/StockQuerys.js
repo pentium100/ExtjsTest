@@ -208,6 +208,13 @@ Ext
 							filter.value = record.inspection_remark;
 							tmp.push(Ext.apply({}, filter));
 						}
+						if (!record.include_nujiang) {
+							filter.type = "string";
+							filter.comparison = 'not' 
+							filter.field = "supplier";
+							filter.value = "%怒江自产%";
+							tmp.push(Ext.apply({}, filter));
+						}
 						return tmp;
 
 					}
