@@ -73,6 +73,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				var tmp = [];
 				if (record.contract_no != "") {
 					filter.type = "string";
+					filter.comparison = '';
 					filter.field = "contract.contract_no";
 					filter.value = record.contract_no;
 					tmp.push(Ext.apply({}, filter));
@@ -80,7 +81,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.doc_type_txt != undefined
 						&& record.doc_type_txt != "") {
 					filter.type = "string";
-				
+					filter.comparison = '';
 					filter.field = "doc_type_txt";
 					filter.value = record.doc_type_txt;
 					tmp.push(Ext.apply({}, filter));
@@ -90,6 +91,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 					filter.type = "int";
 					filter.field = "contract.employee";
 					filter.comparison = 'eq';
+					
 					filter.value = record.employee;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -97,6 +99,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.supplier != "") {
 					filter.type = "string";
 					filter.field = "contract.supplier";
+					filter.comparison = '';
 					filter.value = record.supplier;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -105,6 +108,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.cause != "") {
 					filter.type = "string";
 					filter.field = "material_doc.cause";
+					filter.comparison = '';
 					filter.value = record.cause;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -112,6 +116,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.working_no != "") {
 					filter.type = "string";
 					filter.field = "material_doc.working_no";
+					filter.comparison = '';
 					filter.value = record.working_no;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -119,6 +124,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.model_contract != "") {
 					filter.type = "string";
 					filter.field = "material_doc_item.model_contract";
+					filter.comparison = '';
 					filter.value = record.model_contract;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -126,6 +132,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.inv_no != "") {
 					filter.type = "string";
 					filter.field = "material_doc.inv_no";
+					filter.comparison = '';
 					filter.value = record.inv_no;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -149,13 +156,14 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.stock_location != "") {
 					filter.type = "string";
 					filter.field = "stock_location.stock_location";
+					filter.comparison = '';
 					filter.value = record.stock_location;
 					tmp.push(Ext.apply({}, filter));
 				}
 
 				if (record.delivery_note != "") {
 					filter.type = "string";
-
+					filter.comparison = '';
 					filter.field = "material_doc.delivery_note";
 
 					filter.value = record.delivery_note;
@@ -164,6 +172,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.plate_num != "") {
 					filter.type = "string";
 					filter.field = "item_in_doc.plate_num";
+					filter.comparison = '';
 					filter.value = record.plate_num;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -171,6 +180,7 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.batch_no != "") {
 					filter.type = "string";
 					filter.field = "item_in_doc.batch_no";
+					filter.comparison = '';
 					filter.value = record.batch_no;
 					tmp.push(Ext.apply({}, filter));
 				}
@@ -178,12 +188,14 @@ Ext.define('AM.controller.materialDoc.report.MaterialDocItemQuerys', {
 				if (record.materialItemRemark != "") {
 					filter.type = "string";
 					filter.field = "material_doc_item.remark";
+					filter.comparison = '';
 					filter.value = record.materialItemRemark;
 					tmp.push(Ext.apply({}, filter));
 				}
 				if (record.inspection_remark != "") {
 					filter.type = "string";
 					filter.field = "insp.remark";
+					filter.comparison = '';
 					filter.value = record.inspection_remark;
 					tmp.push(Ext.apply({}, filter));
 				}
