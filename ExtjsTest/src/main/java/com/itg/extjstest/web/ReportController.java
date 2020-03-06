@@ -722,7 +722,8 @@ public class ReportController {
 		cte.append("      left join inspection on inspection.id = inspection_item.inspection, ");
 
 		cte.append(" ( ");
-		cte.append("  select line_id_in, stock_location.stock_location, SUM(net_weight*direction) as net_weight, SUM(material_doc_item.gross_weight*direction) as gross_weight ");
+		cte.append("  select line_id_in, stock_location.stock_location, SUM(net_weight*direction) as net_weight, SUM(material_doc_item.gross_weight*direction) as gross_weight, ");
+		cte.append("  SUM(lots*direction) as lots ");
 		cte.append("     from material_doc_item  ");
 		cte.append("     inner join material_doc_items on material_doc_items.items = material_doc_item.line_id ");
 		cte.append("     inner join stock_location on stock_location.id = material_doc_item.stock_location ");
@@ -1416,6 +1417,7 @@ public class ReportController {
 		cte.append("       material_doc.doc_date, item_in_doc.plate_num, item_in_doc.doc_date as doc_date_in, ");
 		cte.append("       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 		cte.append("       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
+		cte.append("       material_doc_item.lots*material_doc_item.direction as lots, ");
 		cte.append("       material_doc_item.gross_weight, stock_location.stock_location, ");
 		cte.append("       contract_item.unit_price, item_in_doc.working_no, ");
 		cte.append("       insp.si, insp.fe, insp.al, insp.ca, insp.p, insp.remark, inspHead.doc_no as inspec_no ");
@@ -1456,6 +1458,7 @@ public class ReportController {
 			cte.append("    	       material_doc.doc_date, item_in_doc.plate_num, item_in_doc.doc_date as doc_date_in, ");
 			cte.append("    	       item_in_doc.batch_no, material_doc_item.model_contract, material_doc_item.model_tested, ");
 			cte.append("    	       material_doc_item.net_weight*material_doc_item.direction as net_weight, ");
+			cte.append("    	       material_doc_item.lots*material_doc_item.direction as lots, ");
 			cte.append("    	       material_doc_item.gross_weight, stock_location.stock_location, ");
 			cte.append("    	       contract_item.unit_price, item_in_doc.working_no,  ");
 			cte.append("               insp.si, insp.fe, insp.al, insp.ca, insp.p, insp.remark, inspHead.doc_no as inspec_no ");
@@ -1560,6 +1563,13 @@ public class ReportController {
 			header = new ReportHeader();
 			header.setHeader("净重");
 			header.setField("net_weight");
+			header.setFormat("#,##0.000");
+			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
+			headers.add(header);
+
+			header = new ReportHeader();
+			header.setHeader("件数");
+			header.setField("lots");
 			header.setFormat("#,##0.000");
 			header.setAlign(org.apache.poi.hssf.usermodel.HSSFCellStyle.ALIGN_RIGHT);
 			headers.add(header);

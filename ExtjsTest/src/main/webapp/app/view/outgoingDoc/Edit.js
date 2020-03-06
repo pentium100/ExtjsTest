@@ -160,6 +160,27 @@ Ext.define('AM.view.outgoingDoc.Edit', {
 
 						}, {
 							xtype : 'numbercolumn',
+							dataIndex : 'lots',
+							width : 80,
+							text : '件数',
+							summaryType : 'sum',
+							field : {
+								xtype : 'numberfield',
+								decimalPrecision : 3,
+								listeners : {
+									'blur' : function(comp) {
+
+										var grid = comp.up('grid');
+										var view = grid.getView();
+										view.refresh();
+
+									}
+
+								}
+							},
+							format : '0,000.000'
+						}, {
+							xtype : 'numbercolumn',
 							dataIndex : 'netWeight',
 							width : 80,
 							text : '净重',

@@ -47,6 +47,11 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							align : 'right'
 						}, {
 							xtype : 'gridcolumn',
+							dataIndex : 'lots',
+							text : '件数',
+							align : 'right'
+						}, {
+							xtype : 'gridcolumn',
 							dataIndex : 'gross_weight',
 							text : '毛重',
 							align : 'right'

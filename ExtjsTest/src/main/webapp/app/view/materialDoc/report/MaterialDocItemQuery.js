@@ -168,6 +168,12 @@ Ext.define('AM.view.materialDoc.report.MaterialDocItemQuery', {
 									format : '0.00'
 								}, {
 									xtype : 'gridcolumn',
+									dataIndex : 'lots',
+									text : '件数',
+									align : 'right',
+									format : '0.00'
+								}, {
+									xtype : 'gridcolumn',
 									dataIndex : 'gross_weight',
 									text : '毛重',
 									align : 'right',

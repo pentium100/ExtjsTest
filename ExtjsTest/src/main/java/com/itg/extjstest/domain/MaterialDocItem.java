@@ -58,6 +58,8 @@ public class MaterialDocItem {
 
 	private Double grossWeight;
 
+	private Double lots;
+
 	private Double netWeight;
 
 	@Transient
@@ -116,10 +118,18 @@ public class MaterialDocItem {
 		Expression<Double> directionWeight = (Expression<Double>) cb.prod(
 				weight, direction);
 		Expression<Double> sumOfDirectionWeight = cb.sum(directionWeight);
+
+		Expression<Double> lots = fromMaterialDocItem.get("lots");
+
+		Expression<Double> directionLots = (Expression<Double>) cb.prod(
+				lots, direction);
+		Expression<Double> sumOfDirectionLots = cb.sum(directionLots);
+
 		c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId")
 				.alias("lineId_in"), fromMaterialDocItem.get("stockLocation")
 				.get("id").alias("stockLocation"),
-				sumOfDirectionWeight.alias("stockWeight")));
+				sumOfDirectionWeight.alias("stockWeight"),
+				sumOfDirectionLots.alias("stockLots")));
 		c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"),
 				fromMaterialDocItem.get("stockLocation"));
 		c.having(cb.gt(sumOfDirectionWeight, 0));
@@ -171,14 +181,20 @@ public class MaterialDocItem {
 		Root<MaterialDocItem> fromMaterialDocItem = c
 				.from(MaterialDocItem.class);
 		Expression<Double> weight = fromMaterialDocItem.get("netWeight");
+		Expression<Double> lots = fromMaterialDocItem.get("lots");
 		Expression<Double> direction = fromMaterialDocItem.get("direction");
 		Expression<Double> directionWeight = (Expression<Double>) cb.prod(
 				weight, direction);
+		Expression<Double> directionLots = (Expression<Double>) cb.prod(
+				lots, direction);
 		Expression<Double> sumOfDirectionWeight = cb.sum(directionWeight);
+		Expression<Double> sumOfDirectionLots = cb.sum(directionLots);
 		c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId")
 				.alias("lineId_in"), fromMaterialDocItem.get("stockLocation")
 				.get("id").alias("stockLocation"),
-				sumOfDirectionWeight.alias("stockWeight")));
+				sumOfDirectionWeight.alias("stockWeight"),
+				sumOfDirectionLots.alias("stockLots")
+				));
 		c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"),
 				fromMaterialDocItem.get("stockLocation"));
 		c.having(cb.gt(sumOfDirectionWeight, 0));

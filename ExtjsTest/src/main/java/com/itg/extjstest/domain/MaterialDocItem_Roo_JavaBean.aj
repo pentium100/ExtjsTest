@@ -58,7 +58,15 @@ privileged aspect MaterialDocItem_Roo_JavaBean {
     public void MaterialDocItem.setNetWeight(Double netWeight) {
         this.netWeight = netWeight;
     }
-    
+
+    public Double MaterialDocItem.getLots() {
+        return this.lots;
+    }
+
+    public void MaterialDocItem.setLots(Double lots) {
+        this.lots = lots;
+    }
+
     public String MaterialDocItem.getWarehouse() {
         return this.warehouse;
     }

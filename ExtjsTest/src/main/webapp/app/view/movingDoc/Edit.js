@@ -139,6 +139,16 @@ Ext.define('AM.view.movingDoc.Edit', {
 									dataIndex : 'model_tested',
 									text : '规格(检验后)'
 
+								},{
+									xtype : 'numbercolumn',
+									dataIndex : 'lots',
+									text : '件数',
+									field : {
+										xtype : 'numberfield',
+										decimalPrecision : 3
+									},
+									summaryType : 'sum',
+									format : '0,000.000'
 								}, {
 									xtype : 'numbercolumn',
 									dataIndex : 'grossWeight',

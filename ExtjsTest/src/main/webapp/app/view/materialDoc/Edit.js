@@ -100,6 +100,15 @@ Ext.define('AM.view.materialDoc.Edit', {
 							field : 'textfield'
 						}, {
 							xtype : 'numbercolumn',
+							dataIndex : 'lots',
+							text : '件数',
+							field : {
+								xtype : 'numberfield',
+								decimalPrecision : 3
+							},
+							format : '0,000.000'
+						}, {
+							xtype : 'numbercolumn',
 							dataIndex : 'grossWeight',
 							text : '毛重',
 							field : {

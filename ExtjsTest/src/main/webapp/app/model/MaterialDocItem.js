@@ -35,6 +35,10 @@ Ext.define('AM.model.MaterialDocItem', {
 		type : 'float',
 		useNull : true
 	}, {
+		name : 'lots',
+		type : 'float',
+		useNull : true
+	}, {
 		name : 'warehouse',
 		type : 'string'
 	}, {
