@@ -122,9 +122,9 @@ Ext.define('AM.view.materialDoc.Edit', {
 							text : '净重',
 							field : {
 								xtype : 'numberfield',
-								decimalPrecision : 3
+								decimalPrecision : ${WeightDecimals}
 							},
-							format : '0,000.000'
+							format : '${WeightDecimalsFormat}'
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'moveType',

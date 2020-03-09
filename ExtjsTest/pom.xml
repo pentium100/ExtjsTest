@@ -121,6 +121,8 @@
 				<cargo.tomcat.manager.url>http://172.16.10.54:8080/manager/text</cargo.tomcat.manager.url>
 
 				<extjs>ext-all.js</extjs>
+				<WeightDecimals>3</WeightDecimals>
+				<WeightDecimalsFormat>0,000.000</WeightDecimalsFormat>
 				<build.warname>extjsTest</build.warname>
 				<context>ExtjsTest</context>
 
@@ -167,6 +169,8 @@
 				<cargo.remote.username>admin</cargo.remote.username>
 				<cargo.remote.password>maven0512</cargo.remote.password>
 				<cargo.tomcat.manager.url>http://172.16.10.54:8080/manager/text</cargo.tomcat.manager.url>
+				<WeightDecimals>5</WeightDecimals>
+				<WeightDecimalsFormat>0,000.00000</WeightDecimalsFormat>
 
 				<extjs>ext-all.js</extjs>
 				<build.warname>wkb2</build.warname>
@@ -602,6 +606,17 @@
 
 				<configuration>
 					<warName>${build.warname}</warName>
+					<webResources>
+						<resource>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>src/main/webapp</directory>
+							<!-- the default value is ** -->
+							<includes>
+								<include>app/**/*</include>
+							</includes>
+							<filtering>true</filtering>
+						</resource>
+					</webResources>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -789,13 +804,7 @@
 				<filtering>true</filtering>
 			</resource>
 
-			<resource>
-				<directory>src/main/webapp</directory>
-				<filtering>true</filtering>
-				<includes>
-					<include>home.jsp</include>
-				</includes>
-			</resource>
+
 		</resources>
 
 	</build>
