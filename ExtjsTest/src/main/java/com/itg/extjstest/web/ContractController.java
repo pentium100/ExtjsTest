@@ -1,5 +1,6 @@
 package com.itg.extjstest.web;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,7 +86,7 @@ public class ContractController {
 		// TODO Auto-generated method stub
 
 		StringBuffer query = new StringBuffer();
-		query.append("select sum(case when md.cause = '退货' then -1*net_weight else net_weight end ) as used from material_doc_item mi, material_doc md ");
+		query.append("select sum(case when md.cause = '退货' then -1.00*net_weight else net_weight end ) as used from material_doc_item mi, material_doc md ");
 		query.append("       where mi.material_doc = md.doc_no ");
 		query.append("          and (md.doc_type = 1 or md.doc_type = 2) ");
 		query.append("          and (md.cause ='采购' or md.cause = '销售' or md.cause = '退货') ");
@@ -100,7 +101,13 @@ public class ContractController {
 				param.put("model", item.getModel());
 				List<Map<String, Object>> result = jdbcTemplate.queryForList(
 						query.toString(), param);
-				item.setUsedQuantity((Double) result.get(0).get("used"));
+				BigDecimal used = (BigDecimal) result.get(0).get("used");
+				if(used!=null){
+					item.setUsedQuantity(used.doubleValue());
+				}else{
+					item.setUsedQuantity(0.0d);
+				}
+				
 
 			}
 

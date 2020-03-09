@@ -707,7 +707,7 @@ public class ReportController {
 				+ sortString.toString() + " )) as rowNum, ");
 
 		cte.append("     material_doc.batch_no, material_doc.delivery_note, material_doc.doc_date, material_doc.plate_num, material_doc.working_no, ");
-		cte.append("     stock.stock_location, stock.net_weight,  material_doc_item.gross_weight, ");
+		cte.append("     stock.stock_location, stock.net_weight, stock.lots, material_doc_item.gross_weight, ");
 		cte.append("     material_doc_item.model_contract, material_doc_item.model_tested,  material_doc_item.remark, ");
 		cte.append("     contract_item.unit_price, contract.contract_no,contract.supplier, ");
 		cte.append("     convert(varchar(40),stock.line_id_in)+'--'+stock.stock_location as report_key, ");

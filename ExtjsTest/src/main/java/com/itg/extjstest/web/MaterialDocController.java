@@ -1,5 +1,6 @@
 package com.itg.extjstest.web;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -454,8 +455,9 @@ public class MaterialDocController {
 			param.put("model", i.getModel_contract());
 			Map<String, Object> result2 = jdbcTemplate.queryForList(
 					query.toString(), param).get(0);
-			if ((i.getNetWeight() + (Double) result2.get("used_net_weight")) > (Double) (result2
-					.get("signed_net_weight"))) {
+			Double netWeight = (i.getNetWeight().doubleValue() + ((BigDecimal) result2.get("used_net_weight")).doubleValue());
+			Double signedWeight = (Double) result2.get("signed_net_weight");
+			if ( netWeight > signedWeight) {
 				return "进出仓数量大于合同签约数量!";
 			}
 
