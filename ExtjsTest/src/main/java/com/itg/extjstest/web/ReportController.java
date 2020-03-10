@@ -890,7 +890,7 @@ public class ReportController {
 			List<Map<String, Object>> summary = jdbcTemplate
 					.queryForList(
 							cte.toString()
-									+ "select count(*) as reccount, sum(net_weight) as net_weight from StockQuery",
+									+ "select count(*) as reccount, sum(lots) as lots, sum(net_weight) as net_weight from StockQuery",
 							param);
 
 			map2.put("total", summary.get(0).get("reccount"));

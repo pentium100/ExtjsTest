@@ -49,7 +49,9 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							xtype : 'gridcolumn',
 							dataIndex : 'lots',
 							text : '件数',
-							align : 'right'
+							align : 'right',
+							summaryRenderer : Ext.util.Format
+								.numberRenderer('${WeightDecimalsFormat}')
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'gross_weight',
@@ -61,7 +63,7 @@ Ext.define('AM.view.materialDoc.report.StockQuery', {
 							text : '净重',
 							align : 'right',
 							summaryRenderer : Ext.util.Format
-									.numberRenderer('0,000.000')
+									.numberRenderer('${WeightDecimalsFormat}')
 						}, {
 							xtype : 'gridcolumn',
 							dataIndex : 'delivery_note',
