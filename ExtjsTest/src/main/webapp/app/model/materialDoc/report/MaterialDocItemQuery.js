@@ -48,6 +48,9 @@ Ext.define('AM.model.materialDoc.report.MaterialDocItemQuery', {
 						name : 'model_tested',
 						type : 'string'
 					}, {
+						name : 'lots',
+						type : 'float'
+					}, {
 						name : 'net_weight',
 						type : 'float'
 					}, {
