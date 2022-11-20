@@ -7,60 +7,6 @@ import com.itg.extjstest.domain.Menu;
 
 privileged aspect Menu_Roo_JavaBean {
     
-    public String Menu.getText() {
-        return this.text;
-    }
-    
-    public void Menu.setText(String text) {
-        this.text = text;
-    }
-    
-    public Boolean Menu.getLeaf() {
-        return this.leaf;
-    }
-    
-    public void Menu.setLeaf(Boolean leaf) {
-        this.leaf = leaf;
-    }
-    
-    public String Menu.getController() {
-        return this.controller;
-    }
-    
-    public void Menu.setController(String controller) {
-        this.controller = controller;
-    }
-    
-    public Menu Menu.getParent() {
-        return this.parent;
-    }
-    
-    public void Menu.setParent(Menu parent) {
-        this.parent = parent;
-    }
-    
-    public String Menu.getIconCls() {
-        return this.iconCls;
-    }
-    
-    public void Menu.setIconCls(String iconCls) {
-        this.iconCls = iconCls;
-    }
-    
-    public String Menu.getViews() {
-        return this.views;
-    }
-    
-    public void Menu.setViews(String views) {
-        this.views = views;
-    }
-    
-    public String Menu.getControllerParam() {
-        return this.controllerParam;
-    }
-    
-    public void Menu.setControllerParam(String controllerParam) {
-        this.controllerParam = controllerParam;
-    }
+
     
 }

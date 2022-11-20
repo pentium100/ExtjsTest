@@ -9,27 +9,5 @@ import javax.persistence.TypedQuery;
 
 privileged aspect SecurityRole_Roo_Finder {
     
-    public static TypedQuery<SecurityRole> SecurityRole.findSecurityRolesByRoleNameEquals(String roleName) {
-        if (roleName == null || roleName.length() == 0) throw new IllegalArgumentException("The roleName argument is required");
-        EntityManager em = SecurityRole.entityManager();
-        TypedQuery<SecurityRole> q = em.createQuery("SELECT o FROM SecurityRole AS o WHERE o.roleName = :roleName", SecurityRole.class);
-        q.setParameter("roleName", roleName);
-        return q;
-    }
-    
-    public static TypedQuery<SecurityRole> SecurityRole.findSecurityRolesByRoleNameLike(String roleName) {
-        if (roleName == null || roleName.length() == 0) throw new IllegalArgumentException("The roleName argument is required");
-        roleName = roleName.replace('*', '%');
-        if (roleName.charAt(0) != '%') {
-            roleName = "%" + roleName;
-        }
-        if (roleName.charAt(roleName.length() - 1) != '%') {
-            roleName = roleName + "%";
-        }
-        EntityManager em = SecurityRole.entityManager();
-        TypedQuery<SecurityRole> q = em.createQuery("SELECT o FROM SecurityRole AS o WHERE LOWER(o.roleName) LIKE LOWER(:roleName)", SecurityRole.class);
-        q.setParameter("roleName", roleName);
-        return q;
-    }
-    
+
 }

@@ -11,29 +11,5 @@ import java.util.Collection;
 import java.util.List;
 
 privileged aspect ContractItem_Roo_Json {
-    
-    public String ContractItem.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
-    
-    public String ContractItem.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
-    }
-    
-    public static ContractItem ContractItem.fromJsonToContractItem(String json) {
-        return new JSONDeserializer<ContractItem>().use(null, ContractItem.class).deserialize(json);
-    }
-    
-    public static String ContractItem.toJsonArray(Collection<ContractItem> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
-    
-    public static String ContractItem.toJsonArray(Collection<ContractItem> collection, String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
-    }
-    
-    public static Collection<ContractItem> ContractItem.fromJsonArrayToContractItems(String json) {
-        return new JSONDeserializer<List<ContractItem>>().use(null, ArrayList.class).use("values", ContractItem.class).deserialize(json);
-    }
-    
+
 }

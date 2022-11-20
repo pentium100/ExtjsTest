@@ -6,13 +6,5 @@ package com.itg.extjstest.domain;
 import com.itg.extjstest.domain.StockLocation;
 
 privileged aspect StockLocation_Roo_JavaBean {
-    
-    public String StockLocation.getStockLocation() {
-        return this.stockLocation;
-    }
-    
-    public void StockLocation.setStockLocation(String stockLocation) {
-        this.stockLocation = stockLocation;
-    }
-    
+
 }

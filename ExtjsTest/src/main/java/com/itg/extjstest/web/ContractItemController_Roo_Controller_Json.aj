@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect ContractItemController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
     @ResponseBody
-    public ResponseEntity<String> ContractItemController.showJson(@PathVariable("id") Long id) {
+    public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
         ContractItem contractItem = ContractItem.findContractItem(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
@@ -28,27 +28,27 @@ privileged aspect ContractItemController_Roo_Controller_Json {
         }
         return new ResponseEntity<String>(contractItem.toJson(), headers, HttpStatus.OK);
     }
-    
+
     @RequestMapping(headers = "Accept=application/json")
     @ResponseBody
-    public ResponseEntity<String> ContractItemController.listJson() {
+    public ResponseEntity<String> listJson() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json; charset=utf-8");
         List<ContractItem> result = ContractItem.findAllContractItems();
         return new ResponseEntity<String>(ContractItem.toJsonArray(result), headers, HttpStatus.OK);
     }
-    
+
     @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractItemController.createFromJson(@RequestBody String json) {
+    public ResponseEntity<String> createFromJson(@RequestBody String json) {
         ContractItem contractItem = ContractItem.fromJsonToContractItem(json);
         contractItem.persist();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
-    
+
     @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractItemController.createFromJsonArray(@RequestBody String json) {
+    public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
         for (ContractItem contractItem: ContractItem.fromJsonArrayToContractItems(json)) {
             contractItem.persist();
         }
@@ -56,9 +56,9 @@ privileged aspect ContractItemController_Roo_Controller_Json {
         headers.add("Content-Type", "application/json");
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
     }
-    
+
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractItemController.updateFromJson(@RequestBody String json, @PathVariable("id") Long id) {
+    public ResponseEntity<String> updateFromJson(@RequestBody String json, @PathVariable("id") Long id) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         ContractItem contractItem = ContractItem.fromJsonToContractItem(json);
@@ -67,9 +67,9 @@ privileged aspect ContractItemController_Roo_Controller_Json {
         }
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
-    
+
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractItemController.deleteFromJson(@PathVariable("id") Long id) {
+    public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
         ContractItem contractItem = ContractItem.findContractItem(id);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
@@ -79,5 +79,5 @@ privileged aspect ContractItemController_Roo_Controller_Json {
         contractItem.remove();
         return new ResponseEntity<String>(headers, HttpStatus.OK);
     }
-    
+
 }

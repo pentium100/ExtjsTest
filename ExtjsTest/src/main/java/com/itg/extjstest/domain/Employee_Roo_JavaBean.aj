@@ -7,12 +7,5 @@ import com.itg.extjstest.domain.Employee;
 
 privileged aspect Employee_Roo_JavaBean {
     
-    public String Employee.getName() {
-        return this.name;
-    }
-    
-    public void Employee.setName(String name) {
-        this.name = name;
-    }
-    
+
 }

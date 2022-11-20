@@ -9,52 +9,5 @@ import java.util.Set;
 
 privileged aspect UserDetail_Roo_JavaBean {
     
-    public String UserDetail.getUserName() {
-        return this.userName;
-    }
-    
-    public void UserDetail.setUserName(String userName) {
-        this.userName = userName;
-    }
-    
-    public String UserDetail.getPassword() {
-        return this.password;
-    }
-    
-    public void UserDetail.setPassword(String password) {
-        this.password = password;
-    }
-    
-    public Boolean UserDetail.getEnabled() {
-        return this.enabled;
-    }
-    
-    public void UserDetail.setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-    
-    public Set<SecurityRole> UserDetail.getRoles() {
-        return this.roles;
-    }
-    
-    public void UserDetail.setRoles(Set<SecurityRole> roles) {
-        this.roles = roles;
-    }
-    
-    public Integer UserDetail.getUserLevel() {
-        return this.userLevel;
-    }
-    
-    public void UserDetail.setUserLevel(Integer userLevel) {
-        this.userLevel = userLevel;
-    }
-    
-    public String UserDetail.getFullName() {
-        return this.fullName;
-    }
-    
-    public void UserDetail.setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-    
+
 }

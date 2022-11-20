@@ -16,38 +16,5 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect ContractController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> ContractController.showJson(@PathVariable("id") Long id) {
-        Contract contract = Contract.findContract(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        if (contract == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(contract.toJson(), headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractController.createFromJsonArray(@RequestBody String json) {
-        for (Contract contract: Contract.fromJsonArrayToContracts(json)) {
-            contract.persist();
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> ContractController.deleteFromJson(@PathVariable("id") Long id) {
-        Contract contract = Contract.findContract(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        if (contract == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        contract.remove();
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
-    
+
 }

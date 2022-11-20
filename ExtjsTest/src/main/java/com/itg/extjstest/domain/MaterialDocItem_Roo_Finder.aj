@@ -9,12 +9,6 @@ import javax.persistence.TypedQuery;
 
 privileged aspect MaterialDocItem_Roo_Finder {
     
-    public static TypedQuery<MaterialDocItem> MaterialDocItem.findMaterialDocItemsByLineId_up(MaterialDocItem lineId_up) {
-        if (lineId_up == null) throw new IllegalArgumentException("The lineId_up argument is required");
-        EntityManager em = MaterialDocItem.entityManager();
-        TypedQuery<MaterialDocItem> q = em.createQuery("SELECT o FROM MaterialDocItem AS o WHERE o.lineId_up = :lineId_up", MaterialDocItem.class);
-        q.setParameter("lineId_up", lineId_up);
-        return q;
-    }
+
     
 }

@@ -9,11 +9,14 @@ import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.Inspection;
 import com.itg.extjstest.domain.InspectionItem;
 import com.itg.extjstest.domain.MaterialDocItem;
+import com.itg.extjstest.repository.InspectionRepository;
+import com.itg.extjstest.repository.MaterialDocItemRepository;
 import com.itg.extjstest.util.FilterItem;
 import com.itg.extjstest.util.FilterObjectFactory;
 
 import flexjson.JSONDeserializer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 @RequestMapping("/inspections")
 public class InspectionController {
+
+	@Autowired
+	private InspectionRepository inspectionRepository;
+	@Autowired
+	private MaterialDocItemRepository materialDocItemRepository;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -52,7 +60,7 @@ public class InspectionController {
 					.deserialize(filter);
 
 		}
-		result = Inspection.findInspectionByFilter(filters, start, page, limit);
+		result = inspectionRepository.findInspectionByFilter(filters, start, page, limit);
 		for (Inspection i : result) {
 			for (InspectionItem item : i.getItems()) {
 				item.setContractNo(item.getMaterialDocItem().getMaterialDoc()
@@ -72,7 +80,7 @@ public class InspectionController {
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("total", Inspection.countInspections());
+		map.put("total", inspectionRepository.countInspections());
 		map.put("success", true);
 		String resultJson = Inspection.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
@@ -87,7 +95,7 @@ public class InspectionController {
 		inspection.setContracts("");
 		for (InspectionItem item : inspection.getItems()) {
 			item.setInspection(inspection);
-			MaterialDocItem mdi = MaterialDocItem.findMaterialDocItem(item
+			MaterialDocItem mdi = materialDocItemRepository.findMaterialDocItem(item
 					.getMaterialDocItem().getLineId());
 			String contractNo = mdi.getMaterialDoc().getContract()
 					.getContractNo();
@@ -99,8 +107,8 @@ public class InspectionController {
 				inspection.setContracts(inspection.getContracts() + contractNo);
 			}
 		}
-		inspection = inspection.merge();
-		inspection.updateIsLast();
+		inspection = inspectionRepository.merge(inspection);
+		inspectionRepository.updateIsLast(inspection);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -135,7 +143,7 @@ public class InspectionController {
 		inspection.setContracts("");
 		for (InspectionItem item : inspection.getItems()) {
 			item.setInspection(inspection);
-			MaterialDocItem mdi = MaterialDocItem.findMaterialDocItem(item
+			MaterialDocItem mdi = materialDocItemRepository.findMaterialDocItem(item
 					.getMaterialDocItem().getLineId());
 			String contractNo = mdi.getMaterialDoc().getContract()
 					.getContractNo();
@@ -148,8 +156,8 @@ public class InspectionController {
 			}
 
 		}
-		inspection = inspection.merge();
-		inspection.updateIsLast();
+		inspection = inspectionRepository.merge(inspection);
+		inspectionRepository.updateIsLast(inspection);
 		for (InspectionItem item : inspection.getItems()) {
 			item.setContractNo(item.getMaterialDocItem().getMaterialDoc()
 					.getContract().getContractNo());
@@ -178,16 +186,39 @@ public class InspectionController {
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
 	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
-		Inspection inspection = Inspection.findInspection(id);
+		Inspection inspection = inspectionRepository.findInspection(id);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (inspection == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
-		inspection.remove();
-		inspection.updateIsLast();
+		inspectionRepository.remove(inspection);
+		inspectionRepository.updateIsLast(inspection);
 
 		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
+
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
+		Inspection inspection = inspectionRepository.findInspection(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (inspection == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(inspection.toJson(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (Inspection inspection: Inspection.fromJsonArrayToInspections(json)) {
+			inspectionRepository.persist(inspection);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
 	}
 
 }

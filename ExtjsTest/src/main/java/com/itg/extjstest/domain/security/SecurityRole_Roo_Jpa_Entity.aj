@@ -14,30 +14,6 @@ import javax.persistence.Version;
 privileged aspect SecurityRole_Roo_Jpa_Entity {
     
     declare @type: SecurityRole: @Entity;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long SecurityRole.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer SecurityRole.version;
-    
-    public Long SecurityRole.getId() {
-        return this.id;
-    }
-    
-    public void SecurityRole.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer SecurityRole.getVersion() {
-        return this.version;
-    }
-    
-    public void SecurityRole.setVersion(Integer version) {
-        this.version = version;
-    }
+
     
 }

@@ -14,30 +14,5 @@ import javax.persistence.Version;
 privileged aspect StockLocation_Roo_Jpa_Entity {
     
     declare @type: StockLocation: @Entity;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long StockLocation.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer StockLocation.version;
-    
-    public Long StockLocation.getId() {
-        return this.id;
-    }
-    
-    public void StockLocation.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer StockLocation.getVersion() {
-        return this.version;
-    }
-    
-    public void StockLocation.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
 }

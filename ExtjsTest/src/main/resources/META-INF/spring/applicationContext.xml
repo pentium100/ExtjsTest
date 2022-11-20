@@ -19,7 +19,8 @@
 	-->	
 	
     <mvc:annotation-driven />
-    <context:annotation-config /> 
+    <context:annotation-config />
+    <aop:aspectj-autoproxy />
     
     <mvc:resources mapping="/js/**" location="/js/" />
 	<mvc:resources mapping="/app/**" location="/app/" />
@@ -53,11 +54,43 @@
 		etc support. These annotations allow you to use common Spring and Java Enterprise 
 		Edition annotations in your classes without needing to do any special configuration. 
 		The most commonly used annotation is @Autowired, which instructs Spring to 
-		dependency inject an object into your class. -->
-    <context:component-scan base-package="com.itg.extjstest">
+		dependency inject an object into your class.
+		        <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+		-->
+    <context:component-scan base-package="com.itg.extjstest.repository">
         <context:exclude-filter expression=".*_Roo_.*" type="regex"/>
-        <context:exclude-filter expression="org.springframework.stereotype.Controller" type="annotation"/>
+
     </context:component-scan>
+    <context:component-scan base-package="com.itg.extjstest.util">
+        <context:exclude-filter expression=".*_Roo_.*" type="regex"/>
+
+    </context:component-scan>
+    <context:component-scan base-package="com.itg.extjstest.domain">
+        <context:exclude-filter expression=".*_Roo_.*" type="regex"/>
+
+    </context:component-scan>
+    <context:component-scan base-package="com.itg.extjstest" use-default-filters="false"/>
+
+
+    <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource"
+                  ref="dataSource"/>
+        <property name="packagesToScan"
+                  value="com.itg.extjstest.domain"/>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.hbm2ddl.auto">
+                    create-drop
+                </prop>
+                <prop key="hibernate.dialect">
+                    org.hibernate.dialect.H2Dialect
+                </prop>
+            </props>
+        </property>
+    </bean>
+
+
     <bean class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" id="dataSource">
         <property name="driverClassName" value="${database.driverClassName}"/>
         <property name="url" value="${database.url}"/>
@@ -95,9 +128,16 @@
       		<constructor-arg><ref bean="dataSource"/></constructor-arg> 
     </bean>
 
+    <!--
+
     <tx:annotation-driven mode="aspectj" transaction-manager="transactionManager"/>
-    <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="entityManagerFactory">
-        <property name="persistenceUnitName" value="persistenceUnit"/>
-        <property name="dataSource" ref="dataSource"/>
+    -->
+
+    <bean id="txManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
+
+
+
 </beans>

@@ -14,30 +14,5 @@ import javax.persistence.Version;
 privileged aspect ContractItem_Roo_Jpa_Entity {
     
     declare @type: ContractItem: @Entity;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long ContractItem.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer ContractItem.version;
-    
-    public Long ContractItem.getId() {
-        return this.id;
-    }
-    
-    public void ContractItem.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer ContractItem.getVersion() {
-        return this.version;
-    }
-    
-    public void ContractItem.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
 }

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.Message;
+import com.itg.extjstest.repository.MessageRepository;
 import com.itg.extjstest.util.FilterItem;
 
 import flexjson.JSONDeserializer;
@@ -28,7 +29,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -46,13 +47,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MessageController {
 
 
-	
-	
+	@Autowired
+	private MessageRepository messageRepository;
 	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
 	public ResponseEntity<String> createFromJson(@RequestBody String json) {
 		Message message = Message.fromJsonToMessage(json);
 		message.setLastChangeTime(new Date());
-		message = message.merge();
+		message = messageRepository.merge(message);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		if (message == null) {
@@ -94,7 +95,7 @@ public class MessageController {
 
 		try {
 			message.setLastChangeTime(new Date());
-			message = message.merge();
+			message = messageRepository.merge(message);
 
 			messages.add(message);
 			map.put("success", true);
@@ -151,7 +152,7 @@ public class MessageController {
 		}
 
 		// List<Message> result = Message.findAllMessages();
-		result = Message.findMessagesByFilter(filters, start, page, limit);
+		result = messageRepository.findMessagesByFilter(filters, start, page, limit);
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("total", result.size());
@@ -159,6 +160,42 @@ public class MessageController {
 		String resultJson = Message.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
 
+	}
+
+
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
+		Message message = messageRepository.findMessage(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (message == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(message.toJson(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (Message message: Message.fromJsonArrayToMessages(json)) {
+			messageRepository.persist(message);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
+		Message message = messageRepository.findMessage(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (message == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		messageRepository.remove(message);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
 	}
 
 

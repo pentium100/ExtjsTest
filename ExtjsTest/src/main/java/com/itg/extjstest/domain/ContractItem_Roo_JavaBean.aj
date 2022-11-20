@@ -7,53 +7,5 @@ import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.ContractItem;
 
 privileged aspect ContractItem_Roo_JavaBean {
-    
-    public Contract ContractItem.getContract() {
-        return this.contract;
-    }
-    
-    public void ContractItem.setContract(Contract contract) {
-        this.contract = contract;
-    }
-    
-    public String ContractItem.getModel() {
-        return this.model;
-    }
-    
-    public void ContractItem.setModel(String model) {
-        this.model = model;
-    }
-    
-    public float ContractItem.getQuantity() {
-        return this.quantity;
-    }
-    
-    public void ContractItem.setQuantity(float quantity) {
-        this.quantity = quantity;
-    }
-    
-    public String ContractItem.getRemark() {
-        return this.remark;
-    }
-    
-    public void ContractItem.setRemark(String remark) {
-        this.remark = remark;
-    }
-    
-    public Double ContractItem.getUnitPrice() {
-        return this.unitPrice;
-    }
-    
-    public void ContractItem.setUnitPrice(Double unitPrice) {
-        this.unitPrice = unitPrice;
-    }
-    
-    public Double ContractItem.getUsedQuantity() {
-        return this.usedQuantity;
-    }
-    
-    public void ContractItem.setUsedQuantity(Double usedQuantity) {
-        this.usedQuantity = usedQuantity;
-    }
-    
+
 }

@@ -12,16 +12,5 @@ import java.util.List;
 
 privileged aspect MaterialDoc_Roo_Json {
     
-    public String MaterialDoc.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
-    
-    public String MaterialDoc.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
-    }
-    
-    public static Collection<MaterialDoc> MaterialDoc.fromJsonArrayToMaterialDocs(String json) {
-        return new JSONDeserializer<List<MaterialDoc>>().use(null, ArrayList.class).use("values", MaterialDoc.class).deserialize(json);
-    }
-    
+
 }

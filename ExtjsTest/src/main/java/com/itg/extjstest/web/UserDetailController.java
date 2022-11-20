@@ -14,6 +14,8 @@ import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.security.SecurityRole;
 import com.itg.extjstest.domain.security.UserDetail;
 
+import com.itg.extjstest.repository.UserDetailRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +24,22 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RooWebJson(jsonObject = UserDetail.class)
 @Controller
 @RequestMapping("/userdetails")
 public class UserDetailController {
+
+
+	private final UserDetailRepository userDetailRepository;
+
+
+	@Autowired
+	public UserDetailController( UserDetailRepository userDetailRepository){
+		this.userDetailRepository = userDetailRepository;
+	}
+
 
 	@RequestMapping(value = "/logout", headers = "Accept=text/html")
 	public String listMessageByType(HttpSession session) {
@@ -55,7 +63,7 @@ public class UserDetailController {
 
 		SecurityContext context = SecurityContextHolder.getContext();
 
-		List<UserDetail> result = UserDetail.findAllUserDetails();
+		List<UserDetail> result = userDetailRepository.findAllUserDetails();
 
 		// MessageDigest md = MessageDigest.getInstance("MD5");
 
@@ -83,7 +91,7 @@ public class UserDetailController {
 		// List<UserDetail> userDetails = new ArrayList<UserDetail>();
 		// userDetails.addAll(result);
 		map.put("success", true);
-		map.put("total", UserDetail.countUserDetails());
+		map.put("total", userDetailRepository.countUserDetails());
 		String resultJson = UserDetail.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
 
@@ -112,7 +120,7 @@ public class UserDetailController {
 
 		}
 
-		userDetail.merge();
+		userDetailRepository.merge(userDetail);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
@@ -136,7 +144,7 @@ public class UserDetailController {
 
 		UserDetail userDetail = UserDetail.fromJsonToUserDetail(json);
 
-		UserDetail userDetail2 = UserDetail.findUserDetailsByUserNameEquals(
+		UserDetail userDetail2 = userDetailRepository.findUserDetailsByUserNameEquals(
 				userDetail.getUserName()).getSingleResult();
 
 		if (!request.isUserInRole("ROLE_ADMIN")) {
@@ -177,7 +185,7 @@ public class UserDetailController {
 				role.setVersion(role2.getVersion());
 			}
 		}
-		userDetail = userDetail.merge();
+		userDetail = userDetailRepository.merge(userDetail);
 		if (userDetail == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
@@ -193,5 +201,49 @@ public class UserDetailController {
 
 		// return new ResponseEntity<String>(headers, HttpStatus.OK);
 	}
+
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
+		UserDetail userDetail = userDetailRepository.findUserDetail(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (userDetail == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(userDetail.toJson(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (UserDetail userDetail: UserDetail.fromJsonArrayToUserDetails(json)) {
+			userDetailRepository.persist(userDetail);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
+		UserDetail userDetail = userDetailRepository.findUserDetail(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (userDetail == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		userDetailRepository.remove(userDetail);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(params = "find=ByUserNameEquals", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> jsonFindUserDetailsByUserNameEquals(@RequestParam("userName") String userName) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<String>(UserDetail.toJsonArray(userDetailRepository.findUserDetailsByUserNameEquals(userName).getResultList()), headers, HttpStatus.OK);
+	}
+
 
 }

@@ -8,52 +8,5 @@ import java.util.Date;
 
 privileged aspect OpenOrderMemo_Roo_JavaBean {
     
-    public String OpenOrderMemo.getModel() {
-        return this.model;
-    }
-    
-    public void OpenOrderMemo.setModel(String model) {
-        this.model = model;
-    }
-    
-    public String OpenOrderMemo.getMemo() {
-        return this.memo;
-    }
-    
-    public void OpenOrderMemo.setMemo(String memo) {
-        this.memo = memo;
-    }
-    
-    public Date OpenOrderMemo.getUpdateTime() {
-        return this.updateTime;
-    }
-    
-    public void OpenOrderMemo.setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-    
-    public String OpenOrderMemo.getUpdateUser() {
-        return this.updateUser;
-    }
-    
-    public void OpenOrderMemo.setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
-    
-    public Date OpenOrderMemo.getUpdate_time() {
-        return this.update_time;
-    }
-    
-    public void OpenOrderMemo.setUpdate_time(Date update_time) {
-        this.update_time = update_time;
-    }
-    
-    public String OpenOrderMemo.getUpdate_user() {
-        return this.update_user;
-    }
-    
-    public void OpenOrderMemo.setUpdate_user(String update_user) {
-        this.update_user = update_user;
-    }
-    
+
 }

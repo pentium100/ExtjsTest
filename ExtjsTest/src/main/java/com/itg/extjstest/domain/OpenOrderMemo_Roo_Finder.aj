@@ -9,12 +9,5 @@ import javax.persistence.TypedQuery;
 
 privileged aspect OpenOrderMemo_Roo_Finder {
     
-    public static TypedQuery<OpenOrderMemo> OpenOrderMemo.findOpenOrderMemoesByModelEquals(String model) {
-        if (model == null || model.length() == 0) throw new IllegalArgumentException("The model argument is required");
-        EntityManager em = OpenOrderMemo.entityManager();
-        TypedQuery<OpenOrderMemo> q = em.createQuery("SELECT o FROM OpenOrderMemo AS o WHERE o.model = :model", OpenOrderMemo.class);
-        q.setParameter("model", model);
-        return q;
-    }
-    
+
 }

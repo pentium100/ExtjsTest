@@ -7,26 +7,27 @@ import java.util.List;
 
 import com.itg.extjstest.domain.AfloatGoods;
 import com.itg.extjstest.domain.AfloatGoodsItem;
+import com.itg.extjstest.repository.AfloatGoodsRepository;
 import com.itg.extjstest.util.FilterItem;
 import com.itg.extjstest.util.SortItem;
 
 import flexjson.JSONDeserializer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RooWebJson(jsonObject = AfloatGoods.class)
 @Controller
 @RequestMapping("/afloatgoodses")
 public class AfloatGoodsController {
+
+	@Autowired
+	private AfloatGoodsRepository afloatGoodsRepository;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -54,7 +55,7 @@ public class AfloatGoodsController {
 					.use(null, ArrayList.class).use("values", SortItem.class)
 					.deserialize(sort);
 		}
-		result = AfloatGoods.findAfloatGoodsByFilter(filters, start, page,
+		result = afloatGoodsRepository.findAfloatGoodsByFilter(filters, start, page,
 				limit, sorts);
 
 		HttpHeaders headers = new HttpHeaders();
@@ -62,7 +63,7 @@ public class AfloatGoodsController {
 		// List<AfloatGoods> result = AfloatGoods.findAllAfloatGoodses();
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("total", AfloatGoods.countAfloatGoodses());
+		map.put("total", afloatGoodsRepository.countAfloatGoodses());
 		map.put("success", true);
 		String resultJson = AfloatGoods.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
@@ -79,7 +80,7 @@ public class AfloatGoodsController {
 		for (AfloatGoodsItem item : afloatGoods.getItems()) {
 			item.setAfloatGoods(afloatGoods);
 		}
-		afloatGoods = afloatGoods.merge();
+		afloatGoods = afloatGoodsRepository.merge(afloatGoods);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
@@ -102,7 +103,7 @@ public class AfloatGoodsController {
 		for (AfloatGoodsItem item : afloatGoods.getItems()) {
 			item.setAfloatGoods(afloatGoods);
 		}
-		afloatGoods = afloatGoods.merge();
+		afloatGoods = afloatGoodsRepository.merge(afloatGoods);
 		if (afloatGoods == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
@@ -114,6 +115,41 @@ public class AfloatGoodsController {
 		String resultJson = AfloatGoods.mapToJson(map, afloatGoodses);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
 
+	}
+
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
+		AfloatGoods afloatGoods = afloatGoodsRepository.findAfloatGoods(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (afloatGoods == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(afloatGoods.toJson(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (AfloatGoods afloatGoods: AfloatGoods.fromJsonArrayToAfloatGoodses(json)) {
+			afloatGoodsRepository.persist(afloatGoods);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
+		AfloatGoods afloatGoods = afloatGoodsRepository.findAfloatGoods(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (afloatGoods == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		afloatGoodsRepository.remove(afloatGoods);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
 	}
 
 }

@@ -15,29 +15,6 @@ privileged aspect UserDetail_Roo_Jpa_Entity {
     
     declare @type: UserDetail: @Entity;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long UserDetail.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer UserDetail.version;
-    
-    public Long UserDetail.getId() {
-        return this.id;
-    }
-    
-    public void UserDetail.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer UserDetail.getVersion() {
-        return this.version;
-    }
-    
-    public void UserDetail.setVersion(Integer version) {
-        this.version = version;
-    }
+
     
 }

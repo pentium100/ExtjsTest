@@ -14,30 +14,5 @@ import javax.persistence.Version;
 privileged aspect MaterialDoc_Roo_Jpa_Entity {
     
     declare @type: MaterialDoc: @Entity;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "docNo")
-    private Long MaterialDoc.docNo;
-    
-    @Version
-    @Column(name = "version")
-    private Integer MaterialDoc.version;
-    
-    public Long MaterialDoc.getDocNo() {
-        return this.docNo;
-    }
-    
-    public void MaterialDoc.setDocNo(Long id) {
-        this.docNo = id;
-    }
-    
-    public Integer MaterialDoc.getVersion() {
-        return this.version;
-    }
-    
-    public void MaterialDoc.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
 }

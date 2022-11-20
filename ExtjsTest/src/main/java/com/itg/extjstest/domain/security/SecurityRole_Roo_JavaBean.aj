@@ -7,12 +7,5 @@ import com.itg.extjstest.domain.security.SecurityRole;
 
 privileged aspect SecurityRole_Roo_JavaBean {
     
-    public String SecurityRole.getRoleName() {
-        return this.roleName;
-    }
-    
-    public void SecurityRole.setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
-    
+
 }

@@ -17,54 +17,5 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect MaterialDocItemController_Roo_Controller_Json {
     
-    @RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocItemController.createFromJson(@RequestBody String json) {
-        MaterialDocItem materialDocItem = MaterialDocItem.fromJsonToMaterialDocItem(json);
-        materialDocItem.persist();
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocItemController.createFromJsonArray(@RequestBody String json) {
-        for (MaterialDocItem materialDocItem: MaterialDocItem.fromJsonArrayToMaterialDocItems(json)) {
-            materialDocItem.persist();
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(value = "/{lineId}", method = RequestMethod.PUT, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocItemController.updateFromJson(@RequestBody String json, @PathVariable("lineId") Long lineId) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        MaterialDocItem materialDocItem = MaterialDocItem.fromJsonToMaterialDocItem(json);
-        if (materialDocItem.merge() == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/{lineId}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> MaterialDocItemController.deleteFromJson(@PathVariable("lineId") Long lineId) {
-        MaterialDocItem materialDocItem = MaterialDocItem.findMaterialDocItem(lineId);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        if (materialDocItem == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        materialDocItem.remove();
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(params = "find=ByLineId_up", headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> MaterialDocItemController.jsonFindMaterialDocItemsByLineId_up(@RequestParam("lineId_up") MaterialDocItem lineId_up) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        return new ResponseEntity<String>(MaterialDocItem.toJsonArray(MaterialDocItem.findMaterialDocItemsByLineId_up(lineId_up).getResultList()), headers, HttpStatus.OK);
-    }
-    
+
 }

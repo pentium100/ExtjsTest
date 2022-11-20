@@ -9,12 +9,5 @@ import javax.persistence.TypedQuery;
 
 privileged aspect MaterialDocType_Roo_Finder {
     
-    public static TypedQuery<MaterialDocType> MaterialDocType.findMaterialDocTypesByDocType_txtEquals(String docType_txt) {
-        if (docType_txt == null || docType_txt.length() == 0) throw new IllegalArgumentException("The docType_txt argument is required");
-        EntityManager em = MaterialDocType.entityManager();
-        TypedQuery<MaterialDocType> q = em.createQuery("SELECT o FROM MaterialDocType AS o WHERE o.docType_txt = :docType_txt", MaterialDocType.class);
-        q.setParameter("docType_txt", docType_txt);
-        return q;
-    }
-    
+
 }

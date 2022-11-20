@@ -10,12 +10,5 @@ import javax.persistence.TypedQuery;
 
 privileged aspect InspectionItem_Roo_Finder {
     
-    public static TypedQuery<InspectionItem> InspectionItem.findInspectionItemsByMaterialDocItem(MaterialDocItem materialDocItem) {
-        if (materialDocItem == null) throw new IllegalArgumentException("The materialDocItem argument is required");
-        EntityManager em = InspectionItem.entityManager();
-        TypedQuery<InspectionItem> q = em.createQuery("SELECT o FROM InspectionItem AS o WHERE o.materialDocItem = :materialDocItem", InspectionItem.class);
-        q.setParameter("materialDocItem", materialDocItem);
-        return q;
-    }
-    
+
 }

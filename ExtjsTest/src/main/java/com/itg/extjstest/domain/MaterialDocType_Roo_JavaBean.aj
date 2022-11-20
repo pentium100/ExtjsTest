@@ -7,12 +7,5 @@ import com.itg.extjstest.domain.MaterialDocType;
 
 privileged aspect MaterialDocType_Roo_JavaBean {
     
-    public String MaterialDocType.getDocType_txt() {
-        return this.docType_txt;
-    }
-    
-    public void MaterialDocType.setDocType_txt(String docType_txt) {
-        this.docType_txt = docType_txt;
-    }
-    
+
 }

@@ -5,12 +5,20 @@ import java.lang.reflect.Type;
 import com.itg.extjstest.domain.ContractType;
 import com.itg.extjstest.domain.Employee;
 
+import com.itg.extjstest.repository.EmployeeRepository;
 import flexjson.ObjectBinder;
 import flexjson.ObjectFactory;
 import flexjson.transformer.AbstractTransformer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class EmployeeObjectFactory extends AbstractTransformer implements
 		ObjectFactory {
+
+	@Autowired
+	private EmployeeRepository employeeRepository;
 
 	@Override
 	public Object instantiate(ObjectBinder context, Object value,
@@ -18,7 +26,7 @@ public class EmployeeObjectFactory extends AbstractTransformer implements
 		// TODO Auto-generated method stub
 		if (value instanceof Integer) {
 			Integer tmp = (Integer) value;
-			Employee emp = Employee.findEmployee(tmp.longValue());
+			Employee emp = employeeRepository.findEmployee(tmp.longValue());
 
 			return emp;
 		}

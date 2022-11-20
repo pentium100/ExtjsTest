@@ -17,46 +17,5 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect UserDetailController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> UserDetailController.showJson(@PathVariable("id") Long id) {
-        UserDetail userDetail = UserDetail.findUserDetail(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        if (userDetail == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(userDetail.toJson(), headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> UserDetailController.createFromJsonArray(@RequestBody String json) {
-        for (UserDetail userDetail: UserDetail.fromJsonArrayToUserDetails(json)) {
-            userDetail.persist();
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> UserDetailController.deleteFromJson(@PathVariable("id") Long id) {
-        UserDetail userDetail = UserDetail.findUserDetail(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        if (userDetail == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        userDetail.remove();
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(params = "find=ByUserNameEquals", headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> UserDetailController.jsonFindUserDetailsByUserNameEquals(@RequestParam("userName") String userName) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        return new ResponseEntity<String>(UserDetail.toJsonArray(UserDetail.findUserDetailsByUserNameEquals(userName).getResultList()), headers, HttpStatus.OK);
-    }
-    
+
 }

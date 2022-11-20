@@ -10,68 +10,6 @@ import javax.persistence.PersistenceContext;
 import org.springframework.transaction.annotation.Transactional;
 
 privileged aspect MaterialDocType_Roo_Jpa_ActiveRecord {
-    
-    @PersistenceContext
-    transient EntityManager MaterialDocType.entityManager;
-    
-    public static final EntityManager MaterialDocType.entityManager() {
-        EntityManager em = new MaterialDocType().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
-    
-    public static long MaterialDocType.countMaterialDocTypes() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM MaterialDocType o", Long.class).getSingleResult();
-    }
-    
-    public static List<MaterialDocType> MaterialDocType.findAllMaterialDocTypes() {
-        return entityManager().createQuery("SELECT o FROM MaterialDocType o", MaterialDocType.class).getResultList();
-    }
-    
-    public static MaterialDocType MaterialDocType.findMaterialDocType(Long id) {
-        if (id == null) return null;
-        return entityManager().find(MaterialDocType.class, id);
-    }
-    
-    public static List<MaterialDocType> MaterialDocType.findMaterialDocTypeEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM MaterialDocType o", MaterialDocType.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
-    
-    @Transactional
-    public void MaterialDocType.persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
-    
-    @Transactional
-    public void MaterialDocType.remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            MaterialDocType attached = MaterialDocType.findMaterialDocType(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
-    
-    @Transactional
-    public void MaterialDocType.flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
-    
-    @Transactional
-    public void MaterialDocType.clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
-    
-    @Transactional
-    public MaterialDocType MaterialDocType.merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        MaterialDocType merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+
     
 }

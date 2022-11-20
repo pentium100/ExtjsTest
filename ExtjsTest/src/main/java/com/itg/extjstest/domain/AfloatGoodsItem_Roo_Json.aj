@@ -12,28 +12,4 @@ import java.util.List;
 
 privileged aspect AfloatGoodsItem_Roo_Json {
     
-    public String AfloatGoodsItem.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
-    
-    public String AfloatGoodsItem.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
-    }
-    
-    public static AfloatGoodsItem AfloatGoodsItem.fromJsonToAfloatGoodsItem(String json) {
-        return new JSONDeserializer<AfloatGoodsItem>().use(null, AfloatGoodsItem.class).deserialize(json);
-    }
-    
-    public static String AfloatGoodsItem.toJsonArray(Collection<AfloatGoodsItem> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
-    
-    public static String AfloatGoodsItem.toJsonArray(Collection<AfloatGoodsItem> collection, String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
-    }
-    
-    public static Collection<AfloatGoodsItem> AfloatGoodsItem.fromJsonArrayToAfloatGoodsItems(String json) {
-        return new JSONDeserializer<List<AfloatGoodsItem>>().use(null, ArrayList.class).use("values", AfloatGoodsItem.class).deserialize(json);
-    }
-    
 }

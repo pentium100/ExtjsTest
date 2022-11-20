@@ -11,29 +11,6 @@ import java.util.Collection;
 import java.util.List;
 
 privileged aspect MaterialDocType_Roo_Json {
-    
-    public String MaterialDocType.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
-    
-    public String MaterialDocType.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
-    }
-    
-    public static MaterialDocType MaterialDocType.fromJsonToMaterialDocType(String json) {
-        return new JSONDeserializer<MaterialDocType>().use(null, MaterialDocType.class).deserialize(json);
-    }
-    
-    public static String MaterialDocType.toJsonArray(Collection<MaterialDocType> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
-    
-    public static String MaterialDocType.toJsonArray(Collection<MaterialDocType> collection, String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
-    }
-    
-    public static Collection<MaterialDocType> MaterialDocType.fromJsonArrayToMaterialDocTypes(String json) {
-        return new JSONDeserializer<List<MaterialDocType>>().use(null, ArrayList.class).use("values", MaterialDocType.class).deserialize(json);
-    }
+
     
 }

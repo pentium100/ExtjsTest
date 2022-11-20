@@ -11,17 +11,5 @@ import javax.persistence.Id;
 
 privileged aspect AclClass_Roo_Jpa_Entity {
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long AclClass.id;
-    
-    public Long AclClass.getId() {
-        return this.id;
-    }
-    
-    public void AclClass.setId(Long id) {
-        this.id = id;
-    }
-    
+
 }

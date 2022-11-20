@@ -1,5 +1,6 @@
 package com.itg.extjstest.util;
 
+import com.itg.extjstest.repository.UserDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +16,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	@Autowired
 	private Assembler assembler;
 
+	@Autowired
+	private UserDetailRepository userDetailRepository;
+
 	@Override
 	public UserDetails loadUserByUsername(String userName)
 			throws UsernameNotFoundException {
 
-		UserDetail userDetail = UserDetail.findUserDetailsByUserNameEquals(
+		UserDetail userDetail = userDetailRepository.findUserDetailsByUserNameEquals(
 				userName).getSingleResult();
 
 		if (userDetail == null)

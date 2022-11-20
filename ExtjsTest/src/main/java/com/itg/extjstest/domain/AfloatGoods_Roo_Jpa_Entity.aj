@@ -15,29 +15,4 @@ privileged aspect AfloatGoods_Roo_Jpa_Entity {
     
     declare @type: AfloatGoods: @Entity;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long AfloatGoods.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer AfloatGoods.version;
-    
-    public Long AfloatGoods.getId() {
-        return this.id;
-    }
-    
-    public void AfloatGoods.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer AfloatGoods.getVersion() {
-        return this.version;
-    }
-    
-    public void AfloatGoods.setVersion(Integer version) {
-        this.version = version;
-    }
-    
 }

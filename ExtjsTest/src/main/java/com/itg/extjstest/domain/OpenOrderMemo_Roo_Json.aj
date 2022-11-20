@@ -11,29 +11,5 @@ import java.util.Collection;
 import java.util.List;
 
 privileged aspect OpenOrderMemo_Roo_Json {
-    
-    public String OpenOrderMemo.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
-    
-    public String OpenOrderMemo.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
-    }
-    
-    public static OpenOrderMemo OpenOrderMemo.fromJsonToOpenOrderMemo(String json) {
-        return new JSONDeserializer<OpenOrderMemo>().use(null, OpenOrderMemo.class).deserialize(json);
-    }
-    
-    public static String OpenOrderMemo.toJsonArray(Collection<OpenOrderMemo> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
-    
-    public static String OpenOrderMemo.toJsonArray(Collection<OpenOrderMemo> collection, String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
-    }
-    
-    public static Collection<OpenOrderMemo> OpenOrderMemo.fromJsonArrayToOpenOrderMemoes(String json) {
-        return new JSONDeserializer<List<OpenOrderMemo>>().use(null, ArrayList.class).use("values", OpenOrderMemo.class).deserialize(json);
-    }
-    
+
 }

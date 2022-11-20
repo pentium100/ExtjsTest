@@ -11,29 +11,5 @@ import java.util.Collection;
 import java.util.List;
 
 privileged aspect StockLocation_Roo_Json {
-    
-    public String StockLocation.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
-    
-    public String StockLocation.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
-    }
-    
-    public static StockLocation StockLocation.fromJsonToStockLocation(String json) {
-        return new JSONDeserializer<StockLocation>().use(null, StockLocation.class).deserialize(json);
-    }
-    
-    public static String StockLocation.toJsonArray(Collection<StockLocation> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
-    
-    public static String StockLocation.toJsonArray(Collection<StockLocation> collection, String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
-    }
-    
-    public static Collection<StockLocation> StockLocation.fromJsonArrayToStockLocations(String json) {
-        return new JSONDeserializer<List<StockLocation>>().use(null, ArrayList.class).use("values", StockLocation.class).deserialize(json);
-    }
-    
+
 }

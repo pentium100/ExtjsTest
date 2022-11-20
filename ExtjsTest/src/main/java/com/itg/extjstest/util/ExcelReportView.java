@@ -16,19 +16,21 @@ import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Cell;
-import org.springframework.web.servlet.view.document.AbstractExcelView;
+import org.apache.poi.ss.usermodel.*;
+import org.hibernate.jdbc.Work;
+import org.springframework.web.servlet.view.document.AbstractXlsView;
 
-public class ExcelReportView extends AbstractExcelView {
+public class ExcelReportView extends AbstractXlsView {
 
 	@Override
+
 	protected void buildExcelDocument(Map<String, Object> model,
-			HSSFWorkbook workbook, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+									  Workbook workbook, HttpServletRequest request,
+									  HttpServletResponse response) throws Exception {
 
 		int rowNum = 0;
 		// create a wordsheet
-		HSSFCell cell;
+		Cell cell;
 		String fileName = URLEncoder.encode((String) model.get("title"),
 				"UTF-8");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -38,9 +40,9 @@ public class ExcelReportView extends AbstractExcelView {
 		response.setHeader("Content-Type",
 				"application/force-download; charset=utf-8");
 
-		HSSFSheet sheet = workbook.createSheet((String) model.get("title"));
+		Sheet sheet = workbook.createSheet((String) model.get("title"));
 
-		HSSFRow header = sheet.createRow(rowNum++);
+		Row header = sheet.createRow(rowNum++);
 
 		List<ReportHeader> headers = (List<ReportHeader>) model.get("headers");
 
@@ -48,7 +50,7 @@ public class ExcelReportView extends AbstractExcelView {
 		for (ReportHeader colHeader : headers) {
 			cell = header.createCell(i++);
 			cell.setCellValue(colHeader.getHeader());
-			HSSFCellStyle style = workbook.createCellStyle();
+			CellStyle style = workbook.createCellStyle();
 			style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
 			cell.setCellStyle(style);
 
@@ -59,7 +61,7 @@ public class ExcelReportView extends AbstractExcelView {
 				.get(dataRoot);
 
 		for (Map<String, Object> dataSet : dataSets) {
-			HSSFRow row = sheet.createRow(rowNum++);
+			Row row = sheet.createRow(rowNum++);
 			i = 0;
 			for (ReportHeader colHeader : headers) {
 
@@ -104,5 +106,7 @@ public class ExcelReportView extends AbstractExcelView {
 		}
 
 	}
+
+
 
 }

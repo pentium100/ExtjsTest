@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 import com.itg.extjstest.domain.Contract;
 import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.ContractType;
+import com.itg.extjstest.repository.ContractRepository;
 import com.itg.extjstest.util.ContractTypeObjectFactory;
 import com.itg.extjstest.util.FilterItem;
 
@@ -30,11 +31,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RooWebJson(jsonObject = Contract.class)
 @Controller
@@ -44,6 +41,9 @@ public class ContractController {
 	@Autowired
 	@Qualifier("jdbcTemplate2")
 	protected NamedParameterJdbcTemplate jdbcTemplate;
+
+	@Autowired
+	private ContractRepository contractRepository;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -67,7 +67,7 @@ public class ContractController {
 		if (byItems == null) {
 			byItems = false;
 		}
-		result = Contract.findContractsByFilter(filters, start, page, limit,
+		result = contractRepository.findContractsByFilter(filters, start, page, limit,
 				byItems);
 
 		fillUsedQuantity(result);
@@ -76,9 +76,9 @@ public class ContractController {
 		headers.add("Content-Type", "application/json; charset=utf-8");
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("total", Contract.countContracts());
+		map.put("total", contractRepository.countContracts());
 		map.put("success", true);
-		String resultJson = mapToJson(map, result);
+		String resultJson = Contract.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
 	}
 
@@ -126,7 +126,7 @@ public class ContractController {
 			item.setContract(contract);
 		}
 
-		contract = contract.merge();
+		contract = contractRepository.merge(contract);
 		if (contract == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
@@ -135,7 +135,7 @@ public class ContractController {
 		List<Contract> contracts = new ArrayList<Contract>();
 		contracts.add(contract);
 		map.put("success", true);
-		String resultJson = mapToJson(map, contracts);
+		String resultJson = Contract.mapToJson(map, contracts);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
 
 		// return new ResponseEntity<String>(headers, HttpStatus.OK);
@@ -149,32 +149,53 @@ public class ContractController {
 			item.setContract(contract);
 		}
 
-		contract = contract.merge();
+		contract = contractRepository.merge(contract);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
 		List<Contract> contracts = new ArrayList<Contract>();
 		contracts.add(contract);
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("success", true);
-		String resultJson = mapToJson(map, contracts);
+		String resultJson = Contract.mapToJson(map, contracts);
 
 		return new ResponseEntity<String>(resultJson, headers,
 				HttpStatus.CREATED);
 	}
 
-	private String mapToJson(Map<String, Object> map, List<Contract> contracts) {
-		map.put("contracts", contracts);
-		String resultJson = new JSONSerializer()
-				.exclude("*.class")
-				.include("contracts")
-				.include("contracts.items")
-				.transform(new DateTransformer("yyyy-MM-dd HH:mm:ss"),
-						Date.class)
-				.transform(new ContractTypeObjectFactory(), ContractType.class)
-				.serialize(map);
 
-		return resultJson;
 
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
+		Contract contract = contractRepository.findContract(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (contract == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(contract.toJson(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (Contract contract: Contract.fromJsonArrayToContracts(json)) {
+			contractRepository.persist(contract);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
+		Contract contract = contractRepository.findContract(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (contract == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		contractRepository.remove(contract);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
 	}
 
 }

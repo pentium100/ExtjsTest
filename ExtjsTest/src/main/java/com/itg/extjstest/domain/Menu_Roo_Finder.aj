@@ -5,16 +5,9 @@ package com.itg.extjstest.domain;
 
 import com.itg.extjstest.domain.Menu;
 import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
+
 
 privileged aspect Menu_Roo_Finder {
     
-    public static TypedQuery<Menu> Menu.findMenusByParent(Menu parent) {
-        if (parent == null) throw new IllegalArgumentException("The parent argument is required");
-        EntityManager em = Menu.entityManager();
-        TypedQuery<Menu> q = em.createQuery("SELECT o FROM Menu AS o WHERE o.parent = :parent", Menu.class);
-        q.setParameter("parent", parent);
-        return q;
-    }
-    
+
 }

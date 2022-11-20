@@ -1,19 +1,12 @@
 package com.itg.extjstest.domain;
 
 import com.itg.extjstest.util.FilterItem;
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import java.util.*;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -25,11 +18,13 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
 @RooJavaBean
 @RooToString
 @RooJpaActiveRecord
 @RooJson
+@Entity
 public class Inspection {
 
 	@DateTimeFormat(style = "M-")
@@ -54,24 +49,125 @@ public class Inspection {
 
 	private String model_tested;
 
-	public static List<com.itg.extjstest.domain.Inspection> findInspectionByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<Inspection> c = cb.createQuery(Inspection.class);
-		Root<Inspection> inspection = c.from(Inspection.class);
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", inspection);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-		return entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
+
+	@Version
+	@Column(name = "version")
+	private Integer version;
+
+	public Long getId() {
+		return this.id;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+
+
+	public Date getInspectionDate() {
+		return this.InspectionDate;
+	}
+
+	public void setInspectionDate(Date InspectionDate) {
+		this.InspectionDate = InspectionDate;
+	}
+
+	public String getAuthority() {
+		return this.authority;
+	}
+
+	public void setAuthority(String authority) {
+		this.authority = authority;
+	}
+
+	public String getDocNo() {
+		return this.docNo;
+	}
+
+	public void setDocNo(String docNo) {
+		this.docNo = docNo;
+	}
+
+	public Boolean getOriginal() {
+		return this.original;
+	}
+
+	public void setOriginal(Boolean original) {
+		this.original = original;
+	}
+
+	public Set<InspectionItem> getItems() {
+		return this.items;
+	}
+
+	public void setItems(Set<InspectionItem> items) {
+		this.items = items;
+	}
+
+	public String getRemark() {
+		return this.remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public String getContracts() {
+		return this.contracts;
+	}
+
+	public void setContracts(String contracts) {
+		this.contracts = contracts;
+	}
+
+	public String getModel_tested() {
+		return this.model_tested;
+	}
+
+	public void setModel_tested(String model_tested) {
+		this.model_tested = model_tested;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toJson(String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+	}
+
+	public static Inspection fromJsonToInspection(String json) {
+		return new JSONDeserializer<Inspection>().use(null, Inspection.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<Inspection> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	public static String toJsonArray(Collection<Inspection> collection, String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
+	}
+
+	public static Collection<Inspection> fromJsonArrayToInspections(String json) {
+		return new JSONDeserializer<List<Inspection>>().use(null, ArrayList.class).use("values", Inspection.class).deserialize(json);
+	}
+
+
+
 
 	public static String mapToJson(
 			HashMap<java.lang.String, java.lang.Object> map,
@@ -86,36 +182,4 @@ public class Inspection {
 		return resultJson;
 	}
 
-	public void updateIsLast() {
-		for (InspectionItem item : getItems()) {
-			List<InspectionItem> needToBeCheckItems = InspectionItem
-					.findInspectionItemsByMaterialDocItem(
-							item.getMaterialDocItem()).getResultList();
-			InspectionItem maxDate = null;
-			for (InspectionItem item2 : needToBeCheckItems) {
-				if (maxDate == null) {
-					maxDate = item2;
-				}
-				if (maxDate.getInspection().getInspectionDate()
-						.before(item2.getInspection().getInspectionDate())) {
-					maxDate = item2;
-				}
-			}
-			for (InspectionItem item2 : needToBeCheckItems) {
-				if (maxDate == item2) {
-					item2.setIsLast(true);
-				} else {
-					item2.setIsLast(false);
-				}
-				item2.persist();
-			}
-
-			if (maxDate.getInspection().getModel_tested() != "") {
-				MaterialDocItem materialDocItem = item.getMaterialDocItem();
-				materialDocItem.setModel_tested(maxDate.getInspection()
-						.getModel_tested());
-				materialDocItem.persist();
-			}
-		}
-	}
 }

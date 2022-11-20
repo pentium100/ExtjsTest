@@ -7,24 +7,26 @@ import java.util.List;
 
 import com.itg.extjstest.domain.MaterialDoc;
 import com.itg.extjstest.domain.MaterialDocItem;
+import com.itg.extjstest.repository.MaterialDocItemRepository;
 import com.itg.extjstest.util.FilterItem;
 
 import flexjson.JSONDeserializer;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RooWebJson(jsonObject = MaterialDocItem.class)
 @Controller
 @RequestMapping("/materialdocitems/{queryMode}")
 public class MaterialDocItemController {
+
+	@Autowired
+	private MaterialDocItemRepository materialDocItemRepository;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -58,17 +60,17 @@ public class MaterialDocItemController {
 			f.setType("int");
 			f.setValue(String.valueOf(0));
 
-			result = MaterialDocItem.findMaterialDocItemsByFilter(filters,
+			result = materialDocItemRepository.findMaterialDocItemsByFilter(filters,
 					start, page, limit);
-			map.put("total", MaterialDocItem.countMaterialDocItemsByFilter(
+			map.put("total", materialDocItemRepository.countMaterialDocItemsByFilter(
 					filters, start, page, limit));
 		}
 
 		if (queryMode == 2) {
 
-			result = MaterialDocItem.findIncomingMaterialDocItemsByFilter(
+			result = materialDocItemRepository.findIncomingMaterialDocItemsByFilter(
 					filters, start, page, limit);
-			map.put("total", MaterialDocItem
+			map.put("total", materialDocItemRepository
 					.countIncomingMaterialDocItemsByFilter(filters, start,
 							page, limit));
 
@@ -97,7 +99,7 @@ public class MaterialDocItemController {
 	@RequestMapping(value = "/{lineId}", headers = "Accept=application/json")
 	@ResponseBody
 	public ResponseEntity<String> showJson(@PathVariable("lineId") Long lineId) {
-		MaterialDocItem materialdocitem = MaterialDocItem
+		MaterialDocItem materialdocitem = materialDocItemRepository
 				.findMaterialDocItem(lineId);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -116,5 +118,57 @@ public class MaterialDocItemController {
 		// return new ResponseEntity<String>(materialdocitem.toJson(), headers,
 		// HttpStatus.OK);
 	}
+
+
+	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJson(@RequestBody String json) {
+		MaterialDocItem materialDocItem = MaterialDocItem.fromJsonToMaterialDocItem(json);
+		materialDocItemRepository.persist(materialDocItem);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (MaterialDocItem materialDocItem: MaterialDocItem.fromJsonArrayToMaterialDocItems(json)) {
+			materialDocItemRepository.persist(materialDocItem);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{lineId}", method = RequestMethod.PUT, headers = "Accept=application/json")
+	public ResponseEntity<String> updateFromJson(@RequestBody String json, @PathVariable("lineId") Long lineId) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		MaterialDocItem materialDocItem = MaterialDocItem.fromJsonToMaterialDocItem(json);
+		if (materialDocItemRepository.merge(materialDocItem) == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/{lineId}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public ResponseEntity<String> deleteFromJson(@PathVariable("lineId") Long lineId) {
+		MaterialDocItem materialDocItem = materialDocItemRepository.findMaterialDocItem(lineId);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (materialDocItem == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		materialDocItemRepository.remove(materialDocItem);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(params = "find=ByLineId_up", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> jsonFindMaterialDocItemsByLineId_up(@RequestParam("lineId_up") MaterialDocItem lineId_up) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<String>(MaterialDocItem.toJsonArray(materialDocItemRepository.findMaterialDocItemsByLineId_up(lineId_up).getResultList()), headers, HttpStatus.OK);
+	}
+
 
 }

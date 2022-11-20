@@ -12,28 +12,4 @@ import java.util.List;
 
 privileged aspect UserDetail_Roo_Json {
     
-    public String UserDetail.toJson() {
-        return new JSONSerializer().exclude("*.class").serialize(this);
-    }
-    
-    public String UserDetail.toJson(String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
-    }
-    
-    public static UserDetail UserDetail.fromJsonToUserDetail(String json) {
-        return new JSONDeserializer<UserDetail>().use(null, UserDetail.class).deserialize(json);
-    }
-    
-    public static String UserDetail.toJsonArray(Collection<UserDetail> collection) {
-        return new JSONSerializer().exclude("*.class").serialize(collection);
-    }
-    
-    public static String UserDetail.toJsonArray(Collection<UserDetail> collection, String[] fields) {
-        return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
-    }
-    
-    public static Collection<UserDetail> UserDetail.fromJsonArrayToUserDetails(String json) {
-        return new JSONDeserializer<List<UserDetail>>().use(null, ArrayList.class).use("values", UserDetail.class).deserialize(json);
-    }
-    
 }

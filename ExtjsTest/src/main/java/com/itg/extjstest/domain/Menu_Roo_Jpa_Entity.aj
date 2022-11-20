@@ -3,41 +3,10 @@
 
 package com.itg.extjstest.domain;
 
-import com.itg.extjstest.domain.Menu;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Version;
-
 privileged aspect Menu_Roo_Jpa_Entity {
     
     declare @type: Menu: @Entity;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long Menu.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer Menu.version;
-    
-    public Long Menu.getId() {
-        return this.id;
-    }
-    
-    public void Menu.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer Menu.getVersion() {
-        return this.version;
-    }
-    
-    public void Menu.setVersion(Integer version) {
-        this.version = version;
-    }
+
     
 }

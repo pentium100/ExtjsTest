@@ -11,67 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 privileged aspect UserDetail_Roo_Jpa_ActiveRecord {
     
-    @PersistenceContext
-    transient EntityManager UserDetail.entityManager;
-    
-    public static final EntityManager UserDetail.entityManager() {
-        EntityManager em = new UserDetail().entityManager;
-        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
-        return em;
-    }
-    
-    public static long UserDetail.countUserDetails() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM UserDetail o", Long.class).getSingleResult();
-    }
-    
-    public static List<UserDetail> UserDetail.findAllUserDetails() {
-        return entityManager().createQuery("SELECT o FROM UserDetail o", UserDetail.class).getResultList();
-    }
-    
-    public static UserDetail UserDetail.findUserDetail(Long id) {
-        if (id == null) return null;
-        return entityManager().find(UserDetail.class, id);
-    }
-    
-    public static List<UserDetail> UserDetail.findUserDetailEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM UserDetail o", UserDetail.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
-    
-    @Transactional
-    public void UserDetail.persist() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.persist(this);
-    }
-    
-    @Transactional
-    public void UserDetail.remove() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        if (this.entityManager.contains(this)) {
-            this.entityManager.remove(this);
-        } else {
-            UserDetail attached = UserDetail.findUserDetail(this.id);
-            this.entityManager.remove(attached);
-        }
-    }
-    
-    @Transactional
-    public void UserDetail.flush() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.flush();
-    }
-    
-    @Transactional
-    public void UserDetail.clear() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        this.entityManager.clear();
-    }
-    
-    @Transactional
-    public UserDetail UserDetail.merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        UserDetail merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
-    }
+
     
 }

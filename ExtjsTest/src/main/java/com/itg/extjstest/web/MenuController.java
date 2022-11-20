@@ -12,19 +12,24 @@ import com.itg.extjstest.domain.ContractItem;
 import com.itg.extjstest.domain.Menu;
 import com.itg.extjstest.domain.security.UserDetail;
 
+import com.itg.extjstest.repository.MenuRepository;
+import com.itg.extjstest.repository.UserDetailRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @RooWebJson(jsonObject = Menu.class)
 @Controller
 @RequestMapping("/menus")
 public class MenuController {
+	@Autowired
+	private UserDetailRepository userDetailRepository;
+	@Autowired
+	private MenuRepository menuRepository;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -36,7 +41,7 @@ public class MenuController {
 		List<Menu> result;
 		if (node.equals("root")) {
 
-			EntityManager em = Menu.entityManager();
+			EntityManager em = menuRepository.entityManager();
 			TypedQuery<Menu> q = em.createQuery(
 					"SELECT o FROM Menu AS o WHERE o.parent is null",
 					Menu.class);
@@ -44,8 +49,8 @@ public class MenuController {
 			result = q.getResultList();
 
 		} else {
-			Menu parent = Menu.findMenu(Long.valueOf(node));
-			result = Menu.findMenusByParent(parent).getResultList();
+			Menu parent = menuRepository.findMenu(Long.valueOf(node));
+			result =  menuRepository.findMenusByParent(parent).getResultList();
 
 			boolean needFilter = false;
 			if (request.isUserInRole("ROLE_QUERY")) {
@@ -80,7 +85,7 @@ public class MenuController {
 	@ResponseBody
 	public ResponseEntity<String> getUserInfo(HttpServletRequest request) {
 
-		UserDetail user = UserDetail.findUserDetailsByUserNameEquals(
+		UserDetail user = userDetailRepository.findUserDetailsByUserNameEquals(
 				request.getRemoteUser()).getSingleResult();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Content-Type", "application/json; charset=utf-8");
@@ -88,5 +93,68 @@ public class MenuController {
 		return new ResponseEntity<String>(user.toJson(), headers, HttpStatus.OK);
 
 	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("id") Long id) {
+		Menu menu = menuRepository.findMenu(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (menu == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(menu.toJson(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJson(@RequestBody String json) {
+		Menu menu = Menu.fromJsonToMenu(json);
+		menuRepository.persist(menu);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (Menu menu: Menu.fromJsonArrayToMenus(json)) {
+			menuRepository.persist(menu);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT, headers = "Accept=application/json")
+	public ResponseEntity<String> updateFromJson(@RequestBody String json, @PathVariable("id") Long id) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		Menu menu = Menu.fromJsonToMenu(json);
+		if (menuRepository.merge(menu) == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public ResponseEntity<String> deleteFromJson(@PathVariable("id") Long id) {
+		Menu menu = menuRepository.findMenu(id);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (menu == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		menuRepository.remove(menu);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(params = "find=ByParent", headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> jsonFindMenusByParent(@RequestParam("parent") Menu parent) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		return new ResponseEntity<String>(Menu.toJsonArray(menuRepository.findMenusByParent(parent).getResultList()), headers, HttpStatus.OK);
+	}
+
 
 }

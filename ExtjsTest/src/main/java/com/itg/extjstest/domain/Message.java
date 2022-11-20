@@ -6,19 +6,8 @@ import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.*;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -36,11 +25,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
-@RooJavaBean
-@RooToString
-@RooJpaActiveRecord
-@RooJson
+@Entity
 public class Message {
 
 	@Size(max = 20)
@@ -86,6 +73,174 @@ public class Message {
 	@DateTimeFormat(style = "M-")
 	private Date lastChangeTime;
 
+
+	public String getDepartment() {
+		return this.department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getType() {
+		return this.type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getArticle() {
+		return this.article;
+	}
+
+	public void setArticle(String article) {
+		this.article = article;
+	}
+
+	public Double getQuantity() {
+		return this.quantity;
+	}
+
+	public void setQuantity(Double quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getDeparture() {
+		return this.departure;
+	}
+
+	public void setDeparture(String departure) {
+		this.departure = departure;
+	}
+
+	public String getSupplier() {
+		return this.supplier;
+	}
+
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
+	public String getOwner() {
+		return this.owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public Double getCostPrice() {
+		return this.costPrice;
+	}
+
+	public void setCostPrice(Double costPrice) {
+		this.costPrice = costPrice;
+	}
+
+	public Double getSuggestedPrice() {
+		return this.suggestedPrice;
+	}
+
+	public void setSuggestedPrice(Double suggestedPrice) {
+		this.suggestedPrice = suggestedPrice;
+	}
+
+	public String getRemark() {
+		return this.remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Boolean getIsUrgent() {
+		return this.isUrgent;
+	}
+
+	public void setIsUrgent(Boolean isUrgent) {
+		this.isUrgent = isUrgent;
+	}
+
+	public Set<Specification> getSpecifications() {
+		return this.specifications;
+	}
+
+	public void setSpecifications(Set<Specification> specifications) {
+		this.specifications = specifications;
+	}
+
+	public Date getValidBefore() {
+		return this.validBefore;
+	}
+
+	public void setValidBefore(Date validBefore) {
+		this.validBefore = validBefore;
+	}
+
+	public String getEta() {
+		return this.eta;
+	}
+
+	public void setEta(String eta) {
+		this.eta = eta;
+	}
+
+	public Date getLastChangeTime() {
+		return this.lastChangeTime;
+	}
+
+	public void setLastChangeTime(Date lastChangeTime) {
+		this.lastChangeTime = lastChangeTime;
+	}
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
+
+	@Version
+	@Column(name = "version")
+	private Integer version;
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toJson(String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+	}
+
+	public static String toJsonArray(Collection<Message> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	public static String toJsonArray(Collection<Message> collection, String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
+	}
+
+	public static Collection<Message> fromJsonArrayToMessages(String json) {
+		return new JSONDeserializer<List<Message>>().use(null, ArrayList.class).use("values", Message.class).deserialize(json);
+	}
+
+
 	public static String mapToJson(
 			HashMap<java.lang.String, java.lang.Object> map,
 			List<com.itg.extjstest.domain.Message> messages) {
@@ -122,23 +277,6 @@ public class Message {
 				.deserialize(json);
 	}
 
-	public static List<com.itg.extjstest.domain.Message> findMessagesByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<Message> c = cb.createQuery(Message.class);
-		Root<Message> root = c.from(Message.class);
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-		c.orderBy(cb.desc(root.get("lastChangeTime")));
-		return entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
-	}
+
+
 }

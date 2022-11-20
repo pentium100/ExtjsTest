@@ -14,13 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.persistence.Tuple;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -35,11 +29,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
-@RooJavaBean
-@RooToString
-@RooJpaActiveRecord(identifierColumn = "docNo", identifierField = "docNo")
-@RooJson
+@Entity
 public class MaterialDoc {
 
 	@ManyToOne
@@ -81,6 +73,146 @@ public class MaterialDoc {
 	@Size(max = 10)
 	private String cause;
 
+
+
+	public Contract getContract() {
+		return this.contract;
+	}
+
+	public void setContract(Contract contract) {
+		this.contract = contract;
+	}
+
+	public String getDeliveryNote() {
+		return this.deliveryNote;
+	}
+
+	public void setDeliveryNote(String deliveryNote) {
+		this.deliveryNote = deliveryNote;
+	}
+
+	public String getBatchNo() {
+		return this.batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	public String getPlateNum() {
+		return this.plateNum;
+	}
+
+	public void setPlateNum(String plateNum) {
+		this.plateNum = plateNum;
+	}
+
+	public String getWorkingNo() {
+		return this.workingNo;
+	}
+
+	public void setWorkingNo(String workingNo) {
+		this.workingNo = workingNo;
+	}
+
+	public Date getDocDate() {
+		return this.docDate;
+	}
+
+	public void setDocDate(Date docDate) {
+		this.docDate = docDate;
+	}
+
+	public Set<MaterialDocItem> getItems() {
+		return this.items;
+	}
+
+	public void setItems(Set<MaterialDocItem> items) {
+		this.items = items;
+	}
+
+	public MaterialDocType getDocType() {
+		return this.docType;
+	}
+
+	public void setDocType(MaterialDocType docType) {
+		this.docType = docType;
+	}
+
+	public String getTargetWarehouse() {
+		return this.targetWarehouse;
+	}
+
+	public void setTargetWarehouse(String targetWarehouse) {
+		this.targetWarehouse = targetWarehouse;
+	}
+
+	public StockLocation getTargetStockLocation() {
+		return this.targetStockLocation;
+	}
+
+	public void setTargetStockLocation(StockLocation targetStockLocation) {
+		this.targetStockLocation = targetStockLocation;
+	}
+
+	public String getInvNo() {
+		return this.invNo;
+	}
+
+	public void setInvNo(String invNo) {
+		this.invNo = invNo;
+	}
+
+	public String getCause() {
+		return this.cause;
+	}
+
+	public void setCause(String cause) {
+		this.cause = cause;
+	}
+
+
+
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "docNo")
+	private Long docNo;
+
+	@Version
+	@Column(name = "version")
+	private Integer version;
+
+	public Long getDocNo() {
+		return this.docNo;
+	}
+
+	public void setDocNo(Long id) {
+		this.docNo = id;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toJson(String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+	}
+
+	public static Collection<MaterialDoc> fromJsonArrayToMaterialDocs(String json) {
+		return new JSONDeserializer<List<MaterialDoc>>().use(null, ArrayList.class).use("values", MaterialDoc.class).deserialize(json);
+	}
+
+
 	public static String toJsonArray(
 			Collection<com.itg.extjstest.domain.MaterialDoc> collection) {
 		return new JSONSerializer()
@@ -89,14 +221,20 @@ public class MaterialDoc {
 						Date.class).serialize(collection);
 	}
 
+
+
+
 	public static com.itg.extjstest.domain.MaterialDoc fromJsonToMaterialDoc(
 			String json) {
 		return new JSONDeserializer<MaterialDoc>().use(null, MaterialDoc.class)
 				.use(ContractType.class, new ContractTypeObjectFactory())
 				.use("contract.contractType", new ContractTypeObjectFactory())
 				.use(Contract.class, new ContractObjectFactory())
+				.use(Date.class, new DateTransformer("yyyy-MM-dd HH:mm:ss"))
 				.deserialize(json);
 	}
+
+
 
 	public static String mapToJson(
 			HashMap<java.lang.String, java.lang.Object> map,
@@ -117,61 +255,5 @@ public class MaterialDoc {
 		return resultJson;
 	}
 
-	public static Long countMaterialDocsByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters)
-			throws ParseException {
 
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<Tuple> c = cb.createTupleQuery();
-
-		Root<MaterialDoc> root = c.from(MaterialDoc.class);
-
-		Expression<Long> id = root.get("docNo");
-		Expression<Long> countId = (Expression<Long>) cb.count(id);
-
-		c.select(cb.tuple(countId.alias("total")));
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				if (f.getField().contains("contractNo")) {
-					f.setField("contract.contractNo");
-					Join<MaterialDoc, Contract> fromContract = root
-							.join("contract");
-					paths.put("contract", fromContract);
-				}
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-		Tuple result = entityManager().createQuery(c).getSingleResult();
-		return (Long) result.get("total");
-
-	}
-
-	public static List<com.itg.extjstest.domain.MaterialDoc> findMaterialDocsByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<MaterialDoc> c = cb.createQuery(MaterialDoc.class);
-		Root<MaterialDoc> root = c.from(MaterialDoc.class);
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				if (f.getField().equals("contractNo")) {
-					f.setField("contract.contractNo");
-					Join<MaterialDoc, Contract> fromContract = root
-							.join("contract");
-					paths.put("contract", fromContract);
-				}
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-		return entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
-	}
 }

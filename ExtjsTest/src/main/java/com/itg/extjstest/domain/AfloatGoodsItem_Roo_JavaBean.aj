@@ -8,36 +8,5 @@ import com.itg.extjstest.domain.AfloatGoodsItem;
 
 privileged aspect AfloatGoodsItem_Roo_JavaBean {
     
-    public AfloatGoods AfloatGoodsItem.getAfloatGoods() {
-        return this.afloatGoods;
-    }
-    
-    public void AfloatGoodsItem.setAfloatGoods(AfloatGoods afloatGoods) {
-        this.afloatGoods = afloatGoods;
-    }
-    
-    public String AfloatGoodsItem.getModel() {
-        return this.model;
-    }
-    
-    public void AfloatGoodsItem.setModel(String model) {
-        this.model = model;
-    }
-    
-    public Double AfloatGoodsItem.getQuantity() {
-        return this.quantity;
-    }
-    
-    public void AfloatGoodsItem.setQuantity(Double quantity) {
-        this.quantity = quantity;
-    }
-    
-    public String AfloatGoodsItem.getBatchNo() {
-        return this.batchNo;
-    }
-    
-    public void AfloatGoodsItem.setBatchNo(String batchNo) {
-        this.batchNo = batchNo;
-    }
-    
+
 }

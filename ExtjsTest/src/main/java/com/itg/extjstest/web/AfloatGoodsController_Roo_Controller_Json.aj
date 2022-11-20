@@ -16,38 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 privileged aspect AfloatGoodsController_Roo_Controller_Json {
     
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, headers = "Accept=application/json")
-    @ResponseBody
-    public ResponseEntity<String> AfloatGoodsController.showJson(@PathVariable("id") Long id) {
-        AfloatGoods afloatGoods = AfloatGoods.findAfloatGoods(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json; charset=utf-8");
-        if (afloatGoods == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<String>(afloatGoods.toJson(), headers, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
-    public ResponseEntity<String> AfloatGoodsController.createFromJsonArray(@RequestBody String json) {
-        for (AfloatGoods afloatGoods: AfloatGoods.fromJsonArrayToAfloatGoodses(json)) {
-            afloatGoods.persist();
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        return new ResponseEntity<String>(headers, HttpStatus.CREATED);
-    }
-    
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, headers = "Accept=application/json")
-    public ResponseEntity<String> AfloatGoodsController.deleteFromJson(@PathVariable("id") Long id) {
-        AfloatGoods afloatGoods = AfloatGoods.findAfloatGoods(id);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
-        if (afloatGoods == null) {
-            return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
-        }
-        afloatGoods.remove();
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
-    }
+
     
 }

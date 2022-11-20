@@ -5,9 +5,9 @@
  xmlns:p="http://www.springframework.org/schema/p"
  xmlns:jdbc="http://www.springframework.org/schema/jdbc"
  xsi:schemaLocation="http://www.springframework.org/schema/beans 
-      http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+      http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
    http://www.springframework.org/schema/security 
-   http://www.springframework.org/schema/security/spring-security-3.1.xsd
+   http://www.springframework.org/schema/security/spring-security-4.1.xsd
    http://www.springframework.org/schema/jdbc 
    http://www.springframework.org/schema/jdbc/spring-jdbc-3.1.xsd">
  
@@ -30,17 +30,17 @@
   <constructor-arg ref="aclService"/>
  </bean>
  
- <!-- Declare an acl service -->
+ <!-- Declare an acl service  -->
  <bean class="org.springframework.security.acls.jdbc.JdbcMutableAclService" id="aclService">
   <constructor-arg ref="dataSource"/>
         <constructor-arg ref="lookupStrategy"/>
-        <constructor-arg ref="aclCache"/>
+     <constructor-arg ref="aclCache"/>
  </bean>
   
- <!-- Declare a lookup strategy-->
+ <!-- Declare a lookup strategy   -->
  <bean id="lookupStrategy" class="org.springframework.security.acls.jdbc.BasicLookupStrategy">
         <constructor-arg ref="dataSource"/>
-        <constructor-arg ref="aclCache"/>
+     <constructor-arg ref="aclCache"/>
         <constructor-arg ref="aclAuthorizationStrategy"/>
         <constructor-arg ref="auditLogger"/>
     </bean>
@@ -58,8 +58,8 @@
    p:maxStatements="50"
    p:minPoolSize="10" />
  
-    <!-- Declare an acl cache-->  
-   <bean id="aclCache" class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
+    <!-- Declare an acl cache-->
+    <bean id="aclCache" class="org.springframework.security.acls.domain.EhCacheBasedAclCache">
         <constructor-arg>
             <bean class="org.springframework.cache.ehcache.EhCacheFactoryBean">
                 <property name="cacheManager">
@@ -68,19 +68,37 @@
                 <property name="cacheName" value="aclCache"/>
             </bean>
         </constructor-arg>
+        <constructor-arg>
+            <bean class="org.springframework.security.acls.domain.DefaultPermissionGrantingStrategy">
+                <constructor-arg>
+                    <bean class="org.springframework.security.acls.domain.ConsoleAuditLogger"/>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+        <constructor-arg>
+            <bean class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
+                <constructor-arg>
+                    <list>
+                        <bean class="org.springframework.security.core.authority.SimpleGrantedAuthority">
+                            <constructor-arg value="ROLE_ADMIN"/>
+                        </bean>
+                    </list>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
     </bean>
  
  <!-- Declare an acl authorization strategy-->
     <bean id="aclAuthorizationStrategy" class="org.springframework.security.acls.domain.AclAuthorizationStrategyImpl">
         <constructor-arg>
             <list>
-                <bean class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+                <bean class="org.springframework.security.core.authority.SimpleGrantedAuthority">
                     <constructor-arg value="ROLE_ADMIN"/>
                 </bean>
-                <bean class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+                <bean class="org.springframework.security.core.authority.SimpleGrantedAuthority">
                     <constructor-arg value="ROLE_ADMIN"/>
                 </bean>
-                <bean class="org.springframework.security.core.authority.GrantedAuthorityImpl">
+                <bean class="org.springframework.security.core.authority.SimpleGrantedAuthority">
                     <constructor-arg value="ROLE_ADMIN"/>
                 </bean>
             </list>

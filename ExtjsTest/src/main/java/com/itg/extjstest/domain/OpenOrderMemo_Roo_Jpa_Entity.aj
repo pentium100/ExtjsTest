@@ -15,29 +15,5 @@ privileged aspect OpenOrderMemo_Roo_Jpa_Entity {
     
     declare @type: OpenOrderMemo: @Entity;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long OpenOrderMemo.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer OpenOrderMemo.version;
-    
-    public Long OpenOrderMemo.getId() {
-        return this.id;
-    }
-    
-    public void OpenOrderMemo.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer OpenOrderMemo.getVersion() {
-        return this.version;
-    }
-    
-    public void OpenOrderMemo.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
 }

@@ -9,12 +9,6 @@ import javax.persistence.TypedQuery;
 
 privileged aspect UserDetail_Roo_Finder {
     
-    public static TypedQuery<UserDetail> UserDetail.findUserDetailsByUserNameEquals(String userName) {
-        if (userName == null || userName.length() == 0) throw new IllegalArgumentException("The userName argument is required");
-        EntityManager em = UserDetail.entityManager();
-        TypedQuery<UserDetail> q = em.createQuery("SELECT o FROM UserDetail AS o WHERE o.userName = :userName", UserDetail.class);
-        q.setParameter("userName", userName);
-        return q;
-    }
+
     
 }

@@ -15,29 +15,5 @@ privileged aspect MaterialDocType_Roo_Jpa_Entity {
     
     declare @type: MaterialDocType: @Entity;
     
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long MaterialDocType.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer MaterialDocType.version;
-    
-    public Long MaterialDocType.getId() {
-        return this.id;
-    }
-    
-    public void MaterialDocType.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer MaterialDocType.getVersion() {
-        return this.version;
-    }
-    
-    public void MaterialDocType.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
 }

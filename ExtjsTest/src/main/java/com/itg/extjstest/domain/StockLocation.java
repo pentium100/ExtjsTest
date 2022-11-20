@@ -1,11 +1,9 @@
 package com.itg.extjstest.domain;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -13,6 +11,8 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.Size;
+
+import flexjson.JSONDeserializer;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
@@ -22,11 +22,9 @@ import com.itg.extjstest.util.FilterItem;
 
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
+import org.springframework.transaction.annotation.Transactional;
 
-@RooJavaBean
-@RooToString
-@RooJpaActiveRecord
-@RooJson
+@Entity
 public class StockLocation {
 
 	@Size(max = 50)
@@ -46,28 +44,67 @@ public class StockLocation {
 
 	}
 
-	public static List<StockLocation> findStockLocationByFilter(
-			List<FilterItem> filters, int start, int page, int limit)
-			throws ParseException {
 
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<StockLocation> c = cb.createQuery(StockLocation.class);
-		Root<StockLocation> root = c.from(StockLocation.class);
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
 
-		List<StockLocation> list;
-		list = entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
 
-		return list;
-
+	public String getStockLocation() {
+		return this.stockLocation;
 	}
+
+	public void setStockLocation(String stockLocation) {
+		this.stockLocation = stockLocation;
+	}
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
+
+	@Version
+	@Column(name = "version")
+	private Integer version;
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toJson(String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+	}
+
+	public static StockLocation fromJsonToStockLocation(String json) {
+		return new JSONDeserializer<StockLocation>().use(null, StockLocation.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<StockLocation> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	public static String toJsonArray(Collection<StockLocation> collection, String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
+	}
+
+	public static Collection<StockLocation> fromJsonArrayToStockLocations(String json) {
+		return new JSONDeserializer<List<StockLocation>>().use(null, ArrayList.class).use("values", StockLocation.class).deserialize(json);
+	}
+
 }

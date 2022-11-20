@@ -14,30 +14,5 @@ import javax.persistence.Version;
 privileged aspect InspectionItem_Roo_Jpa_Entity {
     
     declare @type: InspectionItem: @Entity;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long InspectionItem.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer InspectionItem.version;
-    
-    public Long InspectionItem.getId() {
-        return this.id;
-    }
-    
-    public void InspectionItem.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer InspectionItem.getVersion() {
-        return this.version;
-    }
-    
-    public void InspectionItem.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
 }

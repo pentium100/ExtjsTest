@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.GrantedAuthorityImpl;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import com.itg.extjstest.domain.security.SecurityRole;
@@ -32,7 +32,7 @@ public class Assembler {
 	    Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 	    
 	    for (SecurityRole role : userDetail.getRoles()) {
-	      authorities.add(new GrantedAuthorityImpl(role.getRoleName()));
+	      authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
 	    }
 
 	    

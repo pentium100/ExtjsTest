@@ -8,18 +8,8 @@ import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import java.util.*;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
@@ -34,11 +24,10 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
-@RooJavaBean
-@RooToString
-@RooJpaActiveRecord
-@RooJson
+
+@Entity
 public class AfloatGoods {
 
 	@ManyToOne
@@ -77,39 +66,158 @@ public class AfloatGoods {
 
 	private Boolean destinationFee;
 
-	public static List<com.itg.extjstest.domain.AfloatGoods> findAfloatGoodsByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, Integer start,
-			Integer page, Integer limit, List<SortItem> sorts)
-			throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<AfloatGoods> c = cb.createQuery(AfloatGoods.class);
-		Root<AfloatGoods> afloatGoods = c.from(AfloatGoods.class);
-		Join<AfloatGoods, AfloatGoodsItem> j = afloatGoods.join("items");
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", afloatGoods);
-		paths.put("items", j);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
 
-		List<Order> orders = new ArrayList<Order>();
-		if (sorts != null) {
-			for (SortItem s : sorts) {
+	@Version
+	@Column(name = "version")
+	private Integer version;
 
-				orders.add(s.buildSortQuery(cb, paths));
-
-			}
-		}
-
-		c.orderBy(orders);
-
-		return entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
+	public Long getId() {
+		return this.id;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+
+
+
+	public Contract getContract() {
+		return this.contract;
+	}
+
+	public void setContract(Contract contract) {
+		this.contract = contract;
+	}
+
+	public String getPlateNum() {
+		return this.plateNum;
+	}
+
+	public void setPlateNum(String plateNum) {
+		this.plateNum = plateNum;
+	}
+
+	public String getDispatch() {
+		return this.dispatch;
+	}
+
+	public void setDispatch(String dispatch) {
+		this.dispatch = dispatch;
+	}
+
+	public String getDestination() {
+		return this.destination;
+	}
+
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public Date getTransportDate() {
+		return this.transportDate;
+	}
+
+	public void setTransportDate(Date transportDate) {
+		this.transportDate = transportDate;
+	}
+
+	public Date getDispatchDate() {
+		return this.dispatchDate;
+	}
+
+	public void setDispatchDate(Date dispatchDate) {
+		this.dispatchDate = dispatchDate;
+	}
+
+	public Date getEta() {
+		return this.eta;
+	}
+
+	public void setEta(Date eta) {
+		this.eta = eta;
+	}
+
+	public String getRemark() {
+		return this.remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Date getArrivalDate() {
+		return this.arrivalDate;
+	}
+
+	public void setArrivalDate(Date arrivalDate) {
+		this.arrivalDate = arrivalDate;
+	}
+
+	public Set<AfloatGoodsItem> getItems() {
+		return this.items;
+	}
+
+	public void setItems(Set<AfloatGoodsItem> items) {
+		this.items = items;
+	}
+
+	public Boolean getOriginal() {
+		return this.original;
+	}
+
+	public void setOriginal(Boolean original) {
+		this.original = original;
+	}
+
+	public Boolean getSourceFee() {
+		return this.sourceFee;
+	}
+
+	public void setSourceFee(Boolean sourceFee) {
+		this.sourceFee = sourceFee;
+	}
+
+	public Boolean getDestinationFee() {
+		return this.destinationFee;
+	}
+
+	public void setDestinationFee(Boolean destinationFee) {
+		this.destinationFee = destinationFee;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toJson(String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+	}
+
+	public static String toJsonArray(Collection<AfloatGoods> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	public static String toJsonArray(Collection<AfloatGoods> collection, String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
+	}
+
+	public static Collection<AfloatGoods> fromJsonArrayToAfloatGoodses(String json) {
+		return new JSONDeserializer<List<AfloatGoods>>().use(null, ArrayList.class).use("values", AfloatGoods.class).deserialize(json);
+	}
+
 
 	public static String mapToJson(
 			HashMap<java.lang.String, java.lang.Object> map,
@@ -124,10 +232,12 @@ public class AfloatGoods {
 		return resultJson;
 	}
 
-	public static com.itg.extjstest.domain.AfloatGoods fromJsonToAfloatGoods(
+	public  static com.itg.extjstest.domain.AfloatGoods fromJsonToAfloatGoods(
 			String json) {
 		return new JSONDeserializer<AfloatGoods>().use(null, AfloatGoods.class)
 				.use(ContractType.class, new ContractTypeObjectFactory())
 				.deserialize(json);
 	}
+
+
 }

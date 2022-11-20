@@ -7,12 +7,6 @@ import com.itg.extjstest.domain.security.AclClass;
 
 privileged aspect AclClass_Roo_JavaBean {
     
-    public String AclClass.getClazz() {
-        return this.clazz;
-    }
-    
-    public void AclClass.setClazz(String clazz) {
-        this.clazz = clazz;
-    }
+
     
 }

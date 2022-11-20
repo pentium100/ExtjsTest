@@ -1,11 +1,9 @@
 package com.itg.extjstest.domain;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
@@ -13,6 +11,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.validation.constraints.Size;
 
+import flexjson.JSONDeserializer;
 import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
@@ -22,15 +21,49 @@ import com.itg.extjstest.util.FilterItem;
 
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
+import org.springframework.transaction.annotation.Transactional;
 
-@RooJavaBean
-@RooToString
-@RooJpaActiveRecord
-@RooJson
+@Entity
 public class Employee {
 
 	@Size(max = 50)
 	private String name;
+
+	public String getName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
+	private Long id;
+
+	@Version
+	@Column(name = "version")
+	private Integer version;
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+
 
 	public static String mapToJson(HashMap<String, Object> map,
 			List<Employee> employees) {
@@ -43,27 +76,32 @@ public class Employee {
 		return resultJson;
 	}
 
-	public static List<Employee> findEmployeeByFilter(List<FilterItem> filters,
-			int start, int page, int limit) throws ParseException {
 
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<Employee> c = cb.createQuery(Employee.class);
-		Root<Employee> root = c.from(Employee.class);
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
 
-		List<Employee> list;
-		list = entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
 
-		return list;
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
 	}
+
+	public String toJson(String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+	}
+
+	public static Employee fromJsonToEmployee(String json) {
+		return new JSONDeserializer<Employee>().use(null, Employee.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<Employee> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	public static String toJsonArray(Collection<Employee> collection, String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
+	}
+
+	public static Collection<Employee> fromJsonArrayToEmployees(String json) {
+		return new JSONDeserializer<List<Employee>>().use(null, ArrayList.class).use("values", Employee.class).deserialize(json);
+	}
+
 
 }

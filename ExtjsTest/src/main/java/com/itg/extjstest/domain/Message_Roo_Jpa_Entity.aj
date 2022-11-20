@@ -14,30 +14,5 @@ import javax.persistence.Version;
 privileged aspect Message_Roo_Jpa_Entity {
     
     declare @type: Message: @Entity;
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long Message.id;
-    
-    @Version
-    @Column(name = "version")
-    private Integer Message.version;
-    
-    public Long Message.getId() {
-        return this.id;
-    }
-    
-    public void Message.setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer Message.getVersion() {
-        return this.version;
-    }
-    
-    public void Message.setVersion(Integer version) {
-        this.version = version;
-    }
-    
+
 }

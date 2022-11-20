@@ -18,6 +18,10 @@ import com.itg.extjstest.domain.MaterialDocItem;
 import com.itg.extjstest.domain.MaterialDocType;
 import com.itg.extjstest.domain.Message;
 import com.itg.extjstest.domain.StockLocation;
+import com.itg.extjstest.repository.ContractRepository;
+import com.itg.extjstest.repository.MaterialDocItemRepository;
+import com.itg.extjstest.repository.MaterialDocRepository;
+import com.itg.extjstest.repository.MaterialDocTypeRepository;
 import com.itg.extjstest.util.FilterItem;
 import com.itg.extjstest.util.FilterObjectFactory;
 
@@ -33,6 +37,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.roo.addon.web.mvc.controller.json.RooWebJson;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,14 +49,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-@RooWebJson(jsonObject = MaterialDoc.class)
+
 @Controller
+
 @RequestMapping("/materialdocs/{docType}")
 public class MaterialDocController {
 
 	@Autowired
 	@Qualifier("jdbcTemplate2")
 	protected NamedParameterJdbcTemplate jdbcTemplate;
+
+	@Autowired
+	private MaterialDocRepository materialDocRepository;
+	@Autowired
+	private MaterialDocItemRepository materialDocItemRepository;
+	@Autowired
+	private MaterialDocTypeRepository materialDocTypeRepository;
+	@Autowired
+	private ContractRepository contractRepository;
 
 	@RequestMapping(headers = "Accept=application/json")
 	@ResponseBody
@@ -80,7 +97,7 @@ public class MaterialDocController {
 
 		filters.add(f);
 
-		List<MaterialDoc> result = MaterialDoc.findMaterialDocsByFilter(
+		List<MaterialDoc> result = materialDocRepository.findMaterialDocsByFilter(
 				filters, start, page, limit);
 
 		for (MaterialDoc md : result) {
@@ -116,7 +133,7 @@ public class MaterialDocController {
 		}
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("total", MaterialDoc.countMaterialDocsByFilter(filters));
+		map.put("total", materialDocRepository.countMaterialDocsByFilter(filters));
 		map.put("success", true);
 		String resultJson = MaterialDoc.mapToJson(map, result);
 		return new ResponseEntity<String>(resultJson, headers, HttpStatus.OK);
@@ -168,7 +185,7 @@ public class MaterialDocController {
 					|| (materialDoc.getDocType().getDocType_txt().equals("货损"))) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
-					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
+					item.setLineId_in(materialDocItemRepository.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
 				item.setContract(materialDoc.getContract());
@@ -181,18 +198,18 @@ public class MaterialDocController {
 				// MaterialDocItem newItem = new MaterialDocItem();
 
 				if (item.getLineId_in().getLineId_test() == null) {
-					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
+					item.setLineId_in(materialDocItemRepository.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
 
-				MaterialDocItem itemIn = MaterialDocItem
+				MaterialDocItem itemIn = materialDocItemRepository
 						.findMaterialDocItem(item.getLineId_in().getLineId());
 				materialDoc.setContract(itemIn.getContract());
 				item.setContract(itemIn.getContract());
 				item.setLineId_test(item.getLineId_in().getLineId_test());
 				MaterialDocItem newItem = null;
 				try {
-					newItem = MaterialDocItem.findMaterialDocItemsByLineId_up(
+					newItem = materialDocItemRepository.findMaterialDocItemsByLineId_up(
 							item).getSingleResult();
 				} catch (EmptyResultDataAccessException e) {
 					newItem = null;
@@ -229,7 +246,7 @@ public class MaterialDocController {
 		// materialDoc.setContract(null);
 		// }
 
-		materialDoc = materialDoc.merge();
+		materialDoc = materialDocRepository.merge(materialDoc);
 		if (materialDoc == null) {
 			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
 		}
@@ -282,7 +299,7 @@ public class MaterialDocController {
 			HttpServletRequest request) {
 		MaterialDoc materialDoc = MaterialDoc.fromJsonToMaterialDoc(json);
 
-		MaterialDocType type = MaterialDocType.findMaterialDocType(materialDoc
+		MaterialDocType type = materialDocTypeRepository.findMaterialDocType(materialDoc
 				.getDocType().getId());
 		materialDoc.setDocType(type);
 		HttpHeaders headers = new HttpHeaders();
@@ -328,7 +345,7 @@ public class MaterialDocController {
 					|| (materialDoc.getDocType().getDocType_txt().equals("货损"))) {
 
 				if (item.getLineId_in().getLineId_test() == null) {
-					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
+					item.setLineId_in(materialDocItemRepository.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
 				item.setContract(materialDoc.getContract());
@@ -338,11 +355,11 @@ public class MaterialDocController {
 			if (materialDoc.getDocType().getDocType_txt().equals("移仓")
 					&& item.getMoveType().equals("351")) {
 				if (item.getLineId_in().getLineId_test() == null) {
-					item.setLineId_in(MaterialDocItem.findMaterialDocItem(item
+					item.setLineId_in(materialDocItemRepository.findMaterialDocItem(item
 							.getLineId_in().getLineId()));
 				}
 
-				MaterialDocItem itemIn = MaterialDocItem
+				MaterialDocItem itemIn = materialDocItemRepository
 						.findMaterialDocItem(item.getLineId_in().getLineId());
 				item.setContract(itemIn.getContract());
 				materialDoc.setContract(itemIn.getContract());
@@ -375,7 +392,7 @@ public class MaterialDocController {
 
 		// materialDoc =
 		materialDoc.setDocNo(null);
-		materialDoc.persist();
+		materialDocRepository.persist(materialDoc);
 
 		if (materialDoc.getDocType().getDocType_txt().equals("移仓")) {
 			// Contract contract = new Contract();
@@ -448,7 +465,7 @@ public class MaterialDocController {
 
 		Map<String, Object> param = new HashMap<String, Object>();
 
-		Contract contract = Contract.findContract(m.getContract().getId());
+		Contract contract = contractRepository.findContract(m.getContract().getId());
 		param.put("contract", contract.getId());
 		param.put("doc_no", m.getDocNo());
 		for (MaterialDocItem i : m.getItems()) {
@@ -464,6 +481,40 @@ public class MaterialDocController {
 		}
 		return "";
 
+	}
+
+	@RequestMapping(value = "/{docNo}", method = RequestMethod.GET, headers = "Accept=application/json")
+	@ResponseBody
+	public ResponseEntity<String> showJson(@PathVariable("docNo") Long docNo) {
+		MaterialDoc materialDoc = materialDocRepository.findMaterialDoc(docNo);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json; charset=utf-8");
+		if (materialDoc == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<String>(materialDoc.toJson(), headers, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/jsonArray", method = RequestMethod.POST, headers = "Accept=application/json")
+	public ResponseEntity<String> createFromJsonArray(@RequestBody String json) {
+		for (MaterialDoc materialDoc: MaterialDoc.fromJsonArrayToMaterialDocs(json)) {
+			materialDocRepository.persist(materialDoc);
+		}
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		return new ResponseEntity<String>(headers, HttpStatus.CREATED);
+	}
+
+	@RequestMapping(value = "/{docNo}", method = RequestMethod.DELETE, headers = "Accept=application/json")
+	public ResponseEntity<String> deleteFromJson(@PathVariable("docNo") Long docNo) {
+		MaterialDoc materialDoc = materialDocRepository.findMaterialDoc(docNo);
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Content-Type", "application/json");
+		if (materialDoc == null) {
+			return new ResponseEntity<String>(headers, HttpStatus.NOT_FOUND);
+		}
+		materialDocRepository.remove(materialDoc);
+		return new ResponseEntity<String>(headers, HttpStatus.OK);
 	}
 
 }

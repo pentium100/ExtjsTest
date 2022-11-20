@@ -1,25 +1,13 @@
 package com.itg.extjstest.domain;
 
 import com.itg.extjstest.util.FilterItem;
+import flexjson.JSONDeserializer;
 import flexjson.JSONSerializer;
 import flexjson.transformer.DateTransformer;
 
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.LockModeType;
-import javax.persistence.ManyToOne;
-import javax.persistence.PostPersist;
-import javax.persistence.PostRemove;
-import javax.persistence.PostUpdate;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
-import javax.persistence.Tuple;
+import java.util.*;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
@@ -37,11 +25,9 @@ import org.springframework.roo.addon.javabean.RooJavaBean;
 import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
 import org.springframework.roo.addon.json.RooJson;
 import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.transaction.annotation.Transactional;
 
-@RooJavaBean
-@RooToString
-@RooJson
-@RooJpaActiveRecord(identifierColumn = "lineId", identifierField = "lineId", finders = { "findMaterialDocItemsByLineId_up" })
+@Entity
 public class MaterialDocItem {
 
 	@ManyToOne
@@ -65,7 +51,7 @@ public class MaterialDocItem {
 	@Transient
 	private String warehouse;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private com.itg.extjstest.domain.MaterialDocItem lineId_in;
 
 	@Size(max = 3000)
@@ -105,153 +91,225 @@ public class MaterialDocItem {
 	@NotNull
 	private StockLocation stockLocation;
 
-	public static int countMaterialDocItemsByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, int start,
-			int page, int limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		CriteriaQuery<Tuple> c = cb.createTupleQuery();
-		Root<MaterialDocItem> fromMaterialDocItem = c
-				.from(MaterialDocItem.class);
-		Expression<Double> weight = fromMaterialDocItem.get("netWeight");
-		Expression<Double> direction = fromMaterialDocItem.get("direction");
-		Expression<Double> directionWeight = (Expression<Double>) cb.prod(
-				weight, direction);
-		Expression<Double> sumOfDirectionWeight = cb.sum(directionWeight);
-
-		Expression<Double> lots = fromMaterialDocItem.get("lots");
-
-		Expression<Double> directionLots = (Expression<Double>) cb.prod(
-				lots, direction);
-		Expression<Double> sumOfDirectionLots = cb.sum(directionLots);
-
-		c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId")
-				.alias("lineId_in"), fromMaterialDocItem.get("stockLocation")
-				.get("id").alias("stockLocation"),
-				sumOfDirectionWeight.alias("stockWeight"),
-				sumOfDirectionLots.alias("stockLots")));
-		c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"),
-				fromMaterialDocItem.get("stockLocation"));
-		c.having(cb.gt(sumOfDirectionWeight, 0));
-		Subquery<MaterialDocItem> subq = c.subquery(MaterialDocItem.class);
-		Root<MaterialDocItem> subFromMaterialDocItem = subq
-				.from(MaterialDocItem.class);
-		Root<MaterialDoc> subFromMaterialDoc = subq.from(MaterialDoc.class);
-		Root<Contract> subFromContract = subq.from(Contract.class);
-		Root<StockLocation> subFromStockLocation = subq
-				.from(StockLocation.class);
-		subq.select(subFromMaterialDocItem);
-		List<Predicate> subCriteria = new ArrayList<Predicate>();
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("lineId"),
-				subFromMaterialDocItem.get("lineId_in")));
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("materialDoc"),
-				subFromMaterialDoc.get("docNo")));
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("contract"),
-				subFromContract.get("id")));
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("stockLocation"),
-				subFromStockLocation.get("id")));
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", fromMaterialDocItem);
-		HashMap<String, Path> subPaths = new HashMap<String, Path>();
-		subPaths.put("", subFromMaterialDocItem);
-		subPaths.put("materialDoc", subFromMaterialDoc);
-		subPaths.put("contract", subFromContract);
-		subPaths.put("stockLocation", subFromStockLocation);
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				// if (!f.getField().equals("stockLocation.stockLocation")) {
-				subCriteria.add(f.getPredicate(cb, subPaths));
-				// } else {
-				// criteria.add(f.getPredicate(cb, paths));
-				// }
-			}
-			subq.where(cb.and(subCriteria.toArray(new Predicate[0])));
-		}
-		c.where(cb.in(fromMaterialDocItem.get("lineId_in")).value(subq));
-		return entityManager().createQuery(c).getResultList().size();
-
+	public MaterialDoc getMaterialDoc() {
+		return this.materialDoc;
 	}
 
-	public static List<com.itg.extjstest.domain.MaterialDocItem> findMaterialDocItemsByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, int start,
-			int page, int limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		// List<Predicate> criteria = new ArrayList<Predicate>();
-		CriteriaQuery<Tuple> c = cb.createTupleQuery();
-		Root<MaterialDocItem> fromMaterialDocItem = c
-				.from(MaterialDocItem.class);
-		Expression<Double> weight = fromMaterialDocItem.get("netWeight");
-		Expression<Double> lots = fromMaterialDocItem.get("lots");
-		Expression<Double> direction = fromMaterialDocItem.get("direction");
-		Expression<Double> directionWeight = (Expression<Double>) cb.prod(
-				weight, direction);
-		Expression<Double> directionLots = (Expression<Double>) cb.prod(
-				lots, direction);
-		Expression<Double> sumOfDirectionWeight = cb.sum(directionWeight);
-		Expression<Double> sumOfDirectionLots = cb.sum(directionLots);
-		c.select(cb.tuple(fromMaterialDocItem.get("lineId_in").get("lineId")
-				.alias("lineId_in"), fromMaterialDocItem.get("stockLocation")
-				.get("id").alias("stockLocation"),
-				sumOfDirectionWeight.alias("stockWeight"),
-				sumOfDirectionLots.alias("stockLots")
-				));
-		c.groupBy(fromMaterialDocItem.get("lineId_in").get("lineId"),
-				fromMaterialDocItem.get("stockLocation"));
-		c.having(cb.gt(sumOfDirectionWeight, 0));
-		Subquery<MaterialDocItem> subq = c.subquery(MaterialDocItem.class);
-		Root<MaterialDocItem> subFromMaterialDocItem = subq
-				.from(MaterialDocItem.class);
-		Root<MaterialDoc> subFromMaterialDoc = subq.from(MaterialDoc.class);
-		Root<Contract> subFromContract = subq.from(Contract.class);
-		Root<StockLocation> subFromStockLocation = subq
-				.from(StockLocation.class);
-		subq.select(subFromMaterialDocItem);
-		List<Predicate> subCriteria = new ArrayList<Predicate>();
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("lineId"),
-				subFromMaterialDocItem.get("lineId_in")));
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("materialDoc"),
-				subFromMaterialDoc.get("docNo")));
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("contract"),
-				subFromContract.get("id")));
-		subCriteria.add(cb.equal(subFromMaterialDocItem.get("stockLocation"),
-				subFromStockLocation.get("id")));
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", fromMaterialDocItem);
-		HashMap<String, Path> subPaths = new HashMap<String, Path>();
-		subPaths.put("", subFromMaterialDocItem);
-		subPaths.put("materialDoc", subFromMaterialDoc);
-		subPaths.put("contract", subFromContract);
-		subPaths.put("stockLocation", subFromStockLocation);
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				// if (!f.getField().equals("stockLocation.stockLocation")) {
-				subCriteria.add(f.getPredicate(cb, subPaths));
-				// } else {
-				// criteria.add(f.getPredicate(cb, paths));
-				// }
-			}
-			subq.where(cb.and(subCriteria.toArray(new Predicate[0])));
-		}
-		c.where(cb.in(fromMaterialDocItem.get("lineId_in")).value(subq));
-		List<Tuple> result = entityManager().createQuery(c)
-				.setFirstResult(start).setMaxResults(limit).getResultList();
-		List<MaterialDocItem> l = new ArrayList<MaterialDocItem>();
-		for (Tuple o : result) {
-			Long lineId = (Long) o.get("lineId_in");
-			MaterialDocItem item = MaterialDocItem.findMaterialDocItem(lineId);
-			StockLocation stockLocation = StockLocation
-					.findStockLocation((Long) o.get("stockLocation"));
-
-			MaterialDoc materialDoc = item.getMaterialDoc();
-			Contract contract = materialDoc.getContract();
-			item.setWarehouse(stockLocation.getStockLocation());
-			item.setNetWeight((Double) o.get("stockWeight"));
-			entityManager().detach(item);
-			l.add(item);
-		}
-
-		return l;
+	public void setMaterialDoc(MaterialDoc materialDoc) {
+		this.materialDoc = materialDoc;
 	}
+
+	public String getMoveType() {
+		return this.moveType;
+	}
+
+	public void setMoveType(String moveType) {
+		this.moveType = moveType;
+	}
+
+	public String getModel_contract() {
+		return this.model_contract;
+	}
+
+	public void setModel_contract(String model_contract) {
+		this.model_contract = model_contract;
+	}
+
+	public String getModel_tested() {
+		return this.model_tested;
+	}
+
+	public void setModel_tested(String model_tested) {
+		this.model_tested = model_tested;
+	}
+
+	public Double getGrossWeight() {
+		return this.grossWeight;
+	}
+
+	public void setGrossWeight(Double grossWeight) {
+		this.grossWeight = grossWeight;
+	}
+
+	public Double getNetWeight() {
+		return this.netWeight;
+	}
+
+	public void setNetWeight(Double netWeight) {
+		this.netWeight = netWeight;
+	}
+
+	public Double getLots() {
+		return this.lots;
+	}
+
+	public void setLots(Double lots) {
+		this.lots = lots;
+	}
+
+	public String getWarehouse() {
+		return this.warehouse;
+	}
+
+	public void setWarehouse(String warehouse) {
+		this.warehouse = warehouse;
+	}
+
+	public MaterialDocItem getLineId_in() {
+		return this.lineId_in;
+	}
+
+	public void setLineId_in(MaterialDocItem lineId_in) {
+		this.lineId_in = lineId_in;
+	}
+
+	public String getRemark() {
+		return this.remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public short getDirection() {
+		return this.direction;
+	}
+
+	public void setDirection(short direction) {
+		this.direction = direction;
+	}
+
+	public String getContractNo() {
+		return this.contractNo;
+	}
+
+	public void setContractNo(String contractNo) {
+		this.contractNo = contractNo;
+	}
+
+	public String getDeliveryNote() {
+		return this.deliveryNote;
+	}
+
+	public void setDeliveryNote(String deliveryNote) {
+		this.deliveryNote = deliveryNote;
+	}
+
+	public String getBatchNo() {
+		return this.batchNo;
+	}
+
+	public void setBatchNo(String batchNo) {
+		this.batchNo = batchNo;
+	}
+
+	public String getPlateNum() {
+		return this.plateNum;
+	}
+
+	public void setPlateNum(String plateNum) {
+		this.plateNum = plateNum;
+	}
+
+	public String getWorkingNo() {
+		return this.workingNo;
+	}
+
+	public void setWorkingNo(String workingNo) {
+		this.workingNo = workingNo;
+	}
+
+	public Date getDocDate() {
+		return this.docDate;
+	}
+
+	public void setDocDate(Date docDate) {
+		this.docDate = docDate;
+	}
+
+	public MaterialDocItem getLineId_test() {
+		return this.lineId_test;
+	}
+
+	public void setLineId_test(MaterialDocItem lineId_test) {
+		this.lineId_test = lineId_test;
+	}
+
+	public MaterialDocItem getLineId_up() {
+		return this.lineId_up;
+	}
+
+	public void setLineId_up(MaterialDocItem lineId_up) {
+		this.lineId_up = lineId_up;
+	}
+
+	public Contract getContract() {
+		return this.contract;
+	}
+
+	public void setContract(Contract contract) {
+		this.contract = contract;
+	}
+
+	public StockLocation getStockLocation() {
+		return this.stockLocation;
+	}
+
+	public void setStockLocation(StockLocation stockLocation) {
+		this.stockLocation = stockLocation;
+	}
+
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "lineId")
+	private Long lineId;
+
+	@Version
+	@Column(name = "version")
+	private Integer version;
+
+	public Long getLineId() {
+		return this.lineId;
+	}
+
+	public void setLineId(Long id) {
+		this.lineId = id;
+	}
+
+	public Integer getVersion() {
+		return this.version;
+	}
+
+	public void setVersion(Integer version) {
+		this.version = version;
+	}
+
+	public String toJson() {
+		return new JSONSerializer().exclude("*.class").serialize(this);
+	}
+
+	public String toJson(String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(this);
+	}
+
+	public static MaterialDocItem fromJsonToMaterialDocItem(String json) {
+		return new JSONDeserializer<MaterialDocItem>().use(null, MaterialDocItem.class).deserialize(json);
+	}
+
+	public static String toJsonArray(Collection<MaterialDocItem> collection) {
+		return new JSONSerializer().exclude("*.class").serialize(collection);
+	}
+
+	public static String toJsonArray(Collection<MaterialDocItem> collection, String[] fields) {
+		return new JSONSerializer().include(fields).exclude("*.class").serialize(collection);
+	}
+
+	public static Collection<MaterialDocItem> fromJsonArrayToMaterialDocItems(String json) {
+		return new JSONDeserializer<List<MaterialDocItem>>().use(null, ArrayList.class).use("values", MaterialDocItem.class).deserialize(json);
+	}
+
+
 
 	public static String mapToJson(
 			HashMap<java.lang.String, java.lang.Object> map,
@@ -282,63 +340,5 @@ public class MaterialDocItem {
 			setContractNo(i.getMaterialDoc().getContract().getContractNo());
 		}
 	}
-
-	public static int countIncomingMaterialDocItemsByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, int start,
-			int page, int limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<MaterialDocItem> c = cb
-				.createQuery(MaterialDocItem.class);
-		Root<MaterialDocItem> root = c.from(MaterialDocItem.class);
-		Join<MaterialDocItem, MaterialDoc> materialDoc = root
-				.join("materialDoc");
-		Join<MaterialDoc, Contract> contract = materialDoc.join("contract");
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		paths.put("materialDoc", materialDoc);
-		paths.put("contract", contract);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				if (f.getField().equals("contractNo")) {
-					f.setField("contract.contractNo");
-				}
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-
-		return entityManager().createQuery(c).getResultList().size();
-	}
-
-	public static List<com.itg.extjstest.domain.MaterialDocItem> findIncomingMaterialDocItemsByFilter(
-			List<com.itg.extjstest.util.FilterItem> filters, int start,
-			int page, int limit) throws ParseException {
-		CriteriaBuilder cb = entityManager().getCriteriaBuilder();
-		CriteriaQuery<MaterialDocItem> c = cb
-				.createQuery(MaterialDocItem.class);
-		Root<MaterialDocItem> root = c.from(MaterialDocItem.class);
-		Join<MaterialDocItem, MaterialDoc> materialDoc = root
-				.join("materialDoc");
-		Join<MaterialDoc, Contract> contract = materialDoc.join("contract");
-		HashMap<String, Path> paths = new HashMap<String, Path>();
-		paths.put("", root);
-		paths.put("materialDoc", materialDoc);
-		paths.put("contract", contract);
-		List<Predicate> criteria = new ArrayList<Predicate>();
-		if (filters != null) {
-			for (FilterItem f : filters) {
-				if (f.getField().equals("contractNo")) {
-					f.setField("contract.contractNo");
-				}
-				criteria.add(f.getPredicate(cb, paths));
-			}
-			c.where(cb.and(criteria.toArray(new Predicate[0])));
-		}
-
-		return entityManager().createQuery(c).setFirstResult(start)
-				.setMaxResults(limit).getResultList();
-	}
-
 
 }

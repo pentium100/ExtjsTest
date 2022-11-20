@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.itg.extjstest.repository.OpenOrderMemoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
@@ -39,6 +40,8 @@ public class ReportController {
 	@Autowired
 	@Qualifier("jdbcTemplate2")
 	protected NamedParameterJdbcTemplate jdbcTemplate;
+	@Autowired
+	private OpenOrderMemoRepository openOrderMemoRepository;
 
 	@RequestMapping(value = "/openOrders/{model}", method = RequestMethod.PUT, headers = "Accept=application/json")
 	public ResponseEntity<String> updateOpenOrderMemo(@RequestBody String json,
@@ -50,7 +53,7 @@ public class ReportController {
 				.fromJsonToOpenOrderMemo(json);
 		OpenOrderMemo o1 = null;
 		try {
-			o1 = OpenOrderMemo.findOpenOrderMemoesByModelEquals(
+			o1 = openOrderMemoRepository.findOpenOrderMemoesByModelEquals(
 					openOrderMemo.getModel()).getSingleResult();
 		} catch (org.springframework.dao.EmptyResultDataAccessException e) {
 			o1 = new OpenOrderMemo();
@@ -61,7 +64,7 @@ public class ReportController {
 		o1.setUpdateTime(new Date());
 		o1.setUpdateUser(request.getRemoteUser());
 
-		o1 = o1.merge();
+		o1 = openOrderMemoRepository.merge(o1);
 		o1.setUpdate_time(new Date());
 		o1.setUpdate_user(request.getRemoteUser());
 
@@ -200,8 +203,9 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-					+ " select count(*) from OpenOrder", param);
+
+			Long recordCount = jdbcTemplate.queryForObject(cte.toString()
+					+ " select count(*) from OpenOrder", param, Long.class);
 
 			map2.put("total", recordCount);
 			map2.put("success", true);
@@ -1118,8 +1122,8 @@ public class ReportController {
 		} else {
 			HashMap<String, Object> map2 = new HashMap<String, Object>();
 
-			Long recordCount = jdbcTemplate.queryForLong(cte.toString()
-					+ "select count(*) from InspectionDetail", param);
+			Long recordCount = jdbcTemplate.queryForObject(cte.toString()
+					+ "select count(*) from InspectionDetail", param, Long.class);
 
 			map2.put("total", recordCount);
 			map2.put("success", true);

@@ -7,28 +7,5 @@ import com.itg.extjstest.domain.Specification;
 
 privileged aspect Specification_Roo_JavaBean {
     
-    public String Specification.getSpecification() {
-        return this.specification;
-    }
-    
-    public void Specification.setSpecification(String specification) {
-        this.specification = specification;
-    }
-    
-    public Double Specification.getTypical() {
-        return this.typical;
-    }
-    
-    public void Specification.setTypical(Double typical) {
-        this.typical = typical;
-    }
-    
-    public Double Specification.getReject() {
-        return this.reject;
-    }
-    
-    public void Specification.setReject(Double reject) {
-        this.reject = reject;
-    }
-    
+
 }
